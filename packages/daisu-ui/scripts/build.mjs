@@ -60,7 +60,7 @@ function copyAssets(directory) {
   for (const entry of readdirSync(directory, { withFileTypes: true })) {
     const source = join(directory, entry.name);
     if (entry.isDirectory()) { copyAssets(source); continue; }
-    if (!entry.name.endsWith('.css') && entry.name !== 'styles.d.ts' && !entry.name.startsWith('LICENSE')) continue;
+    if (!entry.name.endsWith('.css') && !entry.name.endsWith('.svg') && entry.name !== 'styles.d.ts' && !entry.name.startsWith('LICENSE')) continue;
     const destination = join(outputRoot, relative(sourceRoot, source));
     mkdirSync(dirname(destination), { recursive: true });
     cpSync(source, destination);

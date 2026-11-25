@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Daisu UI · 袋鼠 UI 品牌图标</title>
+  <desc id="desc">字母 D 与袋鼠侧面轮廓结合的几何标志，品牌色为橙色。</desc>
+  <rect width="1024" height="1024" rx="224" fill="#FF6A00"/>
+  <g transform="translate(20 70) scale(.94)">
+    <path fill="#FFFFFF" fill-rule="evenodd" d="M236 304H366L333 167C326 139 337 125 349 133C357 138 363 150 370 164L440 285L518 142C533 114 550 115 557 130C561 138 559 150 557 163L548 298C609 308 659 342 696 377L793 409C813 416 822 430 810 446L777 488C768 500 753 505 736 502L631 481C610 663 490 788 320 788H236C207 788 188 769 188 740V352C188 323 207 304 236 304ZM310 430V662H344C445 662 512 612 512 540C512 470 469 430 388 430H310ZM638 391a12 12 0 1 0 24 0a12 12 0 1 0-24 0Z"/>
+  </g>
+</svg>

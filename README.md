@@ -38,7 +38,7 @@ Git 远程：`git@git.zilueit.com:daisu-ui/daisu-ui.git`。迁移清单见 [MIGR
 ```bash
 npm install @daisu-ui/ui@beta
 # 固定版本，升级或回退时显式指定版本号
-npm install @daisu-ui/ui@0.1.0-beta.3
+npm install @daisu-ui/ui@0.1.0-beta.4
 ```
 
 ```tsx
@@ -62,7 +62,7 @@ npm 只发布 `packages/daisu-ui` 构建的 UI 库：`dist/`、类型声明、�
 
 ## 完整发布示例
 
-下面假设当前为 `0.1.0-beta.3`，准备下一个版本 `0.1.0-beta.4`。命令均在仓库根目录执行；已发布版本和已有标签不得覆盖。
+下面假设当前为 `0.1.0-beta.4`，准备下一个版本 `0.1.0-beta.5`。命令均在仓库根目录执行；已发布版本和已有标签不得覆盖。
 
 ### 1. 开发并更新版本
 
@@ -71,13 +71,13 @@ git switch developer
 git pull --ff-only origin developer
 npm ci
 # 完成组件、示例和 API 文档改动
-npm pkg set version=0.1.0-beta.4
-npm pkg set version=0.1.0-beta.4 --workspace @daisu-ui/ui
-npm pkg set 'dependencies.@daisu-ui/ui=0.1.0-beta.4' --workspace @daisu-ui/demo
+npm pkg set version=0.1.0-beta.5
+npm pkg set version=0.1.0-beta.5 --workspace @daisu-ui/ui
+npm pkg set 'dependencies.@daisu-ui/ui=0.1.0-beta.5' --workspace @daisu-ui/demo
 npm install --package-lock-only --ignore-scripts --no-audit --no-fund
 ```
 
-在 `packages/daisu-ui/CHANGELOG.md` 顶部增加 `## 0.1.0-beta.4`、日期及具体变化。CLI 在独立仓库维护，无需同步其版本；Demo 与文档仍为 private。
+在 `packages/daisu-ui/CHANGELOG.md` 顶部增加 `## 0.1.0-beta.5`、日期及具体变化。CLI 在独立仓库维护，无需同步其版本；Demo 与文档仍为 private。
 
 ### 2. 验证并提交开发分支
 
@@ -93,7 +93,7 @@ git diff --check
 git diff
 # 审核后明确添加本次涉及的文件；组件改动也一并添加
 git add package.json package-lock.json packages/daisu-ui/package.json packages/daisu-ui/CHANGELOG.md apps/demo/package.json
-git commit -m "chore: release @daisu-ui/ui 0.1.0-beta.4"
+git commit -m "chore: release @daisu-ui/ui 0.1.0-beta.5"
 git push origin developer
 ```
 
@@ -107,7 +107,7 @@ git push origin developer
 git fetch origin
 git switch main
 git pull --ff-only origin main
-git merge --no-ff origin/developer -m "release: merge developer for 0.1.0-beta.4"
+git merge --no-ff origin/developer -m "release: merge developer for 0.1.0-beta.5"
 git push origin main
 ```
 
@@ -127,7 +127,7 @@ npm whoami --registry=https://registry.npmjs.org/
 npm run ui:npm:release -- --dry-run
 # 发布刚才准备的同一份产物；需要时按 npm 提示完成双重验证
 npm run ui:npm:publish
-npm view @daisu-ui/ui@0.1.0-beta.4 version dist.integrity --registry=https://registry.npmjs.org/
+npm view @daisu-ui/ui@0.1.0-beta.5 version dist.integrity --registry=https://registry.npmjs.org/
 npm view @daisu-ui/ui dist-tags --json --registry=https://registry.npmjs.org/
 ```
 
@@ -144,9 +144,9 @@ Token 在 npm 网站头像菜单 → Access Tokens → Generate New Token → Gr
 然后在已验收的 main 提交创建版本 Tag：
 
 ```bash
-git ls-remote --tags origin 'refs/tags/v0.1.0-beta.4'
-git tag -a v0.1.0-beta.4 -m "Daisu UI 0.1.0-beta.4"
-git push origin refs/tags/v0.1.0-beta.4
+git ls-remote --tags origin 'refs/tags/v0.1.0-beta.5'
+git tag -a v0.1.0-beta.5 -m "Daisu UI 0.1.0-beta.5"
+git push origin refs/tags/v0.1.0-beta.5
 ```
 
 Tag 流水线先运行 `verify`，自动执行 `publish:git`；npm 任务为手动门禁，在同一流水线点击 `publish:npm` 的播放按钮，成功后再核对上面的 `npm view` 命令。不需要流水线触发器或 Auto DevOps。
@@ -157,9 +157,9 @@ Tag 流水线先运行 `verify`，自动执行 `publish:git`；npm 任务为手�
 
 ```bash
 # 在消费项目执行
-npm install @daisu-ui/ui@0.1.0-beta.4
+npm install @daisu-ui/ui@0.1.0-beta.5
 # 需要回退时
-npm install @daisu-ui/ui@0.1.0-beta.3
+npm install @daisu-ui/ui@0.1.0-beta.4
 # 跟随当前 beta（仍需提交更新后的锁文件）
 npm install @daisu-ui/ui@beta
 ```
@@ -178,8 +178,8 @@ git push origin developer
 需要仅通过自有 GitLab 安装时，Tag 流水线的 `publish:git` 生成 `npm-dist` 和 `npm-v<版本>`。先确认安装标签存在，再安装：
 
 ```bash
-git ls-remote --tags origin 'refs/tags/npm-v0.1.0-beta.4*'
-npm install '@daisu-ui/ui@git+ssh://git@git.zilueit.com/daisu-ui/daisu-ui.git#npm-v0.1.0-beta.4'
+git ls-remote --tags origin 'refs/tags/npm-v0.1.0-beta.5*'
+npm install '@daisu-ui/ui@git+ssh://git@git.zilueit.com/daisu-ui/daisu-ui.git#npm-v0.1.0-beta.5'
 ```
 
 安装方需具备仓库 SSH 读取权限。本地 Git 发布可先运行 `npm run ui:git:release -- --dry-run`，确认后执行 `npm run ui:git:release`，同样要求源码已进入远端 main。
