@@ -1,5 +1,5 @@
 import { useEffect, useState } from '@lynx-js/react';
-import { Cell, IndexBar, RootPortal } from 'daisu-ui';
+import { Cell, IndexBar, RootPortal } from '@daisu-ui/ui';
 import { indexBarCities } from './indexBarData.js';
 
 export function IndexBarExample() {

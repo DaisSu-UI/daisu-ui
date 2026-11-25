@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from '@lynx-js/react';
 import type { NodesRef } from '@lynx-js/types';
-import { Backtop, Icon } from 'daisu-ui';
+import { Backtop, Icon } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 function Option({ label, checked, onChange, last = false }: { label: string; checked: boolean; onChange: () => void; last?: boolean }) {

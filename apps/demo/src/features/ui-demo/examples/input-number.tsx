@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from '@lynx-js/react';
-import { InputNumber, Toast, useToast } from 'daisu-ui';
-import type { InputNumberProps, InputNumberValue } from 'daisu-ui';
+import { InputNumber, Toast, useToast } from '@daisu-ui/ui';
+import type { InputNumberProps, InputNumberValue } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 const themes = ['default', 'primary', 'outline-split', 'outline'] as const;
 function Sample({ defaultValue = 1, ...props }: InputNumberProps) {

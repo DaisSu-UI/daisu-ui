@@ -3,7 +3,7 @@
 缺省提示用于展示无数据、网络异常或搜索无结果等状态，可组合图片、文案与底部操作。
 
 ```tsx
-import { Empty } from 'daisu-ui';
+import { Empty } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -23,7 +23,7 @@ import { Empty } from 'daisu-ui';
 通过 `image` 自定义图片内容，通过 `bottom` 设置底部操作。
 
 ```tsx
-import { Icon, Button } from 'daisu-ui';
+import { Icon, Button } from '@daisu-ui/ui';
 
 <Empty
   image={<Icon name="no-result" size={100} />}
@@ -68,7 +68,7 @@ import { Icon, Button } from 'daisu-ui';
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

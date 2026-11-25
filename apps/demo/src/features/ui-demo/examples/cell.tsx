@@ -1,6 +1,6 @@
 import { useEffect, useState } from '@lynx-js/react';
 import { Switch, SwitchThumb, SwitchTrack } from '@lynx-js/lynx-ui';
-import { Button, Cell, CellGroup, Slider } from 'daisu-ui';
+import { Button, Cell, CellGroup, Slider } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 const poem = '黄鹤断矶头，故人今在否？旧江山浑是新愁。欲买桂花同载酒，终不似，少年游。';

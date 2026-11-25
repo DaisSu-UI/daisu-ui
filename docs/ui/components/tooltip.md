@@ -3,7 +3,7 @@
 文字提示用于解释图标或控件含义，在触发元素附近展示简短说明。
 
 ```tsx
-import { Tooltip } from 'daisu-ui';
+import { Tooltip } from '@daisu-ui/ui';
 ```
 
 ## 基础用法
@@ -13,7 +13,7 @@ import { Tooltip } from 'daisu-ui';
 通过 `content` 设置说明文字，子节点作为提示的触发元素。
 
 ```tsx
-import { Button } from 'daisu-ui';
+import { Button } from '@daisu-ui/ui';
 
 <Tooltip content="这里是帮助信息">
   <Button label="帮助" />
@@ -109,7 +109,7 @@ export type BubblePlacement =
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

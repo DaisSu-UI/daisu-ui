@@ -3,7 +3,7 @@
 索引栏适合按字母或分类组织长列表，支持索引点击、拖动定位和分组标题。
 
 ```tsx
-import { IndexBar, IndexAnchor } from 'daisu-ui';
+import { IndexBar, IndexAnchor } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -13,7 +13,7 @@ import { IndexBar, IndexAnchor } from 'daisu-ui';
 通过 `sections` 配置索引和分组数据，`listId` 标识列表，`renderItem` 定义每行内容。
 
 ```tsx
-import { Cell } from 'daisu-ui';
+import { Cell } from '@daisu-ui/ui';
 
 <IndexBar
   listId="contact-list"
@@ -101,7 +101,7 @@ export type AnchorIndex = string | number;
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

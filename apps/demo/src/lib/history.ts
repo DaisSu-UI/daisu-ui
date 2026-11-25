@@ -1,5 +1,5 @@
-import { parseRouterHistoryState } from 'daisu-ui/router';
-import type { RouterHistoryAdapter } from 'daisu-ui/router';
+import { parseRouterHistoryState } from '@daisu-ui/ui/router';
+import type { RouterHistoryAdapter } from '@daisu-ui/ui/router';
 export function createDemoHistory(): RouterHistoryAdapter {
   'background only';
   const emitter = lynx.getJSModule('GlobalEventEmitter');

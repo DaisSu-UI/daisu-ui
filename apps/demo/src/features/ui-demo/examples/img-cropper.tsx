@@ -1,6 +1,6 @@
 import { useInitData, useRef, useState } from '@lynx-js/react';
-import { Button, Icon, Img, ImgCropper } from 'daisu-ui';
-import type { ImgCropperRef, ImgCropperResult } from 'daisu-ui';
+import { Button, Icon, Img, ImgCropper } from '@daisu-ui/ui';
+import type { ImgCropperRef, ImgCropperResult } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 const ratios=['1:1','3:2','16:9','16:10','1:1'];
 export function ImgCropperExample(){

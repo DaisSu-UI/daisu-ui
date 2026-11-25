@@ -3,7 +3,7 @@
 加载指示器用于告知用户正在处理任务，支持圆环、旋转线条、圆点和波浪样式。
 
 ```tsx
-import { Loading } from 'daisu-ui';
+import { Loading } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -74,7 +74,7 @@ export type LoadingSize = 'small' | 'medium' | 'large' | (string & {}) | number;
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

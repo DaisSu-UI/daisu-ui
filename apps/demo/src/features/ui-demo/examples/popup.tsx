@@ -1,6 +1,6 @@
 import { useState } from '@lynx-js/react';
-import { Button, Cell, CellGroup, Popup } from 'daisu-ui';
-import type { PopupPosition } from 'daisu-ui';
+import { Button, Cell, CellGroup, Popup } from '@daisu-ui/ui';
+import type { PopupPosition } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 type Example = 'center' | 'top' | 'right' | 'bottom' | 'left' | 'close' | 'no-click' | 'no-modal' | 'safe' | 'scroll' | 'parent';

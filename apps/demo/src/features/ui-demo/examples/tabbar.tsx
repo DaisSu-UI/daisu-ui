@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from '@lynx-js/react';
-import { Button, Icon, Loading, RootPortal, Tabbar } from 'daisu-ui';
-import type { TabbarItem, TabbarValue } from 'daisu-ui';
+import { Button, Icon, Loading, RootPortal, Tabbar } from '@daisu-ui/ui';
+import type { TabbarItem, TabbarValue } from '@daisu-ui/ui';
 import panda from '../../../assets/demo-panda.jpg';
 import { DemoGroup, ExampleBlock } from './shared.js';
 

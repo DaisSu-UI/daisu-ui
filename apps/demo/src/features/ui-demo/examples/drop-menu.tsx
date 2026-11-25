@@ -1,6 +1,6 @@
 import { useRef } from '@lynx-js/react';
-import { Button, Cell, Dialog, DropMenu, DropMenuItem, Slider, SortButton, useDialog } from 'daisu-ui';
-import type { DropMenuItemProps, DropMenuItemRef } from 'daisu-ui';
+import { Button, Cell, Dialog, DropMenu, DropMenuItem, Slider, SortButton, useDialog } from '@daisu-ui/ui';
+import type { DropMenuItemProps, DropMenuItemRef } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 const goods = [{ label: '全部商品', value: 0 }, { label: '新款商品', value: 1, tip: '这是补充信息' }, { label: '这是比较长的筛选条件这是比较长的筛选条件', value: 2 }];

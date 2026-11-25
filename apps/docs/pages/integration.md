@@ -28,7 +28,7 @@ npm install "git+ssh://git@git.zilueit.com/daisu-ui/daisu-ui.git#npm-v0.1.0-beta
 ## 应用根节点
 
 ```tsx
-import { ConfigProvider, RootPortalHost } from 'daisu-ui';
+import { ConfigProvider, RootPortalHost } from '@daisu-ui/ui';
 
 <ConfigProvider>
   <RootPortalHost>

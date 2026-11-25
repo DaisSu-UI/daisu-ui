@@ -3,7 +3,7 @@
 单元格用于展示一项信息或提供操作入口。配合 CellGroup 可组织设置列表、详情和表单布局。
 
 ```tsx
-import { Cell, CellGroup } from 'daisu-ui';
+import { Cell, CellGroup } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -44,7 +44,7 @@ import { Cell, CellGroup } from 'daisu-ui';
 子节点中可放置输入框，使用 `titleWidth` 设置标题宽度，`center` 让内容垂直居中。
 
 ```tsx
-import { Input } from 'daisu-ui';
+import { Input } from '@daisu-ui/ui';
 
 <Cell title="姓名" titleWidth="98px" required center>
   <Input compact placeholder="请输入姓名" />
@@ -109,7 +109,7 @@ import { Input } from 'daisu-ui';
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

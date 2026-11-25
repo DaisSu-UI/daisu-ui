@@ -1,6 +1,6 @@
 import { useState } from '@lynx-js/react';
-import { PickerView } from 'daisu-ui';
-import type { PickerValue } from 'daisu-ui';
+import { PickerView } from '@daisu-ui/ui';
+import type { PickerValue } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 import { pickerOptions, pickerDisabledOptions, pickerUniversity, pickerAreas } from './pickerShared.js';
 const custom = [{ id: 1, text: '选项一' }, { id: 2, text: '选项二' }, { id: 3, text: '选项三' }];

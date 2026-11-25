@@ -3,7 +3,7 @@
 水印用于在内容区域重复展示文字或图片标记，支持颜色、旋转和间距配置。
 
 ```tsx
-import { Watermark } from 'daisu-ui';
+import { Watermark } from '@daisu-ui/ui';
 ```
 
 ## 基础用法
@@ -62,7 +62,7 @@ import { Watermark } from 'daisu-ui';
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

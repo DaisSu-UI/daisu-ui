@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from '@lynx-js/react';
 import { List } from '@lynx-js/lynx-ui';
-import { Loadmore } from 'daisu-ui';
-import type { LoadmoreState } from 'daisu-ui';
+import { Loadmore } from '@daisu-ui/ui';
+import type { LoadmoreState } from '@daisu-ui/ui';
 import cat from '../../../assets/demo-cat.png';
 
 export function LoadmoreExample() {

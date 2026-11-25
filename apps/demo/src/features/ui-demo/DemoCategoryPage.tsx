@@ -1,6 +1,6 @@
 import type { UiDemoCategory, UiDemoComponent } from './catalog.js';
 import { componentGroups } from './catalog.js';
-import { Cell, CellGroup } from 'daisu-ui';
+import { Cell, CellGroup } from '@daisu-ui/ui';
 
 export function DemoCategoryPage({ category, onOpen }: { category: UiDemoCategory; onOpen: (page: UiDemoComponent) => void }) {
   const group = componentGroups.find(item => item.id === category)!;

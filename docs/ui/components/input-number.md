@@ -3,7 +3,7 @@
 计数器用于在指定范围内调整数值，支持精度、步长、空值和异步变更校验。
 
 ```tsx
-import { InputNumber } from 'daisu-ui';
+import { InputNumber } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -15,7 +15,7 @@ import { InputNumber } from 'daisu-ui';
 ```tsx
 import { useState } from '@lynx-js/react';
 
-import type { InputNumberValue } from 'daisu-ui';
+import type { InputNumberValue } from '@daisu-ui/ui';
 
 const [value, setValue] = useState<InputNumberValue>(1);
 
@@ -113,7 +113,7 @@ export type TextFieldEvent = {
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

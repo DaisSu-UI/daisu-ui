@@ -1,4 +1,4 @@
-import { Button, Card } from 'daisu-ui';
+import { Button, Card } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 export function CardExample() {

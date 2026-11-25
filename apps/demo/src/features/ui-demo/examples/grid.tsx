@@ -1,4 +1,4 @@
-import { Grid, GridItem } from 'daisu-ui';
+import { Grid, GridItem } from '@daisu-ui/ui';
 import { useAppRouter } from '../../../app/router.js';
 import cat from '../../../assets/demo-cat.png';
 import { DemoGroup, ExampleBlock } from './shared.js';

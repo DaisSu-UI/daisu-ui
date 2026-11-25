@@ -3,7 +3,7 @@
 根节点传送门将弹层内容挂载到页面根部，帮助浮层脱离局部裁剪和变换容器。
 
 ```tsx
-import { RootPortal, RootPortalHost } from 'daisu-ui';
+import { RootPortal, RootPortalHost } from '@daisu-ui/ui';
 ```
 
 ## 基础用法
@@ -30,7 +30,7 @@ import { RootPortal, RootPortalHost } from 'daisu-ui';
 将 `RootPortalHost` 放在 `ConfigProvider` 内，使根节点浮层获得相同主题配置。
 
 ```tsx
-import { ConfigProvider, Button } from 'daisu-ui';
+import { ConfigProvider, Button } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   <RootPortalHost>
@@ -65,7 +65,7 @@ import { ConfigProvider, Button } from 'daisu-ui';
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

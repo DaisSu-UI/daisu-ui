@@ -1,6 +1,6 @@
 import { useRef } from '@lynx-js/react';
-import { Button, Icon, NoticeBar, Toast, useToast, useConfigProvider } from 'daisu-ui';
-import type { NoticeBarClick, NoticeBarRef } from 'daisu-ui';
+import { Button, Icon, NoticeBar, Toast, useToast, useConfigProvider } from '@daisu-ui/ui';
+import type { NoticeBarClick, NoticeBarRef } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 const poems=['芦叶满汀洲','寒沙带浅流','二十年重过南楼','柳下系船犹未稳','能几日','又中秋'];
 const message='这是一条消息提示信息';

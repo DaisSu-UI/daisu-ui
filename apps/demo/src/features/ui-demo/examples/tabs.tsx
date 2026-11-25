@@ -1,6 +1,6 @@
 import { useState } from '@lynx-js/react';
-import { Button, Popup, Tabs, Toast, useToast } from 'daisu-ui';
-import type { StandardTabsProps, TabsItem, TabsLineTheme, TabsValue } from 'daisu-ui';
+import { Button, Popup, Tabs, Toast, useToast } from '@daisu-ui/ui';
+import type { StandardTabsProps, TabsItem, TabsLineTheme, TabsValue } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 function Sample({ count = 4, initial = 0, names, numeric = false, next = false, badge = false, disabledFirst = false, ...props }: Omit<StandardTabsProps, 'items'> & { count?: number; initial?: TabsValue; names?: readonly string[]; numeric?: boolean; next?: boolean; badge?: boolean; disabledFirst?: boolean }) {

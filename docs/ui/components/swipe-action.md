@@ -3,7 +3,7 @@
 滑动操作通过左右滑动展示快捷操作，适合列表中的删除、收藏等操作入口。
 
 ```tsx
-import { SwipeAction } from 'daisu-ui';
+import { SwipeAction } from '@daisu-ui/ui';
 ```
 
 ## 基础用法
@@ -13,7 +13,7 @@ import { SwipeAction } from 'daisu-ui';
 通过 `right` 设置向左滑动后展示的操作区，子节点作为列表内容。
 
 ```tsx
-import { Button, Cell } from 'daisu-ui';
+import { Button, Cell } from '@daisu-ui/ui';
 
 <SwipeAction right={<Button label="删除" tone="danger" />}>
   <Cell title="向左滑动" value="展示操作" />
@@ -88,7 +88,7 @@ export type SwipeActionClickEvent = { value: SwipeActionPosition };
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

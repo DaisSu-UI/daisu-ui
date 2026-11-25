@@ -3,7 +3,7 @@
 悬浮按钮用于放置页面的主要操作。支持展开操作项、自定义触发器、位置和拖动。
 
 ```tsx
-import { Fab } from 'daisu-ui';
+import { Fab } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -28,7 +28,7 @@ import { Fab } from 'daisu-ui';
 设置 `expandable` 支持展开操作项，子节点作为展开后的内容。
 
 ```tsx
-import { Button } from 'daisu-ui';
+import { Button } from '@daisu-ui/ui';
 
 <Fab expandable>
   <Button label="拍照" size="small" />
@@ -126,7 +126,7 @@ export type FabGap = {
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

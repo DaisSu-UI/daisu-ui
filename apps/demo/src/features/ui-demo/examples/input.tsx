@@ -1,6 +1,6 @@
 import { useState } from '@lynx-js/react';
-import { Button, Cell, CellGroup, Icon, Input, Toast, useToast } from 'daisu-ui';
-import type { InputProps } from 'daisu-ui';
+import { Button, Cell, CellGroup, Icon, Input, Toast, useToast } from '@daisu-ui/ui';
+import type { InputProps } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 function Sample({ defaultValue = '', ...props }: InputProps) { const [value, setValue] = useState<string | number>(defaultValue); return <Input {...props} value={value} onChange={setValue} />; }
 export function InputExample() {

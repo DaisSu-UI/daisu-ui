@@ -5,7 +5,7 @@
 ## 设置作用域
 
 ```tsx
-import { Button, ConfigProvider } from 'daisu-ui';
+import { Button, ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider themeVars={{ '--cso-ui-primary': '#1769ff' }}>
   <Button label="确认" />

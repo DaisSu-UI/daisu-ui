@@ -1,6 +1,6 @@
 import { useRef } from '@lynx-js/react';
-import { CountDown, Grid, GridItem, Toast, useToast } from 'daisu-ui';
-import type { CountDownRef } from 'daisu-ui';
+import { CountDown, Grid, GridItem, Toast, useToast } from '@daisu-ui/ui';
+import type { CountDownRef } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 const time=30*60*60*1000;
 export function CountDownExample(){const ref=useRef<CountDownRef>(null),toast=useToast();return <view className="demo-count-down-page">

@@ -1,6 +1,6 @@
 import { useState } from '@lynx-js/react';
-import { Button, Cell, CellGroup, ConfigProvider, Popup, Radio, RadioGroup, Switch, Tag } from 'daisu-ui';
-import type { ConfigButtonDefaults, ConfigTagDefaults } from 'daisu-ui';
+import { Button, Cell, CellGroup, ConfigProvider, Popup, Radio, RadioGroup, Switch, Tag } from '@daisu-ui/ui';
+import type { ConfigButtonDefaults, ConfigTagDefaults } from '@daisu-ui/ui';
 import type { HostClient } from '../../../lib/host.js';
 import { ComplexFormExample } from './form-complex.js';
 import { DemoGroup } from './shared.js';

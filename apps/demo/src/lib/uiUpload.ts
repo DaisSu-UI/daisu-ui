@@ -1,5 +1,5 @@
 import type { HostClient } from './host.js';
-import type { UploadAdapter } from 'daisu-ui';
+import type { UploadAdapter } from '@daisu-ui/ui';
 /** The host owns selection, authorization and upload transport on every platform. */
 export function createHostUploadAdapter(host: HostClient, options: { source?: 'gallery' | 'camera'; maxSizeKB?: number } = {}): UploadAdapter {
   return {

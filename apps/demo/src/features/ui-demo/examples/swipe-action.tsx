@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from '@lynx-js/react';
-import { Button, Cell, SwipeAction, Toast, useToast } from 'daisu-ui';
-import type { SwipeActionBeforeClose, SwipeActionRef, SwipeActionStatus } from 'daisu-ui';
+import { Button, Cell, SwipeAction, Toast, useToast } from '@daisu-ui/ui';
+import type { SwipeActionBeforeClose, SwipeActionRef, SwipeActionStatus } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 export function SwipeActionExample() {

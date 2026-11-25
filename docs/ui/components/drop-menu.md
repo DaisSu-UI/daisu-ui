@@ -3,7 +3,7 @@
 下拉菜单适合筛选和排序，由 DropMenu 容器与多个 DropMenuItem 组成。
 
 ```tsx
-import { DropMenu, DropMenuItem } from 'daisu-ui';
+import { DropMenu, DropMenuItem } from '@daisu-ui/ui';
 ```
 
 ## 基础用法
@@ -128,7 +128,7 @@ export type DropMenuOption = Record<string, unknown>;
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

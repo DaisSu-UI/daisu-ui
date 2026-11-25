@@ -3,7 +3,7 @@
 加载更多用于展示分页列表的加载中、全部加载和失败重试状态。
 
 ```tsx
-import { Loadmore } from 'daisu-ui';
+import { Loadmore } from '@daisu-ui/ui';
 ```
 
 ## 组件状态
@@ -74,7 +74,7 @@ export type LoadmoreState = 'loading' | 'finished' | 'error';
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

@@ -1,7 +1,7 @@
 import { useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
-import { Button, Cell, Dialog, Rate, useDialog } from 'daisu-ui';
-import type { DialogOptions, ButtonTone } from 'daisu-ui';
+import { Button, Cell, Dialog, Rate, useDialog } from '@daisu-ui/ui';
+import type { DialogOptions, ButtonTone } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 import banner from '../../../assets/demo-capybara.jpg';
 

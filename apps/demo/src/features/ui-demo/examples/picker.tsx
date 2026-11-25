@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from '@lynx-js/react';
-import { Cell, CellGroup, Picker, Toast, useToast } from 'daisu-ui';
-import type { PickerValue } from 'daisu-ui';
+import { Cell, CellGroup, Picker, Toast, useToast } from '@daisu-ui/ui';
+import type { PickerValue } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 import { pickerOptions, pickerUniversity, pickerAreas } from './pickerShared.js';
 const longOptions = pickerOptions.map((item, index) => index === 0 ? { value: '选项1'.repeat(13), label: '选项1'.repeat(13) } : item);

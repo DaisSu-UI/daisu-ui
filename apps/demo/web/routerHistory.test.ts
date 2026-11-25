@@ -1,7 +1,7 @@
 import { expect, test } from '@rstest/core';
 import { createAppRouter } from '../src/app/router.js';
-import { connectRouterHistory } from 'daisu-ui/router';
-import type { RouterHistoryState } from 'daisu-ui/router';
+import { connectRouterHistory } from '@daisu-ui/ui/router';
+import type { RouterHistoryState } from '@daisu-ui/ui/router';
 import { createBrowserRouterHistory, readBrowserRoute } from './routerHistory.js';
 
 /** A deterministic browser session: history.go dispatches popstate asynchronously via flush(). */

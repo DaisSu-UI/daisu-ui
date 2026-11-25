@@ -1,6 +1,6 @@
 import { useState } from '@lynx-js/react';
-import { Cell, CellGroup, ConfigProvider, Icon, Notify, useConfigProvider, useNotify } from 'daisu-ui';
-import type { NotifyType } from 'daisu-ui';
+import { Cell, CellGroup, ConfigProvider, Icon, Notify, useConfigProvider, useNotify } from '@daisu-ui/ui';
+import type { NotifyType } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 const types: { type:NotifyType; title:string }[] = [{ type:'primary',title:'主要通知' },{ type:'success',title:'成功通知' },{ type:'danger',title:'危险通知' },{ type:'warning',title:'警告通知' }];
 export function NotifyExample() {

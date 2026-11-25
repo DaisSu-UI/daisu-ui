@@ -1,7 +1,7 @@
 import { useRef, useState } from '@lynx-js/react';
 import type { NodesRef } from '@lynx-js/types';
-import { Button, Icon, Toast, Tour, useToast } from 'daisu-ui';
-import type { TourStep } from 'daisu-ui';
+import { Button, Icon, Toast, Tour, useToast } from '@daisu-ui/ui';
+import type { TourStep } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 const titles = ['第一步', '第二步', '第三步', '第四步'];

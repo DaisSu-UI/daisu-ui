@@ -1,6 +1,6 @@
 import { useRef, useState } from '@lynx-js/react';
-import { Button, Tooltip } from 'daisu-ui';
-import type { BubblePlacement, TooltipRef } from 'daisu-ui';
+import { Button, Tooltip } from '@daisu-ui/ui';
+import type { BubblePlacement, TooltipRef } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 export function TooltipExample() {

@@ -1,7 +1,7 @@
 import { useState } from '@lynx-js/react';
 import type { UiDemoComponent } from './catalog.js';
 import { componentGroups } from './catalog.js';
-import { Cell, Collapse } from 'daisu-ui';
+import { Cell, Collapse } from '@daisu-ui/ui';
 import { DemoIcon } from './DemoIcon.js';
 import { DemoNavbar } from './DemoNavbar.js';
 

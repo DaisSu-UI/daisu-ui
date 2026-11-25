@@ -3,7 +3,7 @@
 栅格布局将一行划分为 24 份，通过 Row 与 Col 组合控制宽度、间隔、偏移和对齐。
 
 ```tsx
-import { Row, Col } from 'daisu-ui';
+import { Row, Col } from '@daisu-ui/ui';
 ```
 
 ## 布局能力
@@ -86,7 +86,7 @@ import { Row, Col } from 'daisu-ui';
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

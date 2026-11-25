@@ -1,6 +1,6 @@
 import { useInitData, useRef, useState } from '@lynx-js/react';
-import { Button, VideoPreview, useVideoPreview } from 'daisu-ui';
-import type { VideoPreviewRef } from 'daisu-ui';
+import { Button, VideoPreview, useVideoPreview } from '@daisu-ui/ui';
+import type { VideoPreviewRef } from '@daisu-ui/ui';
 import poster from '../../../assets/demo-cat.png';
 import { DemoGroup, ExampleBlock } from './shared.js';
 import url from '../../../assets/demo-journey.mp4';

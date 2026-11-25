@@ -1,6 +1,6 @@
 import { useState } from '@lynx-js/react';
-import { Cell, Dialog, Switch, useDialog } from 'daisu-ui';
-import type { SwitchValue } from 'daisu-ui';
+import { Cell, Dialog, Switch, useDialog } from '@daisu-ui/ui';
+import type { SwitchValue } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 export function SwitchExample() {

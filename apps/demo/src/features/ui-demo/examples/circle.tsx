@@ -1,5 +1,5 @@
 import { useState } from '@lynx-js/react';
-import { Button, Circle, Dialog, useDialog } from 'daisu-ui';
+import { Button, Circle, Dialog, useDialog } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 const gradient = { '0': '#f14646', '100': '#ffffff' };
 export function CircleExample() {

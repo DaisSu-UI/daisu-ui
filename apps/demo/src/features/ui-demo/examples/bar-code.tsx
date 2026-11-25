@@ -1,6 +1,6 @@
 import { useRef, useState } from '@lynx-js/react';
-import { BarCode, Button, Icon } from 'daisu-ui';
-import type { BarCodeFormat, BarCodeProps, BarCodeRef } from 'daisu-ui';
+import { BarCode, Button, Icon } from '@daisu-ui/ui';
+import type { BarCodeFormat, BarCodeProps, BarCodeRef } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 const formats: {label: BarCodeFormat; value: string}[] = [
  {label:'CODE128',value:'CODE128'},{label:'CODE128A',value:'CODE128A'},{label:'CODE128B',value:'CODE128B'},{label:'CODE128C',value:'123456'},

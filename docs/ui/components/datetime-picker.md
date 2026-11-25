@@ -3,7 +3,7 @@
 日期时间选择器以弹层方式选择日期和时间，支持范围限制、自定义文案和确认校验。
 
 ```tsx
-import { DatetimePicker } from 'daisu-ui';
+import { DatetimePicker } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -15,7 +15,7 @@ import { DatetimePicker } from 'daisu-ui';
 ```tsx
 import { useState } from '@lynx-js/react';
 
-import { Button } from 'daisu-ui';
+import { Button } from '@daisu-ui/ui';
 
 const [visible, setVisible] = useState(false);
 
@@ -147,7 +147,7 @@ export type DatetimePickerValue = number | string;
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

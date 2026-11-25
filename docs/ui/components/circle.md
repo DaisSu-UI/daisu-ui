@@ -3,7 +3,7 @@
 环形进度条用于展示完成比例，支持颜色、线宽、动画和自定义中间内容。
 
 ```tsx
-import { Circle } from 'daisu-ui';
+import { Circle } from '@daisu-ui/ui';
 ```
 
 ## 基础用法
@@ -63,7 +63,7 @@ export type CircleColor = string | Readonly<Record<string, string>>;
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

@@ -1,4 +1,4 @@
-import { Button, Card, Dialog, Icon, Toast, useDialog, useToast } from 'daisu-ui';
+import { Button, Card, Dialog, Icon, Toast, useDialog, useToast } from '@daisu-ui/ui';
 import type { ReactNode } from '@lynx-js/react';
 import cat from '../../../assets/demo-cat.png';
 import { DemoGroup, ExampleBlock } from './shared.js';

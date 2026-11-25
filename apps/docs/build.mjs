@@ -41,7 +41,7 @@ for (const group of docsGroups) {
       catch (error) { if (error.code !== 'ENOENT') throw error; }
     }
     if (!content) throw new Error(`Missing component documentation: ${item.id}`);
-    content = content.replaceAll("from '@/ui'", "from 'daisu-ui'").replaceAll('from "@/ui"', 'from "daisu-ui"');
+    content = content.replaceAll("from '@/ui'", "from '@daisu-ui/ui'").replaceAll('from "@/ui"', 'from "@daisu-ui/ui"');
     pages[item.id] = markdown.render(content);
   }
 }

@@ -1,6 +1,6 @@
 import { useRef, useState } from '@lynx-js/react';
-import { Button, Popover, RadioGroup, Toast, useToast } from 'daisu-ui';
-import type { BubblePlacement, PopoverMenuItem, PopoverRef } from 'daisu-ui';
+import { Button, Popover, RadioGroup, Toast, useToast } from '@daisu-ui/ui';
+import type { BubblePlacement, PopoverMenuItem, PopoverRef } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 const placements: BubblePlacement[] = ['bottom', 'bottom-start', 'bottom-end', 'top', 'top-start', 'top-end', 'left', 'left-start', 'left-end', 'right', 'right-start', 'right-end'];

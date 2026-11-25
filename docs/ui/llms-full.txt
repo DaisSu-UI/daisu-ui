@@ -1,6 +1,6 @@
 # CSO Lynx UI Full Guide
 
-`daisu-ui` 是本仓库 workspace 内的独立 npm UI 包，基于 `@lynx-js/react` 与 `@lynx-js/lynx-ui`。
+`@daisu-ui/ui` 是本仓库 workspace 内的独立 npm UI 包，基于 `@lynx-js/react` 与 `@lynx-js/lynx-ui`。
 
 ## Public API
 
@@ -63,7 +63,7 @@
 
 运行 `npm run h5:dev` 后访问 `?demo=ui` 打开首页，点击圆角分组标题展开组件列表，允许同时展开多个分类；展开/收起采用 300ms ease-in-out 高度过渡，不添加内容淡入或上移动画。点击条目进入独立示例页，返回时保留首页展开状态。使用 `?demo=ui&component=button`、`collapse`、`cell`、`input`、`tag` 等参数可直达组件示例，详情页返回首页。Flutter 可传入 `page: 'ui-demo/button'` 作为初始页面。
 
-示例页使用 44px 居中导航栏和 `DemoGroup` / `ExampleBlock` 分组，以实际控件展示各项能力；Button 示例覆盖类型、状态、变体、尺寸、图标与块级布局。Cell 展示页面使用灰色分组背景；Slider 展示默认、管道、刻度与纵向布局。示例样式位于 `apps/demo/src/features/ui-demo/styles.css`，颜色与尺寸由 Daisu UI 组件设计定义。公共组件入口自动加载 `daisu-ui/styles.css`，应用无需手动导入（内部引入 `button.css`、`cell.css` 和 `slider.css`），示例页蓝色主题仅作用于 `.ui-demo-page`。
+示例页使用 44px 居中导航栏和 `DemoGroup` / `ExampleBlock` 分组，以实际控件展示各项能力；Button 示例覆盖类型、状态、变体、尺寸、图标与块级布局。Cell 展示页面使用灰色分组背景；Slider 展示默认、管道、刻度与纵向布局。示例样式位于 `apps/demo/src/features/ui-demo/styles.css`，颜色与尺寸由 Daisu UI 组件设计定义。公共组件入口自动加载 `@daisu-ui/ui/styles.css`，应用无需手动导入（内部引入 `button.css`、`cell.css` 和 `slider.css`），示例页蓝色主题仅作用于 `.ui-demo-page`。
 
 ## ReactLynx rules
 
@@ -123,7 +123,7 @@ Input/Textarea共用TextField的受控回退保证：即使编辑草稿未变，
 
 # Radio / RadioGroup 单选
 
-从 `daisu-ui` 导入同名公共组件和对应TypeScript类型。
+从 `@daisu-ui/ui` 导入同名公共组件和对应TypeScript类型。
 
 ## 实际API
 
@@ -138,7 +138,7 @@ Radio.value 为 string/number/boolean，严格匹配；RadioGroup支持value/def
 
 # Checkbox / CheckboxGroup 复选框
 
-从 `daisu-ui` 导入同名公共组件和对应TypeScript类型。
+从 `@daisu-ui/ui` 导入同名公共组件和对应TypeScript类型。
 
 ## 实际API
 
@@ -153,7 +153,7 @@ Checkbox支持name（分组标识）、value/defaultValue、trueValue/falseValue
 
 # SelectPicker 单复选选择器
 
-从 `daisu-ui` 导入 `SelectPicker`、`SelectPickerRef`、`SelectPickerValue`。示例 `/ui-demo/select-picker` 提供十例：多选、单选、禁用、loading、标题、多选搜索、单选搜索、change、beforeConfirm、自动完成；RootPortal 组合示例也复用此公共组件。
+从 `@daisu-ui/ui` 导入 `SelectPicker`、`SelectPickerRef`、`SelectPickerValue`。示例 `/ui-demo/select-picker` 提供十例：多选、单选、禁用、loading、标题、多选搜索、单选搜索、change、beforeConfirm、自动完成；RootPortal 组合示例也复用此公共组件。
 
 ```tsx
 const [value, setValue] = useState<(string | number | boolean)[]>(['101']);
@@ -334,7 +334,7 @@ const [value, setValue] = useState<CascaderValue>('');
 
 # Upload 图片上传
 
-从 `daisu-ui` 导入 `Upload`、`UploadFile`、`UploadProps`、`UploadAdapter`。独立详情：`/ui-demo/upload`。
+从 `@daisu-ui/ui` 导入 `Upload`、`UploadFile`、`UploadProps`、`UploadAdapter`。独立详情：`/ui-demo/upload`。
 
 ## 用法
 
@@ -388,7 +388,7 @@ UploadFile 为 `{ url, name?, path?, status?: 'success' | 'loading' | 'fail', me
 
 # SlideVerify 滑动验证
 
-从 `daisu-ui` 导入 `SlideVerify`、`SlideVerifyProps`、`SlideVerifyRef`。
+从 `@daisu-ui/ui` 导入 `SlideVerify`、`SlideVerifyProps`、`SlideVerifyRef`。
 
 ## API
 
@@ -418,7 +418,7 @@ const verify = useRef<SlideVerifyRef>(null);
 
 # Form / FormItem 表单
 
-从 `daisu-ui` 导入 `Form`、`FormItem`、`zodAdapter` 和 `FormRef`。以当前官网 schema 版为参考，不提供旧版 `rules` API。
+从 `@daisu-ui/ui` 导入 `Form`、`FormItem`、`zodAdapter` 和 `FormRef`。以当前官网 schema 版为参考，不提供旧版 `rules` API。
 
 ## 校验与数据
 
@@ -464,7 +464,7 @@ const schema: FormSchema = {
 
 # Keyboard 虚拟键盘
 
-从 `daisu-ui` 导入 `Keyboard`、`KeyboardProps`、`KeyboardMode`、`CarKeyboardLang`，样式由组件入口自动加载。
+从 `@daisu-ui/ui` 导入 `Keyboard`、`KeyboardProps`、`KeyboardMode`、`CarKeyboardLang`，样式由组件入口自动加载。
 
 ## 实际 API
 
@@ -508,7 +508,7 @@ const [value, setValue] = useState('');
 
 # PasswordInput 密码输入框
 
-从 `daisu-ui` 导入 `PasswordInput`、`PasswordInputProps`。此组件只展示网格、数值、光标和提示；录入由公共 `Keyboard` 处理。
+从 `@daisu-ui/ui` 导入 `PasswordInput`、`PasswordInputProps`。此组件只展示网格、数值、光标和提示；录入由公共 `Keyboard` 处理。
 
 ## 实际 API
 
@@ -547,7 +547,7 @@ focused 默认为 true，调用方可显式控制焦点状态。
 
 # ConfigProvider 全局配置
 
-从 `daisu-ui` 导入 ConfigProvider、useConfigProvider 及同名 TypeScript 类型。App 根节点已绑定 Flutter 的主题状态，原有业务主题颜色及组件内置默认值保持不变。
+从 `@daisu-ui/ui` 导入 ConfigProvider、useConfigProvider 及同名 TypeScript 类型。App 根节点已绑定 Flutter 的主题状态，原有业务主题颜色及组件内置默认值保持不变。
 
 ## 实际 API
 
@@ -589,7 +589,7 @@ RootPortal 将显式配置 Token 和 React 配置一起带到目标节点；Popu
 
 # PickerView 选择器视图
 
-从 `daisu-ui` 导入 `PickerView`、`PickerViewRef`、`PickerChange`。独立示例：`/ui-demo/picker-view`，包含基本用法、禁用选项、立即触发、多列、多级联动、自定义字段六例。
+从 `@daisu-ui/ui` 导入 `PickerView`、`PickerViewRef`、`PickerChange`。独立示例：`/ui-demo/picker-view`，包含基本用法、禁用选项、立即触发、多列、多级联动、自定义字段六例。
 
 ```tsx
 const [value, setValue] = useState<(string | number)[]>(['中南大学', '软件工程']);
@@ -613,7 +613,7 @@ Ref 提供 `getSelected()`、`getSelectedOptions()`、`getSelectedValues()`、`g
 
 # Picker 选择器
 
-从 `daisu-ui` 导入 `Picker`、`PickerRef`、`PickerProps`。独立示例 `/ui-demo/picker` 提供单列、多列、多级联动、文案标题、大小、值靠右、分隔符、确认前异步校验八例。
+从 `@daisu-ui/ui` 导入 `Picker`、`PickerRef`、`PickerProps`。独立示例 `/ui-demo/picker` 提供单列、多列、多级联动、文案标题、大小、值靠右、分隔符、确认前异步校验八例。
 
 ```tsx
 const [value, setValue] = useState<(string | number)[]>([]);
@@ -640,7 +640,7 @@ Picker 组合公共 Popup 与 PickerView，不内置触发 Cell。`value` 为严
 
 # CalendarView 日历面板
 
-从 `daisu-ui` 导入 `CalendarView`、`CalendarViewProps`、`CalendarViewRef`、`CalendarValue`、`CalendarType`、`CalendarDayItem`、`CalendarDayType`、`CalendarSwitchMode`。
+从 `@daisu-ui/ui` 导入 `CalendarView`、`CalendarViewProps`、`CalendarViewRef`、`CalendarValue`、`CalendarType`、`CalendarDayItem`、`CalendarDayType`、`CalendarSwitchMode`。
 
 ## API
 
@@ -673,7 +673,7 @@ const [value, setValue] = useState<CalendarValue>([null, null]);
 
 # Progress 进度条
 
-从 `daisu-ui` 导入 `Progress`、`ProgressProps`、`ProgressColor`、`ProgressColorStop`、`PercentPosition`。独立详情：`/ui-demo/progress`。
+从 `@daisu-ui/ui` 导入 `Progress`、`ProgressProps`、`ProgressColor`、`ProgressColorStop`、`PercentPosition`。独立详情：`/ui-demo/progress`。
 
 ```tsx
 <Progress percentage={50} />
@@ -706,7 +706,7 @@ Vue hide-text / percent-position 映射为 hideText / percentPosition，custom-c
 
 # Circle 环形进度条
 
-从 `daisu-ui` 导入 `Circle`、`CircleProps`、`CircleColor`。独立详情：`/ui-demo/circle`。
+从 `@daisu-ui/ui` 导入 `Circle`、`CircleProps`、`CircleColor`。独立详情：`/ui-demo/circle`。
 
 ```tsx
 <Circle value={20} text="20%" />
@@ -744,7 +744,7 @@ Vue hide-text / percent-position 映射为 hideText / percentPosition，custom-c
 
 # Notify 消息通知
 
-从 `daisu-ui` 导入 `Notify`、`useNotify` 和对应类型。独立详情：`/ui-demo/notify`。
+从 `@daisu-ui/ui` 导入 `Notify`、`useNotify` 和对应类型。独立详情：`/ui-demo/notify`。
 
 ```tsx
 function Page() {
@@ -809,7 +809,7 @@ CSS 兼容资料已按 iOS 4.0 / Android 4.1 核对 box-shadow 基础支持；�
 
 # Signature 签名
 
-从 `daisu-ui` 导入 `Signature`、`SignatureRef`、`SignatureFooter`、`SignatureResult`、`SignatureStroke` 和 `SignaturePoint`。独立详情 `/ui-demo/signature`，横屏布局子页 `/ui-demo/signature-landscape`。
+从 `@daisu-ui/ui` 导入 `Signature`、`SignatureRef`、`SignatureFooter`、`SignatureResult`、`SignatureStroke` 和 `SignaturePoint`。独立详情 `/ui-demo/signature`，横屏布局子页 `/ui-demo/signature-landscape`。
 
 ```tsx
 const signature = useRef<SignatureRef>(null);
@@ -861,7 +861,7 @@ Footer额外包含 `currentStep`（当前笔画数）、`historyList`（当前�
 
 # Grid / GridItem 宫格
 
-从 `daisu-ui` 导入 `Grid`、`GridItem`、`GridProps`、`GridItemProps`、`GridNavigation`。独立详情 `/ui-demo/grid`。
+从 `@daisu-ui/ui` 导入 `Grid`、`GridItem`、`GridProps`、`GridItemProps`、`GridNavigation`。独立详情 `/ui-demo/grid`。
 
 ```tsx
 <Grid column={3} border clickable onNavigate={(url, { replace }) => navigate(url, replace)}>
@@ -887,7 +887,7 @@ GridItem参数：`text:ReactNode`、`icon`、`iconColor`、`iconSize`（覆盖�
 
 # CountDown 倒计时 / useCountDown
 
-从 `daisu-ui` 导入 `CountDown`、`CountDownRef`、`CountDownProps`、`TimeData`、`useCountDown`、`UseCountDownOptions`。独立详情 `/ui-demo/count-down`。
+从 `@daisu-ui/ui` 导入 `CountDown`、`CountDownRef`、`CountDownProps`、`TimeData`、`useCountDown`、`UseCountDownOptions`。独立详情 `/ui-demo/count-down`。
 
 ```tsx
 <CountDown time={30 * 60 * 60 * 1000} format="DD 天 HH 时 mm 分 ss 秒" />
@@ -907,7 +907,7 @@ Ref：`start()` 继续当前剩余时间，运行中重复调用不重置；`pau
 
 # CountTo 数字滚动
 
-从 `daisu-ui` 导入 `CountTo`、`CountToRef`、`CountToProps`。独立详情 `/ui-demo/count-to`。
+从 `@daisu-ui/ui` 导入 `CountTo`、`CountToRef`、`CountToProps`。独立详情 `/ui-demo/count-to`。
 
 ```tsx
 <CountTo endVal={21286.321} decimals={2} prefix="￥" suffix="%" />
@@ -946,7 +946,7 @@ Ref提供 `start()`、`pause()`、`reset()`；重复start不建立多个定时�
 独立示例：`/ui-demo/img`。基本图片、默认/自定义加载与失败、14种模式的普通/圆形/圆角，以及两种宿主预览，共49张图片展示。示例使用本地图片；加载中通过空src保留占位，错误通过无效位图触发原生失败，避免依赖官网无效域名的网络时序。
 
 ```tsx
-import { Img } from 'daisu-ui';
+import { Img } from '@daisu-ui/ui';
 <Img src={cover} width={100} height={100} mode="aspectFill" round />
 <Img src={cover} width="100%" mode="widthFix" enablePreview
   onPreview={async url => {
@@ -984,7 +984,7 @@ Vue插槽映射ReactNode，custom-image映射customImage。没有强行移植uni
 独立示例：`/ui-demo/empty`，11例。缺省内容使用内置图标，或通过 image 显式提供自定义内容。
 
 ```tsx
-import { Empty, Button } from 'daisu-ui';
+import { Empty, Button } from '@daisu-ui/ui';
 <Empty icon="no-result" tip="当前搜索无结果" />
 <Empty icon={cover} iconSize={140} tip="查看头像" />
 <Empty icon="no-content" tip="暂无内容"
@@ -1016,8 +1016,8 @@ import { Empty, Button } from 'daisu-ui';
 独立示例：`/ui-demo/notice-bar`，12条通知。展示组件的类型、关闭、静止省略、插槽、多行、自定义颜色、水平多文本、垂直轮播及重置。
 
 ```tsx
-import { NoticeBar } from 'daisu-ui';
-import type { NoticeBarRef } from 'daisu-ui';
+import { NoticeBar } from '@daisu-ui/ui';
+import type { NoticeBarRef } from '@daisu-ui/ui';
 const ref = useRef<NoticeBarRef>(null);
 <NoticeBar ref={ref} text={['消息一', '消息二']} prefix="sound"
   direction="vertical" delay={3} onClick={({index,text}) => openMessage(index)} />
@@ -1375,7 +1375,7 @@ Ref：`getSvg():string` 获取包含字体和文字的标准 SVG；`exportImage(
 
 # QrCode 二维码
 
-从 `daisu-ui` 导入 `QrCode`、`QrCodeProps`、`QrCodeRef`。独立示例 `/ui-demo/qr-code`。
+从 `@daisu-ui/ui` 导入 `QrCode`、`QrCodeProps`、`QrCodeRef`。独立示例 `/ui-demo/qr-code`。
 
 ```tsx
 const qr = useRef<QrCodeRef>(null);
@@ -1398,7 +1398,7 @@ Ref 的 getSvg() 返回SVG源码并保留外部图片引用。exportMode默认sv
 # RichText 富文本
 
 ```tsx
-import { RichText } from 'daisu-ui';
+import { RichText } from '@daisu-ui/ui';
 <RichText content='<h2>周末出走</h2><p>走慢一点，<strong>看看远处。</strong></p>' />
 ```
 
@@ -1428,7 +1428,7 @@ Ref：getText() 返回过滤后的纯文本；getHeadings() 返回 `{id,level,te
 
 过滤 script/style/iframe/object/embed/SVG/MathML/未支持的媒体嵌入、事件属性及危险地址。只保留基础字体、颜色、尺寸、边框、间距样式，忽略外部 CSS、定位、Flex/Grid、CSS url()/expression()。限制 200000 字符、10000 节点、128 层、2000000 输出字符；表格额外限制 100 列/10000 布局格，防止合并参数扩张内存。超限触发明确 code 并展示 children，不静默截断文章。
 
-浏览器音视频接入：在浏览器宿主入口（非 Lynx Bundle）中调用 `import {registerRichTextMedia} from 'daisu-ui/web'; registerRichTextMedia();`，然后向 RichText 传 `mediaMode="browser"`。默认 `mediaMode="none"`，原生 Flutter 继续过滤 audio/video，不创建未注册元素。
+浏览器音视频接入：在浏览器宿主入口（非 Lynx Bundle）中调用 `import {registerRichTextMedia} from '@daisu-ui/ui/web'; registerRichTextMedia();`，然后向 RichText 传 `mediaMode="browser"`。默认 `mediaMode="none"`，原生 Flutter 继续过滤 audio/video，不创建未注册元素。
 
 浏览器模式支持 video/audio 的 src、title、poster、loop、muted，以及最多 16 个去重后的直接子级 source 资源回退；只接受 HTTP(S) 或相对地址，忽略 autoplay。视频使用 HTML5 控件（含浏览器支持的全屏），音频使用播放/暂停条。链接/媒体使用原生 DOM 媒体 API，DOM 代码仅在独立 web 入口中加载。
 
@@ -1449,7 +1449,7 @@ Demo 排版核对：状态区使用三个 small 实心按钮，正文不增加�
 浏览器宿主入口先注册：
 
 ```ts
-import { registerDaisuWebComponents } from 'daisu-ui/web';
+import { registerDaisuWebComponents } from '@daisu-ui/ui/web';
 registerDaisuWebComponents(); // 挂载 lynx-view 之前执行，不能放入 Lynx Bundle
 ```
 
@@ -1483,7 +1483,7 @@ Ref：`open(VideoPreviewOptions):boolean`、`close()`；open按当前调用替�
 
 # ImgCropper 图片裁剪
 
-浏览器版本，位于 `packages/daisu-ui/src/ImgCropper.tsx`，独立详情 `/ui-demo/img-cropper`。浏览器宿主先调用 `import {registerDaisuWebComponents} from 'daisu-ui/web'; registerDaisuWebComponents();`，再挂载lynx-view。DOM、选图和Canvas仅在该浏览器入口加载。
+浏览器版本，位于 `packages/daisu-ui/src/ImgCropper.tsx`，独立详情 `/ui-demo/img-cropper`。浏览器宿主先调用 `import {registerDaisuWebComponents} from '@daisu-ui/ui/web'; registerDaisuWebComponents();`，再挂载lynx-view。DOM、选图和Canvas仅在该浏览器入口加载。
 
 ```tsx
 const [show, setShow] = useState(false);

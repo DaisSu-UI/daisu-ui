@@ -3,7 +3,7 @@
 上传组件管理文件列表、上传进度、预览与删除。选取和上传过程由应用提供的适配器完成。
 
 ```tsx
-import { Upload } from 'daisu-ui';
+import { Upload } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -104,7 +104,7 @@ export type UploadAdapter = {
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

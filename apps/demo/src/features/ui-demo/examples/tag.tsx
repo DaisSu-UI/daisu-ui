@@ -1,6 +1,6 @@
 import { useState } from '@lynx-js/react';
-import { Icon, Tag } from 'daisu-ui';
-import type { TagProps, TagType } from 'daisu-ui';
+import { Icon, Tag } from '@daisu-ui/ui';
+import type { TagProps, TagType } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 const types: readonly TagType[] = ['default', 'primary', 'danger', 'warning', 'success'];

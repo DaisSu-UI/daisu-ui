@@ -17,7 +17,7 @@
 组件文档包含用法、属性、事件、内容插槽和主题说明。生成代码前先核对参数类型与回调签名。
 
 ```tsx
-import { Button, Input, Form, FormItem } from 'daisu-ui';
+import { Button, Input, Form, FormItem } from '@daisu-ui/ui';
 ```
 
 ## 组合页面

@@ -1,4 +1,4 @@
-import { SortButton } from 'daisu-ui';
+import { SortButton } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 export function SortButtonExample() {

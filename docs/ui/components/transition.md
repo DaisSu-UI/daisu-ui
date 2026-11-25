@@ -3,7 +3,7 @@
 动画组件通过 show 控制内容的进入与离开，支持淡入、缩放、滑动和自定义过渡类名。
 
 ```tsx
-import { Transition } from 'daisu-ui';
+import { Transition } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -15,7 +15,7 @@ import { Transition } from 'daisu-ui';
 ```tsx
 import { useState } from '@lynx-js/react';
 
-import { Button } from 'daisu-ui';
+import { Button } from '@daisu-ui/ui';
 
 const [show, setShow] = useState(true);
 
@@ -122,7 +122,7 @@ export type TransitionName =
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

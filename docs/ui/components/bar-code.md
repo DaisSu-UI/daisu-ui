@@ -3,7 +3,7 @@
 条形码用于展示可扫描的商品或业务编码，支持不同编码格式及文字展示。
 
 ```tsx
-import { BarCode } from 'daisu-ui';
+import { BarCode } from '@daisu-ui/ui';
 ```
 
 ## 基础用法
@@ -79,7 +79,7 @@ export type BarCodeFormat = (typeof barCodeFormats)[number];
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

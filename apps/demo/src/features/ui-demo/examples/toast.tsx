@@ -1,6 +1,6 @@
 import { useEffect, useRef } from '@lynx-js/react';
-import { Button, Toast, useToast } from 'daisu-ui';
-import type { ToastLoadingType } from 'daisu-ui';
+import { Button, Toast, useToast } from '@daisu-ui/ui';
+import type { ToastLoadingType } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 import customIcon from '../../../assets/demo-recycle.svg';
 

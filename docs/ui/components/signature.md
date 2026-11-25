@@ -3,7 +3,7 @@
 签名组件记录手写笔迹，支持清空、撤销、确认和自定义画笔样式。
 
 ```tsx
-import { Signature } from 'daisu-ui';
+import { Signature } from '@daisu-ui/ui';
 ```
 
 ## 基础用法
@@ -108,7 +108,7 @@ export type SignatureResult = {
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

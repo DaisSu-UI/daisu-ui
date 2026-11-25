@@ -1,4 +1,4 @@
-import { Cell, CellGroup } from 'daisu-ui';
+import { Cell, CellGroup } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 export function AiGuideExample() {

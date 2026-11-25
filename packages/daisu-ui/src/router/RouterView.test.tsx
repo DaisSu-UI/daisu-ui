@@ -1,7 +1,7 @@
 import {expect,test} from '@rstest/core';
 import {act,cleanup,render} from '@lynx-js/react/testing-library';
 import {createRootRoute,createRoute} from '@tanstack/react-router';
-import {createRouter,RouterView,useRouteMatch} from 'daisu-ui/router';
+import {createRouter,RouterView,useRouteMatch} from '@daisu-ui/ui/router';
 test('registered TanStack components receive scene-specific loader data while covered', async () => {
   function Item() {
     const match = useRouteMatch();

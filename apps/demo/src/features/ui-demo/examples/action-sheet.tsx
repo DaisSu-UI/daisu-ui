@@ -1,6 +1,6 @@
 import { useState } from '@lynx-js/react';
-import { ActionSheet, Button } from 'daisu-ui';
-import type { ActionSheetAction, ActionSheetPanel, ActionSheetSelection } from 'daisu-ui';
+import { ActionSheet, Button } from '@daisu-ui/ui';
+import type { ActionSheetAction, ActionSheetPanel, ActionSheetSelection } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 const actions: ActionSheetAction[] = [{ name: '选项1' }, { name: '选项2' }, { name: '选项3', description: '描述信息' }];

@@ -1,6 +1,6 @@
 import { useRef } from '@lynx-js/react';
-import { CountTo, Grid, GridItem } from 'daisu-ui';
-import type { CountToRef } from 'daisu-ui';
+import { CountTo, Grid, GridItem } from '@daisu-ui/ui';
+import type { CountToRef } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 export function CountToExample(){const ref=useRef<CountToRef>(null);return <view className="demo-count-to-page">
   <DemoGroup title="组件类型"><ExampleBlock title="基本用法"><CountTo endVal={2024} suffix="年" color="var(--cso-ui-success)"/><CountTo prefix="￥" decimals={2} endVal={186.321} suffix="%" color="var(--cso-ui-primary)"/><CountTo prefix="￥" decimals={2} endVal={21286.321} suffix="%" color="var(--cso-ui-danger)"/><CountTo prefix="￥" decimals={2} endVal={21286.321} suffix="%" color="var(--cso-ui-warning)" duration={2000}/></ExampleBlock></DemoGroup>

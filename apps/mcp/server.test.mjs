@@ -15,7 +15,7 @@ const call = (name, args = {}) => client.callTool({ name, arguments: args });
 const resultText = result => result.content.map(item => item.text).join('\n');
 
 test('stdio initialization and tools discovery work outside the repository cwd', async () => {
-  assert.equal(client.getServerVersion().name, 'daisu-ui');
+  assert.equal(client.getServerVersion().name, '@daisu-ui/ui');
   const { tools } = await client.listTools();
   assert.deepEqual(tools.map(tool => tool.name), ['list_components', 'get_component', 'get_demo', 'search_docs', 'get_changelog']);
   const components = JSON.parse(resultText(await call('list_components', { query: 'Button' })));

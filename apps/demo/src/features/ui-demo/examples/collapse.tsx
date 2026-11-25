@@ -1,5 +1,5 @@
 import { useState } from '@lynx-js/react';
-import { Collapse, CollapseViewMore } from 'daisu-ui';
+import { Collapse, CollapseViewMore } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 const text = '这是一条简单的示例文字。';

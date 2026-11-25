@@ -3,7 +3,7 @@
 消息通知用于展示页面级状态，支持成功、警告、失败以及不同位置和外观。
 
 ```tsx
-import { Notify } from 'daisu-ui';
+import { Notify } from '@daisu-ui/ui';
 ```
 
 ## 基础用法
@@ -13,7 +13,7 @@ import { Notify } from 'daisu-ui';
 将 `useNotify()` 返回的 `props` 绑定到 `Notify`，通过 `showNotify()` 显示通知。
 
 ```tsx
-import { useNotify, Button } from 'daisu-ui';
+import { useNotify, Button } from '@daisu-ui/ui';
 
 const notify = useNotify();
 
@@ -122,7 +122,7 @@ export type NotifyOptions = {
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

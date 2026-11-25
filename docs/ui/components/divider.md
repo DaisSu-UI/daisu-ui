@@ -3,7 +3,7 @@
 分割线用于分隔内容区域，支持水平、垂直、虚线以及带文字或图标的分隔形式。
 
 ```tsx
-import { Divider } from 'daisu-ui';
+import { Divider } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -78,7 +78,7 @@ export type DividerAlign = 'left' | 'center' | 'right';
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

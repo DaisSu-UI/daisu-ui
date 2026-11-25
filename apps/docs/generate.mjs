@@ -30,8 +30,8 @@ const program = ts.createProgram(roots, parsed.options);
 const checker = program.getTypeChecker();
 const exports = new Map();
 for (const [entry, from] of [
-  ["src/index.ts", "daisu-ui"],
-  ["src/router/index.ts", "daisu-ui/router"],
+  ["src/index.ts", "@daisu-ui/ui"],
+  ["src/router/index.ts", "@daisu-ui/ui/router"],
 ]) {
   const module = program.getSourceFile(resolve(uiRoot, entry));
   for (let symbol of checker.getExportsOfModule(
@@ -604,7 +604,7 @@ for (const item of catalog) {
       "\x60\x60\x60\n";
   }
   content +=
-    "\n## 主题定制\n\n页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。\n\n```tsx\nimport { ConfigProvider } from 'daisu-ui';\n\n<ConfigProvider theme=\"dark\">\n  {/* 页面内容 */}\n</ConfigProvider>\n```\n";
+    "\n## 主题定制\n\n页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。\n\n```tsx\nimport { ConfigProvider } from '@daisu-ui/ui';\n\n<ConfigProvider theme=\"dark\">\n  {/* 页面内容 */}\n</ConfigProvider>\n```\n";
   const variables = new Set();
   for (const source of componentSources) {
     const cssName = basename(source.path, ".tsx").replace(

@@ -1,7 +1,7 @@
 import { useRef, useState } from '@lynx-js/react';
 import { z } from 'zod';
-import { Button, Cell, Form, FormItem, Input, Switch, Toast, useToast, zodAdapter } from 'daisu-ui';
-import type { FormRef, FormSchema } from 'daisu-ui';
+import { Button, Cell, Form, FormItem, Input, Switch, Toast, useToast, zodAdapter } from '@daisu-ui/ui';
+import type { FormRef, FormSchema } from '@daisu-ui/ui';
 
 type DynamicModel = { name: string; phoneNumbers: { key: number; value: string }[] };
 const required = (path: string) => path === 'name' || /^phoneNumbers\.\d+\.value$/.test(path);

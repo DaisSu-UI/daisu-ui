@@ -3,7 +3,7 @@
 图标用于表示操作、状态和导航。支持305个内置 SVG 图标名称、图片地址、自定义颜色与尺寸，内置图形基于 Tabler Icons 3.53.0（MIT）。
 
 ```tsx
-import { Icon } from 'daisu-ui';
+import { Icon } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -72,7 +72,7 @@ export type IconName = keyof typeof iconPaths;
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

@@ -1,8 +1,8 @@
 import { useEffect, useState } from '@lynx-js/react';
-import { Icon, SyncedInput } from 'daisu-ui';
+import { Icon, SyncedInput } from '@daisu-ui/ui';
 import { iconCategories } from './iconCatalog.js';
-import { usePressState } from 'daisu-ui/utils';
-import type { IconName } from 'daisu-ui';
+import { usePressState } from '@daisu-ui/ui/utils';
+import type { IconName } from '@daisu-ui/ui';
 
 function IconTile({ name, onSelect }: { name: IconName; onSelect: (name: string) => void }) {
   const press = usePressState(true);

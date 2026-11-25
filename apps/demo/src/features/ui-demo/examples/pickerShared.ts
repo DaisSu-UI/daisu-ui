@@ -1,4 +1,4 @@
-import type { PickerOption } from 'daisu-ui';
+import type { PickerOption } from '@daisu-ui/ui';
 export const pickerOptions = Array.from({ length: 7 }, (_, i) => ({ value: `选项${i + 1}`, label: `选项${i + 1}` }));
 export const pickerDisabledOptions = pickerOptions.map((item, i) => ({ ...item, disabled: i === 2 }));
 export const pickerUniversity = [

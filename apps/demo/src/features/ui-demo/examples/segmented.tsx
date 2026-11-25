@@ -1,6 +1,6 @@
 import { useState } from '@lynx-js/react';
-import { Button, Icon, RootPortal, Segmented, Transition } from 'daisu-ui';
-import type { SegmentedOption } from 'daisu-ui';
+import { Button, Icon, RootPortal, Segmented, Transition } from '@daisu-ui/ui';
+import type { SegmentedOption } from '@daisu-ui/ui';
 import redpanda from '../../../assets/demo-red-panda.jpg';
 import capybara from '../../../assets/demo-capybara.jpg';
 import panda from '../../../assets/demo-panda.jpg';

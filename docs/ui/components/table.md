@@ -3,7 +3,7 @@
 表格用于展示结构化数据，支持列配置、固定列、排序、合并单元格和固定行高的虚拟窗口。
 
 ```tsx
-import { Table } from 'daisu-ui';
+import { Table } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -127,7 +127,7 @@ export type TableSortEvent<T> = Omit<TableColumn<T>, 'render'> & {
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

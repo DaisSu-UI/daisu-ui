@@ -1,5 +1,5 @@
 import { useState } from '@lynx-js/react';
-import { Button, Pagination } from 'daisu-ui';
+import { Button, Pagination } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 export function PaginationExample() {

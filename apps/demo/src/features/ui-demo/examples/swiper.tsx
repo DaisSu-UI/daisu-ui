@@ -1,11 +1,11 @@
 import { useState } from '@lynx-js/react';
-import { Button, Cell, CellGroup, Gap, Img, Swiper, Switch } from 'daisu-ui';
+import { Button, Cell, CellGroup, Gap, Img, Swiper, Switch } from '@daisu-ui/ui';
 import redpanda from '../../../assets/demo-red-panda.jpg';
 import capybara from '../../../assets/demo-capybara.jpg';
 import panda from '../../../assets/demo-panda.jpg';
 import meng from '../../../assets/demo-landscape.jpg';
 import moon from '../../../assets/demo-moon.jpg';
-import { swiperIndex } from 'daisu-ui/utils';
+import { swiperIndex } from '@daisu-ui/ui/utils';
 import { DemoGroup, ExampleBlock } from './shared.js';
 const images=[redpanda,capybara,panda,moon,meng];
 const titled=images.slice(0,4).map((url,index)=>({url,title:['小熊猫！','卡！皮！巴！拉！','大熊猫！','诗画中国！'][index]}));

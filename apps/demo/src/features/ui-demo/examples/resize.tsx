@@ -1,6 +1,6 @@
 import { useEffect, useState } from '@lynx-js/react';
-import { Resize } from 'daisu-ui';
-import type { ResizeRect } from 'daisu-ui';
+import { Resize } from '@daisu-ui/ui';
+import type { ResizeRect } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 const fields = ['width', 'height', 'top', 'right', 'bottom', 'left'] as const;

@@ -3,7 +3,7 @@
 图片预览用于全屏查看图片组，支持切换、缩放、长按事件与自定义内容。
 
 ```tsx
-import { ImagePreview } from 'daisu-ui';
+import { ImagePreview } from '@daisu-ui/ui';
 ```
 
 ## 基础用法
@@ -13,7 +13,7 @@ import { ImagePreview } from 'daisu-ui';
 将 `useImagePreview()` 返回的 `props` 绑定到 `ImagePreview`，调用 `previewImage()` 并传入 `images` 打开预览。
 
 ```tsx
-import { useImagePreview, Button } from 'daisu-ui';
+import { useImagePreview, Button } from '@daisu-ui/ui';
 
 const preview = useImagePreview();
 
@@ -132,7 +132,7 @@ export type ImagePreviewSlot = {
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

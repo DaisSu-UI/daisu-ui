@@ -1,4 +1,4 @@
-import { Rate } from 'daisu-ui';
+import { Rate } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 const yellow = 'linear-gradient(180deg, rgba(255,238,0,1) 0%, rgba(250,176,21,1) 100%)';
 const red = 'linear-gradient(315deg, rgba(245,34,34,1) 0%, rgba(255,117,102,1) 100%)';

@@ -1,6 +1,6 @@
 import { useRef, useState } from '@lynx-js/react';
-import { Icon, Popover, Search, Toast, useToast } from 'daisu-ui';
-import type { PopoverRef, SearchProps } from 'daisu-ui';
+import { Icon, Popover, Search, Toast, useToast } from '@daisu-ui/ui';
+import type { PopoverRef, SearchProps } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 function Sample({ defaultValue = '', ...props }: SearchProps) { const [value, setValue] = useState(defaultValue); return <Search {...props} value={value} onChange={({ value }) => { 'background only'; setValue(value); }} />; }
 export function SearchExample({ theme }: { theme: 'light' | 'dark' }) {

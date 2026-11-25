@@ -1,5 +1,5 @@
-import { Loading } from 'daisu-ui';
-import type { LoadingType } from 'daisu-ui';
+import { Loading } from '@daisu-ui/ui';
+import type { LoadingType } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 const types: readonly LoadingType[] = ['circular', 'spinner', 'dots', 'wave'];
 export function LoadingExample() {

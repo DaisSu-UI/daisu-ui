@@ -1,5 +1,5 @@
 import { useState } from '@lynx-js/react';
-import { Cell, RootPortal } from 'daisu-ui';
+import { Cell, RootPortal } from '@daisu-ui/ui';
 
 /** Demo chrome, independent of the public ActionSheet component. */
 export function DemoThemeToolbar({ theme, onChange }: { theme: 'light' | 'dark'; onChange: (theme: 'light' | 'dark') => void }) {

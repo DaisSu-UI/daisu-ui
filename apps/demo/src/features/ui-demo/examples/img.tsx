@@ -1,6 +1,6 @@
 import type { HostClient } from '../../../lib/host.js';
-import { Img, Loading, Toast, useToast } from 'daisu-ui';
-import type { ImgMode, ImgPreview } from 'daisu-ui';
+import { Img, Loading, Toast, useToast } from '@daisu-ui/ui';
+import type { ImgMode, ImgPreview } from '@daisu-ui/ui';
 import cat from '../../../assets/demo-cat.png';
 import previewCat from '../../../assets/demo-cat-large.png';
 import { DemoGroup, ExampleBlock } from './shared.js';

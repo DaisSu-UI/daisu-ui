@@ -3,7 +3,7 @@
 按钮用于触发操作，例如提交表单、确认选择或打开页面。支持语义颜色、多种外观、加载状态和图标内容。
 
 ```tsx
-import { Button } from 'daisu-ui';
+import { Button } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -148,7 +148,7 @@ import { Button } from 'daisu-ui';
 `icon` 接收 React 节点。仅传入图标时，按钮宽度与当前尺寸的高度相同。建议为纯图标按钮设置 `accessibilityLabel`，让读屏工具能够说明操作用途。
 
 ```tsx
-import { Button, Icon } from 'daisu-ui';
+import { Button, Icon } from '@daisu-ui/ui';
 
 <Button
   icon={<Icon name="delete" color="#ffffff" />}
@@ -226,7 +226,7 @@ import { Button, Icon } from 'daisu-ui';
 在 `ConfigProvider` 中统一设置按钮默认样式与主题变量。
 
 ```tsx
-import { Button, ConfigProvider } from 'daisu-ui';
+import { Button, ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider
   button={{ round: true, size: 'large' }}

@@ -1,6 +1,6 @@
 import { useInitData,useRef,useState } from '@lynx-js/react';
-import { Button, Img, QrCode } from 'daisu-ui';
-import type { QrCodeProps, QrCodeRef } from 'daisu-ui';
+import { Button, Img, QrCode } from '@daisu-ui/ui';
+import type { QrCodeProps, QrCodeRef } from '@daisu-ui/ui';
 import { DemoGroup,ExampleBlock } from './shared.js';
 import logo from '../../../assets/demo-cat.png';
 function Code(props:QrCodeProps){return <view className="demo-qr-center"><QrCode text="https://example.com" {...props}/></view>;}

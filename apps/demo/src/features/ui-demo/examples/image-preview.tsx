@@ -1,5 +1,5 @@
-import { Button, ImagePreview, SwiperNav, useImagePreview } from 'daisu-ui';
-import type { ImagePreviewOptions } from 'daisu-ui';
+import { Button, ImagePreview, SwiperNav, useImagePreview } from '@daisu-ui/ui';
+import type { ImagePreviewOptions } from '@daisu-ui/ui';
 import redpanda from '../../../assets/demo-red-panda.jpg';
 import capybara from '../../../assets/demo-capybara.jpg';
 import panda from '../../../assets/demo-panda.jpg';

@@ -3,7 +3,7 @@
 输入框用于录入单行文本，支持受控值、清空、密码、字数统计和前后插槽。
 
 ```tsx
-import { Input } from 'daisu-ui';
+import { Input } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -99,7 +99,7 @@ import { Input } from 'daisu-ui';
 通过 `suffix` 自定义后缀内容，例如放置验证码按钮。
 
 ```tsx
-import { Button } from 'daisu-ui';
+import { Button } from '@daisu-ui/ui';
 
 <Input
   placeholder="请输入验证码"
@@ -137,7 +137,7 @@ import { Button } from 'daisu-ui';
 在 `Cell` 中组合输入框，使用 `center` 垂直居中、`required` 展示必填标记，输入框设置 `compact`。
 
 ```tsx
-import { CellGroup, Cell } from 'daisu-ui';
+import { CellGroup, Cell } from '@daisu-ui/ui';
 
 <CellGroup border>
   <Cell center title="基本用法" titleWidth="98px">
@@ -240,7 +240,7 @@ export type TextFieldEvent = {
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

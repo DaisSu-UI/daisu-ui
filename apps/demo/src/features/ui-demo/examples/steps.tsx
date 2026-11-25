@@ -1,5 +1,5 @@
 import { useState } from '@lynx-js/react';
-import { Button, Steps, Step, ConfigProvider, useConfigProvider } from 'daisu-ui';
+import { Button, Steps, Step, ConfigProvider, useConfigProvider } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 export function StepsExample(){
  const {theme}=useConfigProvider();

@@ -1,9 +1,9 @@
-import 'daisu-ui/router/runtime';
+import '@daisu-ui/ui/router/runtime';
 import { root } from '@lynx-js/react';
-import * as UI from 'daisu-ui';
-import * as Router from 'daisu-ui/router';
-import { parseRoutePath } from 'daisu-ui/router/location';
-import { datetimePad } from 'daisu-ui/utils';
+import * as UI from '@daisu-ui/ui';
+import * as Router from '@daisu-ui/ui/router';
+import { parseRoutePath } from '@daisu-ui/ui/router/location';
+import { datetimePad } from '@daisu-ui/ui/utils';
 
 // Keep all public values reachable so the consumer compiler checks every export.
 const exports = [...Object.keys(UI), ...Object.keys(Router)].join(', ');
@@ -17,7 +17,7 @@ root.render(
       <UI.Upload adapter={upload} />
       <UI.Signature />
       <UI.BarCode value="123456789012" />
-      <UI.QrCode text="daisu-ui" />
+      <UI.QrCode text="@daisu-ui/ui" />
       <text>{datetimePad(1)}: {parseRoutePath('/demo').path}: {exports}</text>
     </UI.RootPortalHost>
   </UI.ConfigProvider>,

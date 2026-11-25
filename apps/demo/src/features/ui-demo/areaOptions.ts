@@ -1,5 +1,5 @@
 import { areaList } from '@vant/area-data';
-import type { CascaderOption } from 'daisu-ui';
+import type { CascaderOption } from '@daisu-ui/ui';
 
 type AreaData = {
   province_list: Record<string, string>;

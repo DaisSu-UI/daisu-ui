@@ -4,6 +4,7 @@ import { cpSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } 
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { checkReleaseSource } from './check-release-source.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const args = process.argv.slice(2);
@@ -16,7 +17,7 @@ const directory = join(root, 'artifacts/git-package');
 const metadata = JSON.parse(readFileSync(join(directory, 'package.json'), 'utf8'));
 const release = JSON.parse(readFileSync(join(directory, 'release.json'), 'utf8'));
 const sourceMetadata = JSON.parse(readFileSync(join(root, 'packages/daisu-ui/package.json'), 'utf8'));
-assert.equal(metadata.name, 'daisu-ui');
+assert.equal(metadata.name, '@daisu-ui/ui');
 assert.equal(metadata.version, sourceMetadata.version, '产物版本已过期，请重新校验并准备发布包');
 assert.equal(release.sourceCommit, sourceCommit, '产物源码已过期，请重新校验并准备发布包');
 assert.equal(release.version, metadata.version);
@@ -27,6 +28,7 @@ if (process.env.CI) {
   assert.equal(process.env.CI_COMMIT_TAG, `v${metadata.version}`, 'CI 只允许从组件版本对应的源码 Tag 发布');
   assert(process.env.GIT_RELEASE_SSH_KEY, '请在 GitLab CI 变量中配置有仓库写权限的 GIT_RELEASE_SSH_KEY');
 }
+checkReleaseSource({ root });
 
 const temporary = mkdtempSync(join(tmpdir(), 'daisu-git-release-'));
 const repository = join(temporary, 'repository');

@@ -1,4 +1,4 @@
-import { Divider, Icon } from 'daisu-ui';
+import { Divider, Icon } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 export function DividerExample() {

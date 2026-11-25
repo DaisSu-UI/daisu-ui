@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from '@lynx-js/react';
-import { Button, Transition } from 'daisu-ui';
-import type { TransitionName } from 'daisu-ui';
+import { Button, Transition } from '@daisu-ui/ui';
+import type { TransitionName } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 export function TransitionExample() {

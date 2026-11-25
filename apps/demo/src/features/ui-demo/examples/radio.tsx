@@ -1,5 +1,5 @@
 import { useState } from '@lynx-js/react';
-import { Cell, CellGroup, Divider, Icon, Radio, RadioGroup } from 'daisu-ui';import type { RadioGroupProps, RadioProps } from 'daisu-ui';import { DemoGroup,ExampleBlock } from './shared.js';
+import { Cell, CellGroup, Divider, Icon, Radio, RadioGroup } from '@daisu-ui/ui';import type { RadioGroupProps, RadioProps } from '@daisu-ui/ui';import { DemoGroup,ExampleBlock } from './shared.js';
 type Item=Pick<RadioProps,'value'|'type'|'placement'|'disabled'|'checkedColor'|'renderIcon'>&{label:string};
 const options:Item[]=[{value:1,label:'选项1'},{value:2,label:'选项2'}],mixed:Item[]=[{value:1,label:'单选框1'},{value:3,label:'单选框2',type:'square'},{value:5,label:'单选框2',type:'dot'}];
 function Sample({items=options,...props}:Omit<RadioGroupProps<number>,'children'>&{items?:Item[]}){const[value,setValue]=useState<number|null>(1);return <RadioGroup<number> {...props} value={value} onChange={setValue} className={`demo-choice-group ${props.className??''}`}>{items.map(({label,...item})=><Radio {...item} key={String(item.value)}>{label}</Radio>)}</RadioGroup>;}

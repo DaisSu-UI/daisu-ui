@@ -1,6 +1,6 @@
 import { useMemo, useState } from '@lynx-js/react';
-import { InputNumber, Pagination, Table } from 'daisu-ui';
-import type { TableColumn, TableSpanScope } from 'daisu-ui';
+import { InputNumber, Pagination, Table } from '@daisu-ui/ui';
+import type { TableColumn, TableSpanScope } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 type Person = { name: string; grade: number; compare: string; hobby: string; school: string; major: string; gender: string; graduation: string };
 const seeds = [

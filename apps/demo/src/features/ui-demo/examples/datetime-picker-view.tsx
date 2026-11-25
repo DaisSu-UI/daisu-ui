@@ -1,6 +1,6 @@
 import { useState } from '@lynx-js/react';
-import { DatetimePickerView, Toast, useToast } from 'daisu-ui';
-import type { DatetimePickerType, DatetimePickerValue } from 'daisu-ui';
+import { DatetimePickerView, Toast, useToast } from '@daisu-ui/ui';
+import type { DatetimePickerType, DatetimePickerValue } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 import { datetimeUnits, fiveMinuteFilter } from './datetimeShared.js';
 export function DatetimePickerViewExample() {

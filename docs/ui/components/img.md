@@ -3,7 +3,7 @@
 图片组件提供加载、失败、圆角和预览处理，支持不同填充方式与自定义占位内容。
 
 ```tsx
-import { Img } from 'daisu-ui';
+import { Img } from '@daisu-ui/ui';
 ```
 
 ## 基础用法
@@ -109,7 +109,7 @@ export type ImgPreview = (url: string) => void | Promise<void>;
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

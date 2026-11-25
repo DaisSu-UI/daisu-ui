@@ -1,6 +1,6 @@
 import { createRootRoute, createRoute } from '@tanstack/react-router';
-import { createRouter, parseRoutePath, useRouter } from 'daisu-ui/router';
-import type { RouterHistoryState } from 'daisu-ui/router';
+import { createRouter, parseRoutePath, useRouter } from '@daisu-ui/ui/router';
+import type { RouterHistoryState } from '@daisu-ui/ui/router';
 import { isUiDemoCategory, isUiDemoComponent } from '../features/ui-demo/catalog.js';
 import type { UiDemoPage } from '../features/ui-demo/catalog.js';
 export type AppRoute = { name: 'ui-demo'; page: UiDemoPage };

@@ -3,7 +3,7 @@
 路由用于组织页面导航、返回栈和页面转场，支持页面保活、导航守卫与侧滑返回。
 
 ```tsx
-import { RouterView } from 'daisu-ui/router';
+import { RouterView } from '@daisu-ui/ui/router';
 ```
 
 ## 基础用法
@@ -15,7 +15,7 @@ import { RouterView } from 'daisu-ui/router';
 ```tsx
 import { createRootRoute, createRoute } from '@tanstack/react-router';
 
-import { createRouter } from 'daisu-ui/router';
+import { createRouter } from '@daisu-ui/ui/router';
 
 const rootRoute = createRootRoute();
 
@@ -75,7 +75,7 @@ export type RouterViewController = { back(): void; isBusy(): boolean };
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

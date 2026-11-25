@@ -3,7 +3,7 @@
 倒计时用于显示剩余时间，支持格式化、毫秒显示和命令式控制。
 
 ```tsx
-import { CountDown } from 'daisu-ui';
+import { CountDown } from '@daisu-ui/ui';
 ```
 
 ## 基础用法
@@ -79,7 +79,7 @@ export type TimeData = {
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

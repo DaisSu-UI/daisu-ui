@@ -1,5 +1,5 @@
 import { useState } from '@lynx-js/react';
-import { Cell, CellGroup, FloatingPanel, Resize, Tabs } from 'daisu-ui';
+import { Cell, CellGroup, FloatingPanel, Resize, Tabs } from '@daisu-ui/ui';
 
 const options = [{ label: '基础用法', value: 'basic' }, { label: '自定义锚点', value: 'custom' }, { label: '仅头部拖拽', value: 'header' }];
 const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');

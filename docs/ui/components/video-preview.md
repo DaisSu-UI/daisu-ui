@@ -3,7 +3,7 @@
 视频预览用于展示可播放的视频内容，支持独立预览实例、全屏选项和打开、关闭、错误事件；当前提供浏览器后端。
 
 ```tsx
-import { VideoPreview } from 'daisu-ui';
+import { VideoPreview } from '@daisu-ui/ui';
 ```
 
 ## 基础用法
@@ -13,7 +13,7 @@ import { VideoPreview } from 'daisu-ui';
 将 `useVideoPreview()` 返回的 `props` 绑定到 `VideoPreview`，在浏览器模式下通过 `previewVideo()` 传入视频 `url`。
 
 ```tsx
-import { useVideoPreview, Button } from 'daisu-ui';
+import { useVideoPreview, Button } from '@daisu-ui/ui';
 
 const preview = useVideoPreview();
 
@@ -107,7 +107,7 @@ export type VideoPreviewOptions = PreviewVideo & {
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

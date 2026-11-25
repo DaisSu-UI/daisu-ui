@@ -1,7 +1,7 @@
 import { useState } from '@lynx-js/react';
-import { Button, Calendar, Cell, CellGroup, Toast, useToast } from 'daisu-ui';
-import type { CalendarShortcut, CalendarSwitchMode, CalendarType, CalendarValue } from 'daisu-ui';
-import { calendarValues, calendarWeekNumber } from 'daisu-ui/utils';
+import { Button, Calendar, Cell, CellGroup, Toast, useToast } from '@daisu-ui/ui';
+import type { CalendarShortcut, CalendarSwitchMode, CalendarType, CalendarValue } from '@daisu-ui/ui';
+import { calendarValues, calendarWeekNumber } from '@daisu-ui/ui/utils';
 import { DemoGroup, ExampleBlock } from './shared.js';
 import { calendarFormatter, CalendarSwitch } from './calendarShared.js';
 const pad = (value: number) => String(value).padStart(2, '0');

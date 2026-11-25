@@ -1,9 +1,9 @@
-import { registerDaisuWebComponents } from 'daisu-ui/web';
+import { registerDaisuWebComponents } from '@daisu-ui/ui/web';
 import '@lynx-js/web-core/plugins/scroll-view-mouse-drag';
 import '@lynx-js/web-core/client';
 import type { LynxViewElement } from '@lynx-js/web-core/client';
-import { parseRouterHistoryState } from 'daisu-ui/router/location';
-import type { NavigationAction } from 'daisu-ui/router/location';
+import { parseRouterHistoryState } from '@daisu-ui/ui/router/location';
+import type { NavigationAction } from '@daisu-ui/ui/router/location';
 import { createBrowserRouterHistory } from './routerHistory';
 import './style.css';
 

@@ -3,7 +3,7 @@
 卡片用于聚合标题、正文与底部操作。标准卡片适合独立内容块，矩形卡片适合连续列表。
 
 ```tsx
-import { Card } from 'daisu-ui';
+import { Card } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -35,7 +35,7 @@ import { Card } from 'daisu-ui';
 通过 `title` 自定义标题节点，通过 `footer` 设置底部操作，子节点作为正文内容。
 
 ```tsx
-import { Button } from 'daisu-ui';
+import { Button } from '@daisu-ui/ui';
 
 <Card
   variant="standard"
@@ -75,7 +75,7 @@ import { Button } from 'daisu-ui';
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

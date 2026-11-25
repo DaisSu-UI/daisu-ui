@@ -1,6 +1,6 @@
 import { useState } from '@lynx-js/react';
-import { Cell, CellGroup, Textarea } from 'daisu-ui';
-import type { TextareaProps } from 'daisu-ui';
+import { Cell, CellGroup, Textarea } from '@daisu-ui/ui';
+import type { TextareaProps } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 function Sample({ defaultValue = '', ...props }: TextareaProps) { const [value, setValue] = useState<string | number>(defaultValue); return <Textarea {...props} value={value} onChange={setValue} />; }
 export function TextareaExample() {

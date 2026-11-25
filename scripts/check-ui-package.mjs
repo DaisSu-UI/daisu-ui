@@ -14,7 +14,7 @@ const run = (command, args, cwd = root) => execFileSync(command, args, { cwd, st
 
 try {
   const pack = JSON.parse(execFileSync('npm', [
-    'pack', '--workspace', 'daisu-ui', '--ignore-scripts', '--pack-destination', temporary, '--json',
+    'pack', '--workspace', '@daisu-ui/ui', '--ignore-scripts', '--pack-destination', temporary, '--json',
   ], { cwd: root, encoding: 'utf8' }))[0];
   const paths = new Set(pack.files.map(file => file.path));
   for (const path of ['dist/index.js', 'dist/index.d.ts', 'dist/Button.jsx', 'dist/styles.css', 'dist/router/runtime.js', 'dist/icons/LICENSE.tabler', 'LICENSE', 'README.md']) {
@@ -31,7 +31,7 @@ try {
     return version;
   };
   const metadata = JSON.parse(readFileSync(join(root, 'packages/daisu-ui/package.json'), 'utf8'));
-  const dependencies = { 'daisu-ui': `file:./${pack.filename}` };
+  const dependencies = { '@daisu-ui/ui': `file:./${pack.filename}` };
   for (const name of Object.keys(metadata.peerDependencies)) dependencies[name] = localVersion(name);
   // Use the tested dependency versions while allowing npm to resolve the full
   // transitive graph in an isolated directory, without workspace symlinks.
@@ -50,9 +50,9 @@ try {
   for (const [path, entry] of Object.entries(consumerLock.packages)) {
     if (entry.link || path && !path.startsWith('node_modules/')) delete consumerLock.packages[path];
   }
-  consumerLock.packages['node_modules/daisu-ui'] = {
+  consumerLock.packages['node_modules/@daisu-ui/ui'] = {
     version: metadata.version,
-    resolved: dependencies['daisu-ui'],
+    resolved: dependencies['@daisu-ui/ui'],
     integrity: pack.integrity,
     dependencies: metadata.dependencies,
     peerDependencies: metadata.peerDependencies,
@@ -60,7 +60,7 @@ try {
   writeFileSync(join(temporary, 'package-lock.json'), JSON.stringify(consumerLock, null, 2));
   run('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund', '--prefer-offline', '--fetch-retries=0', '--fetch-timeout=30000'], temporary);
 
-  const installed = join(temporary, 'node_modules/daisu-ui');
+  const installed = join(temporary, 'node_modules/@daisu-ui/ui');
   assert(!lstatSync(installed).isSymbolicLink(), 'Consumer must install the tarball');
   const sources = [];
   const walk = directory => {

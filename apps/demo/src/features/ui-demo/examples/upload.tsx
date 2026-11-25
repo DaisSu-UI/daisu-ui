@@ -1,8 +1,8 @@
 import { useMemo, useState } from '@lynx-js/react';
 import type { HostClient } from '../../../lib/host.js';
 import { createHostUploadAdapter } from '../../../lib/uiUpload.js';
-import { Button, Dialog, Toast, Upload, useDialog, useToast } from 'daisu-ui';
-import type { UploadAdapter, UploadFile, UploadProps } from 'daisu-ui';
+import { Button, Dialog, Toast, Upload, useDialog, useToast } from '@daisu-ui/ui';
+import type { UploadAdapter, UploadFile, UploadProps } from '@daisu-ui/ui';
 import panda from '../../../assets/demo-panda.jpg';
 import { DemoGroup, ExampleBlock } from './shared.js';
 

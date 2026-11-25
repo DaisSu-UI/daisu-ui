@@ -1,6 +1,6 @@
 import {expect,test} from '@rstest/core';
 import {createRootRoute,createRoute,redirect} from '@tanstack/react-router';
-import {createRouter,routePath} from 'daisu-ui/router';
+import {createRouter,routePath} from '@daisu-ui/ui/router';
 test('TanStack beforeLoad, redirects and loaders run through the scene adapter', async () => {
   const root = createRootRoute();
   const home = createRoute({ getParentRoute: () => root, path: '/home' });

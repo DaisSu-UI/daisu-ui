@@ -3,7 +3,7 @@
 进度条用于展示任务完成情况，支持文字位置、状态颜色和自定义进度样式。
 
 ```tsx
-import { Progress } from 'daisu-ui';
+import { Progress } from '@daisu-ui/ui';
 ```
 
 ## 基础用法
@@ -58,7 +58,7 @@ export type PercentPosition = {
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

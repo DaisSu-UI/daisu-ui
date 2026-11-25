@@ -8,13 +8,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@daisu-ui/ui": "0.1.0-beta.3",
     "@lynx-js/lynx-core": "^0.1.4",
     "@lynx-js/lynx-ui": "^3.141.0",
     "@lynx-js/react": "^0.126.2",
     "@lynx-js/web-core": "0.26.5",
     "@tanstack/react-router": "1.170.46",
     "@vant/area-data": "^2.2.0",
-    "daisu-ui": "0.1.0-beta.2",
     "url-search-params-polyfill": "8.2.5",
     "zod": "^4.6.7"
   },

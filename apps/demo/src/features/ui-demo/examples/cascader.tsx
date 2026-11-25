@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from '@lynx-js/react';
-import { Cascader, Cell, CellGroup, Toast, useToast } from 'daisu-ui';
-import type { CascaderOption, CascaderValue, CascaderLazyLoad } from 'daisu-ui';
+import { Cascader, Cell, CellGroup, Toast, useToast } from '@daisu-ui/ui';
+import type { CascaderOption, CascaderValue, CascaderLazyLoad } from '@daisu-ui/ui';
 import { getDemoAreaOptions } from '../areaOptions.js';
 import { DemoGroup } from './shared.js';
 const custom = [{ id: 1, name: '选项一', items: [{ id: 11, name: '选项一-一' }, { id: 12, name: '选项一-二' }] }, { id: 2, name: '选项二', items: [{ id: 21, name: '选项二-一' }, { id: 22, name: '选项二-二' }] }];

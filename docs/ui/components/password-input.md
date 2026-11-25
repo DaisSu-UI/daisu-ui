@@ -3,7 +3,7 @@
 密码输入框将内容分格显示，可与虚拟键盘组合录入验证码、支付密码等短内容。
 
 ```tsx
-import { PasswordInput } from 'daisu-ui';
+import { PasswordInput } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -25,7 +25,7 @@ import { PasswordInput } from 'daisu-ui';
 ```tsx
 import { useState } from '@lynx-js/react';
 
-import { Keyboard } from 'daisu-ui';
+import { Keyboard } from '@daisu-ui/ui';
 
 const [value, setValue] = useState('');
 
@@ -72,7 +72,7 @@ const [visible, setVisible] = useState(false);
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

@@ -1,6 +1,6 @@
 import { useState } from '@lynx-js/react';
-import { Button, Progress } from 'daisu-ui';
-import type { ProgressColor } from 'daisu-ui';
+import { Button, Progress } from '@daisu-ui/ui';
+import type { ProgressColor } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 const colors = ['var(--cso-ui-success)', 'var(--cso-ui-warning)', 'var(--cso-ui-danger)', 'var(--cso-ui-primary)'];
 const colorStops: ProgressColor = [{ color: 'var(--cso-ui-warning)', percentage: 30 }, { color: 'var(--cso-ui-danger)', percentage: 60 }, { color: 'var(--cso-ui-primary)', percentage: 80 }, { color: 'var(--cso-ui-text)', percentage: 90 }];

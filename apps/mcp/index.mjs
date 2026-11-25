@@ -6,7 +6,7 @@ import { loadKnowledge } from './knowledge.mjs';
 
 try {
   const knowledge = await loadKnowledge();
-  const server = new Server({ name: 'daisu-ui', version: knowledge.version }, {
+  const server = new Server({ name: '@daisu-ui/ui', version: knowledge.version }, {
     capabilities: { tools: {}, resources: {} },
     instructions: 'Query the installed Daisu UI documentation before generating ReactLynx code. Check public props, events, theme tokens and native platform limitations. Read daisu-ui://docs/agent-rules for validation requirements.',
   });

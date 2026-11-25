@@ -1,4 +1,4 @@
-import { Gap } from 'daisu-ui';
+import { Gap } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 export function GapExample() {

@@ -1,5 +1,5 @@
 import { useState } from '@lynx-js/react';
-import { Button, Cell, SelectPicker, RootPortal } from 'daisu-ui';
+import { Button, Cell, SelectPicker, RootPortal } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 const categories = ['男装', '奢侈品', '女装', '鞋靴', '内衣配饰', '箱包', '美妆护肤', '个性清洁', '钟表珠宝', '手机', '数码', '电脑办公'];

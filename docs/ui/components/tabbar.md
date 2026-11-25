@@ -3,7 +3,7 @@
 标签栏用于切换应用中的主要页面，支持图标、徽标、异步切换校验和底部安全区。
 
 ```tsx
-import { Tabbar } from 'daisu-ui';
+import { Tabbar } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -101,7 +101,7 @@ export type TabbarBeforeChange = (
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

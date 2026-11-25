@@ -3,7 +3,7 @@
 排序按钮循环切换默认、升序和降序状态，适合列表与表格的排序入口。
 
 ```tsx
-import { SortButton } from 'daisu-ui';
+import { SortButton } from '@daisu-ui/ui';
 ```
 
 ## 基础用法
@@ -15,7 +15,7 @@ import { SortButton } from 'daisu-ui';
 ```tsx
 import { useState } from '@lynx-js/react';
 
-import type { SortButtonValue } from 'daisu-ui';
+import type { SortButtonValue } from '@daisu-ui/ui';
 
 const [value, setValue] = useState<SortButtonValue>(0);
 
@@ -69,7 +69,7 @@ export type SortButtonValue = -1 | 0 | 1;
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

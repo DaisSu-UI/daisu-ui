@@ -3,7 +3,7 @@
 气泡用于在触发元素附近展示辅助内容或菜单，支持方向、箭头和自定义内容。
 
 ```tsx
-import { Popover } from 'daisu-ui';
+import { Popover } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -13,7 +13,7 @@ import { Popover } from 'daisu-ui';
 通过 `content` 设置气泡文字，子节点作为触发元素。
 
 ```tsx
-import { Button } from 'daisu-ui';
+import { Button } from '@daisu-ui/ui';
 
 <Popover content="这里是提示内容">
   <Button label="显示气泡" />
@@ -129,7 +129,7 @@ export type PopoverMenuItem = {
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

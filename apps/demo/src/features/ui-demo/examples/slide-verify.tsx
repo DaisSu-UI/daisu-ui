@@ -1,6 +1,6 @@
 import { useRef } from '@lynx-js/react';
-import { Button, SlideVerify, Toast, useToast } from 'daisu-ui';
-import type { SlideVerifyRef } from 'daisu-ui';
+import { Button, SlideVerify, Toast, useToast } from '@daisu-ui/ui';
+import type { SlideVerifyRef } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 export function SlideVerifyExample() {
   const ref = useRef<SlideVerifyRef>(null), toast = useToast();

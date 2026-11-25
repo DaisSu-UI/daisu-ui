@@ -1,4 +1,4 @@
-import type { IndexBarSection } from 'daisu-ui';
+import type { IndexBarSection } from '@daisu-ui/ui';
 
 export const indexBarCities: readonly IndexBarSection<string>[] = [
   { index: 'A', data: ['阿坝', '阿拉善', '阿里', '安康', '安庆', '鞍山', '安顺', '安阳', '澳门'] },

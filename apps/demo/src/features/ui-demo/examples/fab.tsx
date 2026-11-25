@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from '@lynx-js/react';
 import { Switch, SwitchThumb, SwitchTrack } from '@lynx-js/lynx-ui';
-import { Button, Fab, Icon } from 'daisu-ui';
-import type { FabDirection, FabPosition, FabProps } from 'daisu-ui';
+import { Button, Fab, Icon } from '@daisu-ui/ui';
+import type { FabDirection, FabPosition, FabProps } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 function Choices<T extends string>({ value, options, onChange }: { value: T; options: readonly (readonly [T,string])[]; onChange: (value:T)=>void }) {

@@ -1,4 +1,4 @@
-import { Col, Row } from 'daisu-ui';
+import { Col, Row } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 function LayoutCell({ label, tone = 'strong', height = 30 }: { label: string; tone?: 'primary' | 'strong' | 'light'; height?: number }) {

@@ -1,6 +1,6 @@
 import { useState } from '@lynx-js/react';
-import { Cell, CellGroup, Keyboard, Toast, useToast } from 'daisu-ui';
-import type { CarKeyboardLang } from 'daisu-ui';
+import { Cell, CellGroup, Keyboard, Toast, useToast } from '@daisu-ui/ui';
+import type { CarKeyboardLang } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 export function KeyboardExample() {

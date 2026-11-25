@@ -13,7 +13,7 @@
 浏览器宿主在挂载 lynx-view 前注册扩展元素：
 
 ```ts
-import { registerDaisuWebComponents } from 'daisu-ui/web';
+import { registerDaisuWebComponents } from '@daisu-ui/ui/web';
 
 registerDaisuWebComponents();
 ```

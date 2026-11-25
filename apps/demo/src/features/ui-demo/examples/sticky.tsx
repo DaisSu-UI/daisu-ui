@@ -1,5 +1,5 @@
 import { useEffect, useState } from '@lynx-js/react';
-import { Button, Sticky, StickyBox } from 'daisu-ui';
+import { Button, Sticky, StickyBox } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 export function StickyExample(){
  const [show,setShow]=useState(false);

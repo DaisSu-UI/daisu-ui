@@ -3,7 +3,7 @@
 轻提示用于短暂反馈操作结果，支持文字、成功、失败和持续加载等状态。
 
 ```tsx
-import { Toast } from 'daisu-ui';
+import { Toast } from '@daisu-ui/ui';
 ```
 
 ## 基础用法
@@ -13,7 +13,7 @@ import { Toast } from 'daisu-ui';
 调用 `useToast()`，将返回的 `props` 绑定到 `Toast`，通过 `show()` 显示文字提示。
 
 ```tsx
-import { useToast, Button } from 'daisu-ui';
+import { useToast, Button } from '@daisu-ui/ui';
 
 const toast = useToast();
 
@@ -141,7 +141,7 @@ export type ToastOptions = {
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

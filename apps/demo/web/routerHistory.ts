@@ -1,5 +1,5 @@
-import { parseRoutePath, parseRouterHistoryState, routePath } from 'daisu-ui/router/location';
-import type { NavigationAction, RouterHistoryState } from 'daisu-ui/router/location';
+import { parseRoutePath, parseRouterHistoryState, routePath } from '@daisu-ui/ui/router/location';
+import type { NavigationAction, RouterHistoryState } from '@daisu-ui/ui/router/location';
 
 type RecordState = { scope: string; index: number; state: RouterHistoryState; positions: Record<string, number> };
 type Browser = Pick<Window, 'history' | 'location' | 'addEventListener' | 'removeEventListener'>;

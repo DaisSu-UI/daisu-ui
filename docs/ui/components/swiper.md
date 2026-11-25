@@ -3,7 +3,7 @@
 轮播图用于在固定区域切换图片或自定义内容，支持自动播放、指示器和滑动控制。
 
 ```tsx
-import { Swiper, SwiperNav } from 'daisu-ui';
+import { Swiper, SwiperNav } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -160,7 +160,7 @@ export type ImgMode =
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

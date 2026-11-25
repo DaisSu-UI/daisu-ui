@@ -1,11 +1,11 @@
-import 'daisu-ui/router/runtime';
+import '@daisu-ui/ui/router/runtime';
 import 'url-search-params-polyfill';
 import { root, useEffect, useInitData, useState } from '@lynx-js/react';
-import { ConfigProvider, RootPortalHost } from 'daisu-ui';
-import { RouterView, connectRouterHistory } from 'daisu-ui/router';
+import { ConfigProvider, RootPortalHost } from '@daisu-ui/ui';
+import { RouterView, connectRouterHistory } from '@daisu-ui/ui/router';
 import { createAppRouter } from './app/router.js';
 import { createDemoHistory } from './lib/history.js';
-import type { RouterHistoryState } from 'daisu-ui/router';
+import type { RouterHistoryState } from '@daisu-ui/ui/router';
 import { UiDemoPage } from './features/ui-demo/UiDemoPage.js';
 import './styles.css';
 import './features/ui-demo/styles.css';

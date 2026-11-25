@@ -1,5 +1,5 @@
-import { Badge, Button } from 'daisu-ui';
-import type { BadgeProps, ButtonTone } from 'daisu-ui';
+import { Badge, Button } from '@daisu-ui/ui';
+import type { BadgeProps, ButtonTone } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 function ButtonBadge({ label = '评论', tone = 'info', ...props }: Omit<BadgeProps, 'children'> & { label?: string; tone?: ButtonTone }) {

@@ -3,7 +3,7 @@
 徽标用于标记数量、未读或状态，可附着在图标和其他内容旁边。
 
 ```tsx
-import { Badge } from 'daisu-ui';
+import { Badge } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -13,7 +13,7 @@ import { Badge } from 'daisu-ui';
 通过 `value` 设置数字，设置 `isDot` 仅显示圆点；子节点为徽标依附的内容。
 
 ```tsx
-import { Icon } from 'daisu-ui';
+import { Icon } from '@daisu-ui/ui';
 
 <Badge value={5}>
   <Icon name="notification" size={24} />
@@ -77,7 +77,7 @@ import { Icon } from 'daisu-ui';
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

@@ -1,8 +1,8 @@
 import journey from '../../../assets/demo-journey.mp4';
 import melody from '../../../assets/demo-melody.mp3';
 import { useEffect, useRef, useState } from '@lynx-js/react';
-import { Button, RichText } from 'daisu-ui';
-import type { RichTextMediaEvent, RichTextRect, RichTextRef } from 'daisu-ui';
+import { Button, RichText } from '@daisu-ui/ui';
+import type { RichTextMediaEvent, RichTextRect, RichTextRef } from '@daisu-ui/ui';
 import { lake } from './rich-text-content.js';
 
 type MediaId = 'trip-video' | 'reading-audio';

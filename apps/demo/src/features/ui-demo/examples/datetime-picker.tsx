@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from '@lynx-js/react';
-import { Cell, CellGroup, DatetimePicker, Toast, useToast } from 'daisu-ui';
-import type { DatetimePickerModelValue, DatetimePickerType, DatetimePickerValue, PickerOption } from 'daisu-ui';
-import { datetimeLabel } from 'daisu-ui/utils';
+import { Cell, CellGroup, DatetimePicker, Toast, useToast } from '@daisu-ui/ui';
+import type { DatetimePickerModelValue, DatetimePickerType, DatetimePickerValue, PickerOption } from '@daisu-ui/ui';
+import { datetimeLabel } from '@daisu-ui/ui/utils';
 import { DemoGroup, ExampleBlock } from './shared.js';
 import { datetimeUnits, fiveMinuteFilter } from './datetimeShared.js';
 const typeFor = (key: string): DatetimePickerType => key === 'date' ? 'date' : key === 'month' ? 'year-month' : key === 'year' ? 'year' : key === 'time' || key === 'timeSeconds' ? 'time' : 'datetime';

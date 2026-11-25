@@ -1,7 +1,7 @@
 import { expect, test } from '@rstest/core';
 import { cleanup, fireEvent, render, waitFor } from '@lynx-js/react/testing-library';
 import { createAppRouter } from './router.js';
-import { RouterView } from 'daisu-ui/router';
+import { RouterView } from '@daisu-ui/ui/router';
 import { RouterExample } from '../features/ui-demo/examples/router.js';
 
 test('router demo navigates with hooks and its guard blocks back until disabled', async () => {

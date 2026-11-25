@@ -1,5 +1,5 @@
 import { useState } from '@lynx-js/react';
-import { Button, Overlay, Switch } from 'daisu-ui';
+import { Button, Overlay, Switch } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 export function OverlayExample() {

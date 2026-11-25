@@ -1,8 +1,8 @@
 import {RichTextMediaExample} from './rich-text-media.js';
 import {useInitData,useRef,useState} from '@lynx-js/react';
 import type {NodesRef} from '@lynx-js/types';
-import { Button, ConfigProvider, RichText } from 'daisu-ui';
-import type { RichTextHeading, RichTextRef } from 'daisu-ui';
+import { Button, ConfigProvider, RichText } from '@daisu-ui/ui';
+import type { RichTextHeading, RichTextRef } from '@daisu-ui/ui';
 import {DemoGroup,ExampleBlock} from './shared.js';
 import {editorExamples,invitation,invitationStyles,journal,journalStyles,lake,letter,longJournal,originalLake} from './rich-text-content.js';
 const articleStyle={p:'line-height:1.95;margin:0 0 16px;',th:'text-align:left;',td:'font-size:13px;'};

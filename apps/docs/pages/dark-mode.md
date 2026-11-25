@@ -5,7 +5,7 @@
 ## 开启深色主题
 
 ```tsx
-import { ConfigProvider, RootPortalHost } from 'daisu-ui';
+import { ConfigProvider, RootPortalHost } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   <RootPortalHost>

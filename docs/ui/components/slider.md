@@ -3,7 +3,7 @@
 滑块用于在一个数值范围内选择数值，支持区间值、步长、刻度和垂直布局。
 
 ```tsx
-import { Slider } from 'daisu-ui';
+import { Slider } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -15,7 +15,7 @@ import { Slider } from 'daisu-ui';
 ```tsx
 import { useState } from '@lynx-js/react';
 
-import type { SliderValue } from 'daisu-ui';
+import type { SliderValue } from '@daisu-ui/ui';
 
 const [value, setValue] = useState<SliderValue>(30);
 
@@ -84,7 +84,7 @@ export type SliderValue = number | readonly [number, number];
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

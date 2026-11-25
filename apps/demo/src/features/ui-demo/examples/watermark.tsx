@@ -1,6 +1,6 @@
 import { useState } from '@lynx-js/react';
-import { Button, Cell, CellGroup, Checkbox, CheckboxGroup, Radio, RadioGroup, Switch, Watermark } from 'daisu-ui';
-import type { ChoiceValue } from 'daisu-ui';
+import { Button, Cell, CellGroup, Checkbox, CheckboxGroup, Radio, RadioGroup, Switch, Watermark } from '@daisu-ui/ui';
+import type { ChoiceValue } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 import logo from '../../../assets/daisu-ui-logo.svg';
 export function WatermarkExample(){

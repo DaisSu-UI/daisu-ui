@@ -1,6 +1,6 @@
 import { useRef, useState } from '@lynx-js/react';
-import { Button, Form, FormItem, Input, Switch, Toast, useToast } from 'daisu-ui';
-import type { FormRef, FormSchema } from 'daisu-ui';
+import { Button, Form, FormItem, Input, Switch, Toast, useToast } from '@daisu-ui/ui';
+import type { FormRef, FormSchema } from '@daisu-ui/ui';
 import type { UiDemoComponent } from '../catalog.js';
 import { DemoGroup, ExampleBlock } from './shared.js';
 const basicSchema: FormSchema = { validate(model) { const issues = []; if (!model.value1) issues.push({ path: 'value1', message: '请输入歪比巴卜' }); if (!model.value2) issues.push({ path: 'value2', message: '请输入沙卡拉卡' }); if (model.value1 !== model.value2) { issues.push({ path: 'value1', message: '两个输入框的内容必须一致' }, { path: 'value2', message: '两个输入框的内容必须一致' }); } return issues; } };

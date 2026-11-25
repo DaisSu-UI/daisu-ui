@@ -1,4 +1,4 @@
-import { Button, Empty, Icon, Toast, useToast } from 'daisu-ui';
+import { Button, Empty, Icon, Toast, useToast } from '@daisu-ui/ui';
 import cat from '../../../assets/demo-cat.png';
 import { DemoGroup, ExampleBlock } from './shared.js';
 const cases = [

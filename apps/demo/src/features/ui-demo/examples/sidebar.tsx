@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from '@lynx-js/react';
 import { List } from '@lynx-js/lynx-ui';
 import type { ListRef } from '@lynx-js/lynx-ui';
-import { Button, Cell, Icon, Loading, RootPortal, Sidebar } from 'daisu-ui';
-import type { SidebarItem } from 'daisu-ui';
+import { Button, Cell, Icon, Loading, RootPortal, Sidebar } from '@daisu-ui/ui';
+import type { SidebarItem } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 import { sidebarCategories, sidebarHeaderIndexes, sidebarRowCounts, sidebarSectionAtOffset } from './sidebarModel.js';
 

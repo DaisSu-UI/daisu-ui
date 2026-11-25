@@ -1,6 +1,6 @@
 import { useState } from '@lynx-js/react';
-import { CalendarView, Radio, RadioGroup } from 'daisu-ui';
-import type { CalendarType, CalendarValue, CalendarSwitchMode } from 'daisu-ui';
+import { CalendarView, Radio, RadioGroup } from '@daisu-ui/ui';
+import type { CalendarType, CalendarValue, CalendarSwitchMode } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 import { calendarFormatter, CalendarSwitch } from './calendarShared.js';
 export function CalendarViewExample() {

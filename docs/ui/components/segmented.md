@@ -3,7 +3,7 @@
 分段器用于展示多个选项并允许用户选择其中单个选项。适合在同一区域切换少量互斥选项及其关联内容。
 
 ```tsx
-import { Segmented } from 'daisu-ui';
+import { Segmented } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -93,7 +93,7 @@ const [value, setValue] = useState<string | number>('点赞');
 通过 `Popup` 的 `show` 控制弹出框，在其中放入分段器即可使用；选中项仍由 `value` 和 `onChange` 管理。
 
 ```tsx
-import { Button, Popup } from 'daisu-ui';
+import { Button, Popup } from '@daisu-ui/ui';
 
 const [show, setShow] = useState(false);
 
@@ -174,7 +174,7 @@ export type SegmentedOption<T = unknown> = {
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

@@ -1,5 +1,5 @@
 import { useState } from '@lynx-js/react';
-import { Keyboard, PasswordInput } from 'daisu-ui';
+import { Keyboard, PasswordInput } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 export function PasswordInputExample() {

@@ -3,7 +3,7 @@
 弹出层用于展示临时操作或内容，支持多个弹出方向、遮罩、圆角和关闭按钮。
 
 ```tsx
-import { Popup } from 'daisu-ui';
+import { Popup } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -15,7 +15,7 @@ import { Popup } from 'daisu-ui';
 ```tsx
 import { useState } from '@lynx-js/react';
 
-import { Button } from 'daisu-ui';
+import { Button } from '@daisu-ui/ui';
 
 const [show, setShow] = useState(false);
 
@@ -112,7 +112,7 @@ export type TransitionName =
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

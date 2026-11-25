@@ -1,6 +1,6 @@
 import { useState } from '@lynx-js/react';
-import { Cell, CellGroup, SelectPicker, Toast, useToast } from 'daisu-ui';
-import type { SelectPickerValue } from 'daisu-ui';
+import { Cell, CellGroup, SelectPicker, Toast, useToast } from '@daisu-ui/ui';
+import type { SelectPickerValue } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 export const selectPickerOptions = ['男装', '奢侈品', '女装', '鞋靴', '内衣配饰', '箱包', '美妆护肤', '个性清洁', '钟表珠宝', '手机', '数码', '电脑办公'].map((label, index) => ({ value: String(101 + index), label }));
 const disabledOptions = [selectPickerOptions[0]!, selectPickerOptions[1]!, selectPickerOptions[2]!].map((item, index) => ({ ...item, disabled: index === 0 }));

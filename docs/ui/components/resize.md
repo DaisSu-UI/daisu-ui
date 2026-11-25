@@ -3,7 +3,7 @@
 尺寸监听器在子内容布局变化时报告矩形信息，适合自适应布局和组件尺寸计算。
 
 ```tsx
-import { Resize } from 'daisu-ui';
+import { Resize } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -35,7 +35,7 @@ const [width, setWidth] = useState(0);
 将动态内容放入 `Resize`，内容尺寸变化后通过 `onResize` 获取新的矩形信息。
 
 ```tsx
-import { Button } from 'daisu-ui';
+import { Button } from '@daisu-ui/ui';
 
 const [expanded, setExpanded] = useState(false);
 
@@ -94,7 +94,7 @@ export type ResizeRect = {
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

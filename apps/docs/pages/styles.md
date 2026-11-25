@@ -5,7 +5,7 @@
 ## 使用组件属性
 
 ```tsx
-import { Button } from 'daisu-ui';
+import { Button } from '@daisu-ui/ui';
 
 <Button label="确认" size="large" round />
 ```

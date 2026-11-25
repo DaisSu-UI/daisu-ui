@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from '@lynx-js/react';
-import { Icon, Navbar, NavbarCapsule, SyncedInput } from 'daisu-ui';
+import { Icon, Navbar, NavbarCapsule, SyncedInput } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 export function NavigationExample({ onBack, onHome }: { onBack: () => void; onHome: () => void }) {

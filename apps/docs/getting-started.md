@@ -5,7 +5,7 @@
 ## 安装
 
 ```bash
-npm install daisu-ui
+npm install @daisu-ui/ui
 ```
 
 当前处于 beta 阶段，首次正式发布前可使用本地打包的 tgz 安装验证。
@@ -17,7 +17,7 @@ npm install daisu-ui
 ## 使用组件
 
 ```tsx
-import { Button } from 'daisu-ui';
+import { Button } from '@daisu-ui/ui';
 
 export function Example() {
   return <Button label="开始使用" onTap={() => {
@@ -32,7 +32,7 @@ export function Example() {
 ## 主题与弹层
 
 ```tsx
-import { ConfigProvider, RootPortalHost } from 'daisu-ui';
+import { ConfigProvider, RootPortalHost } from '@daisu-ui/ui';
 
 export function App() {
   return <ConfigProvider theme="light">

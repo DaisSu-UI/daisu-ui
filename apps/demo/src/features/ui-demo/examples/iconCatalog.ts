@@ -1,4 +1,4 @@
-import { iconNames } from 'daisu-ui';
+import { iconNames } from '@daisu-ui/ui';
 const groups = [
   { title: '方向与导航', pattern: /arrow|caret|double|^to-|^left|^right|^up|^down|rotate|expand|shrink|^menu|^swap|^nav|fullscreen/ },
   { title: '编辑与排版', pattern: /align|font|bold|italic|underline|strike|^h\d|edit|copy|paste|delete|eraser|brush|scissor|quote|line-height|list|sort|filter|replace|zoom|link/ },

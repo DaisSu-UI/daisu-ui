@@ -3,7 +3,7 @@
 富文本用于展示 HTML 内容，支持段落、图片、表格和媒体内容，并提供点击、加载与预览事件。
 
 ```tsx
-import { RichText } from 'daisu-ui';
+import { RichText } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -135,7 +135,7 @@ export type RichTextRect = {
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

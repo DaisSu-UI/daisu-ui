@@ -25,10 +25,10 @@ test('Git 发布产物可由 npm 安装，更新保持历史，重复或过期�
     mkdirSync(join(source, 'scripts'), { recursive: true });
     mkdirSync(join(source, 'packages/daisu-ui/dist'), { recursive: true });
     mkdirSync(consumer);
-    for (const name of ['prepare-git-package.mjs', 'publish-git-package.mjs']) cpSync(join(scripts, name), join(source, 'scripts', name));
+    for (const name of ['check-release-source.mjs', 'prepare-git-package.mjs', 'publish-git-package.mjs']) cpSync(join(scripts, name), join(source, 'scripts', name));
     save(join(source, 'package.json'), { name: 'fixture', private: true, workspaces: ['packages/*'] });
     save(join(source, 'packages/daisu-ui/package.json'), {
-      name: 'daisu-ui', version: '1.2.3', type: 'module', main: './dist/index.js', types: './dist/index.d.ts',
+      name: '@daisu-ui/ui', version: '1.2.3', type: 'module', main: './dist/index.js', types: './dist/index.d.ts',
       files: ['dist'], scripts: { prepack: 'exit 77', prepare: 'exit 78' }, devDependencies: { 'never-install-development-package': '1.0.0' },
       publishConfig: { registry: 'https://registry.npmjs.org/' },
     });
@@ -37,7 +37,7 @@ test('Git 发布产物可由 npm 安装，更新保持历史，重复或过期�
     writeFileSync(join(source, 'packages/daisu-ui/dist/index.d.ts'), 'export declare const fixture: number;\n');
     writeFileSync(join(source, 'packages/daisu-ui/dist/Button.jsx'), 'export const Button = () => <view />;\n');
     writeFileSync(join(source, 'packages/daisu-ui/dist/styles.css'), '.button { color: red; }\n');
-    git('init');
+    git('init', '-b', 'developer');
     git('config', 'user.name', 'Fixture');
     git('config', 'user.email', 'fixture@example.invalid');
     git('config', 'commit.gpgsign', 'false');
@@ -45,17 +45,28 @@ test('Git 发布产物可由 npm 安装，更新保持历史，重复或过期�
     git('commit', '-m', 'fixture');
     run('git', ['init', '--bare', remote], temporary);
     git('remote', 'add', 'origin', remote);
+    assert.throws(() => execute('check-release-source.mjs', '--require-main'), /无法读取 origin\/main/);
+    git('push', 'origin', 'HEAD:refs/heads/main');
+
+    // 开发提交尚未合入 main 时，CI 和本地发布都必须拒绝。
+    git('switch', '-c', 'feature/unmerged');
+    git('commit', '--allow-empty', '-m', 'unmerged development');
+    execute('prepare-git-package.mjs');
+    assert.throws(() => execute('check-release-source.mjs', '--require-main'), /必须已合并到 origin\/main/);
+    assert.throws(() => execute('publish-git-package.mjs'), /必须已合并到 origin\/main/);
+    assert.throws(() => run(process.execPath, [join(source, 'scripts/prepare-git-package.mjs')], source, { CI_COMMIT_TAG: 'v1.2.3' }), /必须已合并到 origin\/main/);
+    git('switch', 'developer');
 
     execute('prepare-git-package.mjs');
     const prepared = json(join(source, 'artifacts/git-package/package.json'));
-    assert.equal(prepared.name, 'daisu-ui');
+    assert.equal(prepared.name, '@daisu-ui/ui');
     assert.equal(prepared.scripts, undefined);
     assert.equal(prepared.devDependencies, undefined);
     assert.equal(prepared.publishConfig, undefined);
     assert.equal(prepared.private, true);
     assert(!existsSync(join(source, 'artifacts/git-package/scripts')));
     assert.match(execute('publish-git-package.mjs', '--dry-run'), /预演通过/);
-    assert.equal(git('ls-remote', 'origin'), '');
+    assert.equal(git('ls-remote', 'origin', 'refs/heads/npm-dist', 'refs/tags/npm-v1.2.3'), '');
     execute('publish-git-package.mjs');
     run('git', ['--git-dir', remote, 'symbolic-ref', 'HEAD', 'refs/heads/npm-dist']);
     const first = git('ls-remote', '--heads', 'origin', 'npm-dist').split('\t')[0];
@@ -63,9 +74,9 @@ test('Git 发布产物可由 npm 安装，更新保持历史，重复或过期�
 
     save(join(consumer, 'package.json'), { name: 'consumer', private: true });
     run('npm', ['install', '--offline', '--no-audit', '--no-fund', `git+file://${remote}#npm-v1.2.3`], consumer);
-    assert.equal(json(join(consumer, 'node_modules/daisu-ui/package.json')).version, '1.2.3');
-    assert(existsSync(join(consumer, 'node_modules/daisu-ui/dist/Button.jsx')));
-    assert(!existsSync(join(consumer, 'node_modules/daisu-ui/scripts')));
+    assert.equal(json(join(consumer, 'node_modules/@daisu-ui/ui/package.json')).version, '1.2.3');
+    assert(existsSync(join(consumer, 'node_modules/@daisu-ui/ui/dist/Button.jsx')));
+    assert(!existsSync(join(consumer, 'node_modules/@daisu-ui/ui/scripts')));
     assert(!existsSync(join(consumer, 'node_modules/never-install-development-package')));
 
     writeFileSync(join(source, 'uncommitted.txt'), 'pending');
@@ -78,12 +89,24 @@ test('Git 发布产物可由 npm 安装，更新保持历史，重复或过期�
     assert.throws(() => execute('publish-git-package.mjs'), /产物版本已过期/);
     assert.throws(() => run(process.execPath, [join(source, 'scripts/prepare-git-package.mjs')], source, { CI_COMMIT_TAG: 'v9.9.9' }), /源码 Tag 必须与组件包版本一致/);
     execute('prepare-git-package.mjs');
+    // 本地跟踪引用即使被提前指向开发提交，也要以远端 main 为准。
+    git('update-ref', 'refs/remotes/origin/main', git('rev-parse', 'HEAD'));
+    assert.throws(() => execute('publish-git-package.mjs'), /必须已合并到 origin\/main/);
+    git('push', 'origin', 'HEAD:refs/heads/main');
     execute('publish-git-package.mjs');
     run('git', ['--git-dir', remote, 'merge-base', '--is-ancestor', first, 'refs/heads/npm-dist']);
     const tags = git('ls-remote', '--tags', 'origin');
     assert(tags.includes('refs/tags/npm-v1.2.3'));
     assert(tags.includes('refs/tags/npm-v1.2.4'));
-    git('commit', '--allow-empty', '-m', 'source changed after prepare');
+    // 旧的发布提交仍在 main 历史中：浅克隆须补全历史后正确放行。
+    git('push', 'origin', 'HEAD:refs/heads/accepted-release');
+    git('commit', '--allow-empty', '-m', 'main advanced after accepted release');
+    git('push', 'origin', 'HEAD:refs/heads/main');
+    const shallow = join(temporary, 'shallow');
+    run('git', ['clone', '--depth=1', '--branch', 'accepted-release', `file://${remote}`, shallow]);
+    assert.equal(run('git', ['rev-parse', '--is-shallow-repository'], shallow).trim(), 'true');
+    assert.match(run(process.execPath, [join(shallow, 'scripts/check-release-source.mjs'), '--require-main'], shallow), /发布来源校验通过/);
+    assert.equal(run('git', ['rev-parse', '--is-shallow-repository'], shallow).trim(), 'false');
     assert.throws(() => execute('publish-git-package.mjs'), /产物源码已过期/);
   } finally {
     rmSync(temporary, { recursive: true, force: true });

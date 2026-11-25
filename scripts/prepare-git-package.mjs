@@ -3,14 +3,16 @@ import { execFileSync } from 'node:child_process';
 import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { checkReleaseSource } from './check-release-source.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const library = join(root, 'packages/daisu-ui');
 const metadata = JSON.parse(readFileSync(join(library, 'package.json'), 'utf8'));
-assert.equal(metadata.name, 'daisu-ui');
+assert.equal(metadata.name, '@daisu-ui/ui');
 assert.match(metadata.version, /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/);
 if (process.env.CI_COMMIT_TAG) {
   assert.equal(process.env.CI_COMMIT_TAG, `v${metadata.version}`, '源码 Tag 必须与组件包版本一致');
+  checkReleaseSource({ root });
 }
 assert(existsSync(join(library, 'dist/index.js')), '请先运行 npm run ui:build');
 assert(readFileSync(join(library, 'dist/Button.jsx'), 'utf8').includes('<view'), '组件必须保留 JSX');
@@ -20,7 +22,7 @@ const destination = join(artifacts, 'git-package');
 mkdirSync(artifacts, { recursive: true });
 // 与 npm pack 使用相同文件白名单，避免将 Demo、测试或源码装进发布分支。
 const pack = JSON.parse(execFileSync('npm', [
-  'pack', '--workspace', 'daisu-ui', '--ignore-scripts', '--pack-destination', artifacts, '--json',
+  'pack', '--workspace', '@daisu-ui/ui', '--ignore-scripts', '--pack-destination', artifacts, '--json',
 ], { cwd: root, encoding: 'utf8' }))[0];
 rmSync(destination, { recursive: true, force: true });
 mkdirSync(destination, { recursive: true });

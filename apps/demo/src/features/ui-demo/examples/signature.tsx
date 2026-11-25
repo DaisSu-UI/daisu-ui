@@ -1,6 +1,6 @@
 import { useRef, useState } from '@lynx-js/react';
-import { Button, Icon, Popup, Signature, Toast, useToast } from 'daisu-ui';
-import type { SignatureRef, SignatureResult } from 'daisu-ui';
+import { Button, Icon, Popup, Signature, Toast, useToast } from '@daisu-ui/ui';
+import type { SignatureRef, SignatureResult } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 export function SignatureExample({onOpen}:{onOpen:(page:'signature-landscape')=>void}){
   const [disabled,setDisabled]=useState(true),[show,setShow]=useState(false),[image,setImage]=useState(''),ref=useRef<SignatureRef>(null),toast=useToast();

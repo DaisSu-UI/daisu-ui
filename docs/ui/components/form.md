@@ -3,7 +3,7 @@
 表单用于组织字段布局与校验。Form 管理数据模型和校验规则，FormItem 描述字段并承载输入控件。
 
 ```tsx
-import { Form, FormItem } from 'daisu-ui';
+import { Form, FormItem } from '@daisu-ui/ui';
 ```
 
 ## 基础用法
@@ -15,7 +15,7 @@ import { Form, FormItem } from 'daisu-ui';
 ```tsx
 import { useState } from '@lynx-js/react';
 
-import { Input } from 'daisu-ui';
+import { Input } from '@daisu-ui/ui';
 
 const [model, setModel] = useState({ name: '' });
 
@@ -41,9 +41,9 @@ const [model, setModel] = useState({ name: '' });
 ```tsx
 import { useRef } from '@lynx-js/react';
 
-import type { FormRef, FormSchema } from 'daisu-ui';
+import type { FormRef, FormSchema } from '@daisu-ui/ui';
 
-import { Button } from 'daisu-ui';
+import { Button } from '@daisu-ui/ui';
 
 const form = useRef<FormRef>(null);
 
@@ -196,7 +196,7 @@ export type FormValidateResult = {
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

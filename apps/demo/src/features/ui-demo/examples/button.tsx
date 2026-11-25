@@ -1,5 +1,5 @@
-import { Button } from 'daisu-ui';
-import type { ButtonProps, ButtonSize, ButtonTone, ButtonVariant } from 'daisu-ui';
+import { Button } from '@daisu-ui/ui';
+import type { ButtonProps, ButtonSize, ButtonTone, ButtonVariant } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 const types = [

@@ -1,4 +1,4 @@
-import { Slider } from 'daisu-ui';
+import { Slider } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 const marks = [0, 25, 50, 75, 100];

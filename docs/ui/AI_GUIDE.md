@@ -48,7 +48,7 @@ npm run mcp
 ```json
 {
   "mcpServers": {
-    "daisu-ui": {
+    "@daisu-ui/ui": {
       "command": "node",
       "args": ["/media/youzi/Project/workProject/daisu-ui/apps/mcp/index.mjs"]
     }

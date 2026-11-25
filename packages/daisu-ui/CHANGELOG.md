@@ -1,6 +1,15 @@
 # 更新日志
 
-记录 Daisu UI 的版本变化。组件包通过 GitLab 分发并由 npm 安装，尚未发布到 npmjs。
+记录 Daisu UI 的版本变化。npm 组件包名为 `@daisu-ui/ui`，GitLab 保留源码与 Git 安装产物。
+
+## 0.1.0-beta.3
+
+2026-11-25 · npm 首次发布
+
+- npm 包名统一为 `@daisu-ui/ui`，同步组件示例、公开入口与消费校验。
+- npm 仅包含 UI 库的 ESM、保留 JSX 的组件、声明、样式和许可证；不包含 Demo、文档应用或 MCP。
+- 建立 `developer` 开发、`main` 稳定源码、`npm-dist` 产物分支，发布前核对源码已合并到远端 `main`。
+- 增加 npm 产物校验、beta/latest 发布命令及 README 的完整发布操作示例。
 
 ## 0.1.0-beta.2
 

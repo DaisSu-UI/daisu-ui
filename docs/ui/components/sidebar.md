@@ -3,7 +3,7 @@
 侧边栏用于纵向分类导航，可与内容区组合实现页面切换或锚点联动。
 
 ```tsx
-import { Sidebar } from 'daisu-ui';
+import { Sidebar } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -96,7 +96,7 @@ export type SidebarBeforeChange = (
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

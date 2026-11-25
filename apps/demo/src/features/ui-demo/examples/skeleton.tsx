@@ -1,6 +1,6 @@
 import { useState } from '@lynx-js/react';
-import { Grid, GridItem, Skeleton, Switch } from 'daisu-ui';
-import type { SkeletonRow, SkeletonTheme } from 'daisu-ui';
+import { Grid, GridItem, Skeleton, Switch } from '@daisu-ui/ui';
+import type { SkeletonRow, SkeletonTheme } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 const grid:SkeletonRow[]=[Array.from({length:5},()=>({width:48,height:48})),Array.from({length:5},()=>({width:48,height:16}))];
 const imageGroup:SkeletonRow[]=[{height:171},1,{width:107},[{width:93},{width:32,marginLeft:41}]];

@@ -1,6 +1,6 @@
 import { useEffect,useMemo,useRef,useState } from '@lynx-js/react';import { z } from 'zod';
-import { Button, Calendar, Cascader, Cell, CellGroup, Checkbox, CheckboxGroup, DatetimePicker, Form, FormItem, Input, InputNumber, Picker, Radio, RadioGroup, Rate, SelectPicker, Slider, Switch, Textarea, Toast, Upload, useToast, zodAdapter } from 'daisu-ui';
-import type { CascaderOption, FormRef, FormSchema, FormSchemaIssue, UploadFile, InputNumberValue } from 'daisu-ui';import type { HostClient } from '../../../lib/host.js';import { createHostUploadAdapter } from '../../../lib/uiUpload.js';import { formatDate,promotions } from './formShared.js';
+import { Button, Calendar, Cascader, Cell, CellGroup, Checkbox, CheckboxGroup, DatetimePicker, Form, FormItem, Input, InputNumber, Picker, Radio, RadioGroup, Rate, SelectPicker, Slider, Switch, Textarea, Toast, Upload, useToast, zodAdapter } from '@daisu-ui/ui';
+import type { CascaderOption, FormRef, FormSchema, FormSchemaIssue, UploadFile, InputNumberValue } from '@daisu-ui/ui';import type { HostClient } from '../../../lib/host.js';import { createHostUploadAdapter } from '../../../lib/uiUpload.js';import { formatDate,promotions } from './formShared.js';
 import { getDemoAreaOptions } from '../areaOptions.js';
 const shortPlatforms=['京东','微信','抖音'].map((label,i)=>({value:String(i+1),label}));
 const fieldSchema:FormSchema={isRequired:()=>true,validate:m=>['value1','value2'].filter(key=>!m[key]).map(key=>({path:key,message:key==='value1'?'请输入歪比巴卜':'请输入沙卡拉卡'}))};

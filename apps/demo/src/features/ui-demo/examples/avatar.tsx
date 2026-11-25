@@ -1,6 +1,6 @@
 import { useEffect, useState } from '@lynx-js/react';
-import { Avatar, AvatarGroup, Badge, Icon, RootPortal } from 'daisu-ui';
-import type { AvatarGroupItem } from 'daisu-ui';
+import { Avatar, AvatarGroup, Badge, Icon, RootPortal } from '@daisu-ui/ui';
+import type { AvatarGroupItem } from '@daisu-ui/ui';
 import panda from '../../../assets/demo-panda.jpg';
 import { DemoGroup, ExampleBlock } from './shared.js';
 

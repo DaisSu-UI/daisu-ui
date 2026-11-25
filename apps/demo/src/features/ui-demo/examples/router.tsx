@@ -1,6 +1,6 @@
 import { useEffect, useState } from '@lynx-js/react';
-import { Button } from 'daisu-ui';
-import { useRoute, useRouterSnapshot } from 'daisu-ui/router';
+import { Button } from '@daisu-ui/ui';
+import { useRoute, useRouterSnapshot } from '@daisu-ui/ui/router';
 import type { AppRoute } from '../../../app/router.js';
 import { useAppRouter } from '../../../app/router.js';
 import { DemoGroup, ExampleBlock } from './shared.js';

@@ -3,7 +3,7 @@
 文本用于展示普通文字、语义状态、格式化金额和脱敏信息，支持多行截断与前后内容。
 
 ```tsx
-import { Text } from 'daisu-ui';
+import { Text } from '@daisu-ui/ui';
 ```
 
 ## 组件类型
@@ -87,7 +87,7 @@ export type TextMode = 'text' | 'date' | 'phone' | 'name' | 'price';
 页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。
 
 ```tsx
-import { ConfigProvider } from 'daisu-ui';
+import { ConfigProvider } from '@daisu-ui/ui';
 
 <ConfigProvider theme="dark">
   {/* 页面内容 */}

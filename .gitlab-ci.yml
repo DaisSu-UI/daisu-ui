@@ -1,6 +1,9 @@
 # 兼容当前旧版 GitLab，使用 only/except，不使用 rules/needs。
 image: node:24-bookworm
 
+variables:
+  GIT_DEPTH: "0"
+
 stages:
   - verify
   - publish
@@ -11,6 +14,7 @@ cache:
     - .npm/
 
 before_script:
+  - node scripts/check-release-source.mjs
   - npm ci --cache .npm --prefer-offline --no-audit --no-fund
 
 verify:
@@ -18,10 +22,12 @@ verify:
   script:
     - npm test
     - npm run test:git-release
+    - npm run test:npm-release
     - npm run test:types
     - npm run build
     - npm run ui:check
     - npm run ui:pack
+    - node scripts/prepare-npm-package.mjs
     - node scripts/prepare-git-package.mjs
   only:
     - branches
@@ -34,6 +40,7 @@ verify:
     paths:
       - artifacts/*.tgz
       - artifacts/git-package/
+      - artifacts/npm-release.json
 
 publish:git:
   stage: publish
@@ -42,5 +49,16 @@ publish:git:
     - verify
   script:
     - node scripts/publish-git-package.mjs
+  only:
+    - /^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$/
+
+publish:npm:
+  stage: publish
+  when: manual
+  before_script: []
+  dependencies:
+    - verify
+  script:
+    - node scripts/publish-npm-package.mjs
   only:
     - /^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$/
