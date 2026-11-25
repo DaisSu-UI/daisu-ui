@@ -1,0 +1,20 @@
+name: daisu-ui-local-runner
+
+services:
+  runner:
+    image: gitlab/gitlab-runner:v11.11.2
+    container_name: daisu-ui-local-runner
+    restart: unless-stopped
+    cpus: 1.0
+    mem_limit: 512m
+    volumes:
+      - runner-config:/etc/gitlab-runner
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
+    labels:
+      com.daisu-ui.role: gitlab-runner
+
+volumes:
+  runner-config:
+    external: true
+    name: daisu-ui-runner-config

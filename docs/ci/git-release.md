@@ -38,7 +38,7 @@ npm install "git+ssh://git@git.zilueit.com/daisu-ui/daisu-ui.git#npm-v0.1.0-beta
 
 在 GitLab 前台保持 Auto DevOps 关闭、自定义 CI 配置路径为 `.gitlab-ci.yml`，不需要流水线触发器、不需要 Kubernetes。
 
-项目目前没有可用 Runner。请服务器管理员在一台长期在线的 Linux 机器上，安装与现有 GitLab 版本兼容的 GitLab Runner，并使用项目“设置 → CI/CD → Runners”页面的 URL 和注册令牌注册项目 Runner。选择 Docker executor、默认镜像 `node:24-bookworm`、允许无标签作业；不需要 privileged 模式或 Docker-in-Docker。机器需能访问 GitLab 和 npm registry。注册令牌不写入仓库。
+本项目已在开发机配置 [本地 Runner](local-runner.md)。如需迁移到长期在线的服务器，请管理员安装与现有 GitLab 版本兼容的 GitLab Runner，并使用项目“设置 → CI/CD → Runners”页面的 URL 和注册令牌注册项目 Runner。选择 Docker executor、默认镜像 `node:24-bookworm`、允许无标签作业；不需要 privileged 模式或 Docker-in-Docker。机器需能访问 GitLab 和 npm registry。注册令牌不写入仓库。
 
 自动发布还需要一次性配置：
 
@@ -47,4 +47,4 @@ npm install "git+ssh://git@git.zilueit.com/daisu-ui/daisu-ui.git#npm-v0.1.0-beta
 3. 将源码版本 Tag `v*` 设为受保护 Tag，只允许发布负责人创建，保证发布任务能读取受保护变量。
 4. 若 GitLab 的 SSH 地址与网页地址不同，设置 `GIT_RELEASE_REMOTE` 为实际 SSH 仓库地址；本项目可用 `git@git.zilueit.com:daisu-ui/daisu-ui.git`。
 
-只有 GitLab 前台访问权限时，可以完成项目侧变量与部署密钥配置，但无法在服务器上安装 Runner；管理员接入前，自动作业会保持等待，仍可使用上述本地发布命令。
+只有 GitLab 前台访问权限时，可以完成项目侧变量与部署密钥配置，但无法在服务器上安装 Runner；没有在线 Runner 时，自动作业会保持等待，仍可使用上述本地发布命令。
