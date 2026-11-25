@@ -95,7 +95,7 @@ Upload：11例独立详情，单图片宿主上传、数量/覆盖/预览/异步
 
 Progress 进度条：15条进度独立详情、内置百分比、状态、颜色阶段、原生线性过渡；参见 components/progress.md。
 
-Circle 环形进度条：九个原生SVG圆环示例，线性渐变、方向、内容插槽与可中断动画；参数和Wot描边映射见 components/circle.md。
+Circle 环形进度条：九个原生SVG圆环示例，线性渐变、方向、内容插槽与可中断动画；参数和描边规则见 components/circle.md。
 
 Notify 消息通知：14入口、四类型/悬浮样式、显式useNotify实例、续期与关闭动画；参数、Portal安全区和事件语义见 components/notify.md。
 

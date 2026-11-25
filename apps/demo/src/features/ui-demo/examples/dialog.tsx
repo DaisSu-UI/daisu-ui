@@ -3,7 +3,7 @@ import type { ReactNode } from '@lynx-js/react';
 import { Button, Cell, Dialog, Rate, useDialog } from 'daisu-ui';
 import type { DialogOptions, ButtonTone } from 'daisu-ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
-import banner from '../../../assets/wot-capybara.jpg';
+import banner from '../../../assets/demo-capybara.jpg';
 
 type Sample = { label: string; options: DialogOptions; tone?: ButtonTone; content?: 'rating' | 'custom'; header?: boolean; customTitle?: boolean; customActions?: boolean };
 const base: DialogOptions = { title: '提示', msg: '这是一条消息提示' };

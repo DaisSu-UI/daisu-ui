@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from '@lynx-js/react';
 import { Button, Icon, Loading, RootPortal, Tabbar } from 'daisu-ui';
 import type { TabbarItem, TabbarValue } from 'daisu-ui';
-import panda from '../../../assets/wot-panda.jpg';
+import panda from '../../../assets/demo-panda.jpg';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 const basic: readonly TabbarItem[] = [{ title: '首页', icon: 'home' }, { title: '分类', icon: 'store' }, { title: '我的', icon: 'user' }];

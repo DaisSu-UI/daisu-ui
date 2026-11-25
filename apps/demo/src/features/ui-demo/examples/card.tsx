@@ -1,6 +1,6 @@
 import { Button, Card, Dialog, Icon, Toast, useDialog, useToast } from 'daisu-ui';
 import type { ReactNode } from '@lynx-js/react';
-import cat from '../../../assets/wot-black-cat.png';
+import cat from '../../../assets/demo-cat.png';
 import { DemoGroup, ExampleBlock } from './shared.js';
 const passage='至若春和景明，波澜不惊，上下天光，一碧万顷，沙鸥翔集，锦鳞游泳，岸芷汀兰，郁郁青青。而或长烟一空，皓月千里，浮光跃金，静影沉璧，渔歌互答，此乐何极！登斯楼也，则有心旷神怡，宠辱偕忘，把酒临风，其喜洋洋者矣。';
 function CardList({items}:{items:[string,string][]}){return <view className="demo-card-list">{items.map(([title,description])=><view className="demo-card-list-item" key={title}><image className="demo-card-list-image" src={cat} mode="aspectFill"/><view className="demo-card-list-copy"><text className="demo-card-list-title">{title}</text><text className="demo-card-description">{description}</text></view></view>)}</view>;}

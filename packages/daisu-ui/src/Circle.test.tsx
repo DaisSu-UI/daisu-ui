@@ -4,7 +4,7 @@ import { Circle } from './Circle.js';
 import { circleStops, circleSvg } from './circleModel.js';
 afterEach(() => { cleanup(); rstest.useRealTimers(); });
 const defaults = { value:20,size:120,color:'#1c64fd',layerColor:'#f2f3f5',strokeWidth:18,strokeLinecap:'round' as const,clockwise:true };
-test('Circle native SVG matches Wot stroke geometry, direction, zero dot and full circle', () => {
+test('Circle native SVG preserves stroke geometry, direction, zero dot and full circle', () => {
   const svg = circleSvg(defaults); expect(svg).toContain('r="55.5"'); expect(svg).toContain('stroke-width="9"'); expect(svg).toContain('M60 4.5A55.5 55.5 0 0 1');
   expect(circleSvg({ ...defaults,clockwise:false })).toContain('M60 4.5A55.5 55.5 0 0 0');
   expect(circleSvg({ ...defaults,value:0 })).toContain('cx="60" cy="4.5" r="4.5"');

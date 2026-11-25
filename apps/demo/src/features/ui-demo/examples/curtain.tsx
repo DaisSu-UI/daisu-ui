@@ -1,7 +1,7 @@
 import { useState } from '@lynx-js/react';
 import { Button, Curtain } from 'daisu-ui';
 import type { CurtainClosePosition } from 'daisu-ui';
-import cat from '../../../assets/wot-black-cat-preview.png';
+import cat from '../../../assets/demo-cat-large.png';
 import { DemoGroup, ExampleBlock } from './shared.js';
 const positions:CurtainClosePosition[]=['inset','top-left','top','top-right','bottom-left','bottom','bottom-right','bottom-right','inset'];
 export function CurtainExample(){

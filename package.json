@@ -1,7 +1,7 @@
 {
   "name": "daisu-ui-workspace",
   "private": true,
-  "version": "0.1.0-beta.0",
+  "version": "0.1.0-beta.1",
   "type": "module",
   "workspaces": [
     "packages/*",
@@ -22,21 +22,23 @@
     "test": "rstest run",
     "pretest": "npm run ui:build",
     "test:types": "npm run ui:build && npm run typecheck --workspace @daisu-ui/demo",
-    "benchmark:area": "node scripts/benchmark-demo-area.mjs"
+    "benchmark:area": "node scripts/benchmark-demo-area.mjs",
+    "icons:generate": "node scripts/generate-icons.mjs"
   },
   "devDependencies": {
+    "@lynx-js/react": "^0.126.2",
     "@lynx-js/react-rsbuild-plugin": "^0.20.3",
     "@lynx-js/rspeedy": "^0.18.0",
     "@lynx-js/types": "^4.2.1",
     "@rsbuild/core": "^2.2.9",
     "@rstest/core": "^0.12.1",
+    "@tabler/icons": "3.53.0",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^7.0.0",
     "@types/react": "^18.3.0",
     "fflate": "0.8.2",
     "jsdom": "^27.4.0",
-    "typescript": "^6.0.3",
-    "@lynx-js/react": "^0.126.2"
+    "typescript": "^6.0.3"
   },
   "overrides": {
     "@lynx-js/tasm": "0.0.53"

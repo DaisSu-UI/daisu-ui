@@ -32,7 +32,7 @@ import { NoticeBar } from 'daisu-ui';
 | --- | --- | --- | --- |
 | text | string或readonly string[]，按数组顺序循环 | `string \| readonly string[]` | `''` |
 | type | warning/info/danger，浅深配色 | `'warning' \| 'info' \| 'danger'` | `'warning'` |
-| scrollable | 水平滚动开关；即使文本短也滚动，符合当前Wot行为 | `boolean` | `true` |
+| scrollable | 水平滚动开关；即使文本短也滚动 | `boolean` | `true` |
 | delay | 每轮停留秒数，负值归0，非有限值回退1 | `number` | `1` |
 | speed | px/s，非正数/非有限值回退50 | `number` | `50` |
 | closable | 内置关闭按钮，关闭后移除并清理动画计时 | `boolean` | `false` |

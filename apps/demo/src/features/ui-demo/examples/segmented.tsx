@@ -1,10 +1,10 @@
 import { useState } from '@lynx-js/react';
 import { Button, Icon, RootPortal, Segmented, Transition } from 'daisu-ui';
 import type { SegmentedOption } from 'daisu-ui';
-import redpanda from '../../../assets/wot-redpanda.jpg';
-import capybara from '../../../assets/wot-capybara.jpg';
-import panda from '../../../assets/wot-panda.jpg';
-import meng from '../../../assets/wot-meng.jpg';
+import redpanda from '../../../assets/demo-red-panda.jpg';
+import capybara from '../../../assets/demo-capybara.jpg';
+import panda from '../../../assets/demo-panda.jpg';
+import meng from '../../../assets/demo-landscape.jpg';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 const options = ['评论', '点赞', '贡献', '打赏'];

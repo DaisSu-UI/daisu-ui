@@ -10,7 +10,7 @@ Flutter `yxt-cso-flutter/pubspec.yaml` 锁定 `lynx_view: 1.9.0`，不能依据 
 
 用户授权先实现浏览器后，已提供公共 VideoPreview/useVideoPreview 与 /ui-demo/video-preview：HTML5实际播放、248px/全屏、多实例/ref、关闭释放。Flutter版本仍未完成。
 
-Wot 依赖 video 原生播放器，需支持 url/poster/title、open/close、fullScreen、zIndex、closePosition、组件 ref 与 useVideoPreview 多实例隔离。Flutter 已依赖 video_player（视频）和 just_audio（音频），但「安装了 Flutter 播放器」不等于 Lynx 已能调用。
+视频预览后端需支持 url/poster/title、open/close、fullScreen、zIndex、closePosition、组件 ref 与 useVideoPreview 多实例隔离。Flutter 已依赖 video_player（视频）和 just_audio（音频），但「安装了 Flutter 播放器」不等于 Lynx 已能调用。
 
 可接入方案：Flutter 提供视频预览能力，接收资源与预览配置，返回实例标识，并通过宿主事件报告打开/关闭/错误；或为 Lynx 注册跨端视频元素及播放控制。H5 适配同一协议。明确关闭/返回键、生命周期、音频释放与请求失效行为后，才能完成Flutter侧 VideoPreview / useVideoPreview；浏览器公共API与独立详情已经实现。不能使用 file.preview 的立即成功响应伪造播放器打开和关闭事件。
 
@@ -18,7 +18,7 @@ Wot 依赖 video 原生播放器，需支持 url/poster/title、open/close、ful
 
 已提供浏览器公共 ImgCropper 与 /ui-demo/img-cropper：真实文件选择、拖动/双指/滚轮缩放、旋转锁边、Canvas PNG/JPEG及Blob URL下载。Flutter版本仍未完成。
 
-Wot 需要拖动/双指缩放/旋转/锁边、aspectRatio、maxScale、exportScale、PNG/JPEG quality/fileType 以及真实 `{tempFilePath,width,height}` 导出。当前图片协议是单张「选择并上传」原子操作，不能在上传前获得本地图片并裁剪。
+裁剪后端需提供拖动/双指缩放/旋转/锁边、aspectRatio、maxScale、exportScale、PNG/JPEG quality/fileType 以及真实 `{tempFilePath,width,height}` 导出。当前图片协议是单张「选择并上传」原子操作，不能在上传前获得本地图片并裁剪。
 
 Flutter 已依赖 image_cropper / extended_image，但尚未暴露 Lynx 裁剪能力。需要先提供独立图片选择/读取及 crop/export 接口，返回真实本地路径、尺寸及失败/取消结果，再对接公共原生编辑器与宿主导出。跨端解码器或经过验证的 Canvas 后端也可替代宿主裁剪，但本项目目前没有这条能力。当前 SVG 的外部位图嵌入在原生后端支持不完整，不能把引用原图的 SVG 当作可独立上传的 PNG 成果。
 

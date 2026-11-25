@@ -1,7 +1,7 @@
-# Wot Demo 组件移植进度
+# Daisu UI 组件实现状态
 
-参考入口：https://wot-ui.cn/demo/#/ ，分类以在线 Wot UI 2.4 Demo 为准。
-参数以对应官网组件文档为准，必要时结合本地 wot-ui / Lynx skills。
+组件按基础、导航、录入、反馈和数据展示分类，每个组件提供独立详情。
+参数以本库实际公开类型与组件文档为准，Lynx 能力通过本地技能核对。
 
 ## 每个组件的完成条件
 
@@ -12,7 +12,7 @@
 5. 一个组件一个提交，验证后推送 `origin/developer`；不将待实现条目伪装成可用组件。
 
 原有 UI 库、路由和示例此前尚未提交，首次提交一并建立可构建的基线。
-现有简单示例不等于已按 Wot 验收，以下只有完成核对的组件打勾。
+只有完成 API、交互与示例核对的组件才标记完成。
 H5 验证不能替代 Flutter 内 iOS / Android 真机验证。
 
 ## 批次
@@ -40,7 +40,7 @@ Button、Cell 已在批次 0 核对。
 ### 2：导航
 
 - [x] Router 路由：全线采用 TanStack Router，统一业务路由树、页面注册和类型约束导航；UI 库封装 hooks、跨宿主守卫、保活、转场与侧滑；Demo 各页接入独立路径地址，兼容旧 Hash 链接，提供导航及守卫示例。H5 刷新、前进后退、取消守卫与 replace 已通过浏览器验证；Flutter 持久化同步待宿主接入和真机回归。
-- [x] Navbar 导航栏：统一Navbar以variant显式选择standard，默认保留原56px业务样式及回调；NavbarCapsule、Wot三个分组七种形态、额外默认样式展示，保留统一Demo页头。
+- [x] Navbar 导航栏：统一Navbar以variant显式选择standard，默认保留原56px业务样式及回调；NavbarCapsule、三个分组七种形态、额外默认样式展示，保留统一Demo页头。
 - [x] Tabbar 标签栏：名称/索引匹配、徽标、圆角悬浮、自定义图标/插槽/颜色、异步拦截与固定底部；五组十例几何对齐，浅深截图与触屏交互核对。安全区使用宿主数值，已复用公共Badge并支持完整badgeProps。
 - [x] Tabs 标签页：保留原options默认样式，items标准模式、严格名称/索引、徽标、四种指示线、懒挂载、横向滚动/地图、内容动画/手势及弹窗；官网四组示例、首屏几何、浅深截图与实际滑动核对，原生sticky/手势待真机。
 - [x] Segmented 分段器：card/outline主题、200ms滑块过渡、受控/非受控、单项与整体禁用、自定义标签及独立弹窗；五组六例几何、浅深截图、动画中间帧、缩放对齐与状态保留已核对。振动缺少宿主协议，未提供无效参数。
@@ -68,9 +68,9 @@ Slider 已在批次 0 核对。
 
 ### 4：录入选择与宿主能力
 
-- [x] Picker 选择器：八例独立 Wot Demo、确认/取消/Ref 显隐/异步校验失效保护；H5 浅深主题与交互已验收。
-- [x] PickerView 选择器视图：六例独立 Wot Demo，字段映射/多列/级联/禁用/滚动吸附/完整 Ref，浅深主题与 H5 验证。
-- [x] SelectPicker 单复选选择器：十例独立 Wot Demo、搜索高亮/禁用/loading/即时 change/确认前校验/自动完成/Ref；RootPortal 组合复用公共控件。
+- [x] Picker 选择器：八例独立 Demo、确认/取消/Ref 显隐/异步校验失效保护；H5 浅深主题与交互已验收。
+- [x] PickerView 选择器视图：六例独立 Demo，字段映射/多列/级联/禁用/滚动吸附/完整 Ref，浅深主题与 H5 验证。
+- [x] SelectPicker 单复选选择器：十例独立 Demo、搜索高亮/禁用/loading/即时 change/确认前校验/自动完成/Ref；RootPortal 组合复用公共控件。
 - [x] Cascader 级联选择器
 - [x] Calendar 日历选择器
 - [x] CalendarView 日历面板
@@ -148,9 +148,9 @@ Collapse 已在批次 0 核对。
 - 不支持的参数在组件文档逐项注明原因，不提供无效果的占位参数。
 - 组件详情只展示已经可用的能力；原业务页面的组件不随 Demo 改版擅自替换。
 
-- 关联实现 `Picker / PickerView 选择器`：复杂Form依赖与批次4独立完整 Wot 详情均已完成，实际API见 `docs/ui/components/picker.md` 和 `picker-view.md`。
+- 关联实现 `Picker / PickerView 选择器`：复杂Form依赖与批次4独立完整详情均已完成，实际API见 `docs/ui/components/picker.md` 和 `picker-view.md`。
 
-- 关联实现 `SelectPicker 选择器`：复杂Form依赖与批次4独立完整 Wot 详情均已完成，实际API见 `docs/ui/components/select-picker.md`。
+- 关联实现 `SelectPicker 选择器`：复杂Form依赖与批次4独立完整详情均已完成，实际API见 `docs/ui/components/select-picker.md`。
 
 - 关联实现 `DatetimePicker / DatetimePickerView 时间选择`：复杂Form依赖已补齐，单值/区间及独立完整14例详情已完成，实际API见 `docs/ui/components/datetime-picker.md`。
 

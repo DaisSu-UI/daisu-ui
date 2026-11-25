@@ -8,7 +8,7 @@ export type EmptyProps = {
   tip?: ReactNode; image?: ReactNode; bottom?: ReactNode;
   className?: string; style?: CSSProperties;
 };
-/** Wot's current Empty uses SVG glyphs; the business EmptyState remains independent. */
+/** Empty uses SVG glyphs; the business EmptyState remains independent. */
 export function Empty({ icon = 'empty', iconSize = 98, iconColor, tip, image, bottom, className = '', style }: EmptyProps) {
   const dimension = imgDimension(iconSize, 98);
   const customImage = image !== undefined && image !== null;

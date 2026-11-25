@@ -1,21 +1,9 @@
-# CSO Lynx UI 示例
+# Daisu UI 组件 Demo
 
-`UiDemoPage.tsx` 是内部 UI 库的可运行示例。它组合 `daisu-ui` 的公开组件；Cell 自定义内容中的滑块复用公共 `Slider`，开关使用官方 `@lynx-js/lynx-ui` 原语，不调用业务接口或 Flutter 宿主业务能力。
+独立示例通过 daisu-ui 的公开 API 组合组件，不依赖业务工程。
 
-本地 H5 预览：
+运行 npm run ui:demo:dev 后访问 http://localhost:3091/#/ui-demo/index；组件可通过 #/ui-demo/button 等地址独立打开。浅深主题由初始化数据和示例工具栏控制。
 
-```sh
-npm run h5:dev
-# 打开 http://localhost:3080/?demo=ui
-# 直接打开 Button 示例：http://localhost:3080/?demo=ui&component=button
-# 直接打开 Cell 示例：http://localhost:3080/?demo=ui&component=cell
-# 直接打开 Slider 示例：http://localhost:3080/?demo=ui&component=slider
-```
+图片、视频、音频使用本仓库维护的本地资源，插画源文件位于 apps/demo/assets-source，生成命令位于 scripts/generate-demo-assets.mjs。图标名称由公共 iconNames 生成分类，图形来自 Tabler Icons。
 
-Flutter 调试时，将初始化数据的 `page` 设置为 `ui-demo`，或 `ui-demo/button` 一类的组件路径。
-
-## 分批组件移植
-
-全分类清单与验收标准见 `docs/ui/IMPLEMENTATION_PLAN.md`。
-新增 `icon`、`text`、`layout` 独立入口，例如 `?demo=ui&component=icon`。
-每完成一个组件同步 `docs/ui/components/` 和 `llms-full.txt`，验证后单独提交并推送。
+组件变更时同步 docs/ui/components、AI 指南和 LLM 文档，并通过测试、类型检查及构建。需要真实宿主能力的示例由使用方注入接口。

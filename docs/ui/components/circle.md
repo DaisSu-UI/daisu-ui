@@ -39,7 +39,7 @@ import { Circle } from 'daisu-ui';
 | fill | 圆环内部填充，默认透明 | `string` | — |
 | speed | 每秒变化的百分比；≤0 或 >1000 时立即绘制，非法值回退 50 | `number` | `50` |
 | text | 中心文字，非空时优先于 children | `string` | — |
-| strokeWidth | 保持当前 Wot 绘制语义：前景实际描边为此值的一半；无 fill 时轨道同宽，有 fill 时轨道为完整此值 | `number` | `18` |
+| strokeWidth | 描边规则：前景实际描边为此值的一半；无 fill 时轨道同宽，有 fill 时轨道为完整此值 | `number` | `18` |
 | strokeLinecap | round / butt / square | `'round' \| 'butt' \| 'square'` | `'round'` |
 | clockwise | 是否顺时针从十二点方向展开 | `boolean` | `true` |
 | children | 中心内容插槽，不传 text 时展示 | `ReactNode` | — |

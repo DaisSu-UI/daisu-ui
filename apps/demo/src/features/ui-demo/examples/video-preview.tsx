@@ -1,9 +1,9 @@
 import { useInitData, useRef, useState } from '@lynx-js/react';
 import { Button, VideoPreview, useVideoPreview } from 'daisu-ui';
 import type { VideoPreviewRef } from 'daisu-ui';
-import poster from '../../../assets/wot-black-cat.png';
+import poster from '../../../assets/demo-cat.png';
 import { DemoGroup, ExampleBlock } from './shared.js';
-const url='https://unpkg.com/wot-design-uni-assets@1.0.3/VID_115503.mp4';
+import url from '../../../assets/demo-journey.mp4';
 export function VideoPreviewExample(){
  const init=useInitData() as unknown,browser=!!init&&typeof init==='object'&&'browserMedia' in init&&init.browserMedia===true;
  const main=useVideoPreview(),sub=useVideoPreview(),ref=useRef<VideoPreviewRef>(null),[error,setError]=useState('');

@@ -1,7 +1,7 @@
 import { useEffect, useState } from '@lynx-js/react';
 import { Avatar, AvatarGroup, Badge, Icon, RootPortal } from 'daisu-ui';
 import type { AvatarGroupItem } from 'daisu-ui';
-import panda from '../../../assets/wot-panda.jpg';
+import panda from '../../../assets/demo-panda.jpg';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 const group: readonly AvatarGroupItem[] = [{ key: 'panda', src: panda }, { key: 'star', icon: 'star-fill' }, { key: 'a', text: 'A', bgColor: '#1c64fd' }, { key: 'b', text: 'B', bgColor: '#12b886' }, { key: 'c', text: 'C', bgColor: '#f14646' }];

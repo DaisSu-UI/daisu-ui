@@ -1,4 +1,4 @@
-import lake from '../../../assets/wot-journal-lake.jpg';
+import lake from '../../../assets/demo-lake.jpg';
 export {lake};
 export const originalLake='https://images.unsplash.com/photo-1536686984648-9bcaa70abf45?auto=format&fit=crop&w=2400&h=1500&q=90';
 export const journalStyles={

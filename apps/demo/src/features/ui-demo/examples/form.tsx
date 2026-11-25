@@ -7,7 +7,7 @@ const basicSchema: FormSchema = { validate(model) { const issues = []; if (!mode
 const hiddenSchema: FormSchema = { validate: m => ['visibleValue', 'hiddenValue'].filter(k => !m[k]).map(path => ({ path, message: `请输入${path === 'visibleValue' ? '可见' : '隐藏'}字段` })) };
 const parentSchema: FormSchema = { validate: m => (m.user as { name: string }).name ? [] : [{ path: ['user', 'name'], message: '请输入用户名' }] };
 export function FormExample({ onOpen }: { onOpen: (page: UiDemoComponent) => void }) {
-  const [model, setModel] = useState({ value1: '', value2: '' }), [hidden, setHidden] = useState(false), [hiddenModel, setHiddenModel] = useState({ visibleValue: 'wot-ui', hiddenValue: '' }), [parentModel, setParentModel] = useState({ user: { name: '' } });
+  const [model, setModel] = useState({ value1: '', value2: '' }), [hidden, setHidden] = useState(false), [hiddenModel, setHiddenModel] = useState({ visibleValue: 'Daisu UI', hiddenValue: '' }), [parentModel, setParentModel] = useState({ user: { name: '' } });
   const basic = useRef<FormRef>(null), hiddenForm = useRef<FormRef>(null), parent = useRef<FormRef>(null), toast = useToast();
   const submit = (ref: { current: FormRef | null }) => { 'background only'; void ref.current?.validate().then(result => { if (result.valid) toast.success('校验通过'); }).catch(() => toast.error('校验失败，请重试')); };
   const footer = (ref: { current: FormRef | null }) => <view className="demo-form-footer"><Button label="提交" size="large" block onTap={() => submit(ref)} /></view>;

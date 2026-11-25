@@ -1,10 +1,10 @@
 import { Button, ImagePreview, SwiperNav, useImagePreview } from 'daisu-ui';
 import type { ImagePreviewOptions } from 'daisu-ui';
-import redpanda from '../../../assets/wot-redpanda.jpg';
-import capybara from '../../../assets/wot-capybara.jpg';
-import panda from '../../../assets/wot-panda.jpg';
-import moon from '../../../assets/wot-moon.jpg';
-import meng from '../../../assets/wot-meng.jpg';
+import redpanda from '../../../assets/demo-red-panda.jpg';
+import capybara from '../../../assets/demo-capybara.jpg';
+import panda from '../../../assets/demo-panda.jpg';
+import moon from '../../../assets/demo-moon.jpg';
+import meng from '../../../assets/demo-landscape.jpg';
 import { DemoGroup, ExampleBlock } from './shared.js';
 const images=[redpanda,capybara,panda,moon,meng],labels=['小熊猫','水豚','大熊猫','月亮','萌宠'];
 export function ImagePreviewExample(){

@@ -78,7 +78,7 @@ export const Tour = forwardRef<TourRef, TourProps>(function Tour({ show = false,
   const pad = positive(step?.padding ?? padding);
   const hole = { left: target.left - pad, top: target.top - pad, width: target.width + pad * 2, height: target.height + pad * 2 };
   const placement = step?.placement === 'auto' || !step?.placement ? hole.top + hole.height / 2 < bounds.top + bounds.height / 2 ? 'bottom' : 'top' : step.placement;
-  // Wot's gap is measured from the original target; padding expands the highlight.
+  // The gap is measured from the original target; padding expands the highlight.
   const position = bubblePosition(target, { left: 0, top: 0, ...panelSize }, { left: bounds.left + 12, top: bounds.top + 12, width: Math.max(0, bounds.width - 24), height: Math.max(0, bounds.height - 24) }, placement, positive(step?.offset ?? offset) - 6, false);
   const state: TourRenderState = { current: selected, total: steps.length, step: step!, elementInfo: hole, prev: () => navigate(-1), next: () => navigate(1), skip: () => close('skip'), finish: () => close('finish') };
   const layer = <>

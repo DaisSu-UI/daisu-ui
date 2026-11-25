@@ -2,7 +2,7 @@ import { afterEach, expect, test } from '@rstest/core';
 import { cleanup, render } from '@lynx-js/react/testing-library';
 import { Skeleton, skeletonRows } from './Skeleton.js';
 afterEach(cleanup);
-test('Skeleton presets match current Wot and numeric counts produce the documented columns',()=>{
+test('Skeleton presets and numeric counts produce the documented columns',()=>{
  expect(skeletonRows(undefined,'avatar')).toEqual([[{type:'circle',size:64}]]);expect(skeletonRows([],'paragraph')).toHaveLength(4);expect(skeletonRows([1,1,2],'text').map(row=>row.length)).toEqual([1,1,2]);expect(skeletonRows([Infinity,-1,2.9],'text').map(row=>row.length)).toEqual([0,0,2]);
 });
 test('Skeleton rowCol replaces theme immediately and only supported layout styles reach cells',()=>{

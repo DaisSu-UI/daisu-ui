@@ -61,13 +61,13 @@ import { Text } from 'daisu-ui';
 | decoration | 文字装饰 | `'none' \| 'underline' \| 'line-through'` | — |
 | prefix | 前后内容，节点须适用于 Lynx 内联 text | `ReactNode` | — |
 | suffix | 前后内容，节点须适用于 Lynx 内联 text | `ReactNode` | — |
-| className | 对应 Wot click / custom-class | `string` | `''` |
+| className | 点击回调或自定义样式类名 | `string` | `''` |
 
 ## Events 事件
 
 | 事件 | 说明 | 类型 |
 | --- | --- | --- |
-| onTap | 对应 Wot click / custom-class | () => void |
+| onTap | 点击回调或自定义样式类名 | () => void |
 
 ## 内容插槽
 

@@ -1,6 +1,6 @@
 import { Grid, GridItem } from 'daisu-ui';
 import { useAppRouter } from '../../../app/router.js';
-import cat from '../../../assets/wot-black-cat.png';
+import cat from '../../../assets/demo-cat.png';
 import { DemoGroup, ExampleBlock } from './shared.js';
 const cells=(count:number)=>Array.from({length:count},(_,i)=><GridItem key={i} icon="image" text="文字"/>);
 const horizontal=(reverse=false)=>['图标居'+(reverse?'右':'左'),'设置选项','卡券中心','订单列表'].map((text,i)=><GridItem key={i} icon={['image','settings','tag','list'][i]} text={text}/>);

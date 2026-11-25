@@ -11,5 +11,5 @@
   "sourceRepository": "git@git.zilueit.com:daisu/yxt-cso-lynx.git",
   "sourceBranch": "developer",
   "sourceCommit": "49c88aa",
-  "applicationDependency": "file:vendor/daisu-ui-0.1.0-beta.0.tgz"
+  "applicationDependency": "file:vendor/daisu-ui-0.1.0-beta.1.tgz"
 }

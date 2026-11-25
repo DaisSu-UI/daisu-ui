@@ -1,7 +1,7 @@
 import { g, e } from "./shared.mjs";
 export default {
   icon: g(
-    "图标用于表示操作、状态和导航。支持内置 SVG 图标、图片地址、自定义颜色与尺寸。",
+    "图标用于表示操作、状态和导航。支持305个内置 SVG 图标名称、图片地址、自定义颜色与尺寸，内置图形基于 Tabler Icons 3.53.0（MIT）。",
     "Icon",
     e(
       "组件类型",

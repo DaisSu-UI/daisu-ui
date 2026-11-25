@@ -6,9 +6,9 @@ import { nextRateValue, rateCount, rateScore, rateSvg } from './rateModel.js';
 test('Rate normalizes values and only clears the minimum selected score', () => {
   expect(rateCount(NaN)).toBe(5); expect(rateCount(-2)).toBe(0); expect(rateScore(Infinity, 5)).toBe(0); expect(rateScore(9, 5)).toBe(5);
   expect(nextRateValue(1, 1, false, true)).toBe(0); expect(nextRateValue(.5, .5, true, true)).toBe(0); expect(nextRateValue(3, 3, false, true)).toBe(3);
-  const svg = rateSvg('M0 0', 'linear-gradient(180deg, rgba(255,238,0,1) 0%, rgba(250,176,21,1) 100%)');
+  const svg = rateSvg('<path fill="currentColor" d="M0 0"/>', 'linear-gradient(180deg, rgba(255,238,0,1) 0%, rgba(250,176,21,1) 100%)');
   expect(svg).toContain('linearGradient'); expect(svg).toContain('stop-color="rgba(255,238,0,1)"'); expect(svg).toContain('offset="100%"');
-  expect(rateSvg('M0 0', '\"><script>')).not.toContain('<script>');
+  expect(rateSvg('<path fill="currentColor" d="M0 0"/>', '\"><script>')).not.toContain('<script>');
 });
 
 test('Rate half-hit targets select and clear fractional values, while readonly and disabled remain inert', () => {

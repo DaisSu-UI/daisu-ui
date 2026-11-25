@@ -1,8 +1,8 @@
 import type { HostClient } from '../../../lib/host.js';
 import { Img, Loading, Toast, useToast } from 'daisu-ui';
 import type { ImgMode, ImgPreview } from 'daisu-ui';
-import cat from '../../../assets/wot-black-cat.png';
-import previewCat from '../../../assets/wot-black-cat-preview.png';
+import cat from '../../../assets/demo-cat.png';
+import previewCat from '../../../assets/demo-cat-large.png';
 import { DemoGroup, ExampleBlock } from './shared.js';
 const modes: ImgMode[] = ['top left','top right','bottom left','bottom right','right','left','center','bottom','top','heightFix','widthFix','scaleToFill','aspectFit','aspectFill'];
 // No source keeps the native placeholder visible; malformed bitmap data exercises real load failure.

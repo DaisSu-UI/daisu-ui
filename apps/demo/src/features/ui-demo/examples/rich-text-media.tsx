@@ -1,3 +1,5 @@
+import journey from '../../../assets/demo-journey.mp4';
+import melody from '../../../assets/demo-melody.mp3';
 import { useEffect, useRef, useState } from '@lynx-js/react';
 import { Button, RichText } from 'daisu-ui';
 import type { RichTextMediaEvent, RichTextRect, RichTextRef } from 'daisu-ui';
@@ -5,7 +7,7 @@ import { lake } from './rich-text-content.js';
 
 type MediaId = 'trip-video' | 'reading-audio';
 const clips: { id: MediaId; title: string }[] = [{ id: 'trip-video', title: '旅途片段' }, { id: 'reading-audio', title: '阅读时光' }];
-const mediaContent = `<h3>01 / 留住路上的片刻</h3><video id="trip-video" title="旅途片段" controls poster="${lake}" src="https://unpkg.com/wot-design-uni-assets@1.0.3/VID_115503.mp4"></video><h3>02 / 给文字配一段旋律</h3><audio id="reading-audio" title="阅读时，听一段轻音乐" src="https://web-ext-storage.dcloud.net.cn/uni-app/ForElise.mp3"></audio>`;
+const mediaContent = `<h3>01 / 留住路上的片刻</h3><video id="trip-video" title="旅途片段" controls poster="${lake}" src="${journey}"></video><h3>02 / 给文字配一段旋律</h3><audio id="reading-audio" title="阅读时，听一段轻音乐" src="${melody}"></audio>`;
 
 export function RichTextMediaExample({ browser, scrollToAnchor }: { browser: boolean; scrollToAnchor: (rect: RichTextRect, offset: number) => Promise<void> }) {
   const ref = useRef<RichTextRef>(null), pendingSeek = useRef<string>();

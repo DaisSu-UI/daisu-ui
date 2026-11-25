@@ -6,7 +6,7 @@ import type {QrCodeRef} from './QrCode.js';
 import {qrCodeMatrix,qrCodeLayout} from './qrCodeModel.js';
 afterEach(cleanup);
 test('QR encodes Unicode bytes, all correction levels, finder patterns and capacity errors',()=>{
- for(const level of ['L','M','Q','H'] as const){const m=qrCodeMatrix('https://wot-ui.cn',level);expect(m.length%4).toBe(1);expect(m[0]!.slice(0,7)).toEqual(Array(7).fill(true));expect(m[1]!.slice(0,7)).toEqual([true,false,false,false,false,false,true]);}
+ for(const level of ['L','M','Q','H'] as const){const m=qrCodeMatrix('https://example.com',level);expect(m.length%4).toBe(1);expect(m[0]!.slice(0,7)).toEqual(Array(7).fill(true));expect(m[1]!.slice(0,7)).toEqual([true,false,false,false,false,false,true]);}
  expect(qrCodeMatrix('中文😀')).not.toEqual(qrCodeMatrix('-\x87=\x00'));
  expect(()=>qrCodeMatrix('a'.repeat(3000))).toThrow();expect(qrCodeMatrix('')).toEqual([]);
 });

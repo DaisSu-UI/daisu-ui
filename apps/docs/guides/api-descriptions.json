@@ -120,9 +120,9 @@
   "calendar-view": {},
   "calendar": {},
   "card": {
-    "variant": "business保留既有样式；standard使用当前Wot样式",
+    "variant": "business保留既有样式；standard使用标准样式",
     "type": "rectangle：矩形、无横边距和阴影；未传variant时自动选standard",
-    "title": "ReactNode；字符串/数字用原生text，standard单行省略；复杂节点对应Wot title插槽",
+    "title": "ReactNode；字符串/数字用原生text，standard单行省略；复杂标题使用 ReactNode",
     "description": "兼容原业务说明，standard也可使用",
     "children": "卡片内容，原始字符串/数字自动包text；standard始终保留内容容器",
     "footer": "底部ReactNode；未提供/false不渲染，0有效",
@@ -142,7 +142,7 @@
     "fill": "圆环内部填充，默认透明",
     "speed": "每秒变化的百分比；≤0 或 >1000 时立即绘制，非法值回退 50",
     "text": "中心文字，非空时优先于 children",
-    "strokeWidth": "保持当前 Wot 绘制语义：前景实际描边为此值的一半；无 fill 时轨道同宽，有 fill 时轨道为完整此值",
+    "strokeWidth": "描边规则：前景实际描边为此值的一半；无 fill 时轨道同宽，有 fill 时轨道为完整此值",
     "strokeLinecap": "round / butt / square",
     "clockwise": "是否顺时针从十二点方向展开",
     "children": "中心内容插槽，不传 text 时展示",
@@ -383,9 +383,9 @@
     "statusBarHeight": "Flutter / H5 宿主注入，非负 px；不开启安全区时不使用",
     "leftDisabled": "两侧降低透明度并禁止事件",
     "rightDisabled": "两侧降低透明度并禁止事件",
-    "left": "对应 Wot 插槽；capsule 优先于 left",
-    "right": "对应 Wot 插槽；capsule 优先于 left",
-    "capsule": "对应 Wot 插槽；capsule 优先于 left",
+    "left": "自定义内容；capsule 优先于 left",
+    "right": "自定义内容；capsule 优先于 left",
+    "capsule": "自定义内容；capsule 优先于 left",
     "onLeftTap": "对应 click-left / click-right，不内置跳转",
     "onRightTap": "对应 click-left / click-right，不内置跳转",
     "className": "自定义类，可覆盖背景等样式"
@@ -393,7 +393,7 @@
   "notice-bar": {
     "text": "string或readonly string[]，按数组顺序循环",
     "type": "warning/info/danger，浅深配色",
-    "scrollable": "水平滚动开关；即使文本短也滚动，符合当前Wot行为",
+    "scrollable": "水平滚动开关；即使文本短也滚动",
     "delay": "每轮停留秒数，负值归0，非有限值回退1",
     "speed": "px/s，非正数/非有限值回退50",
     "direction": "horizontal/vertical；垂直至少两条才滚动，scrollable仅控制水平方向",
@@ -649,7 +649,7 @@
   },
   "switch": {},
   "tabbar": {
-    "items": "对应 Wot TabbarItem 子节点，等宽排列",
+    "items": "子项数据，等宽排列",
     "value": "对应 v-model，受控或非受控；严格匹配名称，否则使用索引",
     "defaultValue": "对应 v-model，受控或非受控；严格匹配名称，否则使用索引",
     "onChange": "成功切换后触发；重复点击当前项不触发",
@@ -721,8 +721,8 @@
     "decoration": "文字装饰",
     "prefix": "前后内容，节点须适用于 Lynx 内联 text",
     "suffix": "前后内容，节点须适用于 Lynx 内联 text",
-    "onTap": "对应 Wot click / custom-class",
-    "className": "对应 Wot click / custom-class"
+    "onTap": "点击回调或自定义样式类名",
+    "className": "点击回调或自定义样式类名"
   },
   "textarea": {},
   "toast": {},

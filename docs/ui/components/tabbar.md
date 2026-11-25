@@ -52,7 +52,7 @@ const [value, setValue] = useState<string | number>(0);
 
 | 参数 | 说明 | 类型 / 可选值 | 默认值 |
 | --- | --- | --- | --- |
-| items | 对应 Wot TabbarItem 子节点，等宽排列 | `readonly TabbarItem[]` | 必填 |
+| items | 子项数据，等宽排列 | `readonly TabbarItem[]` | 必填 |
 | value | 对应 v-model，受控或非受控；严格匹配名称，否则使用索引 | `TabbarValue` | — |
 | defaultValue | 对应 v-model，受控或非受控；严格匹配名称，否则使用索引 | `TabbarValue` | `0` |
 | beforeChange | false、异常或拒绝均阻止切换；旧确认结果不会覆盖新点击 | `TabbarBeforeChange` | — |

@@ -1,6 +1,6 @@
 # AI 使用指南
 
-本指南参考 Wot UI 的 AI 文档结构，提供面向本项目的 LLM 文档、MCP 与 Agent Skills 使用方式。
+本指南提供 Daisu UI 的 LLM 文档、MCP 与 Agent Skills 使用方式。
 
 ## 选择接入方式
 
@@ -28,13 +28,13 @@ MCP 适合按需检索组件 API、Lynx 运行时资料和项目资源。应使�
 
 ## 提交前检查
 
-按 `docs/ui/IMPLEMENTATION_PLAN.md` 分批推进 Wot Demo 组件。每完成一个组件，同步 `docs/ui/components/<组件>.md` 的真实 API、Wot 参数映射、平台缺口及独立示例，再更新 `llms-full.txt`。每个组件验证后单独提交并推送 `origin/developer`，不得把未完成组件标为可用。
+按 `docs/ui/IMPLEMENTATION_PLAN.md` 分批推进 Daisu UI 组件。每完成一个组件，同步 `docs/ui/components/<组件>.md` 的真实 API、参数语义、平台缺口及独立示例，再更新 `llms-full.txt`。每个组件验证后单独提交并推送 `origin/developer`，不得把未完成组件标为可用。
 
 示例通过 `daisu-ui` 公开入口使用共享控件，不能内置 Token 或依赖主业务工程。业务网络与 Flutter 协议由消费项目注入，库仅声明通用能力接口。完成后运行 npm test、npm run test:types、npm run build、npm run ui:check；原生宿主能力需在消费项目的真机验证。
 
 ## Form示例生成
 
-使用公共Form/FormItem与受控model，以FormSchema或zodAdapter校验，不把旧版Wot rules参数直接复制过来。动态表单每行使用稳定key、索引prop，reset仅清除校验；复杂表单复用已导出的公共选择器、Checkbox/Radio、Upload和SlideVerify。参考 `docs/ui/components/form.md` 与实际独立路由 `form-dynamic`、`form-complex`、`form-errors`、`form-trigger`、`form-disabled`。复选框文字内的彩色协议需使用足够明确的局部选择器，检查真实计算颜色和浅深主题，不只核对class名。
+使用公共Form/FormItem与受控model，以FormSchema或zodAdapter校验，不使用公开类型以外的校验参数。动态表单每行使用稳定key、索引prop，reset仅清除校验；复杂表单复用已导出的公共选择器、Checkbox/Radio、Upload和SlideVerify。参考 `docs/ui/components/form.md` 与实际独立路由 `form-dynamic`、`form-complex`、`form-errors`、`form-trigger`、`form-disabled`。复选框文字内的彩色协议需使用足够明确的局部选择器，检查真实计算颜色和浅深主题，不只核对class名。
 
 Keyboard 使用 `value/onChange` 和 `visible/onVisibleChange` 分别控制内容与显隐；车牌受控语言通过 `carLang/onCarLangChange` 更新。它是应用内虚拟键盘，不会打开系统输入法。参数及完整示例见 `components/keyboard.md`。
 
@@ -46,7 +46,7 @@ PickerView、Picker、SelectPicker 已有独立完整示例和 API 文档。Pick
 
 Cascader 已有11例独立详情。静态树使用节点标量，lazyLoad 回显传完整路径数组；字段映射与异步请求生命周期见 `components/cascader.md`，全国地址数据按入口点击惰性构建。
 
-DatetimePickerView 和 DatetimePicker 分别有9例及14个入口。滚轮依赖公共 PickerView，默认数字文案，年月日列名为 date；过滤用 `{type,values}`。DatetimePicker 数组 value 启用区间；`onChange/onConfirm` 是成功提交通知，`onPickChange` 才是草稿变化，取消不回填。参数与真实事件语义见 `components/datetime-picker-view.md`、`components/datetime-picker.md`，不要直接套用 Wot 的 change 语义。
+DatetimePickerView 和 DatetimePicker 分别有9例及14个入口。滚轮依赖公共 PickerView，默认数字文案，年月日列名为 date；过滤用 `{type,values}`。DatetimePicker 数组 value 启用区间；`onChange/onConfirm` 是成功提交通知，`onPickChange` 才是草稿变化，取消不回填。参数与真实事件语义见 `components/datetime-picker-view.md`、`components/datetime-picker.md`，使用本库公开的事件语义。
 
 CalendarView 已有9个面板示例，支持九种日期/周/月/时间模式；范围未完成值含 null，不能只检查数组长度。maxRange 超限会截断终点并提示。长日期范围使用 switchMode，参数与可视月份策略见 `components/calendar-view.md`。
 
@@ -56,13 +56,13 @@ SlideVerify 已有8例独立详情，支持width/height、ReactNode文案和图�
 
 Upload 独立11例已补齐，继续使用 createHostUploadAdapter，禁止组件直接上传。beforeChoose 只能拦截宿主原子操作之前，不能模拟 beforeUpload；多选/视频/手动上传未支持。普通预览走宿主，H5 已接通图片预览；现有 Form 默认 aspectFill 保留。详见 `components/upload.md`。
 
-Progress 支持内外百分比、三种状态、字符串/阈值颜色数组及按百分比变化计时的原生过渡。数组按当前 Wot 的阶段规则动画，不能当作渐变色；0% 内置文本使用原生布局测量。详见 `components/progress.md`。
+Progress 支持内外百分比、三种状态、字符串/阈值颜色数组及按百分比变化计时的原生过渡。数组按组件的阶段规则动画，不能当作渐变色；0% 内置文本使用原生布局测量。详见 `components/progress.md`。
 
-Circle 使用原生SVG，不需要Canvas或DOM。value为目标，speed控制动画；当前Wot的strokeWidth实际描边按半宽绘制，默认120/18，详见 `components/circle.md`，不要套用旧skill的100/10默认值。
+Circle 使用原生SVG，不需要Canvas或DOM。value为目标，speed控制动画；strokeWidth 的实际描边按半宽绘制，默认120/18，详见 `components/circle.md`，不要套用旧skill的100/10默认值。
 
-Notify 使用 `useNotify()` 与 `<Notify {...notify.props} />` 配对；默认值和计时按实例隔离，没有 selector 或全局注册。受控模式必须回写 visible/onChange，连续调用由 requestKey 续期；rootPortal 依赖 RootPortalHost，safeHeight/safeAreaBottom 由宿主传入。当前 Wot 为浅色填充并自带前缀，参数与14例详情见 `components/notify.md`。
+Notify 使用 `useNotify()` 与 `<Notify {...notify.props} />` 配对；默认值和计时按实例隔离，没有 selector 或全局注册。受控模式必须回写 visible/onChange，连续调用由 requestKey 续期；rootPortal 依赖 RootPortalHost，safeHeight/safeAreaBottom 由宿主传入。普通通知采用浅色填充并自带类型前缀，参数与14例详情见 `components/notify.md`。
 
-Signature 已有独立七画板、弹窗和横屏子页。通过Ref或renderFooter操作，onConfirm成功返回PNG dataUrl，不能当作宿主tempFilePath；无Canvas/DOM依赖，仅导出PNG，不提供无效quality/fileType。默认150px高度与当前Wot示例一致，笔锋为速度模拟，见 `components/signature.md`。
+Signature 已有独立七画板、弹窗和横屏子页。通过Ref或renderFooter操作，onConfirm成功返回PNG dataUrl，不能当作宿主tempFilePath；无Canvas/DOM依赖，仅导出PNG，不提供无效quality/fileType。默认高度为150px，笔锋为速度模拟，见 `components/signature.md`。
 
 Grid/GridItem已实现，可用于CountDown/CountTo等控制区。默认不传column为单行，iconSize默认32；clickable门控点击和导航，url通过onNavigate显式接业务路由。完整Badge参数与ReactNode插槽可用，见 `components/grid.md`。
 

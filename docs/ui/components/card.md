@@ -50,11 +50,11 @@ import { Button } from 'daisu-ui';
 
 | 参数 | 说明 | 类型 / 可选值 | 默认值 |
 | --- | --- | --- | --- |
-| title | ReactNode；字符串/数字用原生text，standard单行省略；复杂节点对应Wot title插槽 | `ReactNode` | — |
+| title | ReactNode；字符串/数字用原生text，standard单行省略；复杂标题使用 ReactNode | `ReactNode` | — |
 | description | 兼容原业务说明，standard也可使用 | `string` | — |
 | children | 卡片内容，原始字符串/数字自动包text；standard始终保留内容容器 | `ReactNode` | — |
 | footer | 底部ReactNode；未提供/false不渲染，0有效 | `ReactNode` | — |
-| variant | business保留既有样式；standard使用当前Wot样式 | `'business' \| 'standard'` | — |
+| variant | business保留既有样式；standard使用标准样式 | `'business' \| 'standard'` | — |
 | type | rectangle：矩形、无横边距和阴影；未传variant时自动选standard | `'rectangle'` | — |
 | customTitleClass | 三个区域的类名 | `string` | `''` |
 | customContentClass | 三个区域的类名 | `string` | `''` |
@@ -66,7 +66,7 @@ import { Button } from 'daisu-ui';
 
 | 名称 | 说明 | 类型 |
 | --- | --- | --- |
-| title | ReactNode；字符串/数字用原生text，standard单行省略；复杂节点对应Wot title插槽 | ReactNode |
+| title | ReactNode；字符串/数字用原生text，standard单行省略；复杂标题使用 ReactNode | ReactNode |
 | children | 卡片内容，原始字符串/数字自动包text；standard始终保留内容容器 | ReactNode |
 | footer | 底部ReactNode；未提供/false不渲染，0有效 | ReactNode |
 

@@ -10,4 +10,4 @@
 
 `onChange({dir:'prev'|'next'})` 发送导航意图，由父组件更新索引；`onSelect(index)` 可选，传入后圆点可以直接选择页。组件自身不修改 current。圆点/点条/分数与八种位置使用公共 Swiper 样式和 Token；示例见 `/ui-demo/swiper` 与 `/ui-demo/image-preview` 自定义插槽。
 
-这是 Wot 的 wd-swiper-nav 的横向版本；不提供垂直方向和无实际作用的 autoplay 配置。
+轮播指示器采用横向布局，不提供垂直方向或自动播放配置。

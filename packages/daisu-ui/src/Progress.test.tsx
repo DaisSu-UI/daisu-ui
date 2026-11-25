@@ -3,7 +3,7 @@ import { cleanup, render, waitFor } from '@lynx-js/react/testing-library';
 import { Progress } from './Progress.js';
 import { progressSegments, progressStops, progressPercentage } from './progressModel.js';
 afterEach(cleanup);
-test('progress clamps invalid input, sorts stops without mutating callers, and keeps Wot upward color stages', () => {
+test('progress clamps invalid input, sorts stops without mutating callers, and keeps increasing color stages', () => {
   const colors = [{ color: 'red', percentage: 60 }, { color: 'yellow', percentage: 30 }, { color: 'black', percentage: 90 }];
   const stops = progressStops(colors); expect(colors[0]?.percentage).toBe(60); expect(stops.map(stop => stop.percentage)).toEqual([30,60,90]);
   expect(progressStops(['red','blue'])).toEqual([{ color:'red', percentage:50 },{ color:'blue', percentage:100 }]);

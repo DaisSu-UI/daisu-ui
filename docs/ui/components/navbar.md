@@ -73,9 +73,9 @@ import { Navbar, NavbarCapsule } from 'daisu-ui';
 | zIndex | 层级 | `number` | `10` |
 | safeAreaInsetTop | 启用宿主传入的顶部安全区，保留原statusBarHeight行为 | `boolean` | — |
 | leftDisabled | 两侧降低透明度并禁止事件 | `boolean` | `false` |
-| left | 对应 Wot 插槽；capsule 优先于 left | `ReactNode` | — |
-| right | 对应 Wot 插槽；capsule 优先于 left | `ReactNode` | — |
-| capsule | 对应 Wot 插槽；capsule 优先于 left | `ReactNode` | — |
+| left | 自定义内容；capsule 优先于 left | `ReactNode` | — |
+| right | 自定义内容；capsule 优先于 left | `ReactNode` | — |
+| capsule | 自定义内容；capsule 优先于 left | `ReactNode` | — |
 | className | 自定义类，可覆盖背景等样式 | `string` | `''` |
 
 ### NavbarCapsule
@@ -102,9 +102,9 @@ import { Navbar, NavbarCapsule } from 'daisu-ui';
 | --- | --- | --- |
 | Navbar.title | 字符串标题单行省略，节点对应 title 插槽 | ReactNode |
 | Navbar.rightContent | 保持兼容；新参数onLeftTap/onRightTap、rightText/right优先 | ReactNode |
-| Navbar.left | 对应 Wot 插槽；capsule 优先于 left | ReactNode |
-| Navbar.right | 对应 Wot 插槽；capsule 优先于 left | ReactNode |
-| Navbar.capsule | 对应 Wot 插槽；capsule 优先于 left | ReactNode |
+| Navbar.left | 自定义内容；capsule 优先于 left | ReactNode |
+| Navbar.right | 自定义内容；capsule 优先于 left | ReactNode |
+| Navbar.capsule | 自定义内容；capsule 优先于 left | ReactNode |
 
 ## 主题定制
 

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from '@lynx-js/react';
 import { List } from '@lynx-js/lynx-ui';
 import { Loadmore } from 'daisu-ui';
 import type { LoadmoreState } from 'daisu-ui';
-import cat from '../../../assets/wot-black-cat.png';
+import cat from '../../../assets/demo-cat.png';
 
 export function LoadmoreExample() {
   const [count, setCount] = useState(15);

@@ -28,7 +28,7 @@
 - `Pagination`：value/onChange(number)或defaultValue；total优先于totalPage，pageSize默认10，边界禁用；支持prevText/nextText、showIcon/showMessage、hideIfOnePage、buttonVariant(text/plain/dashed/base)、四个render插槽和className。渲染状态提供prev/next方法。空数据按1页处理，默认隐藏；详见 `docs/ui/components/pagination.md`。
 - `Tabbar`：items数据包含title/name/icon/value(徽标)/isDot/max/badgeProps/renderIcon({active})/children/className；value/defaultValue默认0，onChange({value})，名称严格匹配、无名称用索引。支持fixed/placeholder/bordered(默认false)、shape(default/round)、safeAreaInsetBottom/bottomSafeAreaHeight(宿主数值)、activeColor/inactiveColor(内置SVG用实际色值)、zIndex默认10。beforeChange支持boolean/Promise，拒绝/异常取消、仅最新点击可生效；切换value、改名称及卸载取消待确认。五组十例，示例弹窗/提示为私有组合；已复用公共Badge并支持完整badgeProps。详见 `docs/ui/components/tabbar.md`。
 
-- `Navbar` / `NavbarCapsule`：统一导航组件，默认variant=business保留原56px样式、onBack/rightLabel/onRight/rightContent及statusBarHeight行为；variant=standard显式启用Wot的44px样式。title支持ReactNode；leftText/rightText/leftArrow、bordered、fixed/placeholder、zIndex、safeAreaInsetTop/statusBarHeight、两侧disabled、left/right/capsule、onLeftTap/onRightTap。胶囊支持onBack/onBackHome。不内置路由；详情额外展示不传variant的“原有默认样式”，详见 `docs/ui/components/navbar.md`。
+- `Navbar` / `NavbarCapsule`：统一导航组件，默认variant=business保留原56px样式、onBack/rightLabel/onRight/rightContent及statusBarHeight行为；variant=standard显式启用44px样式。title支持ReactNode；leftText/rightText/leftArrow、bordered、fixed/placeholder、zIndex、safeAreaInsetTop/statusBarHeight、两侧disabled、left/right/capsule、onLeftTap/onRightTap。胶囊支持onBack/onBackHome。不内置路由；详情额外展示不传variant的“原有默认样式”，详见 `docs/ui/components/navbar.md`。
 
 - `Fab`：受控 active/onActiveChange 或 defaultActive；type、八种 position、四种 direction、disabled、draggable、expandable、inactiveIcon/activeIcon、zIndex、gap、className、children、trigger（节点或状态渲染函数）、onTap。FabRef 提供 open/close。60px默认触发器，300ms菜单过渡；触摸/鼠标拖动后吸边、菜单朝内，拖动不触发展开。外部关闭由页面接入，H5宿主已适配拖动滚动拦截。详见 `docs/ui/components/fab.md`，示例 `?demo=ui&component=fab`。
 
@@ -38,7 +38,7 @@
 
 - `Resize`：通过 Lynx `bindlayoutchange` 监听内容尺寸，`onResize(rect)` 在初次布局及宽高变化时触发，rect 包含 width / height / top / right / bottom / left（px）。支持 `children`、`className`、`containerClassName`；无 DOM 轮询。参数及自然尺寸布局约束见 `docs/ui/components/resize.md`。
 
-- `Icon`：`name` 支持 305 个 Wot 原版图标名或图片路径，`size` 为 px 数值（默认16），`color` 为颜色字面量，省略随浅深主题切换；支持 `onTap`、`className`、`accessibilityLabel`。导出 `IconName` 和 `iconNames` 供类型检查 / 搜索。通过原生 SVG 渲染，无字体伪元素；不移植 classPrefix 或自动复制。详见 `docs/ui/components/icon.md`。
+- `Icon`：`name` 支持 305 个内置图标名或图片路径；图形基于 Tabler Icons 3.53.0，`size` 为 px 数值（默认16），`color` 为颜色字面量，省略随浅深主题切换；支持 `onTap`、`className`、`accessibilityLabel`。导出 `IconName` 和 `iconNames` 供类型检查 / 搜索。通过原生 SVG 渲染；图形生成及 MIT 版权声明见 scripts/generate-icons.mjs 和 THIRD_PARTY_NOTICES.md。无字体伪元素；不移植 classPrefix 或自动复制。详见 `docs/ui/components/icon.md`。
 
 - `Row` / `Col`：24 栅格布局，Row 支持 `gutter`、`justify: start | center | end | space-between | space-around | space-evenly`、`align: top | middle | bottom`；Col 支持 `span`（默认24）和 `offset`（默认0）。支持 `className` / `children`，嵌套 Row 独立传递间距。详见 `docs/ui/components/layout.md`，独立示例 `?demo=ui&component=layout`。
 
@@ -63,7 +63,7 @@
 
 运行 `npm run h5:dev` 后访问 `?demo=ui` 打开首页，点击圆角分组标题展开组件列表，允许同时展开多个分类；展开/收起采用 300ms ease-in-out 高度过渡，不添加内容淡入或上移动画。点击条目进入独立示例页，返回时保留首页展开状态。使用 `?demo=ui&component=button`、`collapse`、`cell`、`input`、`tag` 等参数可直达组件示例，详情页返回首页。Flutter 可传入 `page: 'ui-demo/button'` 作为初始页面。
 
-示例页使用 44px 居中导航栏和 `DemoGroup` / `ExampleBlock` 分组，以实际控件展示各项能力；Button 示例覆盖类型、状态、变体、尺寸、图标与块级布局。Cell 展示页面使用灰色分组背景；Slider 展示默认、管道、刻度与纵向布局。示例样式位于 `apps/demo/src/features/ui-demo/styles.css`，颜色与尺寸对照 Wot 移动 Demo，保留本项目品牌。公共组件入口自动加载 `daisu-ui/styles.css`，应用无需手动导入（内部引入 `button.css`、`cell.css` 和 `slider.css`），示例页蓝色主题仅作用于 `.ui-demo-page`。
+示例页使用 44px 居中导航栏和 `DemoGroup` / `ExampleBlock` 分组，以实际控件展示各项能力；Button 示例覆盖类型、状态、变体、尺寸、图标与块级布局。Cell 展示页面使用灰色分组背景；Slider 展示默认、管道、刻度与纵向布局。示例样式位于 `apps/demo/src/features/ui-demo/styles.css`，颜色与尺寸由 Daisu UI 组件设计定义。公共组件入口自动加载 `daisu-ui/styles.css`，应用无需手动导入（内部引入 `button.css`、`cell.css` 和 `slider.css`），示例页蓝色主题仅作用于 `.ui-demo-page`。
 
 ## ReactLynx rules
 
@@ -135,7 +135,6 @@ Radio.value 为 string/number/boolean，严格匹配；RadioGroup支持value/def
 
 使用语义Token支持浅深主题，Lynx原生元素实现，无DOM依赖。H5不等于Flutter原生验证。
 
-参考：https://wot-ui.cn/component/radio.html 。
 
 # Checkbox / CheckboxGroup 复选框
 
@@ -151,7 +150,6 @@ Checkbox支持name（分组标识）、value/defaultValue、trueValue/falseValue
 
 使用语义Token支持浅深主题，Lynx原生元素实现，无DOM依赖。H5不等于Flutter原生验证。
 
-参考：https://wot-ui.cn/component/checkbox.html 。
 
 # SelectPicker 单复选选择器
 
@@ -175,11 +173,10 @@ const [visible, setVisible] = useState(false);
 
 `visible/onVisibleChange` 控制显隐；不传 visible 时可用 Ref.open()/close()。`onOpen/onClose/onCancel` 分别对应打开、关闭、关闭按钮或遮罩取消；Ref.close 仅关闭。`closeOnClickModal=true`、`safeAreaInsetBottom=true`、`safeAreaBottom=0`、`rootPortal=false`、`zIndex=100`。RootPortal 需根 Host，跨挂载的定制 Token 用 ConfigProvider，示例也可通过 className 应用主题。
 
-`title='选择器'` 保留本库原默认，独立 Wot 示例显式使用“请选择”。`confirmButtonText='确认'`；`className/style` 设置弹层，`contentClassName` 设置滚动区。`scrollIntoView=true` 在打开后将视窗外的第一选中项滚到可见范围。
+`title='选择器'` 保留本库原默认，独立示例显式使用“请选择”。`confirmButtonText='确认'`；`className/style` 设置弹层，`contentClassName` 设置滚动区。`scrollIntoView=true` 在打开后将视窗外的第一选中项滚到可见范围。
 
 组合公共 ActionSheet、Checkbox、Radio、Search、Button、Loading，无 DOM 依赖。H5 浅深主题、搜索、取消回滚、自动完成、异步拦截及 RootPortal 已验收；Flutter 真机仍需目标设备验证。
 
-参考：https://wot-ui.cn/component/select-picker.html 。
 
 
 # DatetimePicker 日期时间选择器
@@ -191,7 +188,7 @@ const [visible, setVisible] = useState(false);
 - `value`：单值为时间戳；`type='time'` 为 HH:mm 或 HH:mm:ss。传数组启用双端区间，结果为 `[start,end]`。泛型根据 value 推导回调类型，既有 Form 单值接口保持兼容。
 - 空单值从最小边界初始化；空区间开始/结束分别取最小/最大边界；反向初值将结束纠正到开始。区间两端可切换，禁用超出另一端的选项。日期用本地时区，time 区间按时分秒比较，不表示跨午夜时间段。
 - `visible/onVisibleChange` 控制显隐；不传 visible 可通过 Ref `open()/close()` 管理；不传 value 会保存成功提交的内部值。
-- `onConfirm({value})` 和 `onChange({value})` 仅在确定成功后回填，保持本库原有 Form 行为。`onPickChange({value})` 监听未提交的滚轮草稿（对应 Wot 的实时 change 语义）；取消不会提交草稿。
+- `onConfirm({value})` 和 `onChange({value})` 仅在确定成功后回填，保持本库原有 Form 行为。`onPickChange({value})` 监听未提交的滚轮草稿；取消不会提交草稿。
 - `beforeConfirm(value)` 返回 boolean 或 Promise<boolean>。false/异常保留草稿；重复点击、关闭、卸载、value/日期边界/禁用状态替换后，过期结果不提交。确认直接读取当前滚轮位置，避免惯性尚未吸附时提交旧值。
 - `onToggle(activeValue)` 区间切换回调；`onOpen/onCancel/onClose`：取消文字、遮罩、Ref.close 触发 cancel；所有关闭触发 close，确认不触发 cancel。
 
@@ -224,11 +221,10 @@ const [value, setValue] = useState<DatetimePickerValue[]>(['', '']);
 
 ## 独立示例
 
-`/ui-demo/datetime-picker` 共14个入口，按 Wot 当前页面分组：基本用法（日期/一年范围）、before-confirm、六种日期时间类型、两种区间、展示格式、内部格式、过滤选项。弹层56px工具栏、区间48px标签与16px底部间距、200ms进出动画；浅深主题均使用公共 Token。
+`/ui-demo/datetime-picker` 共14个入口，按组件能力分组：基本用法（日期/一年范围）、before-confirm、六种日期时间类型、两种区间、展示格式、内部格式、过滤选项。弹层56px工具栏、区间48px标签与16px底部间距、200ms进出动画；浅深主题均使用公共 Token。
 
 公共 Popup + DatetimePickerView 组合，不修改业务 Navbar 和 Picker 默认样式。Vue slots、uni-app 内部选择器、valueKey/labelKey 不作空壳移植，数值字段固定为内部规范化 value/label。H5 验证不能替代 Flutter iOS/Android 真机验收。
 
-参考：https://wot-ui.cn/demo/#/subPages/datetimePicker/Index 和 https://wot-ui.cn/component/datetime-picker.html 。
 
 # DatetimePickerView 时间选择器视图
 
@@ -256,11 +252,10 @@ const filter = ({type, values}: DatetimeFilterParams) =>
 
 ## 示例与兼容范围
 
-`/ui-demo/datetime-picker-view` 共9例：日期选择、带秒日期、年月日、年月、年、时分、带秒时间、内部格式、过滤选项。分组、初始值、44px行高/264px滚轮、灰色选中条和渐变对照 Wot 当前演示。
+`/ui-demo/datetime-picker-view` 共9例：日期选择、带秒日期、年月日、年月、年、时分、带秒时间、内部格式、过滤选项。分组包含初始值、44px行高、264px滚轮、灰色选中条和渐变遮罩。
 
 基于公共 PickerView 的原生 scroll-view，支持真实拖动、惯性结束吸附、禁用跳过和浅深主题；不使用 DOM，也不提供 uni-app 字段/插槽的无效映射。首次空值会纠正至最小值；父组件应接收 onChange。按本地时区计算，切换月份先裁剪日期，避免31日滚到下个月。H5 测试不等于 Flutter 原生真机验收。
 
-参考：https://wot-ui.cn/demo/#/subPages/datetimePickerView/Index 和 https://wot-ui.cn/component/datetime-picker-view.html 。
 
 # Calendar 日历选择器
 
@@ -277,7 +272,7 @@ const filter = ({type, values}: DatetimeFilterParams) =>
 | beforeConfirm(value) | boolean 或 Promise<boolean>；false/拒绝保留草稿，等待时防重复确认 |
 | onChange({value}) | 成功确认后的提交通知，保留既有 Form 语义 |
 | onConfirm({value,type}) | 成功确认通知，type 为实际选择模式 |
-| onPickChange({value}) | 即时草稿变化，取消不会提交；与 Wot change 事件语义区分 |
+| onPickChange({value}) | 即时草稿变化，取消不会提交 |
 | onOpen / onCancel / onClose | 打开 / 主动取消或遮罩关闭 / 关闭；成功确认只触发 onClose |
 | showTypeSwitch | false；公共 Tabs 在日/周/月（或对应范围）之间切换，确认回报实际 type |
 | innerDisplayFormat(value, endpoint, type) | 范围摘要格式化；value 为时间戳或 null，endpoint 为 start/end |
@@ -304,7 +299,6 @@ const [value, setValue] = useState<CalendarValue>([null, null]);
 
 通过公共 ActionSheet + Tabs + Tag + Button + CalendarView 组合；默认56px标题栏、64px范围摘要、60px确认栏，200ms底部进出动画，浅深主题。未修改业务 Navbar、Cell 或 Button 的默认样式。Vue slots 对应 ReactNode，uni-app 内部选择器不作空壳移植。H5 验证不能替代 Flutter iOS/Android 真机验收。
 
-参考：https://wot-ui.cn/demo/#/subPages/calendar/Index 和 https://wot-ui.cn/component/calendar.html 。
 
 
 # Cascader 级联选择
@@ -337,7 +331,6 @@ const [value, setValue] = useState<CascaderValue>('');
 
 复用公共 ActionSheet、Tabs（300ms 横向内容与指示条过渡）、Loading。列表 336px、行字号16px/行高24px，上下16px；浅深主题使用语义 Token。H5 验证不能替代 Flutter iOS/Android 真机验收。Vue slots/uni-app selector API 不移植。
 
-参考：https://wot-ui.cn/demo/#/subPages/cascader/Index 与 https://wot-ui.cn/component/cascader.html 。
 
 # Upload 图片上传
 
@@ -381,18 +374,17 @@ UploadFile 为 `{ url, name?, path?, status?: 'success' | 'loading' | 'fail', me
 
 异步选择、删除、预览均防重复。卸载、列表替换、适配器或限制/状态变更会使未完成操作失效；过期进度不触发回调。取消保留列表，不触发成功/失败。找不到上传或预览能力时通过 onFail 明确报告。
 
-## Wot 对照与宿主边界
+## 上传与宿主边界
 
 独立详情按官网五组组织，包含基本用法、上传状态钩子、禁用、数量上限、覆盖上传、自定义触发器、自定义预览、预览拦截、删除拦截、选择拦截、自定义上传方法共 11 例。图片使用同款熊猫素材，默认入口为 88px，相邻间距 8px，深色主题使用公共语义 Token。示例通过真实宿主适配器运行，需要有效登录会话；本地无登录的 H5 可以查看初始图片、预览及拦截交互，上传需要接入有效会话和服务。
 
-- Wot 的 `image-mode` 默认 aspectFit；为兼容既有表单，本库保留 aspectFill 默认，示例按参考显式设置。
+- 图片展示默认 aspectFill，可通过属性显式指定其他模式。
 - Vue v-model 映射为 fileList/onChange；slots 映射为 children/renderPreviewCover。
 - 当前 Flutter 协议是单张图片的「选择并上传」原子操作。**未实现** video/file/media、多选、autoUpload/submit/abort、beforeUpload、扩展名过滤、buildFormData、action/header/formData/uploadMethod 等 uni-app 网络配置；UI 层无法在选择和上传之间拦截或撤销宿主请求。beforeChoose 不能充当 beforeUpload。maxSizeKB/source 通过宿主适配器配置；不增加无效参数和演示入口。
-- 与 Wot 可获取本地待上传文件不同，宿主上传返回前拿不到图片，上传中仅在入口显示进度；收到结果后回填成功图片。
+- 宿主上传返回前拿不到本地待上传图片，上传中仅在入口显示进度；收到结果后回填成功图片。
 - Flutter 图片预览继续使用现有宿主协议；H5 宿主已实现黑底预览、计数、左右按钮、触屏切换、Esc 关闭及焦点/滚动恢复。未在公共库中伪造仅 H5 的 ImagePreview 组件，也不宣称已完成高级图片预览的缩放/保存能力。
 - H5 交互验证的上传响应使用测试拦截，不代表真实后端或 Flutter 真机已验收。
 
-参考：https://wot-ui.cn/component/upload.html 与 https://wot-ui.cn/demo/#/subPages/upload/Index 。
 
 # SlideVerify 滑动验证
 
@@ -418,11 +410,10 @@ const verify = useRef<SlideVerifyRef>(null);
 
 ## 独立示例与平台边界
 
-`/ui-demo/slide-verify` 共8例：基本用法、禁用、自定义文案、颜色、图标、容错范围、重置、四个插槽。分组、326×40px滑块和重置按钮按390px宽的 Wot Demo 核对。组件支持实际宽高定制；在线参考当前通过CSS控制尺寸，官网 width/height 描述与其源码有差异。
+`/ui-demo/slide-verify` 共8例：基本用法、禁用、自定义文案、颜色、图标、容错范围、重置、四个插槽。默认滑块在390px视口中为326×40px，支持显式定制宽高。
 
 采用原生布局事件/测量和触摸、鼠标事件；优先读取 clientX，避免滑块移动后局部 x 坐标变化影响距离。缺少有效尺寸、测量晚于结束或卸载时不通过；尺寸变化、取消及多指恢复初态。没有 DOM 依赖，深色主题复用 Token。此组件只提供交互验证，服务端安全校验由业务实现；H5 验证不能替代 Flutter 真机手势回归。
 
-参考：https://wot-ui.cn/demo/#/subPages/slideVerify/Index 和 https://wot-ui.cn/component/slide-verify.html 。
 
 
 # Form / FormItem 表单
@@ -469,7 +460,6 @@ const schema: FormSchema = {
 
 动态页在390px宽H5下三行y=44/92/136、高48/44/44，四个按钮y=192、52×32、8px间距，与官网一致。浅深色均使用语义Token；默认业务Navbar不改。复杂表单协议名称（含《》）固定为示例蓝色#4480ff，通过局部双class选择器避免Checkbox后代文字颜色覆盖；“已阅读并同意”保留普通正文颜色。复杂示例调用公共选择器/上传/滑动验证，宿主图片能力由HostClient适配，不在Lynx直接请求上传业务API；H5无宿主时明确提示未接入。关联控件各自的完整官网Demo验收状态见实施清单，不把组合页等同于所有控件独立页已完成。
 
-参考：https://wot-ui.cn/component/form.html 、https://wot-ui.cn/demo/#/subPages/form/Index 。H5验证不代替Flutter内iOS/Android原生键盘、滚轮与上传真机回归。
 
 
 # Keyboard 虚拟键盘
@@ -510,11 +500,10 @@ const [value, setValue] = useState('');
 
 ## 示例与边界
 
-`/ui-demo/keyboard`：三组11例，与当前Wot详情页对应，包括身份证、车牌两种语言控制、标题/红色自定义标题、双额外键、随机、绑定与遮罩。使用语义Token支持深色。
+`/ui-demo/keyboard`：三组11例，包括身份证、车牌两种语言控制、标题/红色自定义标题、双额外键、随机、绑定与遮罩。使用语义Token支持深色。
 
-此组件为 Lynx view/text 实现的应用内键盘，不调用系统输入法。不移植 uni-app iconfont 前缀；图标使用公共 Icon。不支持长按连续删除（当前Wot亦按点击删除）。随机排序不表示密码加密；不要把真实密码写入Toast或日志。Demo Toast仅展示演示按键。
+此组件为 Lynx view/text 实现的应用内键盘，不调用系统输入法。不移植 uni-app iconfont 前缀；图标使用公共 Icon。不支持长按连续删除。随机排序不表示密码加密；不要把真实密码写入Toast或日志。Demo Toast仅展示演示按键。
 
-参考：https://wot-ui.cn/component/keyboard.html 、https://wot-ui.cn/demo/#/subPages/keyboard/Index 。H5验证不代替Flutter内原生真机回归。
 
 
 # PasswordInput 密码输入框
@@ -535,7 +524,7 @@ const [value, setValue] = useState('');
 | onFocus(event) | 无 | 点击输入区请求聚焦，回传Lynx事件，不自动弹键盘 |
 | className / style | 无 | 根容器样式 |
 
-输入区域内容高50px；与当前Wot相同，含上下边框的格子外高52px。间距0时为1px边框、首尾6px外圆角；正间距时每格独立、无边框和圆角。非法/负/非有限gutter归零。按Unicode字符展示和计数；mask时可访问性只播报已输入位数，不包含密码明文。浅深色使用公共语义Token。
+输入区域内容高50px；含上下边框的格子外高52px。间距0时为1px边框、首尾6px外圆角；正间距时每格独立、无边框和圆角。非法/负/非有限gutter归零。按Unicode字符展示和计数；mask时可访问性只播报已输入位数，不包含密码明文。浅深色使用公共语义Token。
 
 ```tsx
 const [value, setValue] = useState('');
@@ -552,9 +541,8 @@ PasswordInput没有onChange，不渲染原生input、不调用系统输入法，
 
 `/ui-demo/password-input`：五组六例，初值分别为123、12、123、123、123、12；包含基础、4位、10px间隔、明文、普通/错误提示、随机键盘。各例数据独立，一次只打开一个公共Keyboard，光标与显隐联动。提示例输入满6位且非123456显示“密码错误”，删除后恢复“密码为 6 位数字”。示例保留官网底部240px空间。
 
-当前在线Wot的focused默认是true；本地安装的旧版参考写false，以当前官网源码和文档为准。
+focused 默认为 true，调用方可显式控制焦点状态。
 
-参考：https://wot-ui.cn/component/password-input.html 、https://wot-ui.cn/demo/#/subPages/passwordInput/Index 。H5验证不等于Flutter内iOS/Android真机验证。
 
 
 # ConfigProvider 全局配置
@@ -567,12 +555,12 @@ PasswordInput没有onChange，不渲染原生input、不调用系统输入法，
 | --- | --- |
 | theme | 未传继承父级；无父级使用浅色；显式 light/dark 切换当前范围 |
 | themeVars | 语义变量与组件变量，见下表；仅作用于子树，不修改全局对象 |
-| button | size、variant、tone（Wot type 对应 tone，也接受 type 别名）、round |
+| button | size、variant、tone（也接受 type 别名）、round |
 | tag | size、variant、round |
 | className / style | 根容器样式；style 内 --cso-ui-* 变量也进入配置并跨 Portal 继承 |
 | children | 当前配置的作用范围 |
 
-组件显式 prop 优先于 Provider 默认值，再使用组件内置默认值。button/tag 按字段合并，false 有效，undefined 继承；内层变量覆盖外层同名变量，兄弟作用域互不影响。Wot Button 的 base 变体映射为本库 solid；组件显式 tone 不受 Provider type 覆盖。Tag 原有 tone/plain 兼容参数保持有效。
+组件显式 prop 优先于 Provider 默认值，再使用组件内置默认值。button/tag 按字段合并，false 有效，undefined 继承；内层变量覆盖外层同名变量，兄弟作用域互不影响。Button 的实心变体为 solid；组件显式 tone 不受 Provider type 覆盖。Tag 原有 tone/plain 兼容参数保持有效。
 
 `useConfigProvider()` 读取最近配置，返回 theme、themeVars（规范化变量名）、button、tag、tokens。它是 React 读取 Hook，不模拟 Vue 的 setup 注入函数，也不操作模块全局单例。配置更新通过 Provider props 驱动。
 
@@ -581,8 +569,8 @@ PasswordInput没有onChange，不渲染原生input、不调用系统输入法，
 - 语义键：primary、onPrimary、success、warning、danger、info、canvas、surface、surfaceMuted、text、textMuted、line；colorTheme 为 primary 别名。
 - Button：buttonPrimaryBg（兼容 buttonPrimaryBgColor）、buttonPrimaryColor、buttonHeight、buttonRadius、buttonFontSize。
 - Cell：cellTitleColor。
-- 支持直接传 --cso-ui-* 自定义变量；数值尺寸键自动加 px，原始变量数值按字面量使用。未知的 Wot 驼峰变量不会被转换成无作用的假参数；使用组件已经读取的 Token。
-- SVG 图标的显式 color 仍由组件属性控制；本库没有移植 Wot 全量主题变量表。
+- 支持直接传 --cso-ui-* 自定义变量；数值尺寸键自动加 px，原始变量数值按字面量使用。未知的主题变量不会被转换为无效参数；使用组件已经读取的 Token。
+- SVG 图标的显式 color 仍由组件属性控制。
 
 ```tsx
 <ConfigProvider theme={theme}
@@ -595,9 +583,8 @@ PasswordInput没有onChange，不渲染原生input、不调用系统输入法，
 
 RootPortal 将显式配置 Token 和 React 配置一起带到目标节点；Popup、Toast、Dialog 等使用原有 rootPortal 参数即可。仍需在页面根节点挂载 RootPortalHost。任意外部 CSS 类定义的局部变量不会被 JS 自动读取；需要跨 Portal 的主题定制应放到 themeVars 或 style 的 --cso-ui-* 变量中。主题切换不改变组件状态，不修改页面全局文本或背景。
 
-独立示例 `/ui-demo/config-provider` 对应当前 Wot Playground：主题切换、七项控制、实时 Button/Tag 预览、root-portal 弹窗、JSON 配置和完整优惠券表单。默认组件优先级、嵌套覆盖和重置有自动化测试；H5核对实时预览、Portal、深浅主题。
+独立示例 `/ui-demo/config-provider` 展示配置作用域：主题切换、七项控制、实时 Button/Tag 预览、root-portal 弹窗、JSON 配置和完整优惠券表单。默认组件优先级、嵌套覆盖和重置有自动化测试；H5核对实时预览、Portal、深浅主题。
 
-参考：https://wot-ui.cn/component/config-provider.html 、https://wot-ui.cn/demo/#/subPages/configProvider/Index 。不引入 uni-ku-root / uni-app；Flutter 真机验证另行进行。
 
 
 # PickerView 选择器视图
@@ -620,14 +607,13 @@ const [value, setValue] = useState<(string | number)[]>(['中南大学', '软件
 
 Ref 提供 `getSelected()`、`getSelectedOptions()`、`getSelectedValues()`、`getSelectedLabels()`、`getSelectedIndex()`、`getColumnsData()`、`getColumnData(index)`、`getColumnIndex(index)`、`resetColumns(columns)`。读取会使用当前滚轮位置，避免松手后立即确认读取旧值；resetColumns 的覆盖在上游 columns 更新时清除。查询返回规范化选项（保留自定义字段）。
 
-浅深主题使用公共语义 Token；滚筒中心灰条、遮罩和文字遵循 Wot 展示。无 DOM 或小程序 picker-view 依赖。已验证 H5；Flutter 真机滚动物理效果仍需目标设备验证。
+浅深主题使用公共语义 Token；滚筒包含中心灰条、渐变遮罩与列文字。无 DOM 或小程序 picker-view 依赖。已验证 H5；Flutter 真机滚动物理效果仍需目标设备验证。
 
-参考：https://wot-ui.cn/component/picker-view.html 。
 
 
 # Picker 选择器
 
-从 `daisu-ui` 导入 `Picker`、`PickerRef`、`PickerProps`。独立示例 `/ui-demo/picker` 按当前 Wot Demo 提供单列、多列、多级联动、文案标题、大小、值靠右、分隔符、确认前异步校验八例。
+从 `daisu-ui` 导入 `Picker`、`PickerRef`、`PickerProps`。独立示例 `/ui-demo/picker` 提供单列、多列、多级联动、文案标题、大小、值靠右、分隔符、确认前异步校验八例。
 
 ```tsx
 const [value, setValue] = useState<(string | number)[]>([]);
@@ -650,7 +636,6 @@ Picker 组合公共 Popup 与 PickerView，不内置触发 Cell。`value` 为严
 
 语义 Token 支持浅深色；H5 已验证确认、取消、多列、级联及异步拒绝，尚未验证 Flutter 原生设备的滚动物理效果。
 
-参考：https://wot-ui.cn/component/picker.html 。
 
 
 # CalendarView 日历面板
@@ -683,9 +668,8 @@ const [value, setValue] = useState<CalendarValue>([null, null]);
 
 `/ui-demo/calendar-view` 共9个面板：单日/周/月切换、多选、日期/周/月范围切换、日期时间、日期时间范围、同日范围、自定义日期、周起始日、最大范围；另有作用于全部面板的切换模式。
 
-公共原生 scroll-view 只挂载可视区域附近的月份，以占位保持滚动尺寸；滚轮复用 DatetimePickerView。none 模式最多240个面板，超过时明确抛错，应使用 month/year-month 模式。无 DOM 依赖，支持浅深主题。Wot 的 Vue slots、内部 uni-app 选择器不作无效映射。H5 验证不能替代 Flutter iOS/Android 真机验收。
+公共原生 scroll-view 只挂载可视区域附近的月份，以占位保持滚动尺寸；滚轮复用 DatetimePickerView。none 模式最多240个面板，超过时明确抛错，应使用 month/year-month 模式。无 DOM 依赖，支持浅深主题。自定义内容使用 ReactNode，不依赖其他运行时的插槽或内部选择器。H5 验证不能替代 Flutter iOS/Android 真机验收。
 
-参考：https://wot-ui.cn/demo/#/subPages/calendarView/Index 和 https://wot-ui.cn/component/calendar-view.html 。
 
 # Progress 进度条
 
@@ -709,17 +693,16 @@ const [value, setValue] = useState<CalendarValue>([null, null]);
 | percentPosition | outer / right | `{ type?: 'inner' \| 'outer', align?: 'left' \| 'center' \| 'right' }`；align 用于内部文本 |
 | className / style | — | 根节点样式；可用 style.height 调整组件高度，内部模式轨道占满高度 |
 
-色值数组按等分阈值处理，对象数组复制并排序，不修改调用方数据。与当前 Wot Demo 一致，增长时逐段经过跨越的阈值，剩余进度使用末尾颜色；减少时取第一个不小于目标的阈值颜色。这不是沿轨道铺设渐变色。官网当前对象示例从 0 到 50 会先经过 30 阈值，然后使用最后一色。
+色值数组按等分阈值处理，对象数组复制并排序，不修改调用方数据。增长时逐段经过跨越的阈值，剩余进度使用末尾颜色；减少时取第一个不小于目标的阈值颜色。这不是沿轨道铺设渐变色。官网当前对象示例从 0 到 50 会先经过 30 阈值，然后使用最后一色。
 
 使用原生 width 线性过渡，时长为实际变化百分比 × duration；文字立即反映目标值。快速更新从估计的当前动画位置继续，取消旧颜色阶段；卸载清理计时器。同值颜色变化仍更新。内置百分比通过实际文本布局测量保持最小宽度，0% 不会丢失文字；不依赖 CSS max-content 或 DOM 测量。
 
 ## 示例与边界
 
-独立页面按 Wot 四组、七节展示，共 15 条进度：基本、内部左/中/右及零值、三种状态、隐藏文字、三种颜色、两种数组、动态增减。支持浅深主题；H5 核对完整几何、真实按钮、动画中间帧、连续更新和边界。
+独立页面按四组、七节展示，共 15 条进度：基本、内部左/中/右及零值、三种状态、隐藏文字、三种颜色、两种数组、动态增减。支持浅深主题；H5 核对完整几何、真实按钮、动画中间帧、连续更新和边界。
 
 Vue hide-text / percent-position 映射为 hideText / percentPosition，custom-class/custom-style 映射为 className/style。不提供官网当前未列入参数类型的函数 color，也不依赖 uni-app。SVG 图标及原生动画仍需 Flutter 内 iOS/Android 真机回归。
 
-参考：https://wot-ui.cn/component/progress.html 、https://wot-ui.cn/demo/#/subPages/progress/Index 。
 
 # Circle 环形进度条
 
@@ -742,13 +725,13 @@ Vue hide-text / percent-position 映射为 hideText / percentPosition，custom-c
 | fill | — | 圆环内部填充，默认透明 |
 | speed | 50 | 每秒变化的百分比；≤0 或 >1000 时立即绘制，非法值回退 50 |
 | text | — | 中心文字，非空时优先于 children |
-| strokeWidth | 18 | 保持当前 Wot 绘制语义：前景实际描边为此值的一半；无 fill 时轨道同宽，有 fill 时轨道为完整此值 |
+| strokeWidth | 18 | 描边规则：前景实际描边为此值的一半；无 fill 时轨道同宽，有 fill 时轨道为完整此值 |
 | strokeLinecap | round | round / butt / square |
 | clockwise | true | 是否顺时针从十二点方向展开 |
 | children | — | 中心内容插槽，不传 text 时展示 |
 | className / style | — | 根节点类名和样式；尺寸用 size 同步绘图几何 |
 
-使用 Lynx 原生 `<svg content>` 绘制圆弧和线性渐变，不依赖 Canvas、DOM 或 H5 特有接口。渐变以整个圆环为坐标，从右到左，与 Wot Canvas 一致。0% 的 round 端点绘制为圆点，100% 绘制完整圆，不产生退化弧线。颜色文本和自定义插槽支持深色背景；默认圆环配色保留官网固定色，可通过 color/layerColor/fill 定制。
+使用 Lynx 原生 `<svg content>` 绘制圆弧和线性渐变，不依赖 Canvas、DOM 或 H5 特有接口。渐变以整个圆环为坐标，从右到左。0% 的 round 端点绘制为圆点，100% 绘制完整圆，不产生退化弧线。颜色文本和自定义插槽支持深色背景；默认圆环配色保留官网固定色，可通过 color/layerColor/fill 定制。
 
 初次挂载直接显示 value；后续变更按 speed 从当前动画位置推进，可中途反向。动画有边界保护，卸载、目标或速度变化清理旧计时器。value 是外部目标，动画过程不修改业务值，不提供无意义的 onChange。
 
@@ -756,9 +739,8 @@ Vue hide-text / percent-position 映射为 hideText / percentPosition，custom-c
 
 四组示例包含三个基本圆环、五种样式、一个插槽圆环，以及真实增减和 Dialog 层级验证。独立九个圆环的尺寸、折行、间距与在线 Demo 一致；已核对 H5 浅深截图及动画中间帧、连续反向、渐变和弹框。
 
-当前官网默认 size=120、stroke-width=18；本地旧版 Wot skill 的 100/10 已过时。Vue v-model 映射为 value，默认 slot 映射为 children，custom-class/style 映射为 className/style。SVG 渐变及绘制仍需 Flutter 内 iOS/Android 真机验证，未冒充已验收的宿主 Canvas 能力。
+默认 size=120、strokeWidth=18。Vue v-model 映射为 value，默认 slot 映射为 children，custom-class/style 映射为 className/style。SVG 渐变及绘制仍需 Flutter 内 iOS/Android 真机验证，未冒充已验收的宿主 Canvas 能力。
 
-参考：https://wot-ui.cn/component/circle.html 、https://wot-ui.cn/demo/#/subPages/circle/Index 。
 
 # Notify 消息通知
 
@@ -814,17 +796,16 @@ function Page() {
 | setNotifyDefaultOptions(options) | 按字段合并本实例后续调用的默认配置；不修改正在显示的通知 |
 | resetNotifyDefaultOptions() | 恢复首次 initialOptions，内置默认值继续由组件补齐 |
 
-每个 hook 的默认值和计时互相隔离，不使用全局 selector 注册表；多个实例可同时显示。Vue 的 v-model:visible 映射为 visible/onChange，slots 映射为 children/prefix/renderClose，custom-class/style 映射为 className/style。原 Wot selector 不移植；不要混用不同实例的 props 和方法。
+每个 hook 的默认值和计时互相隔离，不使用全局 selector 注册表；多个实例可同时显示。Vue 的 v-model:visible 映射为 visible/onChange，slots 映射为 children/prefix/renderClose，custom-class/style 映射为 className/style。不使用全局 selector；不要混用不同实例的 props 和方法。
 
 ## 示例及能力边界
 
 官网当前四组、14入口已复刻：基础、颜色/位置/时长/关闭、四类型、四悬浮和自定义内容。H5 已核对全部行几何、38px 高度、顶部44px/底部0px偏移、悬浮12px间距、入退场中间帧、真实触屏关闭及浅深截图；测试覆盖实例隔离、续期、默认值重置、重复关闭和快速重开。
 
-当前在线 Wot 的普通通知已改用浅色填充并自带类型前缀，旧版纯色背景/白字说明不适用。其文档宣称 message 支持换行，但当前 Demo 组件 CSS 实际为单行，本地默认跟随当前展示；多行请用 children。onOpened/onClosed 明确在动画完成后触发，与本地 Toast 一致。
+普通通知使用浅色背景和类型前缀，message 默认为单行；多行内容请使用 children。onOpened/onClosed 明确在动画完成后触发，与本地 Toast 一致。
 
 CSS 兼容资料已按 iOS 4.0 / Android 4.1 核对 box-shadow 基础支持；本组件仅使用静态阴影，动画只改变 transform。原生多层阴影和 Portal 的实际绘制仍需 Flutter 真机回归，不以 H5 验证代替。
 
-参考：https://wot-ui.cn/component/notify.html 、https://wot-ui.cn/demo/#/subPages/notify/Index 。
 
 # Signature 签名
 
@@ -836,7 +817,7 @@ const signature = useRef<SignatureRef>(null);
   onConfirm={result => { if (result.success) setPreview(result.dataUrl); }} />
 ```
 
-使用原生 SVG 和触摸事件书写；同一份向量点数据在后台生成 RGBA PNG，不依赖 Canvas、DOM、Buffer、atob 或宿主临时文件 API。导出压缩使用现有依赖 fflate。当前 Wot 不指定高度时使用 Canvas 内在高度150px，示例按此对齐，而非旧文档200px。
+使用原生 SVG 和触摸事件书写；同一份向量点数据在后台生成 RGBA PNG，不依赖 Canvas、DOM、Buffer、atob 或宿主临时文件 API。导出压缩使用现有依赖 fflate。未指定时画板默认高度为150px。
 
 ## 参数
 
@@ -871,13 +852,12 @@ Footer额外包含 `currentStep`（当前笔画数）、`historyList`（当前�
 
 ## 映射及限制
 
-Wot的footer插槽映射renderFooter，custom-class/style映射className/style。PNG是当前唯一导出类型；不暴露无效的fileType/quality（PNG无JPEG质量语义）。PNG支持十六进制、rgb/rgba、black/white/red/blue/green/transparent；其他Lynx/SVG颜色可显示，但导出会明确失败，请使用可移植的具体色值。背景不包含纸面Token，需要白底导出时传backgroundColor="#fff"。
+使用 renderFooter 定制底部，className/style 定制根层。PNG是当前唯一导出类型；不暴露无效的fileType/quality（PNG无JPEG质量语义）。PNG支持十六进制、rgb/rgba、black/white/red/blue/green/transparent；其他Lynx/SVG颜色可显示，但导出会明确失败，请使用可移植的具体色值。背景不包含纸面Token，需要白底导出时传backgroundColor="#fff"。
 
 七块画板、三种笔锋、历史、禁用自定义按钮、弹窗与横屏布局按官网分组实现；横屏子页通过竖排旋转按钮扩大书写区域，不控制系统屏幕方向。预览复用公共Popup与原生image。
 
 已核对H5七画板全部几何、真实触屏书写、2倍PNG导出解码、撤销恢复、弹窗/横屏及深色截图；测试覆盖RGBA内容、导出边界、历史分支、多指取消和禁用。Flutter内触摸延迟、长时间书写性能及PNG解码仍需iOS/Android真机验证。
 
-参考：https://wot-ui.cn/component/signature.html 、https://wot-ui.cn/demo/#/subPages/signature/Index 。
 
 # Grid / GridItem 宫格
 
@@ -890,13 +870,13 @@ Wot的footer插槽映射renderFooter，custom-class/style映射className/style�
 </Grid>
 ```
 
-Grid参数：`column` 不传时所有直接子项为一行，显式正整数决定折行；无效值回退单行。`border=false`、`gutter=0`（有限非负px）、`square=false`、`clickable=false`、`bgColor`、`hoverClass`、`center=true`、`direction='vertical'|'horizontal'`、`reverse=false`、`iconSize=32`（px）、`onNavigate`、`children`、`className/style`。当前在线Wot默认图标32px，旧skill的26px已过时。
+Grid参数：`column` 不传时所有直接子项为一行，显式正整数决定折行；无效值回退单行。`border=false`、`gutter=0`（有限非负px）、`square=false`、`clickable=false`、`bgColor`、`hoverClass`、`center=true`、`direction='vertical'|'horizontal'`、`reverse=false`、`iconSize=32`（px）、`onNavigate`、`children`、`className/style`。图标默认尺寸为32px。
 
 GridItem参数：`text:ReactNode`、`icon`、`iconColor`、`iconSize`（覆盖父级）、`renderIcon`、`children`（完全替换默认内容）、`ellipsis=false`、`className/style`、`textClassName`、`iconClassName`。文字默认16px/24px，图标与文字间隔4px，内容padding12px。横向和反向排列调整文字间距，children不再渲染默认图标与文字。
 
 徽标复用公共Badge，支持 `isDot/value/max/type/badgeProps`；默认max=99，单项显式简写覆盖badgeProps同名字段，其余完整透传。Badge附着图标，未设置图标时不单独展示。
 
-点击使用 `onItemClick(event:TouchEvent)`；父Grid存在且clickable=false时阻止点击回调和导航。`url` 配合 `linkType='push'|'replace'`、父Grid或单项 `onNavigate(url,{replace})` 显式接入路由；单项回调优先于父级，点击回调先于导航。库不内置项目页面路径或uni-app路由；Wot的navigateTo/redirectTo对应push/replace，switchTab/reLaunch等平台行为由业务自行编排。
+点击使用 `onItemClick(event:TouchEvent)`；父Grid存在且clickable=false时阻止点击回调和导航。`url` 配合 `linkType='push'|'replace'`、父Grid或单项 `onNavigate(url,{replace})` 显式接入路由；单项回调优先于父级，点击回调先于导航。库不内置项目页面路径或uni-app路由；导航使用 push/replace，页面栈重置等宿主行为由业务自行编排。
 
 ## 布局与示例
 
@@ -904,7 +884,6 @@ GridItem参数：`text:ReactNode`、`icon`、`iconColor`、`iconSize`（覆盖�
 
 十四组独立示例覆盖基础/图片内容、列数/正方形、背景/边框/间距/徽标、横向/反向、图标/文字插槽、自定义样式和真实push/replace导航。每组几何、插槽折行、正方形间距与浅深截图已和当前在线Demo核对；测试覆盖动态列数、空子项、实际尺寸、点击门控、显式导航和Badge组合。内容图片使用原生image，不引入浏览器DOM。原生触屏及分隔线渲染仍需Flutter真机验证。
 
-参考：https://wot-ui.cn/component/grid.html 、https://wot-ui.cn/demo/#/subPages/grid/Index 。
 
 # CountDown 倒计时 / useCountDown
 
@@ -923,9 +902,8 @@ Ref：`start()` 继续当前剩余时间，运行中重复调用不重置；`pau
 
 `useCountDown({time?,millisecond?,onChange?,onFinish?})` 返回 `{current,start,pause,reset(time?)}`，不自动开始；组件负责autoStart。reset不自动播放。各实例定时器独立，卸载清理。使用截止时间与Date.now计算剩余值，延迟回调不延长倒计时；毫秒模式约16ms刷新，不声称真实1ms刷新，秒模式按剩余秒边界调度。结束为0，onFinish每轮只触发一次，重置后才开启新一轮；0时长start会结束一次。
 
-Wot默认插槽映射children函数，custom-class映射className。五项独立示例包含基础、自定义格式、两位毫秒、自定义橙色数字块及3秒手动控制。控制区关联复用公共Grid/GridItem，结束提示复用Toast。H5五项全部几何、毫秒中间值、暂停恢复/结束/重置及浅深截图已核对；测试覆盖格式进位、截止时间补偿、时间替换与卸载清理。宿主挂起时JS不能显示持续动画，恢复后的下一次回调会校正至实际截止时间。
+使用 children 函数定制内容，className 定制样式。五项独立示例包含基础、自定义格式、两位毫秒、自定义橙色数字块及3秒手动控制。控制区关联复用公共Grid/GridItem，结束提示复用Toast。H5五项全部几何、毫秒中间值、暂停恢复/结束/重置及浅深截图已核对；测试覆盖格式进位、截止时间补偿、时间替换与卸载清理。宿主挂起时JS不能显示持续动画，恢复后的下一次回调会校正至实际截止时间。
 
-参考：https://wot-ui.cn/component/count-down.html 、https://wot-ui.cn/demo/#/subPages/countDown/Index 。
 
 # CountTo 数字滚动
 
@@ -955,13 +933,12 @@ Ref提供 `start()`、`pause()`、`reset()`；重复start不建立多个定时�
 
 复用公共useCountDown的截止时间和约16ms调度，不依赖requestAnimationFrame/DOM；暂停和时间替换会取消旧工作，卸载清理。格式化在显示时取整，不累计逐帧舍入误差，支持负数分组、自定义分隔符与递减。显示props和回调变化不会意外重启计时，起止值、时长、autoStart变化会重置。
 
-## 当前Wot映射与示例
+## 参数与独立示例
 
-当前Wot使用 `autoStart`，旧版skill的autoplay说明不适用；主数字已为18px/26px、前后缀12px/18px，独立示例不套用旧版32px。Vue默认/prefix/suffix插槽分别映射children/prefix/suffix；custom-class/style映射className/style。fontSize是本地有效扩展，当前在线Wot已不再在props中声明旧版fontSize。
+自动播放通过 `autoStart` 控制；主数字已为18px/26px、前后缀12px/18px，独立示例不套用旧版32px。Vue默认/prefix/suffix插槽分别映射children/prefix/suffix；custom-class/style映射className/style。fontSize 是可用的字体尺寸属性。
 
 十个独立示例包含四个基本用法、五个主题和一个带公共Grid控制的手动动画。H5十项全部几何、动画中间值、准确终值、开始/暂停/恢复/重置及浅深截图已核对；测试覆盖负数、格式化、递减、零时长、挂载/结束去重、更新与卸载清理。后台挂起期间不持续渲染，恢复时按实际截止时间校正。
 
-参考：https://wot-ui.cn/component/count-to.html 、https://wot-ui.cn/demo/#/subPages/countTo/Index 。
 
 
 # Img 图片
@@ -1000,12 +977,11 @@ import { Img } from 'daisu-ui';
 
 Vue插槽映射ReactNode，custom-image映射customImage。没有强行移植uni的lazyLoad和showMenuByLongpress：当前原生image没有等价的通用接口；不声明无效参数。SVG请使用公共Icon或原生svg，不以image模拟。preview依赖显式宿主适配器，库组件不直接访问Flutter NativeModule，也不自行下载业务图片。
 
-参考：https://wot-ui.cn/component/img.html 、https://wot-ui.cn/demo/#/subPages/img/Index 。H5截图/触屏与全部49项几何核对；原生图片解码和宿主预览仍需Flutter真机验证。
 
 
 # Empty 缺省提示
 
-独立示例：`/ui-demo/empty`，11例。当前Wot的Empty已经使用图标，旧skill的StatusTip外链插画、urlPrefix、imageSize参数不是当前接口。
+独立示例：`/ui-demo/empty`，11例。缺省内容使用内置图标，或通过 image 显式提供自定义内容。
 
 ```tsx
 import { Empty, Button } from 'daisu-ui';
@@ -1027,18 +1003,17 @@ import { Empty, Button } from 'daisu-ui';
 
 内置no-result/no-wifi/no-content/no-collection/no-comment/failpayment/no-message复用公共Icon的原生SVG轮廓，不加载网络iconfont。图标按浅深主题切换，图像URL按公共Icon分别交给image/svg。根节点宽100%，底部padding24px，可用 `--cso-ui-empty-padding-bottom` 覆盖。
 
-当前库不接入网页iconfont，因此未移植Wot的iconPrefix/cssIcon；自定义图形通过image插槽提供原生SVG或公共控件。Vue image/bottom插槽映射同名ReactNode。复杂tip需要在调用方提供原生text元素。
+当前库不接入网页iconfont，因此不提供 iconPrefix/cssIcon；自定义图形通过image插槽提供原生SVG或公共控件。Vue image/bottom插槽映射同名ReactNode。复杂tip需要在调用方提供原生text元素。
 
 业务原有 `EmptyState` 保持原导出、参数及默认展示。Empty与EmptyState各有用途，已有业务页面不自动迁移。
 
 示例复刻7种内容形态、140px大小、本地猫图、自定义太阳图标、底部按钮；重新加载按钮展示实际反馈，不制造业务请求。11例几何、浅深截图和真实点击已核对，测试包含原生图标/图片路径、插槽替换和业务EmptyState回归。
 
-参考：https://wot-ui.cn/demo/#/subPages/empty/Index 。
 
 
 # NoticeBar 通知栏
 
-独立示例：`/ui-demo/notice-bar`，12条通知。复刻当前Wot的类型、关闭、静止省略、插槽、多行、自定义颜色、水平多文本、垂直轮播及重置。
+独立示例：`/ui-demo/notice-bar`，12条通知。展示组件的类型、关闭、静止省略、插槽、多行、自定义颜色、水平多文本、垂直轮播及重置。
 
 ```tsx
 import { NoticeBar } from 'daisu-ui';
@@ -1053,7 +1028,7 @@ const ref = useRef<NoticeBarRef>(null);
 | --- | --- | --- |
 | text | 空 | string或readonly string[]，按数组顺序循环 |
 | type | warning | warning/info/danger，浅深配色 |
-| scrollable | true | 水平滚动开关；即使文本短也滚动，符合当前Wot行为 |
+| scrollable | true | 水平滚动开关；即使文本短也滚动 |
 | delay | 1 | 每轮停留秒数，负值归0，非有限值回退1 |
 | speed | 50 | px/s，非正数/非有限值回退50 |
 | direction | horizontal | horizontal/vertical；垂直至少两条才滚动，scrollable仅控制水平方向 |
@@ -1076,12 +1051,11 @@ Ref的reset取消旧工作，索引归0并重新开始初始停留，不重新�
 
 CSS兼容核对：安装的 `@lynx-js/css-defines@0.0.18` 数据声明width:max-content自iOS/Android1.6支持，目标iOS4.0/Android4.1可用。当前H5已核对12项完整几何/配色、约50px/s滚动中间位置、垂直重置、真实关闭及浅深截图；原生过渡仍需Flutter真机核验。
 
-参考：https://wot-ui.cn/component/notice-bar.html 、https://wot-ui.cn/demo/#/subPages/noticeBar/Index 。
 
 
 # Card 卡片
 
-独立示例：`/ui-demo/card`，当前Wot七张卡片：文章/个人名片、矩形列表、复杂宠物档案、自定义标题和两张无Footer卡片。动作复用公共Button、Dialog与Toast。
+独立示例：`/ui-demo/card`，包含七张卡片：文章/个人名片、矩形列表、复杂宠物档案、自定义标题和两张无Footer卡片。动作复用公共Button、Dialog与Toast。
 
 ```tsx
 <Card title="业务卡片" description="说明">...</Card>
@@ -1091,9 +1065,9 @@ CSS兼容核对：安装的 `@lynx-js/css-defines@0.0.18` 数据声明width:max-
 
 | 参数 | 默认 | 行为 |
 | --- | --- | --- |
-| variant | business | business保留既有样式；standard使用当前Wot样式 |
+| variant | business | business保留既有样式；standard使用标准样式 |
 | type | 无 | rectangle：矩形、无横边距和阴影；未传variant时自动选standard |
-| title | 无 | ReactNode；字符串/数字用原生text，standard单行省略；复杂节点对应Wot title插槽 |
+| title | 无 | ReactNode；字符串/数字用原生text，standard单行省略；复杂标题使用 ReactNode |
 | description | 无 | 兼容原业务说明，standard也可使用 |
 | children | 无 | 卡片内容，原始字符串/数字自动包text；standard始终保留内容容器 |
 | footer | 无 | 底部ReactNode；未提供/false不渲染，0有效 |
@@ -1106,7 +1080,6 @@ CSS兼容核对：安装的 `@lynx-js/css-defines@0.0.18` 数据声明width:max-
 
 测试覆盖业务默认回归、矩形和标准模式、复杂标题交互、类名与0值插槽。H5核对七卡片几何、阅读全文Dialog及浅深截图；静态阴影仍需原生真机核验。
 
-参考：https://wot-ui.cn/component/card.html 、https://wot-ui.cn/demo/#/subPages/card/Index 。
 
 
 # Skeleton 骨架屏
@@ -1129,7 +1102,7 @@ CSS兼容核对：安装的 `@lynx-js/css-defines@0.0.18` 数据声明width:max-
 | children | 无 | 加载结束内容，原始字符自动包原生text |
 | className / style | 无 | 根节点样式 |
 
-SkeletonRow可为数字（该行列数）、SkeletonCell、SkeletonCell数组。列数取0–100整数，非有限或负数归0。当前Wot在线源码把任意数字都渲染成一列；本库按其文档的[1,1,2]语义正确渲染为1/1/2列，并保持官网实际使用的1列配置一致。
+SkeletonRow可为数字（该行列数）、SkeletonCell、SkeletonCell数组。列数取0–100整数，非有限或负数归0。例如 [1,1,2] 分别渲染为1、1、2列。
 
 SkeletonCell支持type=text/rect/circle、size、width/height、margin/marginLeft/marginRight、borderRadius、background/backgroundColor。数值长度使用px；size设置宽高，明确width/height优先；margin支持负数。text默认16px高、2px圆角，rect默认16px高/4px圆角，circle默认48px，行距12px。数组行按space-between布局；numeric多列平分宽度并留12px列间距。
 
@@ -1137,7 +1110,6 @@ SkeletonCell支持type=text/rect/circle、size、width/height、margin/marginLef
 
 H5已核对15实例几何、两种动画中间帧、真实Switch显示/隐藏Grid和浅深截图；测试覆盖预设/空配置、数字列数、样式与插槽切换。
 
-参考：https://wot-ui.cn/component/skeleton.html 、https://wot-ui.cn/demo/#/subPages/skeleton/Index 。
 
 
 # Steps 步骤条
@@ -1158,9 +1130,8 @@ Step 参数：`title/description/icon?:ReactNode`、`status?:'finished'|'process
 
 直接传入 Step、数组或条件子项；不要用 Fragment 或自定义组件包裹多项再依赖自动计数。废弃的 titleSlot/iconSlot/descriptionSlot 不移植。
 
-详情 `/ui-demo/steps` 对齐 Wot 当前十组示例，含三个独立下一步状态、超末项完成、点状循环、竖向长文案。保留本地正确导航标题“Steps 步骤条”（参考站当前误写“标签页”）。CSS 使用主题变量；SVG 读取 ConfigProvider 主题与显式色值。
+详情 `/ui-demo/steps` 覆盖十组示例，含三个独立下一步状态、超末项完成、点状循环、竖向长文案。保留本地正确导航标题“Steps 步骤条”（参考站当前误写“标签页”）。CSS 使用主题变量；SVG 读取 ConfigProvider 主题与显式色值。
 
-参考：https://wot-ui.cn/component/steps.html 、https://wot-ui.cn/demo/#/subPages/steps/Index 。
 
 
 # Sticky 粘性布局
@@ -1176,7 +1147,7 @@ Step 参数：`title/description/icon?:ReactNode`、`status?:'finished'|'process
 </StickyBox>
 ```
 
-Sticky 参数：`offsetTop?:number=0`、`zIndex?:number=1`、`children/className/style`。offsetTop 是 Lynx 视口内的实际像素距离，不暗中添加导航高度；H5 示例显式传入 44/94/194 对齐 Wot 的导航栏行为。支持负偏移，非有限数退回默认值。StickyBox 支持 `children/className/style`，最近一层 Box 约束内容不越过容器底部。
+Sticky 参数：`offsetTop?:number=0`、`zIndex?:number=1`、`children/className/style`。offsetTop 是 Lynx 视口内的实际像素距离，不暗中添加导航高度；H5 示例显式传入 44/94/194 保留示例导航栏高度。支持负偏移，非有限数退回默认值。StickyBox 支持 `children/className/style`，最近一层 Box 约束内容不越过容器底部。
 
 正常状态保留布局；吸顶时使用 fixed，原位置保留实测宽高；到容器末尾使用相对原占位的 absolute。所有状态保留同一内容节点，不通过重新挂载切换位置。容器比内容矮时不吸顶。内容/容器尺寸变化会重新测量并更新观察器，卸载和参数变化会断开旧观察器并丢弃过期测量。
 
@@ -1184,7 +1155,6 @@ Sticky 参数：`offsetTop?:number=0`、`zIndex?:number=1`、`children/className
 
 详情 `/ui-demo/sticky` 复刻当前在线五组示例、120px 容器、250vh 页面、点击/5秒动态插入；按参考实际显示处理未生效的水平间距变量。保留标准 Button 和深色模式。H5 验证基础/偏移吸顶、容器末尾跟随、滚回复位、跨视口跳转、动态插入与浅深截图；原生设备滚动表现仍需在 Flutter 宿主验收。
 
-参考：https://wot-ui.cn/component/sticky.html 、https://wot-ui.cn/demo/#/subPages/sticky/Index 。
 
 
 # Curtain 幕帘
@@ -1205,14 +1175,13 @@ Sticky 参数：`offsetTop?:number=0`、`zIndex?:number=1`、`children/className
 
 不移植微信长按识码菜单和废弃 value/modelValue 双重绑定；关闭后使用公共 Transition 的隐藏保留行为，不提供无实际效果的 hideWhenClose 参数。图片支持 Lynx 原生可用来源，包括项目静态资源。
 
-独立详情 `/ui-demo/curtain` 对齐当前 Wot 九入口、图片和七个关闭位置，含自定义关闭及遮罩关闭；支持深色模式。
+独立详情 `/ui-demo/curtain` 包含九个入口、图片和七个关闭位置，含自定义关闭及遮罩关闭；支持深色模式。
 
-参考：https://wot-ui.cn/component/curtain.html 、https://wot-ui.cn/demo/#/subPages/curtain/Index 。
 
 
 # Watermark 水印
 
-从 `packages/daisu-ui/src/index.ts` 导入 `Watermark`。使用原生 text、image/SVG 与绝对布局重复单元，无 Canvas、浏览器 API 或轮询。支持深色页面；水印颜色默认保持当前 Wot 的浅灰色。
+从 `packages/daisu-ui/src/index.ts` 导入 `Watermark`。使用原生 text、image/SVG 与绝对布局重复单元，无 Canvas、浏览器 API 或轮询。支持深色页面；水印默认使用浅灰色。
 
 ```tsx
 <view style={{position:'relative',height:'300px'}}>
@@ -1231,7 +1200,6 @@ Sticky 参数：`offsetTop?:number=0`、`zIndex?:number=1`、`children/className
 
 独立详情 `/ui-demo/watermark` 对齐当前局部文字、图片、多行文本和全局水印示例，复用公共 Cell/Switch/Checkbox/Radio；全局支持文字/图片与网格/错位切换。
 
-参考：https://wot-ui.cn/component/watermark.html 、https://wot-ui.cn/demo/#/subPages/watermark/Index 。
 
 
 # Swiper 轮播图
@@ -1277,7 +1245,6 @@ const [current, setCurrent] = useState(0);
 
 独立详情 `/ui-demo/swiper`：三种指示器、手动切换、自定义字段、卡片、同时展示两项、自定义指示器、属性控制和内容插槽，共十个轮播。保留参考的支持项尺寸与分组，省略垂直和三个视频示例；自定义指示器示例适配为横向滑动。复用公共 Img、Cell、Switch、Gap、Button，支持深色模式。
 
-参考：https://wot-ui.cn/component/swiper.html 、https://wot-ui.cn/demo/#/subPages/swiper/Index 、https://lynxjs.org/next/lynx-ui/components/swiper 。
 
 关联 SwiperNav 已提取为公共组件，参数见 [swiper-nav.md](swiper-nav.md)，适用于 ImagePreview 等自定义指示器插槽。
 
@@ -1310,7 +1277,6 @@ React 控制参数：`show?:boolean`、`onShowChange(show)`、`options?:ImagePre
 
 独立详情 `/ui-demo/image-preview` 对齐官网 10 个分组项、11 个入口：基本/数组、起始位置、隐藏页码/关闭、两种关闭位置、禁用点击关闭/循环、事件与自定义指示器/底部说明。
 
-参考：https://wot-ui.cn/component/image-preview.html 、https://wot-ui.cn/demo/#/subPages/imagePreview/Index 。
 
 验证：11 个入口按钮的坐标和尺寸与官网一致；全屏/页码/关闭几何、真实滑动、禁用关闭、回调、自定义插槽和浅深模式已核对。
 
@@ -1327,12 +1293,12 @@ React 控制参数：`show?:boolean`、`onShowChange(show)`、`options?:ImagePre
 
 `onChange({dir:'prev'|'next'})` 发送导航意图，由父组件更新索引；`onSelect(index)` 可选，传入后圆点可以直接选择页。组件自身不修改 current。圆点/点条/分数与八种位置使用公共 Swiper 样式和 Token；示例见 `/ui-demo/swiper` 与 `/ui-demo/image-preview` 自定义插槽。
 
-这是 Wot 的 wd-swiper-nav 的横向版本；不提供垂直方向和无实际作用的 autoplay 配置。
+轮播指示器采用横向布局，不提供垂直方向或自动播放配置。
 
 
 # Table 表格
 
-从 `packages/daisu-ui/src/index.ts` 导入 `Table`、`TableColumn<T>`。独立详情 `/ui-demo/table` 对照当前 Wot Table 的 14 组示例，支持深色模式，复用 SortButton、Pagination 和 InputNumber。
+从 `packages/daisu-ui/src/index.ts` 导入 `Table`、`TableColumn<T>`。独立详情 `/ui-demo/table` 包含14组独立示例，支持深色模式，复用 SortButton、Pagination 和 InputNumber。
 
 ```tsx
 const columns: TableColumn<Person>[] = [
@@ -1344,7 +1310,7 @@ const columns: TableColumn<Person>[] = [
   onRowClick={({ rowIndex }) => selectRow(rows[rowIndex])} />
 ```
 
-使用 React `columns` 配置替代 Wot 的 `wd-table-column` 子组件。每列 `prop` 对应行属性，`label` 为表头；`width` 默认 100px，可为数字或 Lynx 支持的 CSS 长度（包括百分比和 calc）；`align` 为 left / center / right，默认 left；`fixed`、`sortable` 默认 false。仅支持左侧固定列；建议将固定列连续放在最前。`render({row,index})` 对应 value 插槽，返回 ReactNode 或文本，index 始终是 data 中的绝对索引。
+使用 React columns 数组配置列。每列 `prop` 对应行属性，`label` 为表头；`width` 默认 100px，可为数字或 Lynx 支持的 CSS 长度（包括百分比和 calc）；`align` 为 left / center / right，默认 left；`fixed`、`sortable` 默认 false。仅支持左侧固定列；建议将固定列连续放在最前。`render({row,index})` 对应 value 插槽，返回 ReactNode 或文本，index 始终是 data 中的绝对索引。
 
 参数：
 
@@ -1367,12 +1333,12 @@ const columns: TableColumn<Person>[] = [
 
 固定列通过主线程滚动事件同步，表头与表体共用横向滚动容器，避免每帧 React 更新。列宽由独立空节点测量；普通模式根据内容原生布局事件计算整行高度，不使用 DOM。虚拟模式只更新可视缓冲行窗口，编辑值必须保存在业务数据中，不能只放在会卸载的单元格本地 state。默认表头44px；自定义内容受列宽约束，跨列合并不建议越过固定列边界。
 
-当前在线 Wot 默认 ellipsis=false、rowHeight=44，旧安装技能描述的 true/50 不适用于本实现。没有移植 uni-app 组件注册、CSS grid/sticky 的浏览器依赖；使用原生滚动与布局同步。虚拟滚动针对固定行高；超大/无限业务列表仍使用项目既有 List，勿替换业务 List 或 FeedList。
+默认 ellipsis=false、rowHeight=44。没有移植 uni-app 组件注册、CSS grid/sticky 的浏览器依赖；使用原生滚动与布局同步。虚拟滚动针对固定行高；超大/无限业务列表仍使用项目既有 List，勿替换业务 List 或 FeedList。
 
 
 # BarCode 条形码
 
-从 `packages/daisu-ui/src/index.ts` 导入 `BarCode`、`BarCodeRef` 和 `BarCodeFormat`。独立示例 `/ui-demo/bar-code`，对照 Wot 当前 12 组示例、38 个条码实例，覆盖常见格式、位置/间距、颜色、尺寸、字体、导出和特殊格式尺寸。
+从 `packages/daisu-ui/src/index.ts` 导入 `BarCode`、`BarCodeRef` 和 `BarCodeFormat`。独立示例 `/ui-demo/bar-code`，包含12组示例、38个条码实例，覆盖常见格式、位置/间距、颜色、尺寸、字体、导出和特殊格式尺寸。
 
 ```tsx
 const ref = useRef<BarCodeRef>(null);
@@ -1402,7 +1368,7 @@ const svgDataUrl = await ref.current!.exportImage();
 
 `onValid(boolean)`：每次有关参数引发的编码校验完成时触发，结果相同也会触发；表示内容合法，不能替代绘图或导出的成功结果。空值以及编码前选项校验失败不触发。`onError(Error)`：编码、尺寸或布局失败时触发。非法输入不保留旧条码；有效编码在宽高不足时也会绘制失败。自定义业务错误反馈由调用方处理。
 
-Ref：`getSvg():string` 获取包含字体和文字的标准 SVG；`exportImage():Promise<string>` 返回 `data:image/svg+xml;charset=utf-8,...`，无效或空条码拒绝 Promise。示例调用实际导出结果并展示。当前 Flutter 宿主未提供 Canvas/位图保存协议，因此返回 SVG data URL，**不是 Wot 的 PNG tempFilePath**，不支持写入相册或假造本地文件路径。外部 SVG 使用标准字体属性；宿主若要将 SVG 导出为 PNG，需补充实际的宿主图像转换协议。
+Ref：`getSvg():string` 获取包含字体和文字的标准 SVG；`exportImage():Promise<string>` 返回 `data:image/svg+xml;charset=utf-8,...`，无效或空条码拒绝 Promise。示例调用实际导出结果并展示。当前 Flutter 宿主未提供 Canvas/位图保存协议，因此返回 SVG data URL，不是 PNG 临时文件路径，不支持写入相册或假造本地文件路径。外部 SVG 使用标准字体属性；宿主若要将 SVG 导出为 PNG，需补充实际的宿主图像转换协议。
 
 深色模式随页面切换；条码默认保留白底黑条以保持扫描对比度，需要自定义时显式配置 background / lineColor。SVG 使用连续坐标保留编码比例，原生文字的字体和基线由平台排版，未照搬 Canvas 的平台像素取整。所有格式都应使用足够宽度和真实扫码设备验收；当前已验证编码模块与 H5 展示，未声明真机扫码验收。
 
@@ -1413,12 +1379,12 @@ Ref：`getSvg():string` 获取包含字体和文字的标准 SVG；`exportImage(
 
 ```tsx
 const qr = useRef<QrCodeRef>(null);
-<QrCode ref={qr} text="https://wot-ui.cn" size={200} correctLevel="H" />
+<QrCode ref={qr} text="https://example.com" size={200} correctLevel="H" />
 ```
 
 真实 QR Byte 编码，自动版本 1–40；中文和 emoji 按 UTF-8 编码，不截断为低八位。L/M/Q/H 纠错，默认 H。超出编码容量或参数错误触发 onError，不保留旧码。
 
-参数沿用 Wot camelCase：text=''、size=200(px)、correctLevel='H'、colorDark='#000000'、colorLight='#FFFFFF'、margin=0(px)；logo=''、logoWidth/Height=70、logoBackgroundColor='#FFFFFF'、logoRadius=0、logoBorderColor=''、logoBorderWidth=0；dotType='square'（square/dots/rounded/liquid）、dotScale=1（0–1）；enableGradient=false、gradientColor='#000000'、gradientColors=[]、gradientDirection='diagonal'（horizontal/vertical/diagonal/角度）；backgroundImage=''。className/style 替代 custom-class/custom-style，onClick/onError 对应事件。
+参数使用 camelCase：text=''、size=200(px)、correctLevel='H'、colorDark='#000000'、colorLight='#FFFFFF'、margin=0(px)；logo=''、logoWidth/Height=70、logoBackgroundColor='#FFFFFF'、logoRadius=0、logoBorderColor=''、logoBorderWidth=0；dotType='square'（square/dots/rounded/liquid）、dotScale=1（0–1）；enableGradient=false、gradientColor='#000000'、gradientColors=[]、gradientDirection='diagonal'（horizontal/vertical/diagonal/角度）；backgroundImage=''。className/style 替代 custom-class/custom-style，onClick/onError 对应事件。
 
 原生 SVG 渲染码点，原生 image 叠加背景与 Logo，避免依赖 Canvas 或 SVG 内嵌位图的移动端支持。rounded 和 liquid 按官网逐点圆角规则绘制，渐变使用原生 linearGradient。二维码默认固定黑白颜色，深色主题仍保留对比度；示例容器使用主题 Token。
 
@@ -1478,7 +1444,7 @@ Demo 排版核对：状态区使用三个 small 实心按钮，正文不增加�
 
 # VideoPreview 视频预览
 
-浏览器版本，位于 `packages/daisu-ui/src/VideoPreview.tsx`；独立示例 `/ui-demo/video-preview`。默认248px播放区、全屏区域、左右关闭位置、ref及两个独立hook实例，对照 Wot Demo。实际播放使用 HTML5 video。
+浏览器版本，位于 `packages/daisu-ui/src/VideoPreview.tsx`；独立示例 `/ui-demo/video-preview`。默认248px播放区、全屏区域、左右关闭位置、ref及两个独立hook实例。实际播放使用 HTML5 video。
 
 浏览器宿主入口先注册：
 
@@ -1551,6 +1517,6 @@ const [show, setShow] = useState(false);
 
 Ref：`open(src?):boolean`、`close()`、`chooseImage():boolean`、`confirm():boolean`、`setRotate(deg):boolean`、`resetImg():boolean`、`revertIsAnimation(animation):boolean`；boolean表示是否发出指令，结果以事件为准。`downloadResult(url):boolean` 下载本实例导出的结果；`revokeResult(url)` 提前释放旧结果。编辑器关闭后仍保留结果以供页面显示，组件卸载时会释放所有结果及文件选择创建的源Blob URL；异步上传/持久化应在卸载前读取Blob。示例替换旧头像会立即回收旧结果。
 
-浏览器内使用Canvas 2D真实导出，跨域失败有明确错误。没有接入上传服务器，详情将Wot「裁剪后上传」改为「裁剪后导出」，实际下载JPEG；调用方可通过自己的上传适配器处理Blob，不能把临时URL当远端已上传地址。Flutter的选图/裁剪/导出协议仍待实现。
+浏览器内使用Canvas 2D真实导出，跨域失败有明确错误。没有接入上传服务器，详情提供「裁剪后导出」，实际下载JPEG；调用方可通过自己的上传适配器处理Blob，不能把临时URL当远端已上传地址。Flutter的选图/裁剪/导出协议仍待实现。
 
 浏览器确认按钮可通过 --cso-ui-img-cropper-confirm-bg 定制，默认回落公共primary主题色。浏览器完整排版与Lynx组件样式分离；原生侧不会创建浏览器自定义元素。

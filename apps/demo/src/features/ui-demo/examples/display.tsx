@@ -1,5 +1,5 @@
 import { Button, Empty, Icon, Toast, useToast } from 'daisu-ui';
-import cat from '../../../assets/wot-black-cat.png';
+import cat from '../../../assets/demo-cat.png';
 import { DemoGroup, ExampleBlock } from './shared.js';
 const cases = [
   {title:'搜索无结果',icon:'no-result',tip:'当前搜索无结果'},

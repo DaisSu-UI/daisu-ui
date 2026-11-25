@@ -1,6 +1,6 @@
 export type TextMode = 'text' | 'date' | 'phone' | 'name' | 'price';
 
-/** Wot-compatible display formatting without browser locale dependencies. */
+/** Display formatting without browser locale dependencies. */
 export function formatUiText(value: string | number, mode: TextMode, masked = false): string {
   const text = String(value);
   if (mode === 'price') {

@@ -1,0 +1,1222 @@
+{
+  "expand": {
+    "name": "arrows-maximize",
+    "style": "outline"
+  },
+  "del": {
+    "name": "backspace",
+    "style": "outline"
+  },
+  "multiple-horizontal": {
+    "name": "arrows-horizontal",
+    "style": "outline"
+  },
+  "left": {
+    "name": "chevron-left",
+    "style": "outline"
+  },
+  "left-circle": {
+    "name": "circle-chevron-left",
+    "style": "outline"
+  },
+  "down-circle": {
+    "name": "circle-chevron-down",
+    "style": "outline"
+  },
+  "caret-down": {
+    "name": "caret-down",
+    "style": "outline"
+  },
+  "double-left": {
+    "name": "chevrons-left",
+    "style": "outline"
+  },
+  "caret-right": {
+    "name": "caret-right",
+    "style": "outline"
+  },
+  "double-right": {
+    "name": "chevrons-right",
+    "style": "outline"
+  },
+  "double-down": {
+    "name": "chevrons-down",
+    "style": "outline"
+  },
+  "down": {
+    "name": "chevron-down",
+    "style": "outline"
+  },
+  "arrow-right": {
+    "name": "arrow-right",
+    "style": "outline"
+  },
+  "caret-left": {
+    "name": "caret-left",
+    "style": "outline"
+  },
+  "arrow-down": {
+    "name": "arrow-down",
+    "style": "outline"
+  },
+  "arrow-left": {
+    "name": "arrow-left",
+    "style": "outline"
+  },
+  "up": {
+    "name": "chevron-up",
+    "style": "outline"
+  },
+  "arrow-rise": {
+    "name": "trending-up",
+    "style": "outline"
+  },
+  "double-up": {
+    "name": "chevrons-up",
+    "style": "outline"
+  },
+  "to-right": {
+    "name": "arrow-bar-to-right",
+    "style": "outline"
+  },
+  "up-circle": {
+    "name": "circle-chevron-up",
+    "style": "outline"
+  },
+  "sort-fill": {
+    "name": "arrows-sort",
+    "style": "outline"
+  },
+  "to-top": {
+    "name": "arrow-bar-to-up",
+    "style": "outline"
+  },
+  "to-left": {
+    "name": "arrow-bar-to-left",
+    "style": "outline"
+  },
+  "menu-fold": {
+    "name": "layout-sidebar-left-collapse",
+    "style": "outline"
+  },
+  "swap": {
+    "name": "arrows-exchange",
+    "style": "outline"
+  },
+  "drag-arrow": {
+    "name": "arrows-move",
+    "style": "outline"
+  },
+  "sort-fill-1": {
+    "name": "arrows-sort",
+    "style": "outline"
+  },
+  "to-bottom": {
+    "name": "arrow-bar-to-down",
+    "style": "outline"
+  },
+  "caret-up": {
+    "name": "caret-up",
+    "style": "outline"
+  },
+  "rotate-left": {
+    "name": "rotate",
+    "style": "outline"
+  },
+  "arrow-up": {
+    "name": "arrow-up",
+    "style": "outline"
+  },
+  "arrow-fall": {
+    "name": "trending-down",
+    "style": "outline"
+  },
+  "right": {
+    "name": "chevron-right",
+    "style": "outline"
+  },
+  "menu-unfold": {
+    "name": "layout-sidebar-left-expand",
+    "style": "outline"
+  },
+  "rotate-right": {
+    "name": "rotate-clockwise",
+    "style": "outline"
+  },
+  "shrink": {
+    "name": "arrows-minimize",
+    "style": "outline"
+  },
+  "right-circle": {
+    "name": "circle-chevron-right",
+    "style": "outline"
+  },
+  "bold": {
+    "name": "bold",
+    "style": "outline"
+  },
+  "filter-fill": {
+    "name": "filter",
+    "style": "filled"
+  },
+  "deleteall": {
+    "name": "trash-x",
+    "style": "outline"
+  },
+  "brush": {
+    "name": "brush",
+    "style": "outline"
+  },
+  "font-colors": {
+    "name": "text-color",
+    "style": "outline"
+  },
+  "edit": {
+    "name": "edit",
+    "style": "outline"
+  },
+  "filter": {
+    "name": "filter",
+    "style": "outline"
+  },
+  "find-replace": {
+    "name": "replace",
+    "style": "outline"
+  },
+  "eraser": {
+    "name": "eraser",
+    "style": "outline"
+  },
+  "copy": {
+    "name": "copy",
+    "style": "outline"
+  },
+  "delete": {
+    "name": "trash",
+    "style": "outline"
+  },
+  "circular": {
+    "name": "rotate-2",
+    "style": "outline"
+  },
+  "bg-colors": {
+    "name": "paint",
+    "style": "outline"
+  },
+  "align-right": {
+    "name": "align-right",
+    "style": "outline"
+  },
+  "align-center": {
+    "name": "align-center",
+    "style": "outline"
+  },
+  "align-left": {
+    "name": "align-left",
+    "style": "outline"
+  },
+  "unordered-list": {
+    "name": "list",
+    "style": "outline"
+  },
+  "undo": {
+    "name": "arrow-back-up",
+    "style": "outline"
+  },
+  "zoom-out": {
+    "name": "zoom-out",
+    "style": "outline"
+  },
+  "sort-ascending": {
+    "name": "sort-ascending",
+    "style": "outline"
+  },
+  "scissor": {
+    "name": "scissors",
+    "style": "outline"
+  },
+  "quote": {
+    "name": "quote",
+    "style": "outline"
+  },
+  "sort-descending": {
+    "name": "sort-descending",
+    "style": "outline"
+  },
+  "link": {
+    "name": "link",
+    "style": "outline"
+  },
+  "ordered-list": {
+    "name": "list-numbers",
+    "style": "outline"
+  },
+  "h3": {
+    "name": "h-3",
+    "style": "outline"
+  },
+  "h4": {
+    "name": "h-4",
+    "style": "outline"
+  },
+  "italic": {
+    "name": "italic",
+    "style": "outline"
+  },
+  "redo": {
+    "name": "arrow-forward-up",
+    "style": "outline"
+  },
+  "highlight": {
+    "name": "highlight",
+    "style": "outline"
+  },
+  "original-size": {
+    "name": "arrows-diagonal",
+    "style": "outline"
+  },
+  "h1": {
+    "name": "h-1",
+    "style": "outline"
+  },
+  "h5": {
+    "name": "h-5",
+    "style": "outline"
+  },
+  "oblique-line": {
+    "name": "line",
+    "style": "outline"
+  },
+  "line-height": {
+    "name": "line-height",
+    "style": "outline"
+  },
+  "h7": {
+    "name": "heading",
+    "style": "outline"
+  },
+  "h2": {
+    "name": "h-2",
+    "style": "outline"
+  },
+  "apps": {
+    "name": "apps",
+    "style": "outline"
+  },
+  "application": {
+    "name": "app-window",
+    "style": "outline"
+  },
+  "no-wifi": {
+    "name": "wifi-off",
+    "style": "outline"
+  },
+  "no-result": {
+    "name": "search-off",
+    "style": "outline"
+  },
+  "no-product": {
+    "name": "shopping-cart-off",
+    "style": "outline"
+  },
+  "no-message": {
+    "name": "message-off",
+    "style": "outline"
+  },
+  "no-content": {
+    "name": "file-off",
+    "style": "outline"
+  },
+  "no-comment": {
+    "name": "message-circle-off",
+    "style": "outline"
+  },
+  "no-collection": {
+    "name": "folder-off",
+    "style": "outline"
+  },
+  "failpayment": {
+    "name": "credit-card-off",
+    "style": "outline"
+  },
+  "formula": {
+    "name": "math-function",
+    "style": "outline"
+  },
+  "zoom-in": {
+    "name": "zoom-in",
+    "style": "outline"
+  },
+  "sort": {
+    "name": "arrows-sort",
+    "style": "outline"
+  },
+  "textarea": {
+    "name": "forms",
+    "style": "outline"
+  },
+  "paste": {
+    "name": "clipboard",
+    "style": "outline"
+  },
+  "h6": {
+    "name": "h-6",
+    "style": "outline"
+  },
+  "number": {
+    "name": "number",
+    "style": "outline"
+  },
+  "underline": {
+    "name": "underline",
+    "style": "outline"
+  },
+  "strikethrough": {
+    "name": "strikethrough",
+    "style": "outline"
+  },
+  "drag-dot": {
+    "name": "grip-horizontal",
+    "style": "outline"
+  },
+  "dice": {
+    "name": "dice",
+    "style": "outline"
+  },
+  "drive-file": {
+    "name": "file",
+    "style": "outline"
+  },
+  "email": {
+    "name": "mail",
+    "style": "outline"
+  },
+  "drag-dot-vertical": {
+    "name": "grip-vertical",
+    "style": "outline"
+  },
+  "compass": {
+    "name": "compass",
+    "style": "outline"
+  },
+  "dashboard": {
+    "name": "dashboard",
+    "style": "outline"
+  },
+  "common": {
+    "name": "layout-grid",
+    "style": "outline"
+  },
+  "desktop": {
+    "name": "device-desktop",
+    "style": "outline"
+  },
+  "copyright": {
+    "name": "copyright",
+    "style": "outline"
+  },
+  "cloud": {
+    "name": "cloud",
+    "style": "outline"
+  },
+  "company": {
+    "name": "building",
+    "style": "outline"
+  },
+  "command": {
+    "name": "command",
+    "style": "outline"
+  },
+  "camera": {
+    "name": "camera",
+    "style": "outline"
+  },
+  "camera-fill": {
+    "name": "camera",
+    "style": "filled"
+  },
+  "branch": {
+    "name": "git-branch",
+    "style": "outline"
+  },
+  "calendar-line": {
+    "name": "calendar",
+    "style": "outline"
+  },
+  "bug": {
+    "name": "bug",
+    "style": "outline"
+  },
+  "bulb": {
+    "name": "bulb",
+    "style": "outline"
+  },
+  "book": {
+    "name": "book",
+    "style": "outline"
+  },
+  "archive": {
+    "name": "archive",
+    "style": "outline"
+  },
+  "gift": {
+    "name": "gift",
+    "style": "outline"
+  },
+  "image-failloading": {
+    "name": "photo-off",
+    "style": "outline"
+  },
+  "interaction": {
+    "name": "hand-click",
+    "style": "outline"
+  },
+  "image-close": {
+    "name": "photo-cancel",
+    "style": "outline"
+  },
+  "Fire": {
+    "name": "flame",
+    "style": "outline"
+  },
+  "image": {
+    "name": "photo",
+    "style": "outline"
+  },
+  "idcard": {
+    "name": "id",
+    "style": "outline"
+  },
+  "folder-add": {
+    "name": "folder-plus",
+    "style": "outline"
+  },
+  "face-frown-fill": {
+    "name": "mood-sad",
+    "style": "filled"
+  },
+  "folder": {
+    "name": "folder",
+    "style": "outline"
+  },
+  "folder-delete": {
+    "name": "folder-minus",
+    "style": "outline"
+  },
+  "file-video": {
+    "name": "movie",
+    "style": "outline"
+  },
+  "file": {
+    "name": "file",
+    "style": "outline"
+  },
+  "file-pdf": {
+    "name": "file-type-pdf",
+    "style": "outline"
+  },
+  "experiment": {
+    "name": "flask",
+    "style": "outline"
+  },
+  "file-audio": {
+    "name": "file-music",
+    "style": "outline"
+  },
+  "face-meh-fill": {
+    "name": "mood-empty",
+    "style": "filled"
+  },
+  "file-image": {
+    "name": "photo",
+    "style": "outline"
+  },
+  "empty": {
+    "name": "inbox",
+    "style": "outline"
+  },
+  "face-smile-fill": {
+    "name": "mood-smile",
+    "style": "filled"
+  },
+  "ear": {
+    "name": "ear",
+    "style": "outline"
+  },
+  "mobile": {
+    "name": "device-mobile",
+    "style": "outline"
+  },
+  "lock": {
+    "name": "lock",
+    "style": "outline"
+  },
+  "mind-mapping": {
+    "name": "sitemap",
+    "style": "outline"
+  },
+  "location": {
+    "name": "map-pin",
+    "style": "outline"
+  },
+  "loop": {
+    "name": "repeat",
+    "style": "outline"
+  },
+  "language": {
+    "name": "language",
+    "style": "outline"
+  },
+  "locate": {
+    "name": "current-location",
+    "style": "outline"
+  },
+  "keyboard": {
+    "name": "keyboard",
+    "style": "outline"
+  },
+  "loading": {
+    "name": "loader-2",
+    "style": "outline"
+  },
+  "layout": {
+    "name": "layout",
+    "style": "outline"
+  },
+  "phone": {
+    "name": "phone",
+    "style": "outline"
+  },
+  "printer": {
+    "name": "printer",
+    "style": "outline"
+  },
+  "pen-fill": {
+    "name": "pencil",
+    "style": "filled"
+  },
+  "organization": {
+    "name": "sitemap",
+    "style": "outline"
+  },
+  "notification-close": {
+    "name": "bell-off",
+    "style": "outline"
+  },
+  "old-version": {
+    "name": "history",
+    "style": "outline"
+  },
+  "moon": {
+    "name": "moon",
+    "style": "outline"
+  },
+  "notification": {
+    "name": "bell",
+    "style": "outline"
+  },
+  "nav": {
+    "name": "navigation",
+    "style": "outline"
+  },
+  "mosaic": {
+    "name": "border-all",
+    "style": "outline"
+  },
+  "man": {
+    "name": "man",
+    "style": "outline"
+  },
+  "moon-fill": {
+    "name": "moon",
+    "style": "filled"
+  },
+  "menu": {
+    "name": "menu",
+    "style": "outline"
+  },
+  "tags": {
+    "name": "tags",
+    "style": "outline"
+  },
+  "tag": {
+    "name": "tag",
+    "style": "outline"
+  },
+  "thunderbolt": {
+    "name": "bolt",
+    "style": "outline"
+  },
+  "sun": {
+    "name": "sun",
+    "style": "outline"
+  },
+  "store": {
+    "name": "building-store",
+    "style": "outline"
+  },
+  "sun-fill": {
+    "name": "sun",
+    "style": "filled"
+  },
+  "subscribed": {
+    "name": "bell-check",
+    "style": "outline"
+  },
+  "stamp": {
+    "name": "rubber-stamp",
+    "style": "outline"
+  },
+  "subscribe": {
+    "name": "bell",
+    "style": "outline"
+  },
+  "skin": {
+    "name": "shirt",
+    "style": "outline"
+  },
+  "storage": {
+    "name": "database",
+    "style": "outline"
+  },
+  "subscribe-add": {
+    "name": "bell-plus",
+    "style": "outline"
+  },
+  "shake": {
+    "name": "device-mobile-vibration",
+    "style": "outline"
+  },
+  "safe": {
+    "name": "shield-lock",
+    "style": "outline"
+  },
+  "public": {
+    "name": "world",
+    "style": "outline"
+  },
+  "pen": {
+    "name": "pencil",
+    "style": "outline"
+  },
+  "robot": {
+    "name": "robot",
+    "style": "outline"
+  },
+  "robot-add": {
+    "name": "robot",
+    "style": "outline"
+  },
+  "pushpin": {
+    "name": "pin",
+    "style": "outline"
+  },
+  "qrcode": {
+    "name": "qrcode",
+    "style": "outline"
+  },
+  "eye-fill": {
+    "name": "eye",
+    "style": "filled"
+  },
+  "code": {
+    "name": "code",
+    "style": "outline"
+  },
+  "code-square": {
+    "name": "code",
+    "style": "outline"
+  },
+  "Export": {
+    "name": "file-export",
+    "style": "outline"
+  },
+  "download": {
+    "name": "download",
+    "style": "outline"
+  },
+  "clock-circle-fill": {
+    "name": "clock",
+    "style": "filled"
+  },
+  "code-block": {
+    "name": "code",
+    "style": "outline"
+  },
+  "cloud-download": {
+    "name": "cloud-download",
+    "style": "outline"
+  },
+  "buble-circle-fill": {
+    "name": "message-circle",
+    "style": "filled"
+  },
+  "barcode": {
+    "name": "barcode",
+    "style": "outline"
+  },
+  "at": {
+    "name": "at",
+    "style": "outline"
+  },
+  "wifi": {
+    "name": "wifi",
+    "style": "outline"
+  },
+  "tool": {
+    "name": "tool",
+    "style": "outline"
+  },
+  "woman": {
+    "name": "woman",
+    "style": "outline"
+  },
+  "video-camera": {
+    "name": "video",
+    "style": "outline"
+  },
+  "user": {
+    "name": "user",
+    "style": "outline"
+  },
+  "user-group": {
+    "name": "users",
+    "style": "outline"
+  },
+  "time-line": {
+    "name": "clock",
+    "style": "outline"
+  },
+  "trophy": {
+    "name": "trophy",
+    "style": "outline"
+  },
+  "user-add": {
+    "name": "user-plus",
+    "style": "outline"
+  },
+  "unlock": {
+    "name": "lock-open",
+    "style": "outline"
+  },
+  "refresh": {
+    "name": "refresh",
+    "style": "outline"
+  },
+  "more": {
+    "name": "dots",
+    "style": "outline"
+  },
+  "more-vertical": {
+    "name": "dots-vertical",
+    "style": "outline"
+  },
+  "mic": {
+    "name": "microphone",
+    "style": "outline"
+  },
+  "module-fill": {
+    "name": "layout-grid",
+    "style": "filled"
+  },
+  "mfill": {
+    "name": "layout-grid",
+    "style": "outline"
+  },
+  "message": {
+    "name": "message",
+    "style": "outline"
+  },
+  "message-banned": {
+    "name": "message-off",
+    "style": "outline"
+  },
+  "lightning-circle-fill": {
+    "name": "bolt",
+    "style": "filled"
+  },
+  "import": {
+    "name": "file-import",
+    "style": "outline"
+  },
+  "list": {
+    "name": "list",
+    "style": "outline"
+  },
+  "Launch": {
+    "name": "external-link",
+    "style": "outline"
+  },
+  "home": {
+    "name": "home",
+    "style": "outline"
+  },
+  "home-fill": {
+    "name": "home",
+    "style": "filled"
+  },
+  "heart": {
+    "name": "heart",
+    "style": "outline"
+  },
+  "history": {
+    "name": "history",
+    "style": "outline"
+  },
+  "headset": {
+    "name": "headphones",
+    "style": "outline"
+  },
+  "heart-fill": {
+    "name": "heart",
+    "style": "filled"
+  },
+  "headset-off": {
+    "name": "headphones-off",
+    "style": "outline"
+  },
+  "headset-fill": {
+    "name": "headphones",
+    "style": "filled"
+  },
+  "headset-off-fill": {
+    "name": "headphones-off",
+    "style": "outline"
+  },
+  "eye": {
+    "name": "eye",
+    "style": "outline"
+  },
+  "eye-invisible": {
+    "name": "eye-off",
+    "style": "outline"
+  },
+  "eye-invisible-fill": {
+    "name": "eye-off",
+    "style": "outline"
+  },
+  "live-broadcast": {
+    "name": "broadcast",
+    "style": "outline"
+  },
+  "fullscreen": {
+    "name": "arrows-maximize",
+    "style": "outline"
+  },
+  "fullscreen-exit": {
+    "name": "arrows-minimize",
+    "style": "outline"
+  },
+  "forward": {
+    "name": "player-track-next",
+    "style": "outline"
+  },
+  "backward": {
+    "name": "player-track-prev",
+    "style": "outline"
+  },
+  "voice": {
+    "name": "wave-sine",
+    "style": "outline"
+  },
+  "upload": {
+    "name": "upload",
+    "style": "outline"
+  },
+  "translate": {
+    "name": "language",
+    "style": "outline"
+  },
+  "thumb-up": {
+    "name": "thumb-up",
+    "style": "outline"
+  },
+  "sync": {
+    "name": "refresh",
+    "style": "outline"
+  },
+  "thumb-down": {
+    "name": "thumb-down",
+    "style": "outline"
+  },
+  "thumb-up-fill": {
+    "name": "thumb-up",
+    "style": "filled"
+  },
+  "star": {
+    "name": "star",
+    "style": "outline"
+  },
+  "thumb-down-fill": {
+    "name": "thumb-down",
+    "style": "filled"
+  },
+  "share-internal": {
+    "name": "share-3",
+    "style": "outline"
+  },
+  "star-fill": {
+    "name": "star",
+    "style": "filled"
+  },
+  "share-external": {
+    "name": "external-link",
+    "style": "outline"
+  },
+  "settings": {
+    "name": "settings",
+    "style": "outline"
+  },
+  "share-alt": {
+    "name": "share",
+    "style": "outline"
+  },
+  "send": {
+    "name": "send",
+    "style": "outline"
+  },
+  "select-all": {
+    "name": "select-all",
+    "style": "outline"
+  },
+  "poweroff": {
+    "name": "power",
+    "style": "outline"
+  },
+  "search-line": {
+    "name": "search",
+    "style": "outline"
+  },
+  "save": {
+    "name": "device-floppy",
+    "style": "outline"
+  },
+  "scan": {
+    "name": "scan",
+    "style": "outline"
+  },
+  "reply": {
+    "name": "arrow-back-up",
+    "style": "outline"
+  },
+  "check-half-square-fill": {
+    "name": "square-minus",
+    "style": "filled"
+  },
+  "check-circle": {
+    "name": "circle-check",
+    "style": "outline"
+  },
+  "check-circle-radio-fill": {
+    "name": "circle-dot",
+    "style": "filled"
+  },
+  "check-circle-fill": {
+    "name": "circle-check",
+    "style": "filled"
+  },
+  "sound": {
+    "name": "volume",
+    "style": "outline"
+  },
+  "skip-next-fill": {
+    "name": "player-skip-forward",
+    "style": "filled"
+  },
+  "sound-fill": {
+    "name": "volume",
+    "style": "outline"
+  },
+  "skip-previous": {
+    "name": "player-skip-back",
+    "style": "outline"
+  },
+  "skip-previous-fill": {
+    "name": "player-skip-back",
+    "style": "filled"
+  },
+  "skip-next": {
+    "name": "player-skip-forward",
+    "style": "outline"
+  },
+  "record-stop": {
+    "name": "player-stop",
+    "style": "outline"
+  },
+  "record": {
+    "name": "player-record",
+    "style": "outline"
+  },
+  "play-circle": {
+    "name": "player-play",
+    "style": "outline"
+  },
+  "play-circle-fill": {
+    "name": "player-play",
+    "style": "outline"
+  },
+  "play-arrow": {
+    "name": "player-play",
+    "style": "outline"
+  },
+  "play-arrow-fill": {
+    "name": "player-play",
+    "style": "filled"
+  },
+  "pause-circle": {
+    "name": "player-pause",
+    "style": "outline"
+  },
+  "pause": {
+    "name": "player-pause",
+    "style": "outline"
+  },
+  "mute-fill": {
+    "name": "volume-off",
+    "style": "outline"
+  },
+  "pause-circle-fill": {
+    "name": "player-pause",
+    "style": "outline"
+  },
+  "music": {
+    "name": "music",
+    "style": "outline"
+  },
+  "mute": {
+    "name": "volume-off",
+    "style": "outline"
+  },
+  "page-fill": {
+    "name": "file",
+    "style": "filled"
+  },
+  "minus-square": {
+    "name": "square-minus",
+    "style": "outline"
+  },
+  "minus-square-3px": {
+    "name": "square-minus",
+    "style": "outline"
+  },
+  "minus-circle": {
+    "name": "circle-minus",
+    "style": "outline"
+  },
+  "minus-circle-fill": {
+    "name": "circle-minus",
+    "style": "outline"
+  },
+  "info": {
+    "name": "info-small",
+    "style": "outline"
+  },
+  "info-circle": {
+    "name": "info-circle",
+    "style": "outline"
+  },
+  "info-circle-fill": {
+    "name": "info-circle",
+    "style": "filled"
+  },
+  "exclamation": {
+    "name": "exclamation-mark",
+    "style": "outline"
+  },
+  "exclamation-polygon-fill": {
+    "name": "alert-triangle",
+    "style": "filled"
+  },
+  "exclamation-circle": {
+    "name": "alert-circle",
+    "style": "outline"
+  },
+  "exclamation-circle-fill": {
+    "name": "alert-circle",
+    "style": "filled"
+  },
+  "doublecheck": {
+    "name": "checks",
+    "style": "outline"
+  },
+  "close": {
+    "name": "x",
+    "style": "outline"
+  },
+  "division": {
+    "name": "divide",
+    "style": "outline"
+  },
+  "close-circle": {
+    "name": "circle-x",
+    "style": "outline"
+  },
+  "close-circle-fill": {
+    "name": "circle-x",
+    "style": "filled"
+  },
+  "clock-circle": {
+    "name": "clock",
+    "style": "outline"
+  },
+  "check": {
+    "name": "check",
+    "style": "outline"
+  },
+  "check-square": {
+    "name": "checkbox",
+    "style": "outline"
+  },
+  "check-square-fill": {
+    "name": "square-check",
+    "style": "filled"
+  },
+  "uncheck-square": {
+    "name": "square",
+    "style": "outline"
+  },
+  "stop": {
+    "name": "ban",
+    "style": "outline"
+  },
+  "uncheck-circle": {
+    "name": "circle",
+    "style": "outline"
+  },
+  "question-circle": {
+    "name": "help-circle",
+    "style": "outline"
+  },
+  "question": {
+    "name": "question-mark",
+    "style": "outline"
+  },
+  "question-circle-fill": {
+    "name": "help-circle",
+    "style": "filled"
+  },
+  "plus-square-3px": {
+    "name": "square-plus",
+    "style": "outline"
+  },
+  "plus": {
+    "name": "plus",
+    "style": "outline"
+  },
+  "plus-square": {
+    "name": "square-plus",
+    "style": "outline"
+  },
+  "plus-circle": {
+    "name": "circle-plus",
+    "style": "outline"
+  },
+  "plus-circle-fill": {
+    "name": "circle-plus",
+    "style": "filled"
+  },
+  "minus": {
+    "name": "minus",
+    "style": "outline"
+  }
+}

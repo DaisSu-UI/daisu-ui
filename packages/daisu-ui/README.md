@@ -83,7 +83,7 @@ npm 组件包与 Flutter 下载的应用 Manifest/Bundle 使用独立版本、�
 
 ## License
 
-MIT。第三方版权与改编说明见 `THIRD_PARTY_NOTICES.md` 及包内 `dist/icons/LICENSE.wot-ui`。
+MIT。第三方版权与改编说明见 `THIRD_PARTY_NOTICES.md` 及包内 `dist/icons/LICENSE.tabler`。
 
 ### 浏览器富文本音视频
 

@@ -1,4 +1,4 @@
-/* Geometry and motion follow the Wot UI 2.4 mobile demo. */
+/* Shared layout and motion for the component examples. */
 .demo-transition-page .demo-group, .ui-demo-transparent-content .ui-demo-bottom-space { background-color: transparent; }
 .demo-transition-buttons { display: flex; flex-direction: row; flex-wrap: wrap; }
 .demo-transition-trigger { margin: 0 10px 10px 0; }

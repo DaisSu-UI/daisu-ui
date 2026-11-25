@@ -17,7 +17,7 @@ try {
     'pack', '--workspace', 'daisu-ui', '--ignore-scripts', '--pack-destination', temporary, '--json',
   ], { cwd: root, encoding: 'utf8' }))[0];
   const paths = new Set(pack.files.map(file => file.path));
-  for (const path of ['dist/index.js', 'dist/index.d.ts', 'dist/Button.jsx', 'dist/styles.css', 'dist/router/runtime.js', 'dist/icons/LICENSE.wot-ui', 'LICENSE', 'README.md']) {
+  for (const path of ['dist/index.js', 'dist/index.d.ts', 'dist/Button.jsx', 'dist/styles.css', 'dist/router/runtime.js', 'dist/icons/LICENSE.tabler', 'LICENSE', 'README.md']) {
     assert(paths.has(path), `Missing packed file: ${path}`);
   }
   assert(pack.files.every(file => !/\.test\.|\.tsx?$|tsbuildinfo|\.env/.test(file.path.replace(/\.d\.ts$/, '.declaration'))), 'Package contains source, tests or environment files');

@@ -3,7 +3,7 @@ import type { HostClient } from '../../../lib/host.js';
 import { createHostUploadAdapter } from '../../../lib/uiUpload.js';
 import { Button, Dialog, Toast, Upload, useDialog, useToast } from 'daisu-ui';
 import type { UploadAdapter, UploadFile, UploadProps } from 'daisu-ui';
-import panda from '../../../assets/wot-panda.jpg';
+import panda from '../../../assets/demo-panda.jpg';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 function UploadCase({ adapter, initial = [], ...props }: UploadProps & { initial?: UploadFile[] }) {
