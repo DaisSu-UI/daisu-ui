@@ -131,6 +131,8 @@ npm view @daisu-ui/ui@0.1.0-beta.4 version dist.integrity --registry=https://reg
 npm view @daisu-ui/ui dist-tags --json --registry=https://registry.npmjs.org/
 ```
 
+首次发布可能被 npm 放入分阶段审核：网页显示 `0.0.0-stage` / Temporary Holding Version 时，表示实际版本已提交但尚未公开，不能视为可安装成功，也不要重复发布。等待 npm 审核完成后，用 `npm view @daisu-ui/ui@beta version --registry=https://registry.npmjs.org/` 确认真实版本和 README，再验证安装。
+
 发布前工作区必须干净，源码/版本改变后重新运行完整预演。预发布版本默认走 `beta`，不会更新 `latest`；正式版如 `0.1.0` 默认走 `latest`。也可用 `npm run ui:npm:publish -- --tag next` 指定渠道；脚本禁止将预发布版本放入 `latest`。正式版尚未发布时，消费者应显式安装 `@beta` 或版本号。
 
 **GitLab 发布（不在本地执行实际 publish）：**
