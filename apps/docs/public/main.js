@@ -1,40 +1,27 @@
+import { createDocumentSearch } from './search.js';
 import { createSourceViewer, sourceRoute } from './source-viewer.js';
+import { aiPages, articlePages, documentationGroups, guideGroups, pageSection, headingId, createNavigationMenus } from './navigation.js';
 
 const article = document.querySelector('#article');
 const catalog = document.querySelector('#catalog');
 const demo = document.querySelector('#demo');
 const search = document.querySelector('#search');
 const outline = document.querySelector('#outline');
-const componentMenu = document.querySelector('.component-menu');
 const componentTrigger = document.querySelector('#component-trigger');
 const categories = document.querySelector('#component-categories');
 const catalogToggle = document.querySelector('#catalog-toggle');
 const sidebar = document.querySelector('.sidebar');
 const collapsedGroups = new Set();
 const mobileViewport = matchMedia('(max-width: 680px)');
-const isGuide = () => current === 'getting-started' || current === 'changelog';
+const isGuide = () => pageSection(current) !== 'components';
+const navigationMenus = createNavigationMenus(document.querySelectorAll('[data-nav-menu]'));
 function setCatalogOpen(open) {
+  if (open) navigationMenus.closeAll();
   sidebar.classList.toggle('is-open', open);
   catalogToggle.setAttribute('aria-expanded', String(open));
 }
 catalogToggle.addEventListener('click', () => setCatalogOpen(catalogToggle.getAttribute('aria-expanded') !== 'true'));
-mobileViewport.addEventListener('change', () => setCatalogOpen(false));
-function setCategoriesOpen(open) {
-  categories.hidden = !open;
-  componentTrigger.setAttribute('aria-expanded', String(open));
-}
-componentMenu.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') setCategoriesOpen(true); });
-componentMenu.addEventListener('pointerleave', event => { if (event.pointerType === 'mouse') setCategoriesOpen(false); });
-componentMenu.addEventListener('focusout', event => { if (!componentMenu.contains(event.relatedTarget)) setCategoriesOpen(false); });
-componentTrigger.addEventListener('click', event => setCategoriesOpen(event.pointerType === 'mouse' ? true : categories.hidden));
-componentTrigger.addEventListener('keydown', event => {
-  if (event.key === 'ArrowDown') { event.preventDefault(); setCategoriesOpen(true); categories.querySelector('a')?.focus(); }
-});
-document.addEventListener('keydown', event => {
-  if (event.key === 'Escape' && !categories.hidden) { componentTrigger.focus(); setCategoriesOpen(false); }
-});
-document.addEventListener('click', event => { if (!componentMenu.contains(event.target)) setCategoriesOpen(false); });
-categories.addEventListener('click', event => { if (event.target.closest('a')) setCategoriesOpen(false); });
+mobileViewport.addEventListener('change', () => { setCatalogOpen(false); navigationMenus.closeAll(); });
 let theme = localStorage.getItem('daisu-docs-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 document.documentElement.dataset.theme = theme;
 let content;
@@ -69,6 +56,9 @@ const sourceViewer = createSourceViewer(document.querySelector('#source-viewer')
   history.replaceState(history.state, '', `#/${page || 'getting-started'}${suffix}`);
   sourceViewer.hide();
 });
+const documentSearch = createDocumentSearch(document.querySelector('#document-search'), id => { location.hash = `#/${id}`; });
+document.querySelector('#document-search-trigger').addEventListener('click', () => { navigationMenus.closeAll(); setCatalogOpen(false); documentSearch.open(); });
+document.querySelector('.main-nav').addEventListener('click', event => { if (event.target.closest('[data-menu-trigger]')) setCatalogOpen(false); });
 function scrollToSection(section) {
   if (!section) { window.scrollTo(0, 0); return; }
   const heading = document.getElementById(section);
@@ -82,9 +72,9 @@ function renderOutline() {
   const ids = new Set();
   for (const heading of article.querySelectorAll('h2, h3')) {
     const label = heading.textContent;
-    const slug = label.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '') || 'section';
-    let id = `${current}-${slug}`;
-    for (let suffix = 2; ids.has(id); suffix++) id = `${current}-${slug}-${suffix}`;
+    const base = headingId(current, label);
+    let id = base;
+    for (let suffix = 2; ids.has(id); suffix++) id = `${base}-${suffix}`;
     ids.add(id); heading.id = id;
     const anchor = document.createElement('a');
     anchor.className = 'heading-anchor'; anchor.href = sectionLink(id);
@@ -148,24 +138,23 @@ function renderCatalog() {
   if (isGuide()) document.querySelector('#no-results').hidden = true;
 }
 function revealCurrentComponent() {
-  if (isGuide() || search.value.trim()) return;
-  const active = catalog.querySelector('a.active');
+  if (search.value.trim()) return;
+  const active = (isGuide() ? document.querySelector('#guide-catalog') : catalog).querySelector('a.active');
   if (!active) return;
-  const group = active.closest('.catalog-group');
-  group.querySelector('.catalog-items').hidden = false;
-  group.querySelector('button').setAttribute('aria-expanded', 'true');
-  collapsedGroups.delete(group.dataset.group);
+  if (!isGuide()) {
+    const group = active.closest('.catalog-group');
+    group.querySelector('.catalog-items').hidden = false;
+    group.querySelector('button').setAttribute('aria-expanded', 'true');
+    collapsedGroups.delete(group.dataset.group);
+  }
   if (mobileViewport.matches) return;
-  const visible = sidebar.getBoundingClientRect();
-  const rect = active.getBoundingClientRect();
+  const visible = sidebar.getBoundingClientRect(), rect = active.getBoundingClientRect();
   if (rect.top < visible.top || rect.bottom > visible.bottom) sidebar.scrollTop += rect.top - visible.top - 100;
 }
 function renderPagination() {
   const pagination = document.querySelector('#doc-pagination');
   pagination.replaceChildren();
-  const pages = isGuide()
-    ? [{ id: 'getting-started', label: '开始使用' }, { id: 'changelog', label: '更新日志' }]
-    : content.groups.flatMap(group => group.items);
+  const pages = isGuide() ? articlePages : content.groups.flatMap(group => group.items);
   const index = pages.findIndex(page => page.id === current);
   for (const [offset, label, direction] of [[-1, '上一篇', 'previous'], [1, '下一篇', 'next']]) {
     const page = pages[index + offset];
@@ -194,6 +183,68 @@ function renderCategories() {
     categories.append(link);
   }
 }
+function pageLink(page, description = false) {
+  const link = document.createElement('a');
+  link.href = page.href || `#/${page.id}`;
+  if (page.external) { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
+  link.className = 'guide';
+  const copy = document.createElement('span');
+  copy.className = 'menu-copy';
+  const label = document.createElement('span'); label.textContent = page.label; copy.append(label);
+  if (description && page.description) { const small = document.createElement('small'); small.textContent = page.description; copy.append(small); }
+  link.append(copy); return link;
+}
+function navigationGroup(group, heading = true) {
+  const section = document.createElement('section'); section.className = 'documentation-group';
+  if (heading) { const title = document.createElement('h2'); title.textContent = group.label; section.append(title); }
+  for (const page of group.pages) section.append(pageLink(page));
+  return section;
+}
+function renderDocumentationNavigation() {
+  const catalog = document.querySelector('#guide-catalog'), guide = document.querySelector('#guide-pages');
+  catalog.replaceChildren(); guide.replaceChildren();
+  for (const group of documentationGroups) catalog.append(navigationGroup(group));
+  for (const group of guideGroups) guide.append(navigationGroup(group));
+  const design = documentationGroups.find(group => group.id === 'design');
+  document.querySelector('#design-pages').replaceChildren(navigationGroup(design, false));
+  document.querySelector('#ai-pages').replaceChildren(navigationGroup({ pages: aiPages }, false));
+}
+function versionLink(release) {
+  const link = document.createElement('a');
+  link.className = 'guide'; link.href = `#/changelog?section=${encodeURIComponent(release.section)}`;
+  link.dataset.section = release.section;
+  link.setAttribute('aria-label', `v${release.version} 的更新记录`);
+  const label = document.createElement('span'); label.textContent = `v${release.version}`;
+  const description = document.createElement('small'); description.textContent = release.current ? '当前版本' : '历史更新';
+  link.append(label, description); return link;
+}
+function renderVersionNavigation() {
+  const menu = document.querySelector('#version-pages');
+  menu.replaceChildren();
+  const title = document.createElement('div'); title.className = 'menu-label'; title.textContent = '版本更新记录'; menu.append(title);
+  for (const release of content.versions || []) menu.append(versionLink(release));
+  const all = pageLink({ id: 'changelog', label: '完整更新日志' }); all.classList.add('menu-footer'); menu.append(all);
+  document.querySelector('#version-label').textContent = `v${content.version}`;
+  const trigger = document.querySelector('#version'); trigger.disabled = false; trigger.setAttribute('aria-label', `当前文档版本 v${content.version}，打开版本导航`);
+}
+function updateNavigation(params) {
+  const section = pageSection(current);
+  navigationMenus.closeAll();
+  document.querySelector('.workspace').classList.toggle('guide-page', section !== 'components');
+  document.querySelector('.preview').hidden = section !== 'components';
+  document.querySelector('#guide-trigger').classList.toggle('active', section === 'guide' || section === 'versions');
+  document.querySelector('#design-trigger').classList.toggle('active', section === 'design');
+  componentTrigger.classList.toggle('active', section === 'components');
+  document.querySelector('#ai-trigger').classList.toggle('active', section === 'ai');
+  document.querySelector('#version').classList.toggle('active', section === 'versions');
+  document.querySelector('#catalog-label').textContent = section === 'components' ? '组件目录' : '文档目录';
+  document.querySelector('#guide-catalog').hidden = section === 'components';
+  for (const link of document.querySelectorAll('#guide-catalog a, #guide-pages a, #design-pages a, #ai-pages a, #version-pages a')) {
+    const selected = link.dataset.section ? current === 'changelog' && params.get('section') === link.dataset.section : link.hash === `#/${current}` && (!link.closest('#version-pages') || !params.get('section'));
+    link.classList.toggle('active', selected);
+    if (selected) link.setAttribute('aria-current', link.dataset.section ? 'location' : 'page'); else link.removeAttribute('aria-current');
+  }
+}
 function preview() {
   if (isGuide()) { demo.removeAttribute('src'); return; }
   const url = `./demo/?component=${encodeURIComponent(current)}&theme=${theme}`;
@@ -207,6 +258,7 @@ function render() {
   const section = params.get('section');
   const source = params.get('source');
   if (current === next) {
+    updateNavigation(params);
     if (source) { void sourceViewer.show(source); return; }
     const wasOpen = sourceViewer.isOpen();
     sourceViewer.hide();
@@ -216,18 +268,7 @@ function render() {
   sourceViewer.hide();
   current = next;
   setCatalogOpen(false);
-  const guide = isGuide();
-  document.querySelector('.workspace').classList.toggle('guide-page', guide);
-  document.querySelector('.preview').hidden = guide;
-  document.querySelector('#guide-nav').classList.toggle('active', guide);
-  componentTrigger.classList.toggle('active', !guide);
-  document.querySelector('#catalog-label').textContent = guide ? '指南目录' : '组件目录';
-  for (const link of document.querySelectorAll('#guide-catalog a')) {
-    const active = link.hash === `#/${current}`;
-    link.classList.toggle('active', active);
-    if (active) link.setAttribute('aria-current', 'page');
-    else link.removeAttribute('aria-current');
-  }
+  updateNavigation(params);
   for (const link of categories.querySelectorAll('a')) {
     const active = content.groups.find(group => group.id === link.dataset.group)?.items.some(item => item.id === current);
     link.classList.toggle('active', !!active);
@@ -282,6 +323,8 @@ search.addEventListener('input', () => { if (content) renderCatalog(); });
 document.querySelector('#reload-demo').addEventListener('click', preview);
 sidebar.addEventListener('click', event => { if (event.target.closest('a[href]')) setCatalogOpen(false); });
 document.addEventListener('keydown', event => {
+  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k' && !sourceViewer.isOpen()) { event.preventDefault(); if (content) documentSearch.open(); return; }
+  if (documentSearch.isOpen()) return;
   const typing = event.target instanceof Element && event.target.closest('input, textarea, [contenteditable=true]');
   if (event.key === '/' && !typing && !event.ctrlKey && !event.metaKey && !event.altKey && !isGuide() && !sourceViewer.isOpen()) {
     event.preventDefault(); if (mobileViewport.matches) setCatalogOpen(true); search.focus();
@@ -297,8 +340,8 @@ try {
   const response = await fetch('./content.json');
   if (!response.ok) throw new Error(String(response.status));
   content = await response.json();
-  document.querySelector('#version').textContent = `v${content.version}`;
-  document.querySelector('#version').setAttribute('aria-label', `当前版本 v${content.version}，查看更新日志`);
-  renderCategories();
+  documentSearch.setDocuments([...documentationGroups.flatMap(group => group.pages.filter(page => page.id).map(page => ({ ...page, group: group.label }))), ...content.groups.flatMap(group => group.items.map(page => ({ ...page, group: group.label })))]);
+  document.querySelector('#document-search-trigger').disabled = false;
+  renderCategories(); renderDocumentationNavigation(); renderVersionNavigation();
   render();
 } catch { article.textContent = '文档加载失败，请刷新页面重试。'; }

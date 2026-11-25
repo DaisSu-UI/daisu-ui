@@ -11,6 +11,7 @@ import bash from 'highlight.js/lib/languages/bash';
 import json from 'highlight.js/lib/languages/json';
 import markdownLanguage from 'highlight.js/lib/languages/markdown';
 import ts from 'typescript';
+import { articlePages, changelogVersions } from './public/navigation.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '../..');
@@ -29,9 +30,10 @@ const markdown = new MarkdownIt({
 const source = await readFile(resolve(root, 'apps/demo/src/features/ui-demo/catalog.ts'), 'utf8');
 const catalogJS = ts.transpile(source, { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 });
 const { componentGroups } = await import(`data:text/javascript;base64,${Buffer.from(catalogJS).toString('base64')}`);
+const docsGroups = componentGroups.map(group => ({ ...group, items: group.items.filter(item => item.id !== 'ai-guide') })).filter(group => group.items.length);
 const aliases = { 'form-detail': 'form', 'input-number': 'stepper', tabs: 'tab' };
 const pages = {};
-for (const group of componentGroups) {
+for (const group of docsGroups) {
   for (const item of group.items) {
     let content;
     for (const name of [item.id, aliases[item.id]].filter(Boolean)) {
@@ -43,8 +45,8 @@ for (const group of componentGroups) {
     pages[item.id] = markdown.render(content);
   }
 }
-pages['getting-started'] = markdown.render(await readFile(resolve(here, 'getting-started.md'), 'utf8'));
-pages.changelog = markdown.render(await readFile(resolve(root, 'packages/daisu-ui/CHANGELOG.md'), 'utf8'));
+const changelog = await readFile(resolve(root, 'packages/daisu-ui/CHANGELOG.md'), 'utf8');
+for (const page of articlePages) pages[page.id] = markdown.render(page.id === 'changelog' ? changelog : await readFile(resolve(root, page.source), 'utf8'));
 const packageInfo = JSON.parse(await readFile(resolve(root, 'packages/daisu-ui/package.json'), 'utf8'));
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
@@ -80,6 +82,8 @@ for (const [source, filename] of [
   ['apps/demo/src/features/ui-demo/examples/button.tsx', 'button-demo.tsx.txt'],
   ['docs/ui/components/button.md', 'button.md.txt'],
 ]) await emitSource(resolve(root, source), filename);
-await writeFile(resolve(output, 'content.json'), JSON.stringify({ version: packageInfo.version, groups: componentGroups, pages }));
+const versions = changelogVersions(changelog, packageInfo.version);
+await writeFile(resolve(output, 'content.json'), JSON.stringify({ version: packageInfo.version, versions, groups: docsGroups, pages }));
+for (const [source, name] of [['llms.txt', 'llms.txt'], ['llms-full.txt', 'llms-full.txt'], ['COMPONENT_AI_NOTES.md', 'component-ai-notes.txt']]) await cp(resolve(root, 'docs/ui', source), resolve(output, name));
 await cp(resolve(root, 'apps/demo/h5-dist'), resolve(output, 'demo'), { recursive: true });
 console.log(`Documentation built: ${Object.keys(pages).length} pages, embedded Demo → ${output}`);

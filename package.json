@@ -19,15 +19,13 @@
     "ui:docs:build": "npm run build --workspace @daisu-ui/docs",
     "ui:docs:dev": "npm run ui:docs:build && npm run dev --workspace @daisu-ui/docs",
     "build": "npm run ui:docs:build",
-    "test": "rstest run",
+    "test": "rstest run && npm run test:mcp",
     "pretest": "npm run ui:build",
     "test:types": "npm run ui:build && npm run typecheck --workspace @daisu-ui/demo",
     "benchmark:area": "node scripts/benchmark-demo-area.mjs",
     "icons:generate": "node scripts/generate-icons.mjs",
-    "ui:git:prepare": "npm run ui:build && node scripts/prepare-git-package.mjs",
-    "ui:git:publish": "node scripts/publish-git-package.mjs",
-    "ui:git:release": "npm test && npm run test:git-release && npm run test:types && npm run build && npm run ui:check && npm run ui:pack && node scripts/prepare-git-package.mjs && node scripts/publish-git-package.mjs",
-    "test:git-release": "node --test scripts/git-release.test.mjs"
+    "mcp": "node apps/mcp/index.mjs",
+    "test:mcp": "npm run test --workspace @daisu-ui/mcp"
   },
   "devDependencies": {
     "@lynx-js/react": "^0.126.2",
