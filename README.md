@@ -2,7 +2,7 @@
 
 独立的 ReactLynx 组件库、组件 Demo 和 API 文档仓库。
 
-- `packages/daisu-ui`：发布到 npm 的组件包，保留 JSX、类型声明及自动样式加载。
+- `packages/daisu-ui`：通过 GitLab 分发、由 npm 安装的组件包，保留 JSX、类型声明及自动样式加载。
 - `apps/demo`：独立 Lynx / 浏览器示例，示例源码的唯一维护位置。
 - `apps/docs`：API 文档站、源码面板与内嵌 Demo。
 - `apps/mcp`：本地 stdio MCP Server，供 AI 查询组件文档、API、Demo 与主题变量。
@@ -27,13 +27,21 @@ Demo 支持组件独立路径与深色模式，文档站可从 iframe 独立打�
 
 浏览器宿主需通过 `daisu-ui/web` 注册媒体、裁剪和二维码导出后端；Flutter 宿主能力由使用方提供。真实平台支持范围见 [媒体能力](docs/ui/MEDIA_CAPABILITIES.md)。
 
-仅发布 `daisu-ui` workspace；Demo 和文档均为 private。`npm run ui:pack` 在 `artifacts/` 生成 tarball。CSO 主项目通过该 tarball 消费公开 API，无需链接本仓库源码，之后可切换为已发布的 npm 版本。
+仅发布 `daisu-ui` workspace；Demo、文档和 MCP 均为 private。消费项目可安装 Git 版本 Tag 或 `npm run ui:pack` 生成的 tarball，通过公开 API 使用组件。
 
 Git 远程：`git@git.zilueit.com:daisu-ui/daisu-ui.git`。迁移清单见 [MIGRATION.json](MIGRATION.json)。
 
 ## 从 Git 安装与发布
 
-无需发布到 npmjs。执行 `npm run ui:git:release` 可校验并发布 Git 安装包；Runner 接入后，版本 Tag 自动执行相同校验与发布。配置和安装说明见 [GitLab CI 与 Git 发布](docs/ci/git-release.md)。
+当前已发布 `0.1.0-beta.2`，GitLab 自动发布流水线已验证通过，无需发布到 npmjs：
+
+```bash
+npm install "git+ssh://git@git.zilueit.com/daisu-ui/daisu-ui.git#npm-v0.1.0-beta.2"
+```
+
+日常发版：完成源码变更 → 更新版本、workspace 引用和更新日志 → 提交 → 推送 `v<版本>` 标签 → 等待 Tag 流水线的 `verify` 与 `publish:git` 成功。流水线会自动维护 `npm-dist` 分支和 `npm-v<版本>` 安装标签。
+
+完整版本更新命令、GitLab 前台配置、安装升级和失败重试见 [版本发布说明](docs/ci/git-release.md)，也可从文档站“工程实践 → 版本发布”查看。本地 Runner 的启停方式见 [Runner 维护说明](docs/ci/local-runner.md)。Runner 离线时可运行 `npm run ui:git:release -- --dry-run` 完整预演，再用 `npm run ui:git:release` 本地发布。
 
 ## AI 与 MCP
 

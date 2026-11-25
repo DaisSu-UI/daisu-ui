@@ -8,7 +8,7 @@
 
 `npm test` 验证库与 Demo，`npm run test:types` 检查 Demo 类型。`npm run ui:check` 会创建临时工程、安装真实 tarball，并检查声明、保留 JSX、自动样式及 Lynx/Web 编译。`npm run ui:pack` 输出 `artifacts/daisu-ui-*.tgz`。
 
-CSO 的 Flutter 桥接、业务路由及其集成测试留在原工程；主应用只安装 tarball 并消费公开入口，源码维护不再跨仓库。初始化迁移信息见根目录 `MIGRATION.json`。
+CSO 的 Flutter 桥接、业务路由及其集成测试留在原工程；消费方安装 Git 版本 Tag 或 tarball 并使用公开入口，源码维护不再跨仓库。初始化迁移信息见根目录 `MIGRATION.json`。
 
 文档站页头提供 AI 菜单，分别访问使用指南、LLM 文档、MCP 和 Skills。版本号菜单依据 CHANGELOG 的实际版本标题生成，定位对应更新记录，不切换为不存在的历史文档快照。LLM 文档构建为站点根路径下的 llms.txt 与 llms-full.txt。
 
@@ -17,3 +17,7 @@ CSO 的 Flutter 桥接、业务路由及其集成测试留在原工程；主应�
 文档阅读页采用完整左侧目录、中央正文与右侧页内目录布局。顶部搜索支持 Ctrl/⌘ K，覆盖指南与组件页面。AI 总览按接入方式、推荐路径、能力地图和延伸阅读组织，逐组件约束保存在 COMPONENT_AI_NOTES.md，并生成 component-ai-notes.txt。
 
 MCP 服务位于 apps/mcp，基于官方 SDK 的 stdio 传输，只读取当前仓库文档与独立 Demo。npm run mcp 启动，npm run test:mcp 执行真实客户端集成测试（npm test 包含该测试）。修改工具或参数时同步更新 AI 总览、apps/docs/ai/mcp.md 与 LLM 文档，不单独发布 MCP workspace。
+
+## 版本发布
+
+日常通过 `v<版本>` 源码 Tag 触发 GitLab 校验和自动发布，消费方安装 `npm-v<版本>` 标签。版本更新、锁文件、流水线检查、升级/回退与失败重试见 [版本发布说明](../ci/git-release.md)，本机 Runner 启停见 [维护说明](../ci/local-runner.md)。文档站“工程实践 → 版本发布”复用同一份说明。

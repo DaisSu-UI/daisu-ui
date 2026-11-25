@@ -20,6 +20,7 @@ export const documentationGroups = [
   { id: 'practice', label: '工程实践', section: 'guide', pages: [
     { id: 'integration', label: '组件库集成', source: 'apps/docs/pages/integration.md' },
     { id: 'platforms', label: '平台适配', source: 'apps/docs/pages/platforms.md' },
+    { id: 'publishing', label: '版本发布', source: 'docs/ci/git-release.md' },
     { id: 'changelog', label: '更新日志', source: 'packages/daisu-ui/CHANGELOG.md' },
   ] },
   { id: 'community', label: '社区', section: 'guide', pages: [

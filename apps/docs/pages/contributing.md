@@ -30,5 +30,6 @@ npm run build
 
 提交说明应描述具体行为和验证结果。文档页面与顶部菜单使用共同的导航配置，新增页面时同步提供实际内容。
 
+- [版本发布](#/publishing)
 - [源码仓库](https://git.zilueit.com/daisu-ui/daisu-ui)
 - [AI Skills](#/ai-skills)
