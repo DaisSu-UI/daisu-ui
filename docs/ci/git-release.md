@@ -104,7 +104,11 @@ npm view @daisu-ui/ui dist-tags --json --registry=https://registry.npmjs.org/
 
 **GitLab 发布（不在本地执行实际 publish）：**
 
-在 GitLab 设置 → CI/CD → Secret variables 配置受保护的 `NPM_TOKEN`，使用 npm 网站 Access Tokens 中对 `@daisu-ui/ui` 有写权限、满足当前 npm 双重验证策略的 Token。不要提交 Token，也不要把 SSH 密钥当作 npm Token。然后在已验收的 main 提交创建版本 Tag：
+在 GitLab 设置 → CI/CD → Secret variables 配置受保护的 `NPM_TOKEN`，使用 npm 网站 Access Tokens 中对 `@daisu-ui/ui` 有写权限、满足当前 npm 双重验证策略的 Token。不要提交 Token，也不要把 SSH 密钥当作 npm Token。
+
+Token 在 npm 网站头像菜单 → Access Tokens → Generate New Token → Granular Access Token 中创建。名称可填 `daisu-ui-publish`；Packages and scopes 选择 **Read and write**，授权 `@daisu-ui` 范围，并开启 **Bypass two-factor authentication (2FA)**。Token 仅显示一次，复制后粘贴到 GitLab 的 `NPM_TOKEN`，开启 Protected 并保存。npm 账号本身需要先按网站提示完成双重验证设置；SSH 密钥和 npm 网页登录不能替代发布 Token。
+
+然后在已验收的 main 提交创建版本 Tag：
 
 ```bash
 git ls-remote --tags origin 'refs/tags/v0.1.0-beta.4'
