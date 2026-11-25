@@ -14,7 +14,7 @@
     "@lynx-js/web-core": "0.26.5",
     "@tanstack/react-router": "1.170.46",
     "@vant/area-data": "^2.2.0",
-    "daisu-ui": "0.1.0-beta.1",
+    "daisu-ui": "0.1.0-beta.2",
     "url-search-params-polyfill": "8.2.5",
     "zod": "^4.6.7"
   },

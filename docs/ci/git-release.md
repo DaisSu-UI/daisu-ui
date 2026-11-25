@@ -27,14 +27,14 @@ npm run ui:git:publish -- --dry-run
 首次发布成功后，以实际发布版本替换下面的 Tag：
 
 ```bash
-npm install "git+ssh://git@git.zilueit.com/daisu-ui/daisu-ui.git#npm-v0.1.0-beta.1"
+npm install "git+ssh://git@git.zilueit.com/daisu-ui/daisu-ui.git#npm-v0.1.0-beta.2"
 ```
 
 继续使用 `import { Button } from 'daisu-ui'`、`daisu-ui/router`、`daisu-ui/web` 等公开入口。安装端需要仓库读取权限、Git 和 SSH；已包含保留 JSX 的 ESM、类型和 CSS，不会在安装时构建组件库或安装组件库开发依赖。消费项目须具备 ReactLynx 工具链及至少 Lynx 4.2 的原生引擎。构建插件仍使用旧编译器时，在消费项目根配置 `"overrides": { "@lynx-js/tasm": "0.0.53" }`。
 
 ## Runner 接入后
 
-`.gitlab-ci.yml` 使用旧版 GitLab 支持的 `only/except`。普通分支执行完整校验并保留 tgz 与 Git 安装包工件；推送与组件包版本一致的源码 Tag（例如 `v0.1.0-beta.1`）后，校验通过才发布。`npm-dist` 和 `npm-v*` 不会再次运行源码流水线。
+`.gitlab-ci.yml` 使用旧版 GitLab 支持的 `only/except`。普通分支执行完整校验并保留 tgz 与 Git 安装包工件；推送与组件包版本一致的源码 Tag（例如 `v0.1.0-beta.2`）后，校验通过才发布。`npm-dist` 和 `npm-v*` 不会再次运行源码流水线。
 
 在 GitLab 前台保持 Auto DevOps 关闭、自定义 CI 配置路径为 `.gitlab-ci.yml`，不需要流水线触发器、不需要 Kubernetes。
 
