@@ -1,0 +1,8 @@
+.ui-tour-viewport{position:fixed;top:0;left:0;width:100vw;height:100vh;visibility:hidden;}
+.ui-tour{position:fixed;top:0;left:0;width:100vw;height:100vh;}
+.ui-tour-blocker{position:absolute;top:0;left:0;width:100%;height:100%;}
+.ui-tour-highlight{position:fixed;transition:top .3s,left .3s,width .3s,height .3s;}
+.ui-tour-popover{position:fixed;width:224px;padding:12px;border-radius:4px;background-color:var(--cso-ui-surface);display:flex;flex-direction:column;}
+.ui-tour-info{font-size:14px;line-height:20px;color:var(--cso-ui-text);}
+.ui-tour-buttons{margin-top:8px;display:flex;flex-direction:row;align-items:center;justify-content:flex-end;flex-wrap:nowrap;align-self:flex-end;width:max-content;}
+.ui-tour-buttons .ui-button{flex-shrink:0;}

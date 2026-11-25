@@ -1,0 +1,2 @@
+export function swiperIndex(value:number,count:number,loop:boolean){if(count<=0)return 0;const index=Number.isFinite(value)?Math.trunc(value):0;return loop?((index%count)+count)%count:Math.max(0,Math.min(count-1,index));}
+export function swiperNumber(value:number|undefined,fallback:number,min=0,max=Infinity){return typeof value==='number'&&Number.isFinite(value)?Math.min(max,Math.max(min,value)):fallback;}

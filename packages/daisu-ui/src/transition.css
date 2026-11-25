@@ -1,0 +1,12 @@
+.ui-transition { opacity: 1; transform: none; transition-property: opacity, transform; transition-timing-function: ease; }
+.ui-transition-fade-enter-from, .ui-transition-fade-leave-to { opacity: 0; }
+.ui-transition-fade-up-enter-from, .ui-transition-fade-up-leave-to { transform: translateY(100%); opacity: 0; }
+.ui-transition-fade-down-enter-from, .ui-transition-fade-down-leave-to { transform: translateY(-100%); opacity: 0; }
+.ui-transition-fade-left-enter-from, .ui-transition-fade-left-leave-to { transform: translateX(-100%); opacity: 0; }
+.ui-transition-fade-right-enter-from, .ui-transition-fade-right-leave-to { transform: translateX(100%); opacity: 0; }
+.ui-transition-slide-up-enter-from, .ui-transition-slide-up-leave-to { transform: translateY(100%); }
+.ui-transition-slide-down-enter-from, .ui-transition-slide-down-leave-to { transform: translateY(-100%); }
+.ui-transition-slide-left-enter-from, .ui-transition-slide-left-leave-to { transform: translateX(-100%); }
+.ui-transition-slide-right-enter-from, .ui-transition-slide-right-leave-to { transform: translateX(100%); }
+.ui-transition-zoom-in-enter-from, .ui-transition-zoom-in-leave-to { transform: scale(.8); opacity: 0; }
+.ui-transition-zoom-out-enter-from, .ui-transition-zoom-out-leave-to { transform: scale(1.2); opacity: 0; }

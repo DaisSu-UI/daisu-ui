@@ -1,0 +1,17 @@
+.ui-popup-anchor { position: fixed; }
+.ui-popup-anchor-center { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.ui-popup-anchor-top { top: 0; left: 0; right: 0; }
+.ui-popup-anchor-bottom { bottom: 0; left: 0; right: 0; }
+.ui-popup-anchor-left { top: 0; bottom: 0; left: 0; }
+.ui-popup-anchor-right { top: 0; bottom: 0; right: 0; }
+.ui-popup { background-color: var(--cso-ui-surface); color: var(--cso-ui-text); }
+.ui-popup-left, .ui-popup-right { height: 100%; }
+.ui-popup-body { position: relative; width: 100%; flex: 1; }
+.ui-popup-safe-area { width: 100%; flex-shrink: 0; }
+.ui-popup-close { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; color: var(--cso-ui-text-muted); }
+.ui-popup-round { overflow: hidden; }
+.ui-popup-center.ui-popup-round { border-radius: 16px; }
+.ui-popup-bottom.ui-popup-round { border-radius: 16px 16px 0 0; }
+.ui-popup-top.ui-popup-round { border-radius: 0 0 16px 16px; }
+.ui-popup-left.ui-popup-round { border-radius: 0 16px 16px 0; }
+.ui-popup-right.ui-popup-round { border-radius: 16px 0 0 16px; }

@@ -1,0 +1,11 @@
+.ui-popup.ui-datetime-picker{border-radius:8px 8px 0 0;}
+.ui-datetime-picker-toolbar{height:56px;padding:0 12px;display:flex;flex-direction:row;align-items:center;justify-content:space-between;}
+.ui-datetime-picker-cancel,.ui-datetime-picker-confirm text{font-size:15px;line-height:22px;color:var(--cso-ui-primary);}
+.ui-datetime-picker-title{font-size:18px;line-height:26px;font-weight:600;color:var(--cso-ui-text);}
+.ui-datetime-picker-range{padding:0 12px 16px;display:flex;flex-direction:row;align-items:center;}
+.ui-datetime-picker-range-item{position:relative;flex:1;min-width:0;padding:12px 0;}
+.ui-datetime-picker-range-item text{font-family:"San Francisco",Roboto,Arial,"PingFang SC","Microsoft YaHei",sans-serif;font-size:16px;line-height:24px;font-weight:600;text-align:center;color:var(--cso-ui-text-placeholder,#a9acb8);}
+.ui-datetime-picker-range-active text{color:var(--cso-ui-primary);}
+.ui-datetime-picker-range-line{position:absolute;left:0;right:0;bottom:0;height:1px;background-color:var(--cso-ui-line);}
+.ui-datetime-picker-range-active .ui-datetime-picker-range-line{background-color:var(--cso-ui-primary);}
+.ui-datetime-picker-range-separator{width:8px;height:1px;margin:0 8px;background-color:var(--cso-ui-text-auxiliary,var(--cso-ui-text-muted));}

@@ -1,0 +1,18 @@
+.ui-sidebar { width: 114px; flex-shrink: 0; display: flex; flex-direction: column; background-color: var(--cso-ui-surface); }
+.ui-sidebar-item { position: relative; min-height: 52px; padding: 6px 16px; display: flex; flex-direction: row; align-items: center; justify-content: center; flex-shrink: 0; box-sizing: border-box; background-color: var(--cso-ui-canvas); }
+.ui-sidebar-label-wrap { position: relative; min-width: 0; }
+.ui-sidebar-label { font-size: 14px; line-height: 20px; color: var(--cso-ui-text); }
+.ui-sidebar-active { background-color: var(--cso-ui-surface); }
+.ui-sidebar-active .ui-sidebar-label { color: var(--cso-ui-primary); font-weight: 700; }
+.ui-sidebar-disabled .ui-sidebar-label { color: var(--cso-ui-line-strong, #c9cbd4); }
+.ui-sidebar-prefix { border-bottom-right-radius: 8px; }
+.ui-sidebar-suffix { border-top-right-radius: 8px; }
+.ui-sidebar-indicator { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 2px; height: 20px; background-color: var(--cso-ui-primary); }
+.ui-sidebar-icon { width: 18px; height: 20px; margin-right: 4px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+
+
+
+.ui-badge.ui-sidebar-label-wrap { align-self: center; }
+
+.ui-sidebar-icon-light{display:var(--cso-ui-light-display,flex);}
+.ui-sidebar-icon-dark{display:var(--cso-ui-dark-display,none);}

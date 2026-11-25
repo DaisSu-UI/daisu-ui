@@ -1,0 +1,66 @@
+.ui-tag { position: relative; display: flex; flex-direction: row; align-items: center; justify-content: center; align-self: flex-start; flex-shrink: 0; padding: 3px 6px; border-radius: 2px; background-color: #868a9c; color: #fff; }
+.ui-tag-label { font-size: 12px; line-height: 18px; font-weight: 400; color: inherit; white-space: nowrap; }
+.ui-tag-primary { background-color: #1c64fd; }
+.ui-tag-danger { background-color: #f14646; }
+.ui-tag-warning { background-color: #f57f00; }
+.ui-tag-success { background-color: #12b886; }
+.ui-tag-volcano { background-color: #fd5c1c; }
+.ui-tag-lightblue { background-color: #1cb2fd; }
+.ui-tag-cyan { background-color: #22b8cf; }
+.ui-tag-pink { background-color: #ff357c; }
+.ui-tag-purple { background-color: #8059f3; }
+.ui-tag-light, .ui-tag-plain, .ui-tag-dashed, .ui-tag-text { background-color: transparent; color: var(--cso-ui-tag-default-color,#4e5369); }
+.ui-tag-light { background-color: var(--cso-ui-tag-light-default-bg,#f2f3f5); }
+.ui-tag-primary.ui-tag-light, .ui-tag-primary.ui-tag-plain, .ui-tag-primary.ui-tag-dashed, .ui-tag-primary.ui-tag-text { color: #1c64fd; }
+.ui-tag-danger.ui-tag-light, .ui-tag-danger.ui-tag-plain, .ui-tag-danger.ui-tag-dashed, .ui-tag-danger.ui-tag-text { color: #f14646; }
+.ui-tag-warning.ui-tag-light, .ui-tag-warning.ui-tag-plain, .ui-tag-warning.ui-tag-dashed, .ui-tag-warning.ui-tag-text { color: #f57f00; }
+.ui-tag-success.ui-tag-light, .ui-tag-success.ui-tag-plain, .ui-tag-success.ui-tag-dashed, .ui-tag-success.ui-tag-text { color: #12b886; }
+.ui-tag-volcano.ui-tag-light, .ui-tag-volcano.ui-tag-plain, .ui-tag-volcano.ui-tag-dashed, .ui-tag-volcano.ui-tag-text { color: #fd5c1c; }
+.ui-tag-lightblue.ui-tag-light, .ui-tag-lightblue.ui-tag-plain, .ui-tag-lightblue.ui-tag-dashed, .ui-tag-lightblue.ui-tag-text { color: #1cb2fd; }
+.ui-tag-cyan.ui-tag-light, .ui-tag-cyan.ui-tag-plain, .ui-tag-cyan.ui-tag-dashed, .ui-tag-cyan.ui-tag-text { color: #22b8cf; }
+.ui-tag-pink.ui-tag-light, .ui-tag-pink.ui-tag-plain, .ui-tag-pink.ui-tag-dashed, .ui-tag-pink.ui-tag-text { color: #ff357c; }
+.ui-tag-purple.ui-tag-light, .ui-tag-purple.ui-tag-plain, .ui-tag-purple.ui-tag-dashed, .ui-tag-purple.ui-tag-text { color: #8059f3; }
+.ui-tag-primary.ui-tag-light { background-color: var(--cso-ui-tag-light-primary-bg,#f5f8ff); }
+.ui-tag-danger.ui-tag-light { background-color: var(--cso-ui-tag-light-danger-bg,#fff5f5); }
+.ui-tag-warning.ui-tag-light { background-color: var(--cso-ui-tag-light-warning-bg,#fff6eb); }
+.ui-tag-success.ui-tag-light { background-color: var(--cso-ui-tag-light-success-bg,#f3fbf9); }
+.ui-tag-volcano.ui-tag-light { background-color: var(--cso-ui-tag-light-volcano-bg,#fff2e8); }
+.ui-tag-lightblue.ui-tag-light { background-color: var(--cso-ui-tag-light-lightblue-bg,#e8fbff); }
+.ui-tag-cyan.ui-tag-light { background-color: var(--cso-ui-tag-light-cyan-bg,#f4fbfd); }
+.ui-tag-pink.ui-tag-light { background-color: var(--cso-ui-tag-light-pink-bg,#fff0f5); }
+.ui-tag-purple.ui-tag-light { background-color: var(--cso-ui-tag-light-purple-bg,#f9f5ff); }
+.ui-tag-border { position: absolute; top: 0; bottom: 0; left: 0; right: 0; border: 1px solid var(--cso-ui-tag-default-color,#4e5369); border-radius: 2px; pointer-events: none; }
+.ui-tag-dashed .ui-tag-border { border-style: dashed; }
+.ui-tag-size-small { padding: 0 4px; }
+.ui-tag-size-small .ui-tag-label { font-size: 11px; line-height: 16px; }
+.ui-tag-size-medium { padding: 1px 4px; }
+.ui-tag-size-large .ui-tag-label { font-size: 14px; line-height: 18px; }
+.ui-tag-size-extra-large .ui-tag-label { font-size: 14px; line-height: 20px; }
+.ui-tag-round { padding-left: 12px; padding-right: 12px; border-radius: 9999px; }
+.ui-tag-round .ui-tag-border { border-radius: 9999px; }
+.ui-tag-mark { border-radius: 8px 4px; }
+.ui-tag-mark .ui-tag-border { border-radius: 8px 4px; }
+.ui-tag-content { display: flex; flex-direction: row; align-items: center; color: inherit; }
+.ui-tag-icon, .ui-tag-glyph { display: flex; flex-shrink: 0; align-items: center; justify-content: center; }
+.ui-tag > .ui-tag-glyph, .ui-tag-icon, .ui-tag-content > .ui-tag-glyph { margin-right: 2px; }
+.ui-tag-close { display: flex; align-items: center; justify-content: center; margin-left: 2px; align-self: stretch; }
+
+
+
+
+
+.ui-tag-input { width: 80px; height: 18px; padding: 0; border-width: 0; background-color: transparent; color: inherit; font-size: 12px; }
+
+.ui-tag-primary .ui-tag-border { border-color: #1c64fd; }
+.ui-tag-danger .ui-tag-border { border-color: #f14646; }
+.ui-tag-warning .ui-tag-border { border-color: #f57f00; }
+.ui-tag-success .ui-tag-border { border-color: #12b886; }
+.ui-tag-volcano .ui-tag-border { border-color: #fd5c1c; }
+.ui-tag-lightblue .ui-tag-border { border-color: #1cb2fd; }
+.ui-tag-cyan .ui-tag-border { border-color: #22b8cf; }
+.ui-tag-pink .ui-tag-border { border-color: #ff357c; }
+.ui-tag-purple .ui-tag-border { border-color: #8059f3; }
+
+
+.ui-tag-auto-glyph .ui-tag-glyph-light{display:var(--cso-ui-light-display,flex);}
+.ui-tag-auto-glyph .ui-tag-glyph-dark{display:var(--cso-ui-dark-display,none);}

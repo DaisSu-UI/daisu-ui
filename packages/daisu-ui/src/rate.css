@@ -1,0 +1,20 @@
+.ui-rate { display: flex; flex-direction: row; align-self: flex-start; align-items: center; }
+.ui-rate-block { align-self: stretch; }
+.ui-rate-item { position: relative; width: var(--ui-rate-size, 24px); height: var(--ui-rate-size, 24px); flex-shrink: 0; }
+.ui-rate-item + .ui-rate-item { margin-left: var(--ui-rate-space, 6px); }
+.ui-rate-glyph { width: var(--ui-rate-size, 24px); height: var(--ui-rate-size, 24px); flex-shrink: 0; }
+.ui-rate-fill { position: absolute; left: 0; top: 0; height: 100%; overflow: hidden; }
+.ui-rate-empty { position: absolute; right: 0; top: 0; height: 100%; overflow: hidden; }
+.ui-rate-empty .ui-rate-glyph { position: absolute; right: 0; top: 0; }
+.ui-rate-hit { position: absolute; left: 0; top: 0; height: 100%; width: 100%; }
+.ui-rate-hit-half { width: 50%; }
+.ui-rate-hit-full { width: 50%; left: 50%; }
+
+
+
+
+
+.ui-rate-disabled { opacity: .4; }
+
+.ui-rate-default-light{display:var(--cso-ui-light-display,flex);}
+.ui-rate-default-dark{display:var(--cso-ui-dark-display,none);}

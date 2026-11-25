@@ -1,0 +1,41 @@
+.ui-cell-group { display: flex; flex-direction: column; }
+.ui-cell-group-title { position: relative; padding: 12px; display: flex; flex-direction: row; background-color: var(--cso-ui-surface); }
+.ui-cell-group-heading { flex: 1; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--cso-ui-text); }
+.ui-cell-group-value { font-size: 14px; line-height: 20px; color: var(--cso-ui-text-muted); }
+.ui-cell-group-body { overflow: hidden; background-color: var(--cso-ui-surface); }
+.ui-cell-group-insert { margin: 0 16px; }
+.ui-cell-group-insert .ui-cell-group-body { border-radius: 8px; }
+.ui-cell { --ui-cell-font-size: 14px; --ui-cell-line-height: 20px; position: relative; width: 100%; padding: 12px; background-color: var(--cso-ui-surface); }
+.ui-cell-wrapper { display: flex; flex-direction: row; align-items: flex-start; width: 100%; }
+.ui-cell-main { flex: 1; min-width: 0; display: flex; flex-direction: row; }
+.ui-cell-copy { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ui-cell-title-row { display: flex; flex-direction: row; align-items: center; min-height: var(--ui-cell-line-height); }
+.ui-cell-title { min-width: 0; font-size: var(--ui-cell-font-size); line-height: var(--ui-cell-line-height); color: var(--cso-ui-cell-title-color,var(--cso-ui-text)); }
+.ui-cell-description { margin-top: 4px; font-size: var(--ui-cell-font-size); line-height: var(--ui-cell-line-height); color: var(--cso-ui-text-auxiliary, var(--cso-ui-text-muted)); }
+.ui-cell-right { flex: 1; min-width: 0; display: flex; flex-direction: row; align-items: flex-start; }
+.ui-cell-value-wrap { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-end; }
+.ui-cell-value { width: 100%; font-size: var(--ui-cell-font-size); line-height: var(--ui-cell-line-height); color: var(--cso-ui-text-muted); text-align: right; }
+.ui-cell-placeholder { color: var(--cso-ui-text-placeholder, var(--cso-ui-text-muted)); }
+.ui-cell-value-align-left .ui-cell-value { text-align: left; }
+.ui-cell-value-align-left .ui-cell-value-wrap { align-items: flex-start; }
+.ui-cell-value-align-center .ui-cell-value { text-align: center; }
+.ui-cell-value-align-center .ui-cell-value-wrap { align-items: center; }
+.ui-cell-icon { width: 20px; height: 20px; margin-right: 4px; display: flex; flex-shrink: 0; align-items: center; justify-content: center; }
+.ui-cell-icon text { font-size: 20px; line-height: 20px; color: var(--cso-ui-text-muted); }
+.ui-cell-required { margin-left: 4px; font-size: 14px; line-height: 20px; color: var(--cso-ui-danger); }
+.ui-cell-required-before { margin-left: 0; margin-right: 4px; }
+.ui-cell-large { --ui-cell-font-size: 16px; --ui-cell-line-height: 24px; padding: 16px; }
+.ui-cell-large .ui-cell-icon { height: 24px; }
+.ui-cell-center .ui-cell-wrapper, .ui-cell-center .ui-cell-right { align-items: center; }
+.ui-cell-vertical .ui-cell-wrapper { flex-direction: column; }
+.ui-cell-vertical .ui-cell-main, .ui-cell-vertical .ui-cell-right { width: 100%; flex: none; }
+.ui-cell-vertical .ui-cell-right { margin-top: 16px; }
+.ui-cell-clickable.ui-cell-pressed { background-color: var(--cso-ui-canvas); }
+.ui-cell-border, .ui-cell-group-title-line { position: absolute; left: 12px; right: 12px; top: 0; height: 1px; transform: scaleY(.5); background-color: var(--cso-ui-line); display: none; }
+.ui-cell-border-enabled, .ui-cell-group-bordered .ui-cell + .ui-cell .ui-cell-border-inherit { display: flex; }
+.ui-cell-group-bordered .ui-cell-group-title-line { display: flex; top: auto; bottom: 0; }
+.ui-cell-arrow { width: 20px; height: var(--ui-cell-line-height); margin-left: 8px; display: flex; flex-shrink: 0; align-items: center; justify-content: center; }
+.ui-cell-arrow-mark { width: 8px; height: 8px; border-right-width: 1.5px; border-right-style: solid; border-right-color: var(--cso-ui-text-auxiliary, var(--cso-ui-text-muted)); border-bottom-width: 1.5px; border-bottom-style: solid; border-bottom-color: var(--cso-ui-text-auxiliary, var(--cso-ui-text-muted)); transform: rotate(-45deg); }
+.ui-cell-arrow-left .ui-cell-arrow-mark { transform: rotate(135deg); }
+.ui-cell-arrow-up .ui-cell-arrow-mark { transform: rotate(-135deg); }
+.ui-cell-arrow-down .ui-cell-arrow-mark { transform: rotate(45deg); }

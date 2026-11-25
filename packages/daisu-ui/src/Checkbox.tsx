@@ -1,0 +1,32 @@
+import { createContext, forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from '@lynx-js/react';
+import { Choice, choiceDefaults } from './choice.js';
+import type { ChoiceStyle, ChoiceValue } from './choice.js';
+import { FormFieldContext } from './formContext.js';
+export type CheckboxRef = { toggle: () => void };
+export type CheckboxGroupRef = { toggleAll: (options?: boolean | { checked?: boolean; skipDisabled?: boolean }) => void };
+export type CheckboxProps = ChoiceStyle & { name?: ChoiceValue; value?: ChoiceValue; defaultValue?: ChoiceValue; trueValue?: ChoiceValue; falseValue?: ChoiceValue; indeterminate?: boolean; onChange?: (event: { value: ChoiceValue }) => void };
+export type CheckboxGroupProps = ChoiceStyle & { value?: readonly ChoiceValue[]; defaultValue?: readonly ChoiceValue[]; min?: number; max?: number; onChange?: (event: { value: ChoiceValue[] }) => void };
+type Entry = { name: ChoiceValue; disabled: boolean; readonly: boolean };
+const Context = createContext<{ props: CheckboxGroupProps; value: readonly ChoiceValue[]; toggle: (entry: Entry) => void; register: (entry: Entry) => () => void } | undefined>(undefined);
+export const CheckboxGroup = forwardRef<CheckboxGroupRef, CheckboxGroupProps>(function CheckboxGroup(props,ref) {
+  const {value,defaultValue=[],min=0,max=0,onChange,children,className='',style,direction='vertical'}=props;
+  const [inner,setInner]=useState<readonly ChoiceValue[]>(defaultValue),field=useContext(FormFieldContext),entries=useRef(new Map<object,Entry>()),current=value??inner,latest=useRef(current);latest.current=current;
+  const commit=(next:ChoiceValue[])=>{'background only';if(next.length<Math.max(0,min)||(max>0&&next.length>max))return;if(next.length===latest.current.length&&next.every((v,i)=>v===latest.current[i]))return;if(value===undefined){latest.current=next;setInner(next);}onChange?.({value:next});};
+  const toggle=(entry:Entry)=>{'background only';if(entry.disabled||entry.readonly)return;commit(latest.current.includes(entry.name)?latest.current.filter(v=>v!==entry.name):[...latest.current,entry.name]);};
+  const register=(entry:Entry)=>{'background only';const token={};entries.current.set(token,entry);return()=>{entries.current.delete(token);};};
+  useImperativeHandle(ref,()=>({toggleAll(options){'background only';if(field?.disabled||props.disabled||props.readonly)return;const config=typeof options==='boolean'?{checked:options}:options??{};let next=[...latest.current];for(const entry of entries.current.values()){if(entry.readonly||(config.skipDisabled&&entry.disabled))continue;const checked=config.checked??!latest.current.includes(entry.name);next=checked?next.includes(entry.name)?next:[...next,entry.name]:next.filter(v=>v!==entry.name);}commit(next);}}),[current,min,max,props.disabled,props.readonly,field?.disabled]);
+  return <Context.Provider value={{props:{...props,disabled:props.disabled??field?.disabled},value:current,toggle,register}}><view className={`ui-choice-group ui-choice-group-${direction} ${props.type === 'button' ? 'ui-choice-group-buttons' : ''} ${className}`} style={style}>{children}</view></Context.Provider>;
+});
+export const Checkbox = forwardRef<CheckboxRef,CheckboxProps>(function Checkbox(props,ref){
+  const {name='',value,defaultValue=false,trueValue=true,falseValue=false,indeterminate,onChange}=props,group=useContext(Context),field=useContext(FormFieldContext),[inner,setInner]=useState<ChoiceValue>(defaultValue);
+  const merged={...choiceDefaults(group?.props),...Object.fromEntries(Object.entries(props).filter(([,v])=>v!==undefined&&v!==null))};
+  const checked=group?group.value.includes(name):(value===undefined?inner:value)===trueValue;
+  const limit=!!group&&((!!group.props.max&&group.value.length>=group.props.max&&!checked)||((group.props.min??0)>0&&group.value.length<=(group.props.min??0)&&checked));
+  const disabled=!!field?.disabled||!!merged.disabled||limit,readonly=!!merged.readonly;
+  const entry={name,disabled:!!field?.disabled||!!merged.disabled,readonly};
+  const context=useRef(group);context.current=group;
+  useEffect(()=>context.current?.register(entry),[name,entry.disabled,readonly]);
+  const toggle=()=>{'background only';if(disabled||readonly)return;if(group)group.toggle(entry);else{const next=checked?falseValue:trueValue;if(value===undefined)setInner(next);onChange?.({value:next});}};
+  useImperativeHandle(ref,()=>({toggle}),[checked,disabled,readonly,value,group?.value,trueValue,falseValue]);
+  return <Choice {...merged} checked={checked} indeterminate={indeterminate} disabled={disabled} readonly={readonly} onTap={toggle}/>;
+});

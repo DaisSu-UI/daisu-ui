@@ -1,0 +1,12 @@
+.ui-sort-button { position: relative; align-self: flex-start; height: 48px; display: flex; flex-direction: row; align-items: center; justify-content: center; }
+.ui-sort-button-title { font-size: 14px; line-height: 20px; color: var(--cso-ui-text-secondary, var(--cso-ui-text-muted)); }
+.ui-sort-button-arrows { position: relative; margin-left: 6px; width: 16px; height: 16px; }
+.ui-sort-button-arrow { position: absolute; left: 2px; top: -1px; width: 12px; height: 12px; }
+.ui-sort-button-arrow + .ui-sort-button-arrow { top: 5px; }
+.ui-sort-button-caret { position: absolute; left: 2.5px; width: 0; height: 0; border-left: 3.5px solid transparent; border-right: 3.5px solid transparent; }
+.ui-sort-button-caret-up { top: 3px; border-bottom: 5px solid var(--cso-ui-text-auxiliary, var(--cso-ui-text-muted)); }
+.ui-sort-button-caret-down { top: 4px; border-top: 5px solid var(--cso-ui-text-auxiliary, var(--cso-ui-text-muted)); }
+.ui-sort-button-arrow-active .ui-sort-button-caret-up { border-bottom-color: var(--cso-ui-primary); }
+.ui-sort-button-arrow-active .ui-sort-button-caret-down { border-top-color: var(--cso-ui-primary); }
+.ui-sort-button-active .ui-sort-button-title { color: var(--cso-ui-primary); }
+.ui-sort-button-indicator { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background-color: var(--cso-ui-primary); }

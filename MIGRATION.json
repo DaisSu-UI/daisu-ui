@@ -1,0 +1,15 @@
+{
+  "targetDirectory": "/media/youzi/Project/workProject/daisu-ui",
+  "remote": "git@git.zilueit.com:daisu-ui/daisu-ui.git",
+  "status": "extracted",
+  "applicationIntegrationTestsKeptInMainProject": [
+    "packages/daisu-ui/src/router/RouterView.test.tsx",
+    "packages/daisu-ui/src/router/core.test.ts",
+    "packages/daisu-ui/src/router/tanstack.test.ts"
+  ],
+  "note": "CSO business routing integration suites stay in the main app; generic router tests and all Demo fixtures remain in this repository. Snapshot includes the uncommitted UI work completed before extraction.",
+  "sourceRepository": "git@git.zilueit.com:daisu/yxt-cso-lynx.git",
+  "sourceBranch": "developer",
+  "sourceCommit": "49c88aa",
+  "applicationDependency": "file:vendor/daisu-ui-0.1.0-beta.0.tgz"
+}

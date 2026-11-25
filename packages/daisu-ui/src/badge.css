@@ -1,0 +1,15 @@
+.ui-badge { position: relative; display: flex; flex-direction: row; align-items: center; align-self: flex-start; }
+.ui-badge-content { min-width: 16px; height: 16px; padding: 0 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-sizing: border-box; }
+.ui-badge-label { font-size: 10px; line-height: 16px; font-weight: 400; color: #fff; white-space: nowrap; }
+.ui-badge-fixed { position: absolute; top: 0; right: 0; transform: translate(50%, -50%); }
+.ui-badge-circle { border-radius: 9999px; }
+.ui-badge-square { border-radius: 4px; }
+.ui-badge-bubble { border-radius: 8px 8px 8px 0; }
+.ui-badge-dot { width: 6px; min-width: 6px; height: 6px; padding: 0; }
+.ui-badge-bordered { box-shadow: 0 0 0 1px var(--cso-ui-surface); }
+.ui-badge-primary { background-color: var(--cso-ui-primary); }
+.ui-badge-success { background-color: var(--cso-ui-success); }
+.ui-badge-warning { background-color: var(--cso-ui-warning); }
+.ui-badge-danger { background-color: var(--cso-ui-danger); }
+.ui-badge-info { background-color: var(--cso-ui-surface-muted); }
+.ui-badge-info .ui-badge-label { color: var(--cso-ui-text-muted); }

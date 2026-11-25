@@ -1,0 +1,12 @@
+.ui-index-bar { position: relative; width: 100%; height: 100%; overflow: hidden; }
+.ui-index-bar-list { width: 100%; height: 100%; }
+.ui-index-bar-sticky { position: absolute; top: 0; left: 0; width: 100%; z-index: 2; }
+.ui-index-anchor { width: 100%; padding: 10px; background-color: var(--cso-ui-canvas); }
+.ui-index-anchor text { font-size: 14px; line-height: 16px; color: var(--cso-ui-text); }
+.ui-index-bar-rail { position: absolute; top: 50%; right: 4px; transform: translateY(-50%); display: flex; flex-direction: column; z-index: 3; }
+.ui-index-bar-index { width: 18px; height: 18px; flex-shrink: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.ui-index-bar-index text { font-size: 12px; line-height: 18px; font-weight: 500; color: var(--cso-ui-text-auxiliary, var(--cso-ui-text-muted)); }
+.ui-index-bar-index-active { background-color: var(--cso-ui-primary); }
+.ui-index-bar-index-active text { color: #fff; }
+.ui-index-bar-current { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 56px; height: 56px; border-radius: 50%; background-color: var(--cso-ui-primary); display: flex; align-items: center; justify-content: center; z-index: 4; }
+.ui-index-bar-current text { font-size: 24px; line-height: 32px; color: #fff; }

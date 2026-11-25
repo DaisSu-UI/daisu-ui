@@ -1,0 +1,101 @@
+{
+  "name": "daisu-ui",
+  "version": "0.1.0-beta.0",
+  "description": "Daisu UI · 袋鼠 UI，面向 ReactLynx 的组件库",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./router": {
+      "types": "./dist/router/index.d.ts",
+      "import": "./dist/router/index.js",
+      "default": "./dist/router/index.js"
+    },
+    "./router/runtime": {
+      "types": "./dist/router/runtime.d.ts",
+      "default": "./dist/router/runtime.js"
+    },
+    "./router/location": {
+      "types": "./dist/router/location.d.ts",
+      "default": "./dist/router/location.js"
+    },
+    "./utils": {
+      "types": "./dist/utils.d.ts",
+      "default": "./dist/utils.js"
+    },
+    "./styles.css": {
+      "types": "./dist/styles.d.ts",
+      "default": "./dist/styles.css"
+    },
+    "./package.json": "./package.json",
+    "./web": {
+      "types": "./dist/web/index.d.ts",
+      "default": "./dist/web/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md",
+    "CHANGELOG.md"
+  ],
+  "sideEffects": [
+    "**/*.css",
+    "./dist/index.js",
+    "./src/index.ts",
+    "./dist/router/runtime.js"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "prepack": "npm run build"
+  },
+  "dependencies": {
+    "@lynx-js/lynx-ui": "^3.141.0",
+    "@tanstack/history": "1.162.5",
+    "@tanstack/react-router": "1.170.46",
+    "abort-controller": "3.0.0",
+    "fflate": "0.8.2",
+    "htmlparser2": "10.0.0",
+    "jsbarcode": "3.12.3",
+    "qrcode-generator": "2.0.4",
+    "url-search-params-polyfill": "8.2.5"
+  },
+  "peerDependencies": {
+    "@lynx-js/react": "^0.126.2",
+    "@lynx-js/types": "^4.2.1",
+    "@types/react": "^18.3.0"
+  },
+  "devDependencies": {
+    "@lynx-js/react": "^0.126.2",
+    "@lynx-js/types": "4.2.1",
+    "@types/react": "^18.3.0",
+    "typescript": "^6.0.3"
+  },
+  "publishConfig": {
+    "access": "public",
+    "tag": "beta",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "keywords": [
+    "lynx",
+    "reactlynx",
+    "ui",
+    "components",
+    "daisu-ui"
+  ],
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@git.zilueit.com/daisu-ui/daisu-ui.git",
+    "directory": "packages/daisu-ui"
+  }
+}

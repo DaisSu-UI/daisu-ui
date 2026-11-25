@@ -1,0 +1,44 @@
+{
+  "name": "daisu-ui-workspace",
+  "private": true,
+  "version": "0.1.0-beta.0",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "scripts": {
+    "ui:build": "npm run build --workspace daisu-ui",
+    "ui:pack": "node scripts/pack-ui.mjs",
+    "ui:check": "npm run ui:build && node scripts/check-ui-package.mjs",
+    "ui:demo:build": "npm run ui:build && npm run build --workspace @daisu-ui/demo",
+    "ui:demo:dev": "npm run ui:demo:build && npm run dev --workspace @daisu-ui/demo",
+    "ui:docs:build": "npm run build --workspace @daisu-ui/docs",
+    "ui:docs:dev": "npm run ui:docs:build && npm run dev --workspace @daisu-ui/docs",
+    "build": "npm run ui:docs:build",
+    "test": "rstest run",
+    "pretest": "npm run ui:build",
+    "test:types": "npm run ui:build && npm run typecheck --workspace @daisu-ui/demo",
+    "benchmark:area": "node scripts/benchmark-demo-area.mjs"
+  },
+  "devDependencies": {
+    "@lynx-js/react-rsbuild-plugin": "^0.20.3",
+    "@lynx-js/rspeedy": "^0.18.0",
+    "@lynx-js/types": "^4.2.1",
+    "@rsbuild/core": "^2.2.9",
+    "@rstest/core": "^0.12.1",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^7.0.0",
+    "@types/react": "^18.3.0",
+    "fflate": "0.8.2",
+    "jsdom": "^27.4.0",
+    "typescript": "^6.0.3",
+    "@lynx-js/react": "^0.126.2"
+  },
+  "overrides": {
+    "@lynx-js/tasm": "0.0.53"
+  }
+}

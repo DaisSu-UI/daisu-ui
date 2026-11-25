@@ -1,0 +1,8 @@
+.ui-count-to{display:flex;flex-direction:row;align-items:baseline;color:var(--cso-ui-text);}
+.ui-count-to-value{font-size:var(--cso-ui-count-to-font-size,18px);line-height:var(--cso-ui-count-to-line-height,26px);color:inherit;}
+.ui-count-to-affix{font-size:12px;line-height:18px;color:inherit;}
+.ui-count-to-primary{color:var(--cso-ui-primary);}
+.ui-count-to-error{color:var(--cso-ui-danger);}
+.ui-count-to-warning{color:var(--cso-ui-warning);}
+.ui-count-to-success{color:var(--cso-ui-success);}
+.ui-count-to-info{color:var(--cso-ui-info);}

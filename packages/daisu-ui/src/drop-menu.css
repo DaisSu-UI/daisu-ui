@@ -1,0 +1,28 @@
+.ui-drop-menu { position: relative; height: 48px; min-width: 0; display: flex; flex-direction: row; background-color: var(--cso-ui-surface); }
+.ui-drop-menu-item { flex: 1; min-width: 0; padding: 12px; display: flex; flex-direction: row; justify-content: center; align-items: center; }
+.ui-drop-menu-title { min-width: 0; max-width: 100%; display: flex; flex-direction: row; align-items: center; }
+.ui-drop-menu-title-text { min-width: 0; flex-shrink: 1; font-size: 16px; line-height: 24px; color: var(--cso-ui-text); }
+.ui-drop-menu-arrow { margin-left: 4px; flex-shrink: 0; transition-property: transform; transition-timing-function: ease; }
+.ui-drop-menu-item-open .ui-drop-menu-title-text { color: var(--cso-ui-primary); }
+.ui-drop-menu-item-disabled { opacity: .4; }
+.ui-drop-menu-layer { position: fixed; left: 0; right: 0; overflow: hidden; display: flex; flex-direction: column; }
+.ui-drop-menu-layer-down { justify-content: flex-start; }
+.ui-drop-menu-layer-up { justify-content: flex-end; }
+.ui-drop-menu-popup { display: flex; flex-direction: column; max-height: 100%; flex-shrink: 1; background-color: var(--cso-ui-surface); }
+.ui-drop-menu-scroll { width: 100%; max-height: 80vh; flex-shrink: 1; min-height: 0; }
+.ui-drop-menu-content { border-top: 1px solid var(--cso-ui-line); display: flex; flex-direction: column; width: 100%; flex-shrink: 0; }
+.ui-drop-menu-options { width: 100%; display: flex; flex-direction: column; }
+.ui-drop-menu-option { min-height: 48px; padding: 12px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; }
+.ui-drop-menu-option-copy { min-width: 0; flex: 1; display: flex; flex-direction: row; align-items: center; }
+.ui-drop-menu-option-label { min-width: 0; flex-shrink: 1; color: var(--cso-ui-text); font-size: 16px; line-height: 24px; }
+.ui-drop-menu-option-tip { min-width: 0; flex-shrink: 1; margin-left: 8px; color: var(--cso-ui-text-auxiliary, var(--cso-ui-text-muted)); font-size: 14px; line-height: 20px; }
+.ui-drop-menu-option-selected .ui-drop-menu-option-label, .ui-drop-menu-option-selected .ui-drop-menu-option-tip { color: var(--cso-ui-primary); }
+
+
+
+/* The clip wrapper has no hit target; the panel and the separate Overlay do. */
+.ui-drop-menu-layer { pointer-events: none; }
+.ui-drop-menu-popup { pointer-events: auto; }
+
+.ui-drop-menu-primary-light{display:var(--cso-ui-light-display,flex);}
+.ui-drop-menu-primary-dark{display:var(--cso-ui-dark-display,none);}

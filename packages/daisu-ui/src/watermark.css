@@ -1,0 +1,6 @@
+.ui-watermark{position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none;overflow:hidden;}
+.ui-watermark-fullscreen{position:fixed;}
+.ui-watermark-tile{position:absolute;display:flex;align-items:center;justify-content:center;overflow:visible;pointer-events:none;}
+.ui-watermark-mark{display:flex;align-items:center;justify-content:center;overflow:visible;pointer-events:none;}
+.ui-watermark-text{width:100%;text-align:center;white-space:pre-wrap;pointer-events:none;}
+.ui-watermark-image{flex-shrink:0;}

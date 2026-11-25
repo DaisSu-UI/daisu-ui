@@ -1,0 +1,1556 @@
+# CSO Lynx UI Full Guide
+
+`daisu-ui` 是本仓库 workspace 内的独立 npm UI 包，基于 `@lynx-js/react` 与 `@lynx-js/lynx-ui`。
+
+## Public API
+
+- `Loadmore`：state(loading/finished/error，未设置留空)、loadingText/finishedText/errorText、loadingProps(公共LoadingProps并追加className)、loading/finished/error状态插槽、onReload仅error可触发、className/style。默认48px高，完成复用公共Divider，错误包含独立重试文案和refresh图标。不自动监听滚动或请求数据。示例loadmore使用官方List，每批15至60条，45条模拟错误，点击重试，200ms定时器防重/卸载清理。见 `docs/ui/components/loadmore.md`。
+- `Loading`：type(circular/spinner/dots/wave)、size非负数/数字字符串/px/rpx/rem/vw/vh默认28，保留small14/medium20/large28；color默认#1c64fd（SVG请用字面颜色）、text/children、direction(vertical/horizontal)默认vertical、className/style/spinnerClassName。旧label保留水平布局与原字号，显式direction优先。圆环SVG近似锥形渐变，800ms线性/12步旋转、三圆点800ms、波形834ms。无inheritColor，用显式color；见 `docs/ui/components/loading.md`，示例loading。
+- `Tag`：type十色、size(small/medium/default/large/extra-large)、variant(dark/light/plain/dashed/text)、round/mark、icon/iconSlot、color/bgColor、closable/onClose（调用方移除，阻止标签点击）、dynamic/add/onConfirm({value})（原生input聚焦，确认提交，失焦取消，每次空值）、children/label、onTap、className/style。兼容tone(info→primary/neutral→default)/plain，显式type/variant优先。无icon-prefix/css-icon，改用SVG或插槽。四组69例，见 `docs/ui/components/tag.md`，示例tag。
+- `Avatar`：src/text/icon、size(large56/medium48/normal36/small24或非负数/长度字符串)、shape(round/square)、bgColor/color、alt、mode(原生四种)、onTap/onError、children优先、className/style。失败按src隔离，切源恢复。`AvatarGroup`：items:AvatarGroupItem[]、maxCount、cascading(left-up顺序增层/right-up减层)、统一size/shape、collapseAvatar、vertical、className/style；重叠25%，N个可见项加一个折叠项。无uni-app独有mode、iconfont或CSS图标参数。详见 `docs/ui/components/avatar.md`，示例avatar。
+
+- `Badge`：value:string|number、max（仅截断数值）、top/right（数值px或长度字符串）、isDot/hidden/showZero、type五种、bgColor、shape(circle/square/bubble)、border、children、className/style。hidden优先，dot优先于0值，无内容时独立展示；默认16px标记/6px红点。Tabbar/Sidebar完整badgeProps复用，旧简写保持0值与max行为。示例badge，见 `docs/ui/components/badge.md`。
+
+- `Gap`：height:number|string=14，数字为px，rpx按750设计宽转vw；bgColor默认透明、safeAreaBottom=false、bottomSafeAreaHeight=0（真实宿主px）、className/style。content-box使高度与安全区padding相加，支持0。无uni-app/浏览器env依赖。示例gap，见 `docs/ui/components/gap.md`。
+
+- `Divider`：children、contentPosition(left/center/right)、color、hairline=true、dashed=false、vertical=false、className/style；保留label/align别名，children/contentPosition优先，支持数值0。垂直模式忽略内容；原生view/border替代伪元素，默认1px经缩放成0.5px，Token可定制。示例局部复刻官网计算3px线宽，详见 `docs/ui/components/divider.md`。
+
+- `Backtop`：scrollTop与onBacktop({duration})必填，top=300严格大于才显示，duration=100、bottom=100、right=20、zIndex=10、shape=circle/square、text、iconStyle、children、className/style；48px按钮、300ms淡入淡出。Lynx无全局pageScrollTo，所属容器控制器负责滚动；原生smooth不承诺精确时长。详情 `docs/ui/components/backtop.md`，示例backtop。
+
+- `IndexBar` / `IndexAnchor`：listId必填且同页/保活实例唯一；sections: {index:string|number,data:readonly T[]}[]，renderItem({item,itemIndex,section,sectionIndex})、renderAnchor({section,sectionIndex})、getItemKey、sticky默认false、itemHeight默认44、anchorHeight默认36、onChange({index})、className/style。官方List固定尺寸虚拟行、按原生行索引定位、滚动联动；18px索引、56px按住提示、释放/取消隐藏，支持触屏与鼠标。固定标题与下组推挤，过滤改变分组/行数后恢复首项，空数据无索引。IndexAnchor支持index/children/className/style。任意高度行和异步高度未支持，custom内容必须与尺寸参数一致；标题渲染纯展示。完整映射及平台限制见 `docs/ui/components/index-bar.md`，示例index-bar。
+
+- `Sidebar`：items: SidebarItem[]{value,label,disabled?,icon?,renderIcon({active,disabled})?,badge?,isDot?,max?,badgeProps?,className?,style?}；value/defaultValue默认0，onChange({value,label})，值严格匹配。beforeChange(value)返回boolean/Promise，拒绝/异常取消、仅最新点击生效，value或items标识/禁用态变化及卸载取消旧请求。badgeProps支持除children外全部公共BadgeProps，覆盖简写；旧badge数字字符串仍截断，显式badgeProps.value仅截断数值；className/style。默认114px宽、52px项、相邻圆角、竖线与深色主题；自定义图标颜色用renderIcon传实际色值，不支持web iconfont。详情sidebar及sidebar-anchor/sidebar-page/sidebar-icons三个隐藏子页，官方List双向锚点/300ms切页/七类图标，初始分类二。见 `docs/ui/components/sidebar.md`。
+
+- `Segmented`：options支持字符串/数值/SegmentedOption<T>{value,disabled?,payload?}，value/onChange(option)或defaultValue；theme(card/outline)、整体disabled、onClick(option)（先change后click）、renderLabel({option,active,disabled})、className。无效或缺省value显示首项，空列表无滑块，不在挂载时回调；值严格匹配。卡片滑块200ms cubic-bezier(.645,.045,.355,1)，百分比定位自动适应缩放/弹窗。未提供vibrateShort（宿主无协议）、updateActiveStyle（无需测量）、旧版size；五组六例及平台差异见 `docs/ui/components/segmented.md`。
+
+- `Router`：基于 TanStack Router 的代码路由。`src/app/routes.ts` 集中定义路径、动态参数、validateSearch、页面组件和领域转换；新增页面同步 routeTypes、routePages 与 screens。`src/app/router.ts` 提供 createAppRouter/useAppRouter 与旧宿主地址兼容。业务优先 `await router.navigate({ to, params, search, replace })`，返回 Promise<boolean>；push/replace/back/reset/restore 也为异步，true 不保证 loader 成功。replace 仅替换栈顶。`packages/daisu-ui/src/router` 提供场景 key、保活、转场、侧滑、beforeEach/afterEach 和历史桥接。useRoute 返回所在场景的领域路由，useRouteMatch 返回 TanStack match；保活页面使用场景 hooks，避免原始 hooks 读到顶层参数。原始 DOM Link/Outlet 不用于 Lynx 场景。RouterView 自动提供 Provider；业务树还依赖 App 注入 BusinessSceneContext。H5 路径 URL/history.state 支持刷新、前进后退和守卫回滚；Flutter 通过可选 navigation.sync 接入。默认页显式注册 `/index`，省略时匹配已注册默认页，URL 与历史统一保留 `/index`；Demo 首页 `/ui-demo/index`，示例 `/ui-demo/router`。备案查看、编辑、新增分别为 `/detail`、`/edit`、`/add`，旧 detail?mode 链接继续兼容并规范地址。路径参数表、业务及独立接入示例、守卫、生命周期、宿主协议和常见问题详见 `docs/ui/components/router.md`。
+
+- `Pagination`：value/onChange(number)或defaultValue；total优先于totalPage，pageSize默认10，边界禁用；支持prevText/nextText、showIcon/showMessage、hideIfOnePage、buttonVariant(text/plain/dashed/base)、四个render插槽和className。渲染状态提供prev/next方法。空数据按1页处理，默认隐藏；详见 `docs/ui/components/pagination.md`。
+- `Tabbar`：items数据包含title/name/icon/value(徽标)/isDot/max/badgeProps/renderIcon({active})/children/className；value/defaultValue默认0，onChange({value})，名称严格匹配、无名称用索引。支持fixed/placeholder/bordered(默认false)、shape(default/round)、safeAreaInsetBottom/bottomSafeAreaHeight(宿主数值)、activeColor/inactiveColor(内置SVG用实际色值)、zIndex默认10。beforeChange支持boolean/Promise，拒绝/异常取消、仅最新点击可生效；切换value、改名称及卸载取消待确认。五组十例，示例弹窗/提示为私有组合；已复用公共Badge并支持完整badgeProps。详见 `docs/ui/components/tabbar.md`。
+
+- `Navbar` / `NavbarCapsule`：统一导航组件，默认variant=business保留原56px样式、onBack/rightLabel/onRight/rightContent及statusBarHeight行为；variant=standard显式启用Wot的44px样式。title支持ReactNode；leftText/rightText/leftArrow、bordered、fixed/placeholder、zIndex、safeAreaInsetTop/statusBarHeight、两侧disabled、left/right/capsule、onLeftTap/onRightTap。胶囊支持onBack/onBackHome。不内置路由；详情额外展示不传variant的“原有默认样式”，详见 `docs/ui/components/navbar.md`。
+
+- `Fab`：受控 active/onActiveChange 或 defaultActive；type、八种 position、四种 direction、disabled、draggable、expandable、inactiveIcon/activeIcon、zIndex、gap、className、children、trigger（节点或状态渲染函数）、onTap。FabRef 提供 open/close。60px默认触发器，300ms菜单过渡；触摸/鼠标拖动后吸边、菜单朝内，拖动不触发展开。外部关闭由页面接入，H5宿主已适配拖动滚动拦截。详见 `docs/ui/components/fab.md`，示例 `?demo=ui&component=fab`。
+
+- `RootPortal` / `RootPortalHost`：均仅接收 children。App 根部已安装 Host，传送采用 ReactLynx 公开 createPortal，支持 context 与状态，事件沿真实元素树冒泡；后台挂载，不跨页面/原生容器。其他应用须先安装 Host。CSS 继承链改变，调用处局部变量需要在传送子树设置；详情见 `docs/ui/components/root-portal.md`。独立示例 `?demo=ui&component=root-portal`，其中商品分类已复用公共 SelectPicker。
+
+- `Transition`：必填 `show`，内置11种 `TransitionName`，`name` 支持数组；`duration` 默认300ms，可分别指定 enter/leave，false关闭时长。支持 lazyRender、destroy、六个自定义阶段类、六个生命周期回调、children/className/onTap。取消旧动画及卸载时清理定时器；详见 `docs/ui/components/transition.md`，独立示例 `?demo=ui&component=transition`。
+
+- `Resize`：通过 Lynx `bindlayoutchange` 监听内容尺寸，`onResize(rect)` 在初次布局及宽高变化时触发，rect 包含 width / height / top / right / bottom / left（px）。支持 `children`、`className`、`containerClassName`；无 DOM 轮询。参数及自然尺寸布局约束见 `docs/ui/components/resize.md`。
+
+- `Icon`：`name` 支持 305 个 Wot 原版图标名或图片路径，`size` 为 px 数值（默认16），`color` 为颜色字面量，省略随浅深主题切换；支持 `onTap`、`className`、`accessibilityLabel`。导出 `IconName` 和 `iconNames` 供类型检查 / 搜索。通过原生 SVG 渲染，无字体伪元素；不移植 classPrefix 或自动复制。详见 `docs/ui/components/icon.md`。
+
+- `Row` / `Col`：24 栅格布局，Row 支持 `gutter`、`justify: start | center | end | space-between | space-around | space-evenly`、`align: top | middle | bottom`；Col 支持 `span`（默认24）和 `offset`（默认0）。支持 `className` / `children`，嵌套 Row 独立传递间距。详见 `docs/ui/components/layout.md`，独立示例 `?demo=ui&component=layout`。
+
+- `Text`：必填 `text`，支持 `type`、`mode: text | date | phone | name | price`、`format` 脱敏、`color`、`size`、`bold`、`lines`（1–5）、`lineHeight`、`decoration: none | underline | line-through`、ReactNode `prefix` / `suffix`、`onTap`、`className`。日期用毫秒时间戳与本地时区，价格保留两位小数与千分位；不内置拨号。完整映射见 `docs/ui/components/text.md`，示例 `?demo=ui&component=text`。
+
+- `Button`: `tone` 为 `primary | success | info | warning | danger | neutral`；`variant` 为 `solid | plain | dashed | soft | subtle | text`；`size` 为 `mini | small | medium | large`，高度分别为 28、32、40、44px。支持 `label`、`block`、`loading`、`disabled`、`round`、`hairline`、`className`、`accessibilityLabel` 和 `onTap`。`icon` 支持文本或 ReactNode，省略 `label` 可展示纯图标按钮；加载时保留原文案并拦截点击。
+- 基础：`Button`、`Card`、`Cell`、`CellGroup`、`Divider`。
+- `Cell`：`title` / `icon` 支持 ReactNode，`description` 为描述，`value` 为右侧文字，`children` 为自定义右侧内容。支持 `placeholder`、`valueAlign: left | center | right`、`size: medium | large`、`arrow`、`arrowDirection: right | left | up | down`、`center`、`required`、`markerSide: before | after`、`vertical`、`titleWidth`、`ellipsis`、`border`、`className`、`clickable` / `onTap`；`arrow` 自动开启点击反馈。导航通过 `onTap` 交由页面处理。
+- `CellGroup`：支持 `title`、右侧标题 `value`、`border`（组内分隔线）、`insert`（圆角卡片）、`className`、`children`。默认无外框和分隔线；单项 `border` 覆盖分组设置。Cell 详情涵盖五组展示，评分、开关、滑块可交互；滑块复用公共 `Slider`，开关基于官方 Lynx UI 原语。
+- `Slider`：`value` / `defaultValue` 为数字或 `[下限, 上限]`；受控时通过 `onChange` 回写值，`onChangeEnd` 在操作结束时触发。支持 `min`（默认 0）、`max`（默认 100）、`step`（默认 1）、`disabled`、`vertical`、`height`（纵向默认 248px）、`theme: default | capsule`、`showExtremes`、`showValue`、`marks`（数字数组或数值到文案的映射）、`className`、`accessibilityLabel`。范围手柄不交叉，步长从 min 开始计算；拖动通过 Lynx 触摸事件与原生元素测量实现，支持 H5 鼠标拖动，不使用浏览器 DOM API。示例位于“录入”分类，可用 `?demo=ui&component=slider` 直达。
+- 数据展示：`Collapse`、`CollapseItem`、`CollapseViewMore`；示例入口为首页“数据展示”分类。
+- `CollapseItem` 保留内容节点，通过 `bindlayoutchange` 测量内容自然高度，以 300ms 高度过渡展开/收起；内容更新后重新测量，避免使用固定最大高度裁切内容。`icon` 支持文本或 ReactNode。
+- 表单：`FormInputRow`、`FormSelectRow`、`FormRadioRow`、`FormNumberRow`、`FormTextareaRow`、`RadioGroup`、`NumberStepper`、`Tabs`。
+- 列表：`PagedList` 基于官方 `FeedList`，不得在未完成目标设备回归时替换滚动后端。
+- 展示：`EmptyState`、`StatusBadge`、`BusinessListState`、`ReadonlyField`、`ReadonlySection`、`Navbar`。
+
+## Tokens
+
+使用 `--cso-ui-*` CSS 变量，语义包括 canvas、surface、text、text-muted、line，以及 primary、success、info、warning、danger。`.theme-dark` 对同一组 Token 重定义，组件不得以独立深色选择器复制整套样式；应优先使用语义 Token。
+
+## Component examples
+
+运行 `npm run h5:dev` 后访问 `?demo=ui` 打开首页，点击圆角分组标题展开组件列表，允许同时展开多个分类；展开/收起采用 300ms ease-in-out 高度过渡，不添加内容淡入或上移动画。点击条目进入独立示例页，返回时保留首页展开状态。使用 `?demo=ui&component=button`、`collapse`、`cell`、`input`、`tag` 等参数可直达组件示例，详情页返回首页。Flutter 可传入 `page: 'ui-demo/button'` 作为初始页面。
+
+示例页使用 44px 居中导航栏和 `DemoGroup` / `ExampleBlock` 分组，以实际控件展示各项能力；Button 示例覆盖类型、状态、变体、尺寸、图标与块级布局。Cell 展示页面使用灰色分组背景；Slider 展示默认、管道、刻度与纵向布局。示例样式位于 `apps/demo/src/features/ui-demo/styles.css`，颜色与尺寸对照 Wot 移动 Demo，保留本项目品牌。公共组件入口自动加载 `daisu-ui/styles.css`，应用无需手动导入（内部引入 `button.css`、`cell.css` 和 `slider.css`），示例页蓝色主题仅作用于 `.ui-demo-page`。
+
+## ReactLynx rules
+
+- 文本位于 `<text>` 内。
+- 副作用、事件处理器和网络/桥接调用遵循双线程约束；需要时以 `'background only'` 标注。
+- 使用 `@lynx-js/lynx-ui` 的公开 API；不猜测属性或方法。
+- 每次改动运行 `npm run test` 与 `npm run build`。
+
+## AI workflow
+
+1. 读取 `AGENTS.md`、本文件和 `https://lynxjs.org/next/llms.txt`。
+2. 涉及控件时使用 `lynx-ui` skill；涉及线程、生命周期时使用 `reactlynx-best-practices` skill；涉及样式兼容时使用 `lynx-check-css-support` skill。
+3. 使用已配置 MCP 查询权威资料。仓库尚未提供独立 UI MCP Server，不得虚构服务器、工具或命令。
+4. 仅修改任务所需模块，并验证 Lynx/H5/Flutter 宿主边界。
+
+- `Overlay`：show=false、duration=300(ms/{enter,leave}/boolean)、lockScroll=true、zIndex=10、rootPortal=false、children/className/style、onTap及六个进入离开事件。黑色55%遮罩，退出完成前阻挡点击，受控关闭；内容catchtap隔离。原生consume-slide-event/catchtouchmove，无DOM滚动锁；内部scroll-view需显式enable-scroll同步，Flutter外部滚动不由组件控制。rootPortal需RootPortalHost，局部主题由内容类提供。详情overlay.md，示例/ui-demo/overlay。
+
+- `Popup`：show/onChange(false)、onClose(reason:modal/close)、position=center/top/right/bottom/left、transition(名称或数组)、duration=300、closable=false、closeOnClickModal=true、modal=true、modalStyle、zIndex=10、lazyRender=true、lockScroll=true、rootPortal=false、round=false、safeAreaInsetBottom=false、safeAreaBottom=0、className/style/children、onClickModal及六阶段生命周期。复用Overlay/Transition，居中定位与动画分层，退出保留遮挡、关闭后保留内容状态；内部点击不触发背景。rootPortal需根Host；锁定触摸链而非Flutter外部滚动，安全区须宿主数值。未暴露hideWhenClose，固定隐藏并保留节点。参数见popup.md，独立示例/ui-demo/popup。
+
+- `ActionSheet`：show/onChange、actions{name?,description?,color?,disabled?,loading?}[]、panels为Panel[]或Panel[][]（优先actions）；Panel{title,icon?,image?,color?,disabled?}。title/cancelText、closeOnClickAction=true、closeOnClickModal=true、duration=200、zIndex=10、lazyRender=true、safeAreaInsetBottom=true、safeAreaBottom=0、rootPortal=false、children、renderClose(close)、titleClassName/className/style。onSelect单行/动作返回{item,index}，二维返回{item,rowIndex,colIndex}；禁用/加载不选。onCancel先于关闭；onChange(false)/onClose、onClickModal、四个动画事件。Popup/Icon/Loading复用，8px圆角，面板横向滚动；不承诺锁定宿主外部滚动。详情action-sheet.md，示例/ui-demo/action-sheet。
+
+- `Dialog` / `useDialog`：hook返回props及show/alert/confirm/prompt(string|DialogOptions)/close；必须<Dialog {...dialog.props}/>绑定具体实例。Promise<DialogResult{action,value,index?}>确认/自定义action resolve，取消/遮罩/关闭reject；替换/卸载取消旧请求。受控show/onChange/onResult亦支持。Options含title(ReactNode)、msg、type(alert/confirm/prompt)、theme(button/text)、actionLayout(horizontal/vertical)、actions{text,action?,...ButtonProps}[]、showCancelButton、confirm/cancelButtonText与ButtonProps（null隐藏）、inputValue、inputProps{placeholder,maxlength,type,multiline,maxlines}、inputPattern/inputValidate/inputError/showErr、beforeConfirm(value)=>boolean|Promise<boolean>、icon/iconColor/headerImage、closeOnClickModal=false/showClose=false、zIndex=99/lazyRender=true。rootPortal/className/style/children/header/renderActions({confirm,cancel,close,pending})。异步去重，关闭/请求替换/卸载失效；输入用原生元素。无selector/openType；不得在示例绕过宿主发外部操作。详细参数与限制dialog.md，示例/ui-demo/dialog。
+
+- `Switch`：value/defaultValue=false、onChange({value})，SwitchValue=boolean|string|number；activeValue=true/inactiveValue=false严格匹配。disabled/loading=false、loadingProps、size=26（size+4为总高度）、shape round/square、active/inactiveColor/Text/Icon/ActionIcon、beforeChange(target)=>boolean|Promise<boolean>、className/style/accessibilityLabel。公共Loading/Icon复用，异步去重、值变化/禁用/卸载失效，回调身份变化不取消等待中的Dialog。无CSS图标前缀与旧resolve签名。Overlay示例及独立/ui-demo/switch复用，参数switch.md。
+
+- `Rate`：value:number|null/defaultValue=0，onChange({value})、num=5、readonly/disabled=false、size=24、space=6、color(默认浅深主题)、activeColor='#faad14'(色值/双色数组/角度式linear-gradient)、disabledColor(可选覆盖，默认保留activeColor，整体opacity=.4)、icon/activeIcon(公共IconName)、allowHalf/clearable/block=false、className/style。共享图标路径原生SVG、半星裁剪、双色按是否超过总分一半选择；仅最小分值重复点击清空（1或0.5）。无CSS图标/var/mask；官网Fire样例改用已有heart-fill，明确差异。Dialog评分插槽复用，详情rate.md，示例/ui-demo/rate。
+
+- `SortButton`：value/defaultValue=0，SortButtonValue=-1|0|1，title、allowReset=false、descFirst=false、line=false、onChange({value})、className/style。默认0→1→-1→1，allowReset时0→1→-1→0，descFirst反转优先顺序；受控值只发事件。48px高，主题Token和原生边框三角形，无iconfont；line仅已排序显示。详情sort-button.md，独立/ui-demo/sort-button，作为DropMenu关联依赖。
+
+- Rate图标渲染：全选不渲染未选图标，半选左右互补裁剪，禁止将activeIcon直接叠在完整icon上（点赞/点踩轮廓不同会重影）。默认未选中浅色#c9cbd4；disabled保留已选色并整体40%透明，显式disabledColor才覆盖。
+
+- `DropMenu`/`DropMenuItem`：同组互斥，父zIndex12/direction down|up/topOffset0(向上时预留顶部)/modal/closeOnClickModal=true/duration200/className/style。Item value/defaultValue(string|number)、options、onChange({value,selectedItem原始对象})、disabled、title、icon/caret-down、iconSize数字16、iconName/check、activeColor、beforeToggle({status})=>boolean|Promise、valueKey/labelKey/tipKey、popupClassName/popupStyle/popupHeight、rootPortal、children、四阶段事件；ref getShowPop/open/close/toggle。单Overlay+原生测量，方向侧遮罩与裁剪滑动，80vh原生滚动列表；保留子内容。异步打开序号校验避免覆盖新项，回调重建不取消，禁用/卸载失效。自定义内容关联SortButton/Dialog/Slider/Cell/Button，无Vue selector/useQueue，modal=false外部点击需ref.close。详情drop-menu.md，示例/ui-demo/drop-menu。
+
+- `Tooltip`：show/defaultShow/onShowChange(bool)/onChange({show})、onOpen/onClose、content字符串/contentNode ReactNode、children触发器、placement默认bottom共12向、offset数字主轴或[x,y]/{x,y}坐标、visibleArrow/disabled/showClose、duration200/zIndex20/rootPortalfalse、className/style/arrowClassName/popClassName/popStyle；ref open/close/updatePosition。原生测量自然尺寸与视口，14px间距与16×8箭头，边界换向/夹取；绝对定位默认跟随触发器，复杂内容变化后主动updatePosition。根view bindtap+refs.close处理外部关闭与互斥，组件不强制遮罩，无Vue use-content-slot或DOM。详情tooltip.md，示例/ui-demo/tooltip。
+
+- `Toast`/`useToast`：hook返回props与show/success/error/warning/info/loading(string|ToastOptions)/close，绑定具体<Toast {...toast.props}/>，无selector；重复调用替换并取消旧计时。msg/duration2000(0持久，loading默认0)、direction horizontal|vertical、iconName五类型、iconSize24、loadingType circular|spinner|dots、loadingColor白/loadingSize24/iconColor白、position top|middle-top|middle|bottom、zIndex100/coverfalse、iconClass公共Icon名或图片/iconNode、opened/closed。组件提供同名默认参数，options优先，再加show/onChange/requestKey/rootPortal/className/style。复用Icon/Loading/Overlay/Transition，200ms淡入淡出，24px图标与16px文案，局部Loading居中；无classPrefix/cssIcon。19例、浅深与计时/多实例验证，详情toast.md，示例/ui-demo/toast。
+
+- `Popover`：mode normal|menu，content字符串或readonly PopoverMenuItem[]{content,iconClass?,...业务字段}，contentNode优先，onMenuClick({item原始对象,index})；选择请求关闭后回调并阻止重复提交。其余参数及ref与Tooltip一致，共用原生定位/12向/换向/动态尺寸/200ms淡入淡出。菜单14px图标、12px间距及46px行，原生半像素分隔，浅深Token；根view外部点击refs.close。示例布局复用RadioGroup与Toast，普通/菜单/12向/嵌套/关闭/动态150→250，详情popover.md，示例/ui-demo/popover。
+
+- `FloatingPanel`：height/defaultHeight0、anchors默认[100,原生viewport*.6]、duration300、contentDraggabletrue、safeAreaInsetBottomfalse/safeAreaBottom0、showScrollbartrue、onHeightChange({height})、zIndex10/rootPortalfalse/className/style/children。锚点归一排序去重夹视口，0取最小；纵向5px识别、最近锚点吸附、取消恢复、受控回写，仅拖完改变高度发事件。32px头部/36×4手柄/8px上圆角，transform+300ms回弹；最高位内容原生滚动，顶部向下收起，降下重置滚动。复用Tabs/Resize/Cell，3个官网示例与浅深触屏，宿主嵌套手势待真机。详情floating-panel.md，示例/ui-demo/floating-panel。
+
+- `SwipeAction`：value/defaultValue close|left|right、disabledfalse、beforeClose(reason click|swipe|value,position left|right|inside)=>boolean|Promise、onChange(status)、onClick({value:position})、left/right/children ReactNode、duration600/className/style；ref.close(reason='value',position?)=>Promise<boolean>。已展开关闭前guard、拒绝不发click、去重、回调重建保留请求，禁用/外部值更新/卸载失效。受控需回写，外部关闭被拒绝回传原值；原生测宽、5px横向阈值、半宽吸附、取消恢复、拖后抑制click，600ms官网曲线。H5宿主lynxTouchGuard补横向preventDefault以避免浏览器返回，纵向/禁用保持滚动；DOM仅在web/src。根view refs.close及展开互斥，无Vue队列/DOM；6例关联Cell/Button/Toast，详情swipe-action.md，示例/ui-demo/swipe-action。
+
+- `Tabs`：原options/value/onChange(string)接口保持40px圆角默认样式；items启用标准44px标签页。items含title/name(string|number)/disabled/lazy/badgeProps/children/className，value/defaultValue0，onChange(value,{index,name})/onClick/onDisabled；严格name优先数字下标，失效回退可用项。slidable auto|always/slidableNum6/mapNum10/mapTitle/showScrollbar；sticky/offsetTop；lineTheme normal|text|underline|dot，lineWidth/lineHeight，color/inactiveColor；animated/swipeable/duration300；className/style；ref setActive/scrollIntoView/updateLineStyle。原生测宽/横向滚动，已访问内容保留，animated全挂载并水平过渡，滑动跳禁用。H5宿主横向touch guard，公共组件无DOM；深色Token、原业务默认不变。完整参数和限制见components/tabs.md，示例/ui-demo/tabs。
+
+- `Tour`：show/onShowChange、steps:TourStep[]{element,content纯文本,padding?,offset?,placement?}、current/defaultCurrent0/onCurrentChange/onChange({current})；masktrue/maskColor rgba(0,0,0,.55)、padding8/borderRadius4/offset20/duration300；prevText/nextText/skipText/finishText、clickMaskNextfalse/showTourButtonstrue/highlightStyle/zIndex999/rootPortalfalse/className/style。missingStrategy stop|skip|hide，onError；onPrev/onNext({prevCurrent,current,total,isElementInTop})/onFinish/onSkip({current,total})；scrollToTarget async在测量前接入实际滚动，getTargetRect适配原生作用域/NodesRef；renderContent/renderHighlight/renderPrev/renderNext/renderSkip/renderFinish接收TourRenderState含动作。ref handlePrev/handleNext/handleSkip/handleFinish/updatePosition。原生透明阴影洞和目标测量，无DOM，竞态取消与关闭去重；原生scroll控制必须显式接入，不仿造uni页面滚动。详见components/tour.md，示例/ui-demo/tour。
+
+- `Input`：value/defaultValue(string|number，0保留)/onChange(string)/onInput(TextFieldEvent保留原生selection与isComposing)，placeholder/placeholderColor/maxlength-1、type text|number|digit|password|tel|email/inputFilter、disabled/readonly/error、clearable/clearTrigger always|focus/focusWhenCleartrue、showPassword、prefixIcon/suffixIcon/onClickPrefixIcon/onClickSuffixIcon、prefix/suffix ReactNode、compact/alignRight/showWordLimit、focus/selectionStart/End、confirmType/confirmHold、avoidKeyboardtrue/cursorSpacing0/softInputModenothing/holdKeyboard/showSoftInputOnFocus、ignoreCompositionEventtrue缓冲IME、onFocus/onBlur/onConfirm/onClear/onTap/onKeyboardHeightChange、className/inputClassName/style。ref focus/blur/setSelectionRange。挂载和外部值用原生setValue同步，受控拒绝恢复；清空input/change/clear顺序；密码不重建节点；标题/必填/图标布局复用Cell（高按钮设置center），不把Form校验伪装成输入功能。H5原生part占位符颜色由宿主injectStyleRules适配，Lynx无DOM。详见components/input.md，示例/ui-demo/input。
+
+- `Textarea`：复用Input的TextFieldProps（无suffixIcon/suffix）、value/defaultValue/onChange(string)/onInput(TextFieldEvent)、disabled/readonly/error、clearable/clearTrigger/focusWhenClear、maxlength/showWordLimit、compact/prefixIcon/prefix、焦点/选择区间、原生键盘/确认及合成事件；另有height150/autoHeightfalse/minHeight20/maxHeight/maxlines和onLineChange({lineCount})。ref focus/blur/setSelectionRange。autoHeight通过相同字号宽度的原生text镜像逐段测高，支持折行/空行，无DOM或字符宽度估算；H5真实输入20→80px、清空20px验证。标题/必填用公共Cell，无Form校验伪实现；不支持uni专属键盘工具栏/fixed等，无跨平台textarea密码。详情components/textarea.md，示例/ui-demo/textarea。
+
+Input/Textarea共用TextField的受控回退保证：即使编辑草稿未变，拒绝的重复输入和清空也必须重新同步原生value；不得只依赖value/草稿变化触发同步。必填态由Cell或FormItem容器提供；示例前置星号间距4px，Textarea保持顶部对齐。
+
+- `InputNumber`：value/defaultValue(number|string)、onChange({value})，min1/max安全整数/step1/precision0、stepStrictly、allowNull、四种theme/round、单独禁用按钮或输入、withoutInput/inputWidth、beforeChange异步拦截、longPress600ms后每250ms重复、immediateChange/updateOnInit、原生inputType/avoidKeyboard；编辑器复用TextField，受控回退/IME同Input。旧NumberStepper不改。示例input-number，旧stepper地址兼容，详见 `docs/ui/components/input-number.md`。
+
+- `Search`：value/defaultValue(string)、onChange/onSearch/onCancel({value})，type原生六类型、variant(plain/filled/light)、placeholder/cancelTxt、hideCancel/disabled、maxlength、placeholderLeft、focus/focusWhenClear=false、placeholderColor、prefix/inputSuffix/suffix、onClear/onFocus/onBlur/onTap(仅禁用点击)，ref同Input。始终保留原生Input节点，空值居中占位与失焦150ms切换，公共Icon浅深分支每次仅显示一个；示例search复用Popover菜单。详见 `docs/ui/components/search.md`。
+
+# Radio / RadioGroup 单选
+
+从 `daisu-ui` 导入同名公共组件和对应TypeScript类型。
+
+## 实际API
+
+Radio.value 为 string/number/boolean，严格匹配；RadioGroup支持value/defaultValue/onChange(value|null)、allowUncheck、children。公共样式type(circle/square/dot/button)、checkedColor/uncheckedColor、disabled/readonly、placement(left/right)、direction(horizontal/vertical)、size(large)、maxWidth、labelClassName/className/style、renderIcon({isChecked})。单项显式参数覆盖组；FormItem禁用优先。原options:string单选接口继续渲染旧业务RadioGroup，回调仍为string。
+
+## 示例与边界
+
+/ui-demo/radio：类型、禁用/只读/取消、左右/颜色、参数覆盖、Cell、自定义图标与同行布局。
+
+使用语义Token支持浅深主题，Lynx原生元素实现，无DOM依赖。H5不等于Flutter原生验证。
+
+参考：https://wot-ui.cn/component/radio.html 。
+
+# Checkbox / CheckboxGroup 复选框
+
+从 `daisu-ui` 导入同名公共组件和对应TypeScript类型。
+
+## 实际API
+
+Checkbox支持name（分组标识）、value/defaultValue、trueValue/falseValue（默认true/false）、indeterminate、onChange({value})与ref.toggle()。CheckboxGroup支持严格值数组value/defaultValue、onChange({value})、min/max（max=0不限）、ref.toggleAll(boolean|{checked?,skipDisabled?})；默认toggleAll反选，skipDisabled保留禁用项，只读不修改。继承Radio相同外观参数。单项参数覆盖组，表单禁用优先；达到上下限只阻止相应动作。
+
+## 示例与边界
+
+/ui-demo/checkbox：完整分类、长文案、单独/禁用/半选/只读、按钮/同行/限制/自定义值、颜色/图标/大尺寸、Cell联动与五种toggleAll。
+
+使用语义Token支持浅深主题，Lynx原生元素实现，无DOM依赖。H5不等于Flutter原生验证。
+
+参考：https://wot-ui.cn/component/checkbox.html 。
+
+# SelectPicker 单复选选择器
+
+从 `daisu-ui` 导入 `SelectPicker`、`SelectPickerRef`、`SelectPickerValue`。示例 `/ui-demo/select-picker` 提供十例：多选、单选、禁用、loading、标题、多选搜索、单选搜索、change、beforeConfirm、自动完成；RootPortal 组合示例也复用此公共组件。
+
+```tsx
+const [value, setValue] = useState<(string | number | boolean)[]>(['101']);
+const [visible, setVisible] = useState(false);
+<SelectPicker visible={visible} onVisibleChange={setVisible} value={value}
+  columns={[{ value: '101', label: '男装' }, { value: '102', label: '奢侈品' }]}
+  title="请选择" filterable onConfirm={({ value }) => setValue(Array.isArray(value) ? value : [value])} />
+```
+
+`type='checkbox'` 使用数组，`type='radio'` 使用 string/number/boolean；严格匹配，不把 false 当成空值。columns 默认为 `{value,label,disabled?}`，可用 `valueKey/labelKey` 映射对象字段。
+
+选择变化只更新 draft，`onChange({value})` 在选项变化时立即发出（与早期 Form 关联版本仅确认触发不同）；**持久回填使用 `onConfirm`**，确认不会重复发 change。取消和重新打开恢复传入 value。`onConfirm({value,selectedItems})` 的 selectedItems 保留本库既有数组结构，单选时也为最多一项数组，避免与 Picker 混用不同的数据结构。
+
+`min=0/max=0` 约束多选数，max=0 不限；`filterable/filterPlaceholder='搜索'` 搜索并高亮匹配文字，隐藏项的已选状态保留。`checkedColor`、`selectSize='large'` 支持公共 Checkbox/Radio 的实际样式参数，不提供任意数值尺寸；默认尺寸使用公共控件的 22px 图标。
+
+`loading/loadingColor='#4D80F0'` 在内容区显示 48px Loading、行透明度 .4 并禁止选择；`disabled` 支持整体禁用，并继承 FormItem 的禁用约束。`showConfirm=false` 仅在 radio 隐藏底部按钮并自动执行校验/确认。`beforeConfirm(value)` 支持 boolean/Promise<boolean>，拒绝保留草稿；防重复点击，关闭、卸载或上游数据变化会使旧确认失效。
+
+`visible/onVisibleChange` 控制显隐；不传 visible 时可用 Ref.open()/close()。`onOpen/onClose/onCancel` 分别对应打开、关闭、关闭按钮或遮罩取消；Ref.close 仅关闭。`closeOnClickModal=true`、`safeAreaInsetBottom=true`、`safeAreaBottom=0`、`rootPortal=false`、`zIndex=100`。RootPortal 需根 Host，跨挂载的定制 Token 用 ConfigProvider，示例也可通过 className 应用主题。
+
+`title='选择器'` 保留本库原默认，独立 Wot 示例显式使用“请选择”。`confirmButtonText='确认'`；`className/style` 设置弹层，`contentClassName` 设置滚动区。`scrollIntoView=true` 在打开后将视窗外的第一选中项滚到可见范围。
+
+组合公共 ActionSheet、Checkbox、Radio、Search、Button、Loading，无 DOM 依赖。H5 浅深主题、搜索、取消回滚、自动完成、异步拦截及 RootPortal 已验收；Flutter 真机仍需目标设备验证。
+
+参考：https://wot-ui.cn/component/select-picker.html 。
+
+
+# DatetimePicker 日期时间选择器
+
+导入 `DatetimePicker`、`DatetimePickerProps`、`DatetimePickerRef`、`DatetimePickerValue`（单值 number|string）、`DatetimePickerModelValue`（单值或只读数组）。内部日期滚轮的参数见 [DatetimePickerView](./datetime-picker-view.md)。
+
+## 绑定与事件
+
+- `value`：单值为时间戳；`type='time'` 为 HH:mm 或 HH:mm:ss。传数组启用双端区间，结果为 `[start,end]`。泛型根据 value 推导回调类型，既有 Form 单值接口保持兼容。
+- 空单值从最小边界初始化；空区间开始/结束分别取最小/最大边界；反向初值将结束纠正到开始。区间两端可切换，禁用超出另一端的选项。日期用本地时区，time 区间按时分秒比较，不表示跨午夜时间段。
+- `visible/onVisibleChange` 控制显隐；不传 visible 可通过 Ref `open()/close()` 管理；不传 value 会保存成功提交的内部值。
+- `onConfirm({value})` 和 `onChange({value})` 仅在确定成功后回填，保持本库原有 Form 行为。`onPickChange({value})` 监听未提交的滚轮草稿（对应 Wot 的实时 change 语义）；取消不会提交草稿。
+- `beforeConfirm(value)` 返回 boolean 或 Promise<boolean>。false/异常保留草稿；重复点击、关闭、卸载、value/日期边界/禁用状态替换后，过期结果不提交。确认直接读取当前滚轮位置，避免惯性尚未吸附时提交旧值。
+- `onToggle(activeValue)` 区间切换回调；`onOpen/onCancel/onClose`：取消文字、遮罩、Ref.close 触发 cancel；所有关闭触发 close，确认不触发 cancel。
+
+## 参数
+
+| 参数 | 默认值/行为 |
+| --- | --- |
+| type / useSecond | datetime / false，支持 date、year-month、year、time |
+| minDate / maxDate | 当前年前后10年；每次父列变化联动年月日、小时、分钟、秒 |
+| minHour/maxHour、minMinute/maxMinute | 0/23、0/59，仅 time 生效 |
+| minSecond/maxSecond | 0/59，带秒模式生效 |
+| formatter / filter / columnFormatter | 沿用 DatetimePickerView；filter 支持对象参数和旧双参数形式 |
+| boundaryMinDate/boundaryMaxDate | 外部区间边界；内置区间会同时约束另一端 |
+| itemHeight / visibleItemCount | 44 / 6，滚轮高264px |
+| title | 空，区间示例为“请选择区间” |
+| cancelButtonText / confirmButtonText | 取消 / 完成 |
+| displayFormatTabLabel(items) | 自定义区间页签文案；默认按 type 格式化（不含 formatter 单位） |
+| disabled / loading | disabled 默认继承 Form；加载或确认中禁用选择 |
+| immediateChange、onPickStart/onPickEnd | 沿用公共 PickerView 原生滚动事件 |
+| closeOnClickModal / rootPortal | true / false |
+| safeAreaInsetBottom / safeAreaBottom | true / 0；底部安全区由宿主传入实际像素 |
+| zIndex | 100 |
+| className / style / viewClassName | 弹层根样式 / 样式对象 / 内部滚轮类名 |
+
+```tsx
+const [value, setValue] = useState<DatetimePickerValue[]>(['', '']);
+<DatetimePicker value={value} visible={opened} onVisibleChange={setOpened}
+  title="请选择区间" useSecond onConfirm={({value}) => setValue(value)} />
+```
+
+## 独立示例
+
+`/ui-demo/datetime-picker` 共14个入口，按 Wot 当前页面分组：基本用法（日期/一年范围）、before-confirm、六种日期时间类型、两种区间、展示格式、内部格式、过滤选项。弹层56px工具栏、区间48px标签与16px底部间距、200ms进出动画；浅深主题均使用公共 Token。
+
+公共 Popup + DatetimePickerView 组合，不修改业务 Navbar 和 Picker 默认样式。Vue slots、uni-app 内部选择器、valueKey/labelKey 不作空壳移植，数值字段固定为内部规范化 value/label。H5 验证不能替代 Flutter iOS/Android 真机验收。
+
+参考：https://wot-ui.cn/demo/#/subPages/datetimePicker/Index 和 https://wot-ui.cn/component/datetime-picker.html 。
+
+# DatetimePickerView 时间选择器视图
+
+导入 `DatetimePickerView`、`DatetimePickerViewProps`、`DatetimePickerViewRef`、`DatetimePickerChange`、`DatetimeColumn`、`DatetimeColumnType`、`DatetimeFilterParams`。
+
+## API
+
+- `value`：毫秒时间戳；`type='time'` 为 HH:mm 或启用秒时 HH:mm:ss。不传 value 可内部管理。空/非法值从最小边界纠正并通过 onChange 回报。
+- `type='datetime'`，支持 `date/year-month/year/time`；`useSecond=false`，仅 datetime/time 显示秒。
+- `minDate/maxDate` 默认当前年前后十年（1月1日00:00至12月31日23:59:59）。`minHour=0/maxHour=23/minMinute=0/maxMinute=59` 仅 time 生效；`minSecond=0/maxSecond=59` 支持 time/datetime。非法边界抛出明确错误。
+- `boundaryMinDate/boundaryMaxDate`：时间戳区间约束，保留不符合边界的可见项并禁用；time 模式比较对应时分秒。
+- `formatter(type, value:number)`：返回标签，type 为 `year/month/date/hour/minute/second`。默认纯数字：年4位、其余2位；自定义格式化时自行补零。年月日使用 `date` 列名。
+- `filter({type,values:number[]}) => number[]`；兼容旧 `filter(type,values)` 两参数写法。过滤结果按原始上下界去重、排除非法值，选中最近有效项；空列不伪造时间，返回空字符串。
+- `columnFormatter(columns:PickerOption[][]) => PickerOption[][]`：可修改标签/禁用/顺序，不能插入边界外值。禁用父级后重新计算依赖列。
+- `itemHeight=44/visibleItemCount=6`，默认264px高；`disabled` 继承 FormItem；`loading=false`、`immediateChange=false`、`className/style`。
+- `onChange({value,columns,selectedOptions})`：columns 为 `{type,values:number[]}[]`，selectedOptions 为规范化 PickerOption[]。同时支持 `onPickStart/onPickEnd`。
+- Ref `getSelected()` 读取实时滚轮并纠正依赖列；`getSelectedOptions()`、`correctValue(value)`、`getOriginColumns()`。
+
+```tsx
+const filter = ({type, values}: DatetimeFilterParams) =>
+  type === 'minute' ? values.filter(value => value % 5 === 0) : values;
+<DatetimePickerView value={value} filter={filter}
+  onChange={({value}) => setValue(value)} />
+```
+
+## 示例与兼容范围
+
+`/ui-demo/datetime-picker-view` 共9例：日期选择、带秒日期、年月日、年月、年、时分、带秒时间、内部格式、过滤选项。分组、初始值、44px行高/264px滚轮、灰色选中条和渐变对照 Wot 当前演示。
+
+基于公共 PickerView 的原生 scroll-view，支持真实拖动、惯性结束吸附、禁用跳过和浅深主题；不使用 DOM，也不提供 uni-app 字段/插槽的无效映射。首次空值会纠正至最小值；父组件应接收 onChange。按本地时区计算，切换月份先裁剪日期，避免31日滚到下个月。H5 测试不等于 Flutter 原生真机验收。
+
+参考：https://wot-ui.cn/demo/#/subPages/datetimePickerView/Index 和 https://wot-ui.cn/component/datetime-picker-view.html 。
+
+# Calendar 日历选择器
+
+导入 `Calendar`、`CalendarProps`、`CalendarRef`、`CalendarShortcut`、`CalendarValue`、`CalendarType`。平铺面板的九种选择模式、边界、月份切换、时间过滤与格式化见 [CalendarView](./calendar-view.md)，Calendar 继承这些参数。
+
+## API
+
+| 参数 | 默认值及语义 |
+| --- | --- |
+| value | 时间戳、只读时间戳/null数组或 null；不传可内部管理 |
+| visible / onVisibleChange | 受控显隐；不传 visible 可由 Ref.open/close 管理 |
+| title / confirmText | 选择日期 / 确定 |
+| showConfirm | true；false 时完整选择立即进入确认流程，范围必须有两个有效端点 |
+| beforeConfirm(value) | boolean 或 Promise<boolean>；false/拒绝保留草稿，等待时防重复确认 |
+| onChange({value}) | 成功确认后的提交通知，保留既有 Form 语义 |
+| onConfirm({value,type}) | 成功确认通知，type 为实际选择模式 |
+| onPickChange({value}) | 即时草稿变化，取消不会提交；与 Wot change 事件语义区分 |
+| onOpen / onCancel / onClose | 打开 / 主动取消或遮罩关闭 / 关闭；成功确认只触发 onClose |
+| showTypeSwitch | false；公共 Tabs 在日/周/月（或对应范围）之间切换，确认回报实际 type |
+| innerDisplayFormat(value, endpoint, type) | 范围摘要格式化；value 为时间戳或 null，endpoint 为 start/end |
+| ellipsis | false；true 时摘要单行省略 |
+| shortcuts | 含 text 的对象数组，可带业务字段 |
+| onShortcutsClick({item,index}) | 返回 CalendarValue 或 Promise<CalendarValue>；更新草稿，复用确认流程 |
+| confirmLeft / confirmRight | ReactNode，扩展确认区；使用已有公共控件 |
+| viewClassName | 只作用于 CalendarView，className/style 作用于弹窗 |
+| closeOnClickModal / duration | true / 200ms |
+| rootPortal / safeAreaInsetBottom / safeAreaBottom / zIndex | false / true / 0 / 100；安全区高度由宿主提供 |
+
+Ref 提供 `open()`、`close()`，close 按取消处理。确认前读取 CalendarView 的实时滚轮位置；异步确认、快捷请求在关闭、卸载或外部值/约束替换后失效。日期范围未完成值含 null，不能仅检查数组长度。
+
+```tsx
+const [value, setValue] = useState<CalendarValue>([null, null]);
+<Calendar type="daterange" value={value} visible={opened}
+  onVisibleChange={setOpened} allowSameDay
+  onChange={({value}) => setValue(value)} />
+```
+
+## 独立示例
+
+`/ui-demo/calendar` 共16个入口：九种日期/周/月/时间模式、快捷操作、before-confirm、日周月切换、日期格式化、自定义展示、近7/15/30天快捷项、扩展确认区域；共享 none/month/year-month 切换模式。
+
+通过公共 ActionSheet + Tabs + Tag + Button + CalendarView 组合；默认56px标题栏、64px范围摘要、60px确认栏，200ms底部进出动画，浅深主题。未修改业务 Navbar、Cell 或 Button 的默认样式。Vue slots 对应 ReactNode，uni-app 内部选择器不作空壳移植。H5 验证不能替代 Flutter iOS/Android 真机验收。
+
+参考：https://wot-ui.cn/demo/#/subPages/calendar/Index 和 https://wot-ui.cn/component/calendar.html 。
+
+
+# Cascader 级联选择
+
+从 `packages/daisu-ui/src/index.ts` 导入 `Cascader`、`CascaderOption`、`CascaderValue`、`CascaderLazyLoad`、`CascaderRef`。
+
+## API
+
+- `options=[]`：静态树 `{ value: string | number, text, children?, disabled?, tip?, isLeaf? }[]`，按值和类型严格匹配，不修改调用方数据。
+- `value`：静态树节点值或路径数组；异步回显必须提供完整路径数组，单个值只能从当前层定位。
+- 自定义字段：`valueKey='value'`、`textKey='text'`、`childrenKey='children'`、`tipKey='tip'`、`isLeafKey='isLeaf'`。回调节点保留原始字段，同时提供规范化的 value/text/children。
+- `lazyLoad(option, tabIndex, resolve)`：根请求 option 为 null；调用 resolve(options) 返回下一层，isLeaf=true 或返回空数组表示叶子。可返回 Promise<void>；同步异常/Promise 拒绝通过 `onLoadError(error)` 报告并解除 loading。一次请求仅接收首次 resolve，关闭、卸载或替换数据源后丢弃旧结果。
+- `visible/onVisibleChange` 受控弹窗，或 Ref `open()/close()` 管理内部显隐；`disabled` 默认继承 FormItem。
+- `title='请选择'`、`placeholder='请选择'`（未选层页签）、`checkStrictly=false`、`confirmText='确认'`。叶子自动确认；任意级模式右上角确认父级，重复点击已选节点可取消该级。
+- `beforeConfirm(lastValue, selectedOptions)` 支持 boolean/Promise<boolean>，拒绝保留草稿，重复确认和过期确认不提交。
+- `onChange/onConfirm({value,selectedOptions})`：成功确认后发出；静态树 value 为末级标量，lazyLoad 模式为路径数组，兼容已有 Form 地址用法。取消不回填。
+- `onOpen/onClose/onCancel`；遮罩/右上角关闭触发取消，确认和 Ref.close 只关闭。
+- `loading=false/loadingColor='#4D80F0'`；`lineTheme/lineWidth/lineHeight` 透传公共 Tabs。
+- `closeOnClickModal=true/rootPortal=false/safeAreaInsetBottom=true/safeAreaBottom=0/zIndex=100/className/style`。
+
+```tsx
+const [value, setValue] = useState<CascaderValue>('');
+<Cascader visible={opened} onVisibleChange={setOpened} value={value}
+  options={areas} onConfirm={({value}) => setValue(value)} />
+```
+
+## 示例与边界
+
+独立详情 `/ui-demo/cascader`：基本用法、初始选项、自定义字段、禁用、提示、before-confirm、展示格式、标题、异步回显、异步无初值、任意级，共 11 例。全国省市区仅在入口点击时构建；业务异步请求仍经宿主及 `src/lib/http.ts`，不从 UI 直接调用业务 API。
+
+复用公共 ActionSheet、Tabs（300ms 横向内容与指示条过渡）、Loading。列表 336px、行字号16px/行高24px，上下16px；浅深主题使用语义 Token。H5 验证不能替代 Flutter iOS/Android 真机验收。Vue slots/uni-app selector API 不移植。
+
+参考：https://wot-ui.cn/demo/#/subPages/cascader/Index 与 https://wot-ui.cn/component/cascader.html 。
+
+# Upload 图片上传
+
+从 `daisu-ui` 导入 `Upload`、`UploadFile`、`UploadProps`、`UploadAdapter`。独立详情：`/ui-demo/upload`。
+
+## 用法
+
+```tsx
+const adapter = useMemo(() => createHostUploadAdapter(host), [host]);
+const [files, setFiles] = useState<UploadFile[]>([]);
+<Upload adapter={adapter} fileList={files} limit={3}
+  onChange={({ fileList }) => setFiles(fileList)}
+  onFail={error => toast.error(error.message)} />
+```
+
+业务适配器为 `src/lib/uiUpload.ts` 的 `createHostUploadAdapter(host, { source?, maxSizeKB? })`。它复用 `media.image.pickAndUpload`，按 uploadId 过滤进度并在成功、取消、失败时取消监听；预览复用 `media.image.preview`。不得在 UI 组件中选择 DOM 文件、内置凭据或直传业务 API。
+
+## 实际参数
+
+| 参数 | 默认值 | 行为 |
+| --- | --- | --- |
+| fileList / onChange | [] | 受控列表，回调 `{ fileList }` 后由调用方回填 |
+| adapter | — | `chooseAndUpload(onProgress): Promise<UploadFile \| null>`，null 表示用户取消；可选 `preview(files, index)` |
+| disabled / readonly | false | 禁止增删；readonly 隐藏上传入口。普通图片仍可预览，disabled 时覆盖上传不可操作 |
+| limit / showLimitNum | 0 / true | 0 不限；到达上限隐藏入口，入口显示全角 `（当前数/上限）` |
+| reupload | false | 点击已有图片时重新选择并替换这一项，其余项保留；仍允许在上限内追加 |
+| size / imageMode | 88 / aspectFill | 图片和默认入口边长；imageMode 支持 aspectFit / aspectFill / scaleToFill / center |
+| deletable | true | 非 loading、非禁用、非只读时显示删除按钮 |
+| previewFullImage | true | false 时只触发预览事件，不调用适配器 |
+| beforeChoose | — | `({ fileList, reuploadIndex? }) => boolean \| Promise<boolean>`；选择前拦截 |
+| beforePreview / beforeRemove | — | `(file, index) => boolean \| Promise<boolean>`；false 阻止操作，异常通过 onFail 报告 |
+| uploadIcon / uploadText | camera-fill / — | 默认入口图标和可选文字 |
+| loadingType / loadingSize / loadingColor | circular / 24 / #fff | 图片 loading 遮罩参数；选择上传期间入口显示进度 |
+| onSuccess / onFail / onProgress | — | 参数分别为 UploadFile / Error / 0–100 的有限数字；保持原有事件签名 |
+| onPreview / onRemove | — | `{ file, index }`；移除成功后触发 onRemove |
+| children | — | 自定义上传触发器，保持自身尺寸，不套 88px 的默认入口 |
+| renderPreviewCover | — | `({ file, index }) => ReactNode`，用于图片上的自定义覆盖内容 |
+| className / evokeClassName / previewClassName / style | — | 根节点、入口、预览项及根样式 |
+
+UploadFile 为 `{ url, name?, path?, status?: 'success' | 'loading' | 'fail', message?, percent? }`。未传 status 视为成功；loading 不允许删除。业务层控制 loading / fail 展示，失败不会伪造成功记录。
+
+异步选择、删除、预览均防重复。卸载、列表替换、适配器或限制/状态变更会使未完成操作失效；过期进度不触发回调。取消保留列表，不触发成功/失败。找不到上传或预览能力时通过 onFail 明确报告。
+
+## Wot 对照与宿主边界
+
+独立详情按官网五组组织，包含基本用法、上传状态钩子、禁用、数量上限、覆盖上传、自定义触发器、自定义预览、预览拦截、删除拦截、选择拦截、自定义上传方法共 11 例。图片使用同款熊猫素材，默认入口为 88px，相邻间距 8px，深色主题使用公共语义 Token。示例通过真实宿主适配器运行，需要有效登录会话；本地无登录的 H5 可以查看初始图片、预览及拦截交互，上传需要接入有效会话和服务。
+
+- Wot 的 `image-mode` 默认 aspectFit；为兼容既有表单，本库保留 aspectFill 默认，示例按参考显式设置。
+- Vue v-model 映射为 fileList/onChange；slots 映射为 children/renderPreviewCover。
+- 当前 Flutter 协议是单张图片的「选择并上传」原子操作。**未实现** video/file/media、多选、autoUpload/submit/abort、beforeUpload、扩展名过滤、buildFormData、action/header/formData/uploadMethod 等 uni-app 网络配置；UI 层无法在选择和上传之间拦截或撤销宿主请求。beforeChoose 不能充当 beforeUpload。maxSizeKB/source 通过宿主适配器配置；不增加无效参数和演示入口。
+- 与 Wot 可获取本地待上传文件不同，宿主上传返回前拿不到图片，上传中仅在入口显示进度；收到结果后回填成功图片。
+- Flutter 图片预览继续使用现有宿主协议；H5 宿主已实现黑底预览、计数、左右按钮、触屏切换、Esc 关闭及焦点/滚动恢复。未在公共库中伪造仅 H5 的 ImagePreview 组件，也不宣称已完成高级图片预览的缩放/保存能力。
+- H5 交互验证的上传响应使用测试拦截，不代表真实后端或 Flutter 真机已验收。
+
+参考：https://wot-ui.cn/component/upload.html 与 https://wot-ui.cn/demo/#/subPages/upload/Index 。
+
+# SlideVerify 滑动验证
+
+从 `daisu-ui` 导入 `SlideVerify`、`SlideVerifyProps`、`SlideVerifyRef`。
+
+## API
+
+- `width='100%' / height=40`：数字为 px，也支持 CSS 长度字符串；保留原来随容器伸缩的默认宽度。滑块边长取实际测量高度，拖动距离为容器宽度减去滑块边长。
+- `tolerance=10`：距离终点多少 px 内通过；限制为非负值。
+- `text='向右滑动验证' / successText='验证通过'`：字符串或 ReactNode。
+- `disabled`：继承 FormItem；禁用中不能拖动，切换禁用会重置。
+- `backgroundColor / activeBackgroundColor`：默认使用 canvas / success Token。
+- `icon='double-right' / successIcon='check-circle-fill'`，`iconSize=20 / successIconSize=20`：图标名及 px 大小；大小以当前在线 Demo 默认20为准。
+- `renderIcon / renderSuccessIcon`：ReactNode，对应图标插槽；`className/style`。
+- `onSuccess()`：完整拖动后触发一次，成功后锁定；`onFail()`：未到终点松开触发。手势取消、多指干扰不提交成功，不触发 fail。
+- Ref：`reset()` 清空状态，300ms回弹；`init(): Promise<void>` 重新测量。实际布局变化也会重置。
+
+```tsx
+const verify = useRef<SlideVerifyRef>(null);
+<SlideVerify ref={verify} onSuccess={() => setVerified(true)} />
+<Button label="重置" onTap={() => verify.current?.reset()} />
+```
+
+## 独立示例与平台边界
+
+`/ui-demo/slide-verify` 共8例：基本用法、禁用、自定义文案、颜色、图标、容错范围、重置、四个插槽。分组、326×40px滑块和重置按钮按390px宽的 Wot Demo 核对。组件支持实际宽高定制；在线参考当前通过CSS控制尺寸，官网 width/height 描述与其源码有差异。
+
+采用原生布局事件/测量和触摸、鼠标事件；优先读取 clientX，避免滑块移动后局部 x 坐标变化影响距离。缺少有效尺寸、测量晚于结束或卸载时不通过；尺寸变化、取消及多指恢复初态。没有 DOM 依赖，深色主题复用 Token。此组件只提供交互验证，服务端安全校验由业务实现；H5 验证不能替代 Flutter 真机手势回归。
+
+参考：https://wot-ui.cn/demo/#/subPages/slideVerify/Index 和 https://wot-ui.cn/component/slide-verify.html 。
+
+
+# Form / FormItem 表单
+
+从 `daisu-ui` 导入 `Form`、`FormItem`、`zodAdapter` 和 `FormRef`。以当前官网 schema 版为参考，不提供旧版 `rules` API。
+
+## 校验与数据
+
+`Form.model` 为受控对象；字段控件通过自身 `onChange` 更新数据。`schema` 接受 `{ validate(model): FormSchemaIssue[] | Promise<FormSchemaIssue[]>, isRequired?(path): boolean }`。Issue 的 `path` 可以是点路径或路径数组，`message` 是错误文字。支持 `user.name`、`rows.0.value`，父字段 `user` 可以接收 `user.name` 的错误；只校验已挂载且有 `prop` 的 FormItem，隐藏/删除字段不阻止提交。
+
+`zodAdapter(externalSchema, { isRequired })` 适配外部 Zod 的 `safeParseAsync`，库底层不依赖或自动安装 Zod；也支持第二参为必填判定函数。示例显式使用项目安装的 Zod，与自定义引擎真实切换。
+
+`ref.validate(prop?: string | readonly string[])` 返回 `Promise<{ valid, errors: {prop,message}[], outOfDate? }>`；省略校验全部，部分校验保留其他字段错误。异步校验期间数据/schema变化、较新校验、reset或卸载会使旧结果失效，调用方必须检查 `valid`，不能将旧结果当成功。schema异常使手动校验Promise拒绝；自动校验通过 `onValidateError(error)` 报告。
+
+`ref.reset(prop?)` 仅清除校验结果，不清空数据。`validateTrigger` 默认 `submit`，可为 `change`、`blur` 或数组；FormItem同名参数覆盖表单级。Input/Textarea自动通知blur；复合自定义控件需要自行调用局部validate。`resetOnChange` 默认true，字段变化清除对应错误。`errorType` 为 `message`（默认）、`toast`、`none`；none仍返回结果。`onValidate(result)` 在有效校验完成时回调。
+
+## 布局与禁用
+
+Form/FormItem共用 `disabled`、`border`、`center`、`size(medium/large)`、`titleWidth`（数值px/长度字符串，默认98）、`layout(horizontal/vertical)`、`valueAlign(left/center/right)`、`asteriskPosition(start/end)`、`hideAsterisk`、`ellipsis`。FormItem显式参数覆盖表单，必填以 `required` 或schema.isRequired为准。FormItem复用公共Cell，children为右侧控件；也支持title/value/placeholder/prefixIcon/icon/iconSize/label/isLink/clickable/onTap/className/style。value支持数值0。
+
+Input/Textarea、Switch、Rate、InputNumber、Slider及本批关联控件读取字段上下文，无Form时保留原有行为。禁用FormItem拦截入口点击，单项 `disabled={false}` 可以显式恢复；这不是业务权限控制。
+
+```tsx
+const form = useRef<FormRef>(null);
+const [model, setModel] = useState({ name: '' });
+const schema: FormSchema = {
+  isRequired: path => path === 'name',
+  validate: data => data.name ? [] : [{ path: 'name', message: '请输入名称' }],
+};
+<Form ref={form} model={model} schema={schema} border>
+  <FormItem title="名称" prop="name">
+    <Input value={model.name} onChange={name => setModel({ name })} />
+  </FormItem>
+</Form>
+// const result = await form.current!.validate();
+```
+
+## 独立示例
+
+- `/ui-demo/form-detail`：基础表单、隐藏字段、父路径及五个独立子页面入口。
+- `/ui-demo/form-dynamic`：对应用户截图，校验引擎、歪比巴卜名、玛卡巴卡单号，添加/删除/重置/提交。删除最后一行允许删到0，稳定key保留已输入数据。
+- `/ui-demo/form-complex`：完整优惠券表单，布局切换、基础信息、时间和地址、其他信息、组合示例、协议与提交。
+- `/ui-demo/form-errors`、`/ui-demo/form-trigger`、`/ui-demo/form-disabled`：提示方式、触发时机、整体禁用及恢复。
+
+动态页在390px宽H5下三行y=44/92/136、高48/44/44，四个按钮y=192、52×32、8px间距，与官网一致。浅深色均使用语义Token；默认业务Navbar不改。复杂表单协议名称（含《》）固定为示例蓝色#4480ff，通过局部双class选择器避免Checkbox后代文字颜色覆盖；“已阅读并同意”保留普通正文颜色。复杂示例调用公共选择器/上传/滑动验证，宿主图片能力由HostClient适配，不在Lynx直接请求上传业务API；H5无宿主时明确提示未接入。关联控件各自的完整官网Demo验收状态见实施清单，不把组合页等同于所有控件独立页已完成。
+
+参考：https://wot-ui.cn/component/form.html 、https://wot-ui.cn/demo/#/subPages/form/Index 。H5验证不代替Flutter内iOS/Android原生键盘、滚轮与上传真机回归。
+
+
+# Keyboard 虚拟键盘
+
+从 `daisu-ui` 导入 `Keyboard`、`KeyboardProps`、`KeyboardMode`、`CarKeyboardLang`，样式由组件入口自动加载。
+
+## 实际 API
+
+| 参数 | 默认值 | 行为 |
+| --- | --- | --- |
+| visible / onVisibleChange | false | 受控显示，收起和点外部通知 false |
+| value / defaultValue / onChange(value) | 空字符串 | 受控或非受控输入值 |
+| mode | default | default 数字、custom 右侧栏、car 车牌 |
+| title | 无 | 字符串或 ReactNode 自定义标题 |
+| extraKey | 空字符串 | 默认布局一个额外键；custom 最多两个（如 ['00', '.']） |
+| maxlength | Infinity | 字符数上限；多字符额外键按剩余容量截断 |
+| showDeleteKey / deleteText | true / 空 | 数字布局显示删除键、自定义删除文字；车牌布局始终有删除键 |
+| closeText / closeButtonLoading | 空 / false | 默认布局头部关闭按钮，custom 右侧完成键；loading 禁止完成 |
+| randomKeyOrder | false | 每次打开或切换此配置时重新打乱 1–9，0 固定 |
+| carLang / onCarLangChange | 内部 zh | zh 省份 / en 数字字母，受控语言由调用方更新 |
+| autoSwitchLang | false | 仅未传 carLang 时，首字符切英文、删空恢复省份 |
+| modal | false | 是否显示深色遮罩；false 时外部点击区透明 |
+| hideOnClickOutside | true | 是否提供点外部收起区域；false 时无 Overlay |
+| lockScroll | true | 复用 Popup 的原生手势拦截，不锁定 Flutter 外部滚动 |
+| safeAreaInsetBottom / safeAreaBottom | true / 0 | 显式传入宿主安全区 px；不猜测设备底部高度 |
+| zIndex / rootPortal | 100 / false | 弹层层级及可选根节点挂载 |
+| disabled | false | 禁止输入；未显式指定时继承 FormItem 禁用 |
+| className / style | 无 | 键盘内容容器样式 |
+
+事件：`onInput(key)` 在实际输入时触发；`onDelete()` 在删除键点击时触发；`onClose()` 在收起/点外部时触发。达到 maxlength 不再发输入回调。隐藏、禁用、拖离或取消的按键不会输入，按下高亮和弹层过渡复用公共实现。
+
+```tsx
+const [visible, setVisible] = useState(false);
+const [value, setValue] = useState('');
+<Keyboard visible={visible} onVisibleChange={setVisible}
+  value={value} onChange={setValue} maxlength={6} />
+```
+
+## 示例与边界
+
+`/ui-demo/keyboard`：三组11例，与当前Wot详情页对应，包括身份证、车牌两种语言控制、标题/红色自定义标题、双额外键、随机、绑定与遮罩。使用语义Token支持深色。
+
+此组件为 Lynx view/text 实现的应用内键盘，不调用系统输入法。不移植 uni-app iconfont 前缀；图标使用公共 Icon。不支持长按连续删除（当前Wot亦按点击删除）。随机排序不表示密码加密；不要把真实密码写入Toast或日志。Demo Toast仅展示演示按键。
+
+参考：https://wot-ui.cn/component/keyboard.html 、https://wot-ui.cn/demo/#/subPages/keyboard/Index 。H5验证不代替Flutter内原生真机回归。
+
+
+# PasswordInput 密码输入框
+
+从 `daisu-ui` 导入 `PasswordInput`、`PasswordInputProps`。此组件只展示网格、数值、光标和提示；录入由公共 `Keyboard` 处理。
+
+## 实际 API
+
+| 参数 | 默认值 | 行为 |
+| --- | --- | --- |
+| value | '' | 受控展示值，超出 length 的字符不展示，不修改调用方数据 |
+| mask | true | 用10px圆点隐藏字符；false展示明文 |
+| info / errorInfo | '' / '' | 底部提示；错误优先，错误清空后恢复普通提示 |
+| gutter | 0 | 数字/数字字符串按px；支持px/rem/em/vw/vh/%和rpx（750设计单位换算vw） |
+| length | 6 | 格子数量；小数取整、负数归零、NaN/Infinity回落6；最多1000，避免异常分配 |
+| focused | true | 当前值之后的空格显示1s闪烁光标，满位无光标；通常绑定Keyboard显隐 |
+| disabled | false | 禁止触发聚焦、隐藏光标；未显式传入时继承FormItem禁用 |
+| onFocus(event) | 无 | 点击输入区请求聚焦，回传Lynx事件，不自动弹键盘 |
+| className / style | 无 | 根容器样式 |
+
+输入区域内容高50px；与当前Wot相同，含上下边框的格子外高52px。间距0时为1px边框、首尾6px外圆角；正间距时每格独立、无边框和圆角。非法/负/非有限gutter归零。按Unicode字符展示和计数；mask时可访问性只播报已输入位数，不包含密码明文。浅深色使用公共语义Token。
+
+```tsx
+const [value, setValue] = useState('');
+const [visible, setVisible] = useState(false);
+<PasswordInput value={value} length={6} focused={visible}
+  onFocus={() => setVisible(true)} />
+<Keyboard value={value} onChange={setValue} maxlength={6}
+  visible={visible} onVisibleChange={setVisible} />
+```
+
+PasswordInput没有onChange，不渲染原生input、不调用系统输入法，也不自动包含键盘。不要直接把它替代Input用于需要文本编辑/粘贴/系统验证码自动填充的场景。`length`与Keyboard的`maxlength`需保持一致。初值与密码校验逻辑由调用方管理，不要记录真实密码到日志。
+
+## 独立示例
+
+`/ui-demo/password-input`：五组六例，初值分别为123、12、123、123、123、12；包含基础、4位、10px间隔、明文、普通/错误提示、随机键盘。各例数据独立，一次只打开一个公共Keyboard，光标与显隐联动。提示例输入满6位且非123456显示“密码错误”，删除后恢复“密码为 6 位数字”。示例保留官网底部240px空间。
+
+当前在线Wot的focused默认是true；本地安装的旧版参考写false，以当前官网源码和文档为准。
+
+参考：https://wot-ui.cn/component/password-input.html 、https://wot-ui.cn/demo/#/subPages/passwordInput/Index 。H5验证不等于Flutter内iOS/Android真机验证。
+
+
+# ConfigProvider 全局配置
+
+从 `daisu-ui` 导入 ConfigProvider、useConfigProvider 及同名 TypeScript 类型。App 根节点已绑定 Flutter 的主题状态，原有业务主题颜色及组件内置默认值保持不变。
+
+## 实际 API
+
+| 参数 | 默认值 / 说明 |
+| --- | --- |
+| theme | 未传继承父级；无父级使用浅色；显式 light/dark 切换当前范围 |
+| themeVars | 语义变量与组件变量，见下表；仅作用于子树，不修改全局对象 |
+| button | size、variant、tone（Wot type 对应 tone，也接受 type 别名）、round |
+| tag | size、variant、round |
+| className / style | 根容器样式；style 内 --cso-ui-* 变量也进入配置并跨 Portal 继承 |
+| children | 当前配置的作用范围 |
+
+组件显式 prop 优先于 Provider 默认值，再使用组件内置默认值。button/tag 按字段合并，false 有效，undefined 继承；内层变量覆盖外层同名变量，兄弟作用域互不影响。Wot Button 的 base 变体映射为本库 solid；组件显式 tone 不受 Provider type 覆盖。Tag 原有 tone/plain 兼容参数保持有效。
+
+`useConfigProvider()` 读取最近配置，返回 theme、themeVars（规范化变量名）、button、tag、tokens。它是 React 读取 Hook，不模拟 Vue 的 setup 注入函数，也不操作模块全局单例。配置更新通过 Provider props 驱动。
+
+## themeVars
+
+- 语义键：primary、onPrimary、success、warning、danger、info、canvas、surface、surfaceMuted、text、textMuted、line；colorTheme 为 primary 别名。
+- Button：buttonPrimaryBg（兼容 buttonPrimaryBgColor）、buttonPrimaryColor、buttonHeight、buttonRadius、buttonFontSize。
+- Cell：cellTitleColor。
+- 支持直接传 --cso-ui-* 自定义变量；数值尺寸键自动加 px，原始变量数值按字面量使用。未知的 Wot 驼峰变量不会被转换成无作用的假参数；使用组件已经读取的 Token。
+- SVG 图标的显式 color 仍由组件属性控制；本库没有移植 Wot 全量主题变量表。
+
+```tsx
+<ConfigProvider theme={theme}
+  themeVars={{ primary: '#07c160', buttonRadius: 8 }}
+  button={{ size: 'large', round: true }} tag={{ variant: 'light' }}>
+  <Button label="继承配置" />
+  <Button size="mini" round={false} label="局部覆盖" />
+</ConfigProvider>
+```
+
+RootPortal 将显式配置 Token 和 React 配置一起带到目标节点；Popup、Toast、Dialog 等使用原有 rootPortal 参数即可。仍需在页面根节点挂载 RootPortalHost。任意外部 CSS 类定义的局部变量不会被 JS 自动读取；需要跨 Portal 的主题定制应放到 themeVars 或 style 的 --cso-ui-* 变量中。主题切换不改变组件状态，不修改页面全局文本或背景。
+
+独立示例 `/ui-demo/config-provider` 对应当前 Wot Playground：主题切换、七项控制、实时 Button/Tag 预览、root-portal 弹窗、JSON 配置和完整优惠券表单。默认组件优先级、嵌套覆盖和重置有自动化测试；H5核对实时预览、Portal、深浅主题。
+
+参考：https://wot-ui.cn/component/config-provider.html 、https://wot-ui.cn/demo/#/subPages/configProvider/Index 。不引入 uni-ku-root / uni-app；Flutter 真机验证另行进行。
+
+
+# PickerView 选择器视图
+
+从 `daisu-ui` 导入 `PickerView`、`PickerViewRef`、`PickerChange`。独立示例：`/ui-demo/picker-view`，包含基本用法、禁用选项、立即触发、多列、多级联动、自定义字段六例。
+
+```tsx
+const [value, setValue] = useState<(string | number)[]>(['中南大学', '软件工程']);
+<PickerView value={value} columns={[
+  ['中山大学', '中南大学', '华南理工大学'],
+  ['计算机科学与技术', '软件工程', '通信工程'],
+]} onChange={({ value }) => setValue(value)} />
+```
+
+`columns` 支持字符串、数字、对象的一维/二维数组；对象默认 `{value,label,disabled?,children?}`，可用 `valueKey/labelKey/childrenKey` 映射字段。`value` 始终为严格匹配的值数组；未传时内部管理选择。`cascade` 展开静态树并在父级变化时重选后续列。禁用项自动跳过，无可选项不产生选择事件。
+
+`itemHeight=44`、`visibleItemCount=6`，`disabled/loading` 禁止交互；`className/style` 定制容器。使用原生 `scroll-view`，默认滚动结束后吸附，`immediateChange` 在松手时吸附；兼容缺少滚动结束通知的环境有防抖兜底。`onPickStart/onPickEnd` 对应滚动选择开始/结束。点击可选行直接选择。
+
+`onChange` 返回 `{value,selectedItems,selectedValues,selectedOptions,selectedLabels,selectedIndexes,columnIndex}`；前两个字段保留既有调用兼容，`selectedValues=value`、`selectedOptions=selectedItems`。单列 `columnIndex` 为变化项下标，多列为变化列下标。参数更新不触发用户 change。
+
+Ref 提供 `getSelected()`、`getSelectedOptions()`、`getSelectedValues()`、`getSelectedLabels()`、`getSelectedIndex()`、`getColumnsData()`、`getColumnData(index)`、`getColumnIndex(index)`、`resetColumns(columns)`。读取会使用当前滚轮位置，避免松手后立即确认读取旧值；resetColumns 的覆盖在上游 columns 更新时清除。查询返回规范化选项（保留自定义字段）。
+
+浅深主题使用公共语义 Token；滚筒中心灰条、遮罩和文字遵循 Wot 展示。无 DOM 或小程序 picker-view 依赖。已验证 H5；Flutter 真机滚动物理效果仍需目标设备验证。
+
+参考：https://wot-ui.cn/component/picker-view.html 。
+
+
+# Picker 选择器
+
+从 `daisu-ui` 导入 `Picker`、`PickerRef`、`PickerProps`。独立示例 `/ui-demo/picker` 按当前 Wot Demo 提供单列、多列、多级联动、文案标题、大小、值靠右、分隔符、确认前异步校验八例。
+
+```tsx
+const [value, setValue] = useState<(string | number)[]>([]);
+const [visible, setVisible] = useState(false);
+<Cell title="单列选项" value={String(value[0] ?? '')} placeholder="请选择" arrow onTap={() => setVisible(true)} />
+<Picker visible={visible} onVisibleChange={setVisible} value={value}
+  columns={['选项1', '选项2', '选项3']}
+  onConfirm={({ value }) => setValue(value)} />
+```
+
+Picker 组合公共 Popup 与 PickerView，不内置触发 Cell。`value` 为严格值数组；`columns/cascade/valueKey/labelKey/childrenKey/itemHeight/visibleItemCount/immediateChange/disabled/loading` 与 [PickerView](./picker-view.md) 相同。选择暂存在 draft，取消不回填，确认后 `onChange/onConfirm` 才发布结果。
+
+`visible/onVisibleChange` 控制显隐；未传 visible 可用 Ref 的 `open()/close()` 管理。支持 `title`、`cancelButtonText='取消'`、`confirmButtonText='完成'`、`closeOnClickModal=true`、`safeAreaInsetBottom=true`、`safeAreaBottom=0`、`rootPortal=false`、`zIndex=100`。RootPortal 需要根 Host。`className/style` 沿用既有 PickerView 的自定义入口；`viewClassName` 可额外指定内部滚轮类。
+
+`beforeConfirm(value)` 接受同步或异步 boolean；等待时禁止重复确认与滚轮编辑，返回 false 或 reject 保留草稿。关闭、卸载，或上游 value/columns/字段/禁用状态更新，会使旧确认失效。完成读取即时滚轮位置，避免确认到上一项。
+
+`onConfirm` 返回完整 PickerChange（含 `{value,selectedItems}` 与 selectedValues/selectedOptions/selectedLabels/selectedIndexes/columnIndex）；`onCancel` 对取消按钮和遮罩关闭触发，`onClose` 对主动关闭触发，`onOpen` 在显示时触发。Ref.close 仅关闭，不伪造用户取消事件。
+
+分隔符属于调用方展示逻辑，以 `selectedItems.map(item=>item.label).join('-')` 或 `selectedLabels.join('-')` 回填 Cell；不提供不生效的 displayFormat 等旧版展示属性。
+
+语义 Token 支持浅深色；H5 已验证确认、取消、多列、级联及异步拒绝，尚未验证 Flutter 原生设备的滚动物理效果。
+
+参考：https://wot-ui.cn/component/picker.html 。
+
+
+# CalendarView 日历面板
+
+从 `daisu-ui` 导入 `CalendarView`、`CalendarViewProps`、`CalendarViewRef`、`CalendarValue`、`CalendarType`、`CalendarDayItem`、`CalendarDayType`、`CalendarSwitchMode`。
+
+## API
+
+- `type='date'`：支持 `date/dates/daterange/datetime/datetimerange/week/weekrange/month/monthrange`。
+- `value`：毫秒时间戳、只读时间戳数组或 null；范围未完成为 `[start, null]`。不传 value 时内部管理。按本地时区计算；周值采用 `firstDayOfWeek` 对应的周起始日，月值采用月首日。
+- `minDate/maxDate`：默认当前日前后6个月，末日包含23:59:59；非法范围抛错。日期模式以自然日判断，时间模式同时限制时分秒。
+- `firstDayOfWeek=0`：0为周日，1为周一。
+- `allowSameDay=false`：范围是否允许起止相同；`maxRange` 为包含首尾的天/周/月数量。超限时截断到最大合法终点，调用 `onOverRange()` 并展示 `rangePrompt` 或默认 Toast。
+- `defaultTime`：HH:mm[:ss] 字符串或起止数组；新选日期默认00:00:00，时间会裁剪到边界。
+- `switchMode='none'`：滚动月份；`month` 提供月份按钮；`year-month` 额外提供年份按钮。月模式按钮切换年份。
+- `panelHeight=316`：日期滚动区域高；时间模式减去120px，再添加时间滚轮。`showPanelTitle=true`。
+- `formatter(day)`：返回部分或完整 `CalendarDayItem`；包含 `date/text/type/disabled/topInfo/bottomInfo/customClass`。边界禁用不能被 formatter 解除。修改 date 仅为展示数据，点击仍选中原格日期。
+- `disabled`：继承 FormItem；`className/style`。
+- `timeFilter({type,values})`：沿用 DatetimePickerView；`timeItemHeight=44/timeVisibleItemCount=3/hideSecond=false/immediateChange=false`。
+- `onChange({value})`：即时选择；时间滚轮支持 `onPickStart/onPickEnd`。
+- Ref：`scrollIntoView()` 定位当前选择所在周，`getSelected()` 读取尚未吸附的时间滚轮和当前日期。
+
+```tsx
+const [value, setValue] = useState<CalendarValue>([null, null]);
+<CalendarView type="daterange" value={value} allowSameDay maxRange={7}
+  onChange={({value}) => setValue(value)} />
+```
+
+## 示例与运行边界
+
+`/ui-demo/calendar-view` 共9个面板：单日/周/月切换、多选、日期/周/月范围切换、日期时间、日期时间范围、同日范围、自定义日期、周起始日、最大范围；另有作用于全部面板的切换模式。
+
+公共原生 scroll-view 只挂载可视区域附近的月份，以占位保持滚动尺寸；滚轮复用 DatetimePickerView。none 模式最多240个面板，超过时明确抛错，应使用 month/year-month 模式。无 DOM 依赖，支持浅深主题。Wot 的 Vue slots、内部 uni-app 选择器不作无效映射。H5 验证不能替代 Flutter iOS/Android 真机验收。
+
+参考：https://wot-ui.cn/demo/#/subPages/calendarView/Index 和 https://wot-ui.cn/component/calendar-view.html 。
+
+# Progress 进度条
+
+从 `daisu-ui` 导入 `Progress`、`ProgressProps`、`ProgressColor`、`ProgressColorStop`、`PercentPosition`。独立详情：`/ui-demo/progress`。
+
+```tsx
+<Progress percentage={50} />
+<Progress percentage={50} status="success" hideText />
+<Progress percentage={50} percentPosition={{ type: 'inner', align: 'center' }} />
+```
+
+## 参数
+
+| 参数 | 默认值 | 说明 |
+| --- | --- | --- |
+| percentage | 0 | 百分比；有限值裁剪至 0–100，NaN/Infinity 按 0 处理 |
+| hideText | false | 隐藏百分比；指定 status 时显示状态图标 |
+| status | — | success / danger / warning，使用公共 Icon 和语义颜色 |
+| color | — | 字符串、只读字符串数组或 `{ color, percentage }[]`，覆盖状态的进度条颜色 |
+| duration | 30 | 每变化 1% 的毫秒数；0 立即更新，非法值回退 30 |
+| percentPosition | outer / right | `{ type?: 'inner' \| 'outer', align?: 'left' \| 'center' \| 'right' }`；align 用于内部文本 |
+| className / style | — | 根节点样式；可用 style.height 调整组件高度，内部模式轨道占满高度 |
+
+色值数组按等分阈值处理，对象数组复制并排序，不修改调用方数据。与当前 Wot Demo 一致，增长时逐段经过跨越的阈值，剩余进度使用末尾颜色；减少时取第一个不小于目标的阈值颜色。这不是沿轨道铺设渐变色。官网当前对象示例从 0 到 50 会先经过 30 阈值，然后使用最后一色。
+
+使用原生 width 线性过渡，时长为实际变化百分比 × duration；文字立即反映目标值。快速更新从估计的当前动画位置继续，取消旧颜色阶段；卸载清理计时器。同值颜色变化仍更新。内置百分比通过实际文本布局测量保持最小宽度，0% 不会丢失文字；不依赖 CSS max-content 或 DOM 测量。
+
+## 示例与边界
+
+独立页面按 Wot 四组、七节展示，共 15 条进度：基本、内部左/中/右及零值、三种状态、隐藏文字、三种颜色、两种数组、动态增减。支持浅深主题；H5 核对完整几何、真实按钮、动画中间帧、连续更新和边界。
+
+Vue hide-text / percent-position 映射为 hideText / percentPosition，custom-class/custom-style 映射为 className/style。不提供官网当前未列入参数类型的函数 color，也不依赖 uni-app。SVG 图标及原生动画仍需 Flutter 内 iOS/Android 真机回归。
+
+参考：https://wot-ui.cn/component/progress.html 、https://wot-ui.cn/demo/#/subPages/progress/Index 。
+
+# Circle 环形进度条
+
+从 `daisu-ui` 导入 `Circle`、`CircleProps`、`CircleColor`。独立详情：`/ui-demo/circle`。
+
+```tsx
+<Circle value={20} text="20%" />
+<Circle value={40} color={{ '0%': '#f14646', '100%': '#fff' }} />
+<Circle value={60} clockwise={false} strokeWidth={6}><text>自定义内容</text></Circle>
+```
+
+## 参数
+
+| 参数 | 默认值 | 说明 |
+| --- | --- | --- |
+| value | 0 | 目标百分比；裁剪至 0–100，NaN/Infinity 按 0 处理 |
+| size | 120 | 圆环直径，px，有限非负数 |
+| color | #1c64fd | 颜色或只读渐变对象；键支持 `0` / `100` / `0%` / `100%`，按数值排序 |
+| layerColor | #f2f3f5 | 轨道颜色 |
+| fill | — | 圆环内部填充，默认透明 |
+| speed | 50 | 每秒变化的百分比；≤0 或 >1000 时立即绘制，非法值回退 50 |
+| text | — | 中心文字，非空时优先于 children |
+| strokeWidth | 18 | 保持当前 Wot 绘制语义：前景实际描边为此值的一半；无 fill 时轨道同宽，有 fill 时轨道为完整此值 |
+| strokeLinecap | round | round / butt / square |
+| clockwise | true | 是否顺时针从十二点方向展开 |
+| children | — | 中心内容插槽，不传 text 时展示 |
+| className / style | — | 根节点类名和样式；尺寸用 size 同步绘图几何 |
+
+使用 Lynx 原生 `<svg content>` 绘制圆弧和线性渐变，不依赖 Canvas、DOM 或 H5 特有接口。渐变以整个圆环为坐标，从右到左，与 Wot Canvas 一致。0% 的 round 端点绘制为圆点，100% 绘制完整圆，不产生退化弧线。颜色文本和自定义插槽支持深色背景；默认圆环配色保留官网固定色，可通过 color/layerColor/fill 定制。
+
+初次挂载直接显示 value；后续变更按 speed 从当前动画位置推进，可中途反向。动画有边界保护，卸载、目标或速度变化清理旧计时器。value 是外部目标，动画过程不修改业务值，不提供无意义的 onChange。
+
+## 示例与边界
+
+四组示例包含三个基本圆环、五种样式、一个插槽圆环，以及真实增减和 Dialog 层级验证。独立九个圆环的尺寸、折行、间距与在线 Demo 一致；已核对 H5 浅深截图及动画中间帧、连续反向、渐变和弹框。
+
+当前官网默认 size=120、stroke-width=18；本地旧版 Wot skill 的 100/10 已过时。Vue v-model 映射为 value，默认 slot 映射为 children，custom-class/style 映射为 className/style。SVG 渐变及绘制仍需 Flutter 内 iOS/Android 真机验证，未冒充已验收的宿主 Canvas 能力。
+
+参考：https://wot-ui.cn/component/circle.html 、https://wot-ui.cn/demo/#/subPages/circle/Index 。
+
+# Notify 消息通知
+
+从 `daisu-ui` 导入 `Notify`、`useNotify` 和对应类型。独立详情：`/ui-demo/notify`。
+
+```tsx
+function Page() {
+  const notify = useNotify({ duration: 3000 });
+  return <>
+    <Button onTap={() => notify.showNotify('通知内容')}>显示通知</Button>
+    <Notify {...notify.props} safeHeight={44} rootPortal />
+  </>;
+}
+```
+
+`rootPortal` 需要页面根节点已有 `RootPortalHost`（本项目 App 已挂载）。Notify 复用公共 Transition、RootPortal、Icon，不依赖浏览器 DOM；顶部安全高度和底部安全区由宿主明确传入。它不创建遮罩或锁定页面滚动。
+
+## 参数
+
+| 参数 | 默认值 | 说明 |
+| --- | --- | --- |
+| visible / onChange | false / — | 受控显隐；自动到时或关闭按钮调用 onChange(false)，调用方应回写状态 |
+| type | danger | primary / success / warning / danger |
+| message | 空字符串 | string 或 number；默认内容单行省略，复杂内容使用 children |
+| duration | 3000 | 显示时长，ms；≤0 或非有限值不自动关闭，不含离场动画时间 |
+| position | top | top / bottom |
+| color / background | — | 自定义文字、前缀及关闭图标颜色 / 背景颜色，支持有效 Lynx CSS 颜色 |
+| zIndex | 99 | 浮层层级 |
+| safeHeight | 0 | 顶部偏移；数字及纯数字字符串为 px，rpx 转为 vw，其他有效 CSS 长度直接传递 |
+| safeAreaBottom | 0 | 宿主提供的底部安全区，有限非负 px；仅 bottom 使用 |
+| rootPortal | false | 使用现有原生 Portal 逃离滚动与裁剪容器 |
+| closable | false | 展示关闭按钮，catchtap 阻止其触发 onClick |
+| variant | filled | filled 使用状态浅色背景；floating 使用表面色、12px 外边距、8px 圆角与静态阴影 |
+| children | — | 替换 message，可放公共组件及多行自定义内容 |
+| prefix | — | 默认类型图标；传 null 隐藏，ReactNode 自定义 |
+| renderClose | — | `(close: () => void) => ReactNode`，closable 为 true 时使用 |
+| requestKey | 0 | 内容连续展示时递增，以重新开始计时；useNotify 自动管理 |
+| options | — | 同名 NotifyOptions 覆盖组件直接传入的默认选项；不含 visible、children 等控制属性 |
+| className / style | — | 通知内容容器的类与样式 |
+| onClick | — | 点击通知正文；参数为 Lynx TouchEvent，不会自动关闭 |
+| onOpened / onClosed | — | 入场 / 离场动画完成后调用；快速反向会取消过期阶段 |
+
+显隐复用公共 Transition 的 300ms 上下滑动；切换后有 32ms 初始帧调度。计时从 visible/requestKey/duration 更新后开始，重复通知会续期；关闭期间保留节点完成动画，卸载清理计时器。填充背景与文字跟随 `--cso-ui-<type>-soft` / `--cso-ui-<type>`，悬浮形态跟随 surface/text Token，ConfigProvider 在 RootPortal 中保留配置。自定义 prefix/children 自行指定内部图标颜色。
+
+## useNotify
+
+| 方法或字段 | 说明 |
+| --- | --- |
+| useNotify(initialOptions?) | 创建独立实例，初始默认值只采纳首次调用 |
+| props | 必须传给对应 `<Notify {...notify.props} />`；包含 options、visible、requestKey、onChange |
+| showNotify(string \| number \| NotifyOptions) | 合并实例默认值与本次参数，更新内容并重新计时；本次参数优先 |
+| closeNotify() | 关闭本实例 |
+| setNotifyDefaultOptions(options) | 按字段合并本实例后续调用的默认配置；不修改正在显示的通知 |
+| resetNotifyDefaultOptions() | 恢复首次 initialOptions，内置默认值继续由组件补齐 |
+
+每个 hook 的默认值和计时互相隔离，不使用全局 selector 注册表；多个实例可同时显示。Vue 的 v-model:visible 映射为 visible/onChange，slots 映射为 children/prefix/renderClose，custom-class/style 映射为 className/style。原 Wot selector 不移植；不要混用不同实例的 props 和方法。
+
+## 示例及能力边界
+
+官网当前四组、14入口已复刻：基础、颜色/位置/时长/关闭、四类型、四悬浮和自定义内容。H5 已核对全部行几何、38px 高度、顶部44px/底部0px偏移、悬浮12px间距、入退场中间帧、真实触屏关闭及浅深截图；测试覆盖实例隔离、续期、默认值重置、重复关闭和快速重开。
+
+当前在线 Wot 的普通通知已改用浅色填充并自带类型前缀，旧版纯色背景/白字说明不适用。其文档宣称 message 支持换行，但当前 Demo 组件 CSS 实际为单行，本地默认跟随当前展示；多行请用 children。onOpened/onClosed 明确在动画完成后触发，与本地 Toast 一致。
+
+CSS 兼容资料已按 iOS 4.0 / Android 4.1 核对 box-shadow 基础支持；本组件仅使用静态阴影，动画只改变 transform。原生多层阴影和 Portal 的实际绘制仍需 Flutter 真机回归，不以 H5 验证代替。
+
+参考：https://wot-ui.cn/component/notify.html 、https://wot-ui.cn/demo/#/subPages/notify/Index 。
+
+# Signature 签名
+
+从 `daisu-ui` 导入 `Signature`、`SignatureRef`、`SignatureFooter`、`SignatureResult`、`SignatureStroke` 和 `SignaturePoint`。独立详情 `/ui-demo/signature`，横屏布局子页 `/ui-demo/signature-landscape`。
+
+```tsx
+const signature = useRef<SignatureRef>(null);
+<Signature ref={signature} enableHistory pressure backgroundColor="#fff" exportScale={2}
+  onConfirm={result => { if (result.success) setPreview(result.dataUrl); }} />
+```
+
+使用原生 SVG 和触摸事件书写；同一份向量点数据在后台生成 RGBA PNG，不依赖 Canvas、DOM、Buffer、atob 或宿主临时文件 API。导出压缩使用现有依赖 fflate。当前 Wot 不指定高度时使用 Canvas 内在高度150px，示例按此对齐，而非旧文档200px。
+
+## 参数
+
+| 参数 | 默认值 | 说明 |
+| --- | --- | --- |
+| width / height | 100% / 150 | 宽度为 px数字或有效Lynx长度；高度为有限正 px，宽度随容器变化，export按原生实际尺寸 |
+| penColor / lineWidth | #000 / 3 | 后续笔画颜色、普通线宽；旧笔画保留创建时样式 |
+| backgroundColor | transparent | 画板及导出背景；透明画板在白色纸面上显示以保证默认黑色笔迹可见，纸面可用 `--cso-ui-signature-background` 定制 |
+| exportScale | 1 | PNG尺寸倍率，不依赖设备 DPR；每边≤4096px且总像素≤400万，超限返回失败 |
+| disabled | false | 禁止书写并取消进行中的笔画；不会清空已有签名，操作按钮仍可用 |
+| disableScroll | true | 画板原生手势消费，避免书写拖动外层滚动；不全局锁定页面 |
+| enableHistory / step | false / 1 | 启用撤销恢复及每次操作的笔画数，step裁剪为≥1整数 |
+| pressure | false | 模拟速度笔锋，不是设备真实压感；慢写粗、快写细，以20%变化限制平滑线宽 |
+| minWidth / maxWidth / minSpeed | 2 / 6 / 1.5 | 笔锋宽度范围及速度阈值(px/ms)，非法值使用有效默认值 |
+| clearText / confirmText | 清空 / 确认 | 默认按钮文案 |
+| revokeText / restoreText | 撤销 / 恢复 | 历史按钮文案 |
+| renderFooter | — | `(actions: SignatureFooter) => ReactNode` 自定义底部操作；传返回null的函数隐藏 |
+| onStart / onSigning / onEnd | — | 输入开始、移动、正常结束；参数为原始Lynx TouchEvent或MouseEvent；取消不提交、不发onEnd |
+| onConfirm | — | `(result: SignatureResult) => void`，成功或失败均回调 |
+| onClear | — | 主动清空时触发 |
+| className / style | — | 根节点类名、样式 |
+
+书写按当前画板视口测量转换坐标，支持触摸和鼠标；快速落笔会缓存待测量的点。多指、触摸取消、禁用、清空、卸载使未完成测量失效；取消丢弃当前笔画并保留已完成内容。尺寸改变保留完成笔画的原坐标，不隐式拉伸签名。新的笔画提交后清除恢复分支，连续分组撤销/恢复保持原始顺序。
+
+## Ref 与 Footer
+
+`init(forceUpdate?)` 返回 Promise<void>，重新测量布局，不清空内容；弹窗可在 onAfterEnter 调用。`clear()` 清空笔画与历史。`confirm()` 同步返回 SignatureResult 并调用 onConfirm；进行中或空签名返回失败，不导出空白凭证。`revoke()` / `restore()` 以step操作，enableHistory=false时无效。
+
+Footer额外包含 `currentStep`（当前笔画数）、`historyList`（当前及可恢复的只读笔画列表）、`canUndo`、`canRedo`。可直接连接公共Button的禁用态。
+
+`SignatureResult` 为 `{success, dataUrl, width, height, error?}`：成功dataUrl是可直接交给原生image的PNG数据地址，width/height为导出像素；失败为空地址、0尺寸和错误说明。不返回伪造的tempFilePath，不自动上传或保存相册，持久化交给业务宿主协议。
+
+## 映射及限制
+
+Wot的footer插槽映射renderFooter，custom-class/style映射className/style。PNG是当前唯一导出类型；不暴露无效的fileType/quality（PNG无JPEG质量语义）。PNG支持十六进制、rgb/rgba、black/white/red/blue/green/transparent；其他Lynx/SVG颜色可显示，但导出会明确失败，请使用可移植的具体色值。背景不包含纸面Token，需要白底导出时传backgroundColor="#fff"。
+
+七块画板、三种笔锋、历史、禁用自定义按钮、弹窗与横屏布局按官网分组实现；横屏子页通过竖排旋转按钮扩大书写区域，不控制系统屏幕方向。预览复用公共Popup与原生image。
+
+已核对H5七画板全部几何、真实触屏书写、2倍PNG导出解码、撤销恢复、弹窗/横屏及深色截图；测试覆盖RGBA内容、导出边界、历史分支、多指取消和禁用。Flutter内触摸延迟、长时间书写性能及PNG解码仍需iOS/Android真机验证。
+
+参考：https://wot-ui.cn/component/signature.html 、https://wot-ui.cn/demo/#/subPages/signature/Index 。
+
+# Grid / GridItem 宫格
+
+从 `daisu-ui` 导入 `Grid`、`GridItem`、`GridProps`、`GridItemProps`、`GridNavigation`。独立详情 `/ui-demo/grid`。
+
+```tsx
+<Grid column={3} border clickable onNavigate={(url, { replace }) => navigate(url, replace)}>
+  <GridItem icon="image" text="图片" value={100} badgeProps={{ max: 99 }} />
+  <GridItem icon="settings" text="设置" url="/settings" linkType="push" />
+</Grid>
+```
+
+Grid参数：`column` 不传时所有直接子项为一行，显式正整数决定折行；无效值回退单行。`border=false`、`gutter=0`（有限非负px）、`square=false`、`clickable=false`、`bgColor`、`hoverClass`、`center=true`、`direction='vertical'|'horizontal'`、`reverse=false`、`iconSize=32`（px）、`onNavigate`、`children`、`className/style`。当前在线Wot默认图标32px，旧skill的26px已过时。
+
+GridItem参数：`text:ReactNode`、`icon`、`iconColor`、`iconSize`（覆盖父级）、`renderIcon`、`children`（完全替换默认内容）、`ellipsis=false`、`className/style`、`textClassName`、`iconClassName`。文字默认16px/24px，图标与文字间隔4px，内容padding12px。横向和反向排列调整文字间距，children不再渲染默认图标与文字。
+
+徽标复用公共Badge，支持 `isDot/value/max/type/badgeProps`；默认max=99，单项显式简写覆盖badgeProps同名字段，其余完整透传。Badge附着图标，未设置图标时不单独展示。
+
+点击使用 `onItemClick(event:TouchEvent)`；父Grid存在且clickable=false时阻止点击回调和导航。`url` 配合 `linkType='push'|'replace'`、父Grid或单项 `onNavigate(url,{replace})` 显式接入路由；单项回调优先于父级，点击回调先于导航。库不内置项目页面路径或uni-app路由；Wot的navigateTo/redirectTo对应push/replace，switchTab/reLaunch等平台行为由业务自行编排。
+
+## 布局与示例
+
+每个直接GridItem获得独立的索引与父配置，React数组和条件null子项可用；将GridItem直接作为Grid子节点，不用额外view或Fragment包住整组。动态key应保持稳定。正方形从原生Grid实际宽度扣除左侧gutter后计算，gutter在单元格内部保留右边距/底边距；普通多行从第二行添加gutter。没有gutter时只绘制内部半像素分隔线，有gutter则为各个内容块描边。修改高度用GridItem.style，避免给Grid固定高度。
+
+十四组独立示例覆盖基础/图片内容、列数/正方形、背景/边框/间距/徽标、横向/反向、图标/文字插槽、自定义样式和真实push/replace导航。每组几何、插槽折行、正方形间距与浅深截图已和当前在线Demo核对；测试覆盖动态列数、空子项、实际尺寸、点击门控、显式导航和Badge组合。内容图片使用原生image，不引入浏览器DOM。原生触屏及分隔线渲染仍需Flutter真机验证。
+
+参考：https://wot-ui.cn/component/grid.html 、https://wot-ui.cn/demo/#/subPages/grid/Index 。
+
+# CountDown 倒计时 / useCountDown
+
+从 `daisu-ui` 导入 `CountDown`、`CountDownRef`、`CountDownProps`、`TimeData`、`useCountDown`、`UseCountDownOptions`。独立详情 `/ui-demo/count-down`。
+
+```tsx
+<CountDown time={30 * 60 * 60 * 1000} format="DD 天 HH 时 mm 分 ss 秒" />
+<CountDown ref={ref} time={3000} millisecond autoStart={false} format="ss:SSS" />
+```
+
+参数：`time=0` 为毫秒总时长，裁剪为非负整数，NaN/Infinity按0；`millisecond=false` 控制刷新频率；`autoStart=true`；`format='HH:mm:ss'`；`onChange(current:TimeData)`；`onFinish()`；`children` 支持普通ReactNode或 `(current:TimeData)=>ReactNode`；`className/style`。默认文字14px/20px，使用text Token。
+
+TimeData 为 `{total,days,hours,minutes,seconds,milliseconds}`，total为当前剩余毫秒，其余为分解值（hours为0–23）。format支持DD/HH/mm/ss/S/SS/SSS；省略大单位时累计至下一级，例如30小时用HH为30，省略HH时可显示1800分钟。自定义children直接读取分解值，不受format累计规则影响。
+
+Ref：`start()` 继续当前剩余时间，运行中重复调用不重置；`pause()` 保存真实剩余时间；`reset()` 恢复当前time，autoStart为true时重新开始。time或autoStart变更会重置；format或回调变化不重启。
+
+`useCountDown({time?,millisecond?,onChange?,onFinish?})` 返回 `{current,start,pause,reset(time?)}`，不自动开始；组件负责autoStart。reset不自动播放。各实例定时器独立，卸载清理。使用截止时间与Date.now计算剩余值，延迟回调不延长倒计时；毫秒模式约16ms刷新，不声称真实1ms刷新，秒模式按剩余秒边界调度。结束为0，onFinish每轮只触发一次，重置后才开启新一轮；0时长start会结束一次。
+
+Wot默认插槽映射children函数，custom-class映射className。五项独立示例包含基础、自定义格式、两位毫秒、自定义橙色数字块及3秒手动控制。控制区关联复用公共Grid/GridItem，结束提示复用Toast。H5五项全部几何、毫秒中间值、暂停恢复/结束/重置及浅深截图已核对；测试覆盖格式进位、截止时间补偿、时间替换与卸载清理。宿主挂起时JS不能显示持续动画，恢复后的下一次回调会校正至实际截止时间。
+
+参考：https://wot-ui.cn/component/count-down.html 、https://wot-ui.cn/demo/#/subPages/countDown/Index 。
+
+# CountTo 数字滚动
+
+从 `daisu-ui` 导入 `CountTo`、`CountToRef`、`CountToProps`。独立详情 `/ui-demo/count-to`。
+
+```tsx
+<CountTo endVal={21286.321} decimals={2} prefix="￥" suffix="%" />
+<CountTo ref={ref} startVal={1000} endVal={9999.32} decimals={3} autoStart={false} />
+```
+
+| 参数 | 默认值 | 说明 |
+| --- | --- | --- |
+| startVal / endVal | 0 / 2024 | 有限起止数，非法值按0处理，支持递减和负数 |
+| duration | 3000 | 时长ms，非有限值/负数归0；0时长开始后直接显示终值 |
+| autoStart | true | 自动播放；起止值、时长或此参数改变会重置 |
+| decimals / decimal / separator | 0 / . / , | 小数位数（裁剪为0–20整数）、小数分隔符、千分位分隔符，空separator关闭分组 |
+| prefix / suffix | — | 前后缀ReactNode；原始string/number使用12px/18px文字，其余作为插槽渲染 |
+| useEasing | true | 指数缓出，false线性；结束时精确落到endVal |
+| type | default | default / primary / error / success / warning / info，使用语义Token |
+| color | — | 显式覆盖主题颜色，含默认前后缀 |
+| fontSize | 18 | 可选主数字字号px，配套行高为字号+8；不设置时使用18px/26px Token默认值 |
+| children | — | 替换主数字，ReactNode或 `(value:number,formatted:string)=>ReactNode` |
+| onMounted / onFinish | — | 组件effect挂载一次 / 本轮动画结束一次 |
+| className / style | — | 根节点样式 |
+
+Ref提供 `start()`、`pause()`、`reset()`；重复start不建立多个定时器，pause保留剩余时间，reset按autoStart决定是否重播。完成后start不重复触发finish，需要reset开启新一轮。
+
+复用公共useCountDown的截止时间和约16ms调度，不依赖requestAnimationFrame/DOM；暂停和时间替换会取消旧工作，卸载清理。格式化在显示时取整，不累计逐帧舍入误差，支持负数分组、自定义分隔符与递减。显示props和回调变化不会意外重启计时，起止值、时长、autoStart变化会重置。
+
+## 当前Wot映射与示例
+
+当前Wot使用 `autoStart`，旧版skill的autoplay说明不适用；主数字已为18px/26px、前后缀12px/18px，独立示例不套用旧版32px。Vue默认/prefix/suffix插槽分别映射children/prefix/suffix；custom-class/style映射className/style。fontSize是本地有效扩展，当前在线Wot已不再在props中声明旧版fontSize。
+
+十个独立示例包含四个基本用法、五个主题和一个带公共Grid控制的手动动画。H5十项全部几何、动画中间值、准确终值、开始/暂停/恢复/重置及浅深截图已核对；测试覆盖负数、格式化、递减、零时长、挂载/结束去重、更新与卸载清理。后台挂起期间不持续渲染，恢复时按实际截止时间校正。
+
+参考：https://wot-ui.cn/component/count-to.html 、https://wot-ui.cn/demo/#/subPages/countTo/Index 。
+
+
+# Img 图片
+
+独立示例：`/ui-demo/img`。基本图片、默认/自定义加载与失败、14种模式的普通/圆形/圆角，以及两种宿主预览，共49张图片展示。示例使用本地图片；加载中通过空src保留占位，错误通过无效位图触发原生失败，避免依赖官网无效域名的网络时序。
+
+```tsx
+import { Img } from 'daisu-ui';
+<Img src={cover} width={100} height={100} mode="aspectFill" round />
+<Img src={cover} width="100%" mode="widthFix" enablePreview
+  onPreview={async url => {
+    const accepted = await host.call('media.image.preview', { urls: [url], current: 0 });
+    if (!accepted) throw new Error('宿主暂不支持图片预览');
+  }} onPreviewError={error => showError(error.message)} />
+```
+
+| 参数 | 默认 | 行为 |
+| --- | --- | --- |
+| src / previewSrc | 空 | 位图来源/预览替换来源；支持原生可读取URL、本地构建资源、位图data URL |
+| width / height | 320 / 240 | number或CSS长度字符串，数字按px；传百分比时依赖父容器实际尺寸 |
+| mode | scaleToFill | scaleToFill/aspectFit/aspectFill、widthFix/heightFix、center/top/bottom/left/right及四角 |
+| round / radius | false / 无 | 圆形或圆角裁剪；radius支持数字与长度字符串 |
+| showLoading / showError | true | 是否展示对应占位 |
+| loading / error | 图标 | ReactNode插槽，默认32px image/image-failloading图标 |
+| enablePreview | false | 仅成功加载且有src时触发预览 |
+| onPreview | 无 | 显式预览适配器 `(url:string)=>void\|Promise<void>`；同一实例防止并发重复调用 |
+| onPreviewError | 无 | 适配器缺失或拒绝时的Error通知 |
+| onLoad / onError | 无 | 原生完整事件，load.detail包含图片width/height |
+| onClick | 无 | 任意加载状态下均可点击通知 |
+| alt | 空 | 外层原生无障碍标签，并非传给image的HTML alt |
+| customImage / className / style | 无 | 内部image类名、根节点类名及样式 |
+
+使用Lynx原生image；四种锚定边/角和center模式基于bindload自然尺寸与bindlayoutchange容器尺寸，以绝对定位和裁剪实现。仅向原生传受支持的模式。widthFix未传height时按容器宽度和原图比例计算高度，heightFix同理；明确指定的容器边长保持不变。首次取得尺寸前保留默认占位尺寸；resize后重新计算，无DOM读取。
+
+切换src会重置加载状态，失败移除image节点，重复返回旧URL仍可重试；卸载后旧事件和异步预览错误不更新组件。圆角和占位支持浅深主题；`--cso-ui-img-loading-bg`可覆盖占位背景。
+
+Vue插槽映射ReactNode，custom-image映射customImage。没有强行移植uni的lazyLoad和showMenuByLongpress：当前原生image没有等价的通用接口；不声明无效参数。SVG请使用公共Icon或原生svg，不以image模拟。preview依赖显式宿主适配器，库组件不直接访问Flutter NativeModule，也不自行下载业务图片。
+
+参考：https://wot-ui.cn/component/img.html 、https://wot-ui.cn/demo/#/subPages/img/Index 。H5截图/触屏与全部49项几何核对；原生图片解码和宿主预览仍需Flutter真机验证。
+
+
+# Empty 缺省提示
+
+独立示例：`/ui-demo/empty`，11例。当前Wot的Empty已经使用图标，旧skill的StatusTip外链插画、urlPrefix、imageSize参数不是当前接口。
+
+```tsx
+import { Empty, Button } from 'daisu-ui';
+<Empty icon="no-result" tip="当前搜索无结果" />
+<Empty icon={cover} iconSize={140} tip="查看头像" />
+<Empty icon="no-content" tip="暂无内容"
+  bottom={<Button label="重新加载" onTap={reload} />} />
+```
+
+| 参数 | 默认 | 行为 |
+| --- | --- | --- |
+| icon | empty | 公共Icon名称，也可传位图URL、本地构建资源或SVG URL |
+| iconSize | 98 | number或CSS长度字符串，数字按px，宽高相同 |
+| iconColor | 浅#c9cbd4，深#4e5369 | 内置图标颜色；图片资源自身颜色保持原样 |
+| tip | 无 | string/ReactNode，默认16px/24px、字重600，距图标12px；未提供时不留文字间距 |
+| image | 无 | 自定义图片区域ReactNode，提供时替代icon，false可显式隐藏图标 |
+| bottom | 无 | 底部内容ReactNode，间距由调用者控制 |
+| className / style | 无 | 根节点样式 |
+
+内置no-result/no-wifi/no-content/no-collection/no-comment/failpayment/no-message复用公共Icon的原生SVG轮廓，不加载网络iconfont。图标按浅深主题切换，图像URL按公共Icon分别交给image/svg。根节点宽100%，底部padding24px，可用 `--cso-ui-empty-padding-bottom` 覆盖。
+
+当前库不接入网页iconfont，因此未移植Wot的iconPrefix/cssIcon；自定义图形通过image插槽提供原生SVG或公共控件。Vue image/bottom插槽映射同名ReactNode。复杂tip需要在调用方提供原生text元素。
+
+业务原有 `EmptyState` 保持原导出、参数及默认展示。Empty与EmptyState各有用途，已有业务页面不自动迁移。
+
+示例复刻7种内容形态、140px大小、本地猫图、自定义太阳图标、底部按钮；重新加载按钮展示实际反馈，不制造业务请求。11例几何、浅深截图和真实点击已核对，测试包含原生图标/图片路径、插槽替换和业务EmptyState回归。
+
+参考：https://wot-ui.cn/demo/#/subPages/empty/Index 。
+
+
+# NoticeBar 通知栏
+
+独立示例：`/ui-demo/notice-bar`，12条通知。复刻当前Wot的类型、关闭、静止省略、插槽、多行、自定义颜色、水平多文本、垂直轮播及重置。
+
+```tsx
+import { NoticeBar } from 'daisu-ui';
+import type { NoticeBarRef } from 'daisu-ui';
+const ref = useRef<NoticeBarRef>(null);
+<NoticeBar ref={ref} text={['消息一', '消息二']} prefix="sound"
+  direction="vertical" delay={3} onClick={({index,text}) => openMessage(index)} />
+// ref.current?.reset();
+```
+
+| 参数 | 默认 | 行为 |
+| --- | --- | --- |
+| text | 空 | string或readonly string[]，按数组顺序循环 |
+| type | warning | warning/info/danger，浅深配色 |
+| scrollable | true | 水平滚动开关；即使文本短也滚动，符合当前Wot行为 |
+| delay | 1 | 每轮停留秒数，负值归0，非有限值回退1 |
+| speed | 50 | px/s，非正数/非有限值回退50 |
+| direction | horizontal | horizontal/vertical；垂直至少两条才滚动，scrollable仅控制水平方向 |
+| closable | false | 内置关闭按钮，关闭后移除并清理动画计时 |
+| wrapable | false | 水平且scrollable=false时允许多行；其他静止情况单行省略 |
+| prefix | 无 | 字符串作为公共Icon名称，也可传ReactNode |
+| suffix | 无 | 后缀ReactNode，提供时替代内置关闭按钮；false隐藏后缀 |
+| children | text当前条 | 水平内容插槽，原始字符自动包原生text；垂直始终使用text数组 |
+| color / backgroundColor | 按类型 | 文字/内置图标、背景颜色 |
+| onClose | 无 | 点击关闭时一次通知 |
+| onNext | 无 | 每轮滚动结束后收到新索引，包括单条水平回到0 |
+| onClick | 无 | 内容点击 `{index,text}`；关闭不透传 |
+| className / style | 无 | 根节点样式 |
+
+Ref的reset取消旧工作，索引归0并重新开始初始停留，不重新打开已关闭的通知；需要重新展示时由调用者重新挂载。数据、方向、速度或延时变更也重置播放；回调变化不重播。空数组不计时。缺少布局数据时等待原生测量，不估算字符宽度。
+
+通过bindlayoutchange获取可视宽度和完整文本宽度，原生transform线性过渡执行动画；JS仅在每轮边界调度，未逐帧setState，也不访问DOM。首轮从原位滚出，之后从可视区域右侧进入。垂直轨道追加首条实现循环，单行默认20px。新条目强制创建测量节点，避免相同宽度消息切换后不触发布局事件而停播。重置、关闭、来源替换和卸载都会取消定时器，旧回调不继续发next。
+
+背景Token：`--cso-ui-notice-bar-warning-bg`、`--cso-ui-notice-bar-info-bg`、`--cso-ui-notice-bar-danger-bg`；圆角 `--cso-ui-notice-bar-radius`。前景通过color覆盖。图标复用公共原生SVG；不用网页iconfont。
+
+CSS兼容核对：安装的 `@lynx-js/css-defines@0.0.18` 数据声明width:max-content自iOS/Android1.6支持，目标iOS4.0/Android4.1可用。当前H5已核对12项完整几何/配色、约50px/s滚动中间位置、垂直重置、真实关闭及浅深截图；原生过渡仍需Flutter真机核验。
+
+参考：https://wot-ui.cn/component/notice-bar.html 、https://wot-ui.cn/demo/#/subPages/noticeBar/Index 。
+
+
+# Card 卡片
+
+独立示例：`/ui-demo/card`，当前Wot七张卡片：文章/个人名片、矩形列表、复杂宠物档案、自定义标题和两张无Footer卡片。动作复用公共Button、Dialog与Toast。
+
+```tsx
+<Card title="业务卡片" description="说明">...</Card>
+<Card variant="standard" title="标题" footer={<Button label="查看" />}>...</Card>
+<Card type="rectangle" title={<CustomTitle />}>...</Card>
+```
+
+| 参数 | 默认 | 行为 |
+| --- | --- | --- |
+| variant | business | business保留既有样式；standard使用当前Wot样式 |
+| type | 无 | rectangle：矩形、无横边距和阴影；未传variant时自动选standard |
+| title | 无 | ReactNode；字符串/数字用原生text，standard单行省略；复杂节点对应Wot title插槽 |
+| description | 无 | 兼容原业务说明，standard也可使用 |
+| children | 无 | 卡片内容，原始字符串/数字自动包text；standard始终保留内容容器 |
+| footer | 无 | 底部ReactNode；未提供/false不渲染，0有效 |
+| customTitleClass / customContentClass / customFooterClass | 空 | 三个区域的类名 |
+| className / style | 无 | 根节点样式 |
+
+默认business不改变既有边框、间距和字号。standard为8px圆角、16px横边距/下边距和轻阴影，标题18px/20px，内容10px 12px，Footer 8px 12px且右对齐；矩形内容顶部与Footer使用原生半像素分隔线，无伪元素。连续卡片的最后一项下边距由调用者按容器布局控制，示例移除每组末项间距。
+
+通过公共Token适配深色模式；调用者可使用className/style及区域类名定制。standard与business合并为同一个Card导出，SectionTitle保持原接口。
+
+测试覆盖业务默认回归、矩形和标准模式、复杂标题交互、类名与0值插槽。H5核对七卡片几何、阅读全文Dialog及浅深截图；静态阴影仍需原生真机核验。
+
+参考：https://wot-ui.cn/component/card.html 、https://wot-ui.cn/demo/#/subPages/card/Index 。
+
+
+# Skeleton 骨架屏
+
+独立示例：`/ui-demo/skeleton`，四预设、宫格/单元格/图片组合、两种原生动画以及公共Switch切换公共Grid内容。15个骨架实例。
+
+```tsx
+<Skeleton theme="paragraph" animation="gradient" loading={pending}>
+  <Content />
+</Skeleton>
+<Skeleton rowCol={[1, 2, [{size:48,type:'circle'},{width:'60%'}]]} />
+```
+
+| 参数 | 默认 | 行为 |
+| --- | --- | --- |
+| theme | text | avatar/image/text/paragraph；预设头像/图片64px，文字16px，段落四行 |
+| rowCol | 预设 | readonly SkeletonRow[]，非空时替代theme；空数组使用预设 |
+| loading | true | true只渲染骨架；false只渲染children，无隐藏内容提前挂载 |
+| animation | 无 | gradient：1.5秒扫光；flashed：2秒明暗变化 |
+| children | 无 | 加载结束内容，原始字符自动包原生text |
+| className / style | 无 | 根节点样式 |
+
+SkeletonRow可为数字（该行列数）、SkeletonCell、SkeletonCell数组。列数取0–100整数，非有限或负数归0。当前Wot在线源码把任意数字都渲染成一列；本库按其文档的[1,1,2]语义正确渲染为1/1/2列，并保持官网实际使用的1列配置一致。
+
+SkeletonCell支持type=text/rect/circle、size、width/height、margin/marginLeft/marginRight、borderRadius、background/backgroundColor。数值长度使用px；size设置宽高，明确width/height优先；margin支持负数。text默认16px高、2px圆角，rect默认16px高/4px圆角，circle默认48px，行距12px。数组行按space-between布局；numeric多列平分宽度并留12px列间距。
+
+浅深背景通过 `--cso-ui-skeleton-bg`、扫光/闪烁高光通过 `--cso-ui-skeleton-highlight` 定制。渐变使用真实原生子view执行transform动画，无DOM、Canvas、伪元素或JS帧定时器；loading切换后动画节点卸载。
+
+H5已核对15实例几何、两种动画中间帧、真实Switch显示/隐藏Grid和浅深截图；测试覆盖预设/空配置、数字列数、样式与插槽切换。
+
+参考：https://wot-ui.cn/component/skeleton.html 、https://wot-ui.cn/demo/#/subPages/skeleton/Index 。
+
+
+# Steps 步骤条
+
+从 `packages/daisu-ui/src/index.ts` 导入 `Steps`、`Step`。使用原生 view/text/SVG，无浏览器 API。
+
+```tsx
+<Steps active={1} alignCenter>
+  <Step title="注册" description="注册一个账号" />
+  <Step title="绑定手机" />
+  <Step title="完成" />
+</Steps>
+```
+
+Steps 参数：`active?:number=0`（从零开始，超过末项全部完成，负数全部等待）、`vertical?:boolean=false`、`dot?:boolean=false`、`space?:number|string`（横向宽度/竖向高度，数字为 px）、`alignCenter?:boolean=false`（仅横向），以及 `children/className/style`。默认横向等分。
+
+Step 参数：`title/description/icon?:ReactNode`、`status?:'finished'|'process'|'wait'|'error'`、`className/style`。字符串 icon 使用公共 Icon，其他节点直接渲染。未指定 status 时按 active 推导；显式 status 优先。默认标题为已完成/进行中/未开始/失败。字符串和数字插槽自动包在 text 内，数字 0 不丢失。最后一项不显示连接线。
+
+直接传入 Step、数组或条件子项；不要用 Fragment 或自定义组件包裹多项再依赖自动计数。废弃的 titleSlot/iconSlot/descriptionSlot 不移植。
+
+详情 `/ui-demo/steps` 对齐 Wot 当前十组示例，含三个独立下一步状态、超末项完成、点状循环、竖向长文案。保留本地正确导航标题“Steps 步骤条”（参考站当前误写“标签页”）。CSS 使用主题变量；SVG 读取 ConfigProvider 主题与显式色值。
+
+参考：https://wot-ui.cn/component/steps.html 、https://wot-ui.cn/demo/#/subPages/steps/Index 。
+
+
+# Sticky 粘性布局
+
+从 `packages/daisu-ui/src/index.ts` 导入 `Sticky`、`StickyBox`。使用 Lynx 原生 IntersectionObserver、NodesRef 测量与定位，无 DOM、window、全局滚动监听或轮询。
+
+```tsx
+<Sticky offsetTop={44}><Button label="吸顶内容" /></Sticky>
+<StickyBox>
+  <view style={{ height:'160px', width:'100vw' }}>
+    <Sticky offsetTop={44}><Button label="容器内吸顶" /></Sticky>
+  </view>
+</StickyBox>
+```
+
+Sticky 参数：`offsetTop?:number=0`、`zIndex?:number=1`、`children/className/style`。offsetTop 是 Lynx 视口内的实际像素距离，不暗中添加导航高度；H5 示例显式传入 44/94/194 对齐 Wot 的导航栏行为。支持负偏移，非有限数退回默认值。StickyBox 支持 `children/className/style`，最近一层 Box 约束内容不越过容器底部。
+
+正常状态保留布局；吸顶时使用 fixed，原位置保留实测宽高；到容器末尾使用相对原占位的 absolute。所有状态保留同一内容节点，不通过重新挂载切换位置。容器比内容矮时不吸顶。内容/容器尺寸变化会重新测量并更新观察器，卸载和参数变化会断开旧观察器并丢弃过期测量。
+
+包裹内容应有固有尺寸，避免依赖父级百分比宽高；用 px/vw/vh 或实际内容撑开。空内容至少占 1×1px，支持随后动态插入。纵向祖先应允许可见内容，避免放在裁剪纵向内容的短容器里。观察前缀覆盖锚点前 1,000,000px，用于跨视口跳转时正确复位，不适合把单个锚点放在超过此跨度的超长滚动页面中；虚拟列表应在实际挂载项内使用。
+
+详情 `/ui-demo/sticky` 复刻当前在线五组示例、120px 容器、250vh 页面、点击/5秒动态插入；按参考实际显示处理未生效的水平间距变量。保留标准 Button 和深色模式。H5 验证基础/偏移吸顶、容器末尾跟随、滚回复位、跨视口跳转、动态插入与浅深截图；原生设备滚动表现仍需在 Flutter 宿主验收。
+
+参考：https://wot-ui.cn/component/sticky.html 、https://wot-ui.cn/demo/#/subPages/sticky/Index 。
+
+
+# Curtain 幕帘
+
+从 `packages/daisu-ui/src/index.ts` 导入 `Curtain`，组合现有 Popup、Overlay、Icon，使用原生 image 与 zoom-in 过渡。
+
+```tsx
+<Curtain value={visible} onChange={setVisible} src={image} width={280} rootPortal />
+```
+
+参数：`value:boolean`、`onChange?:(value:boolean)=>void`、`src:string`、`width?:number`（px；不传使用加载后的自然宽度），`closePosition?:'inset'|'top'|'bottom'|'top-left'|'top-right'|'bottom-left'|'bottom-right'='inset'`，`closeOnClickModal?:boolean=false`、`closeOnClick?:boolean=true`、`zIndex?:number=10`、`rootPortal?:boolean=false`、`className/style`、`customCloseClass/customCloseStyle`。
+
+图片高度按自然比例计算，来源变化重置加载/失败状态；失败时隐藏遮罩和内容，触发 onError。关闭请求是受控通知，调用者须更新 value。
+
+事件：`onClick`（图片点击）、`onClickModal`、`onClose(reason:'close'|'modal'|'image')`、`onClosed`（离场结束）、原生 `onLoad/onError`，以及公共 LayerLifecycle 六个进退场事件。图片点击先调用可选导航，再触发 onClick，最后根据 closeOnClick 请求关闭。`to?:string` 必须配合 `onNavigate?:(url:string)=>void` 显式适配本地路由或宿主导航；库不直接跳转 uni-app 页面。
+
+`renderClose?:(close:()=>void)=>ReactNode` 替换默认关闭按钮，调用传入 close 关闭；rootPortal 需要页面根部 RootPortalHost，当前 App 已提供。关闭按钮默认白色 32px，支持显式 customCloseStyle.color。
+
+不移植微信长按识码菜单和废弃 value/modelValue 双重绑定；关闭后使用公共 Transition 的隐藏保留行为，不提供无实际效果的 hideWhenClose 参数。图片支持 Lynx 原生可用来源，包括项目静态资源。
+
+独立详情 `/ui-demo/curtain` 对齐当前 Wot 九入口、图片和七个关闭位置，含自定义关闭及遮罩关闭；支持深色模式。
+
+参考：https://wot-ui.cn/component/curtain.html 、https://wot-ui.cn/demo/#/subPages/curtain/Index 。
+
+
+# Watermark 水印
+
+从 `packages/daisu-ui/src/index.ts` 导入 `Watermark`。使用原生 text、image/SVG 与绝对布局重复单元，无 Canvas、浏览器 API 或轮询。支持深色页面；水印颜色默认保持当前 Wot 的浅灰色。
+
+```tsx
+<view style={{position:'relative',height:'300px'}}>
+  <Watermark fullScreen={false} content="内部资料" />
+  <text>页面内容</text>
+</view>
+```
+
+参数：`content?:string=''`、`image?:string=''`（优先于文字）、`imageWidth/imageHeight?:number=100`、`width/height?:number=100`（单元尺寸）、`gutterX/gutterY?:number=0`、`fullScreen?:boolean=true`、`color?:string='#c9cbd4'`、`size?:number=14`、`fontStyle?:'normal'|'italic'|'oblique'='normal'`、`fontWeight?:CSSProperties['fontWeight']|'bolder'|number='normal'`、`fontFamily?:string='PingFang SC'`、`rotate?:number=-25`、`zIndex?:number=1100`、`opacity?:number=.6`、`layout?:'grid'|'staggered'='grid'`、`rootPortal?:boolean=false`、`className/style`。默认颜色和透明度以当前在线实现为准，与旧版文档的 #8c8c8c/.5 有差异。
+
+尺寸至少 1px；间距不小于零；opacity 限制为 0–1；非有限数回退默认。bolder 映射为 bold，数字字重归一到 100–900 的百位。文字保留显式换行并在单元宽度内使用原生换行。原生字体可用性取决于宿主字体，排版可能与 Canvas 字体测量略有差异。SVG 来源使用原生 svg，位图使用 image。
+
+局部水印占满最近的定位容器，不影响其尺寸。全屏水印固定在 Lynx 视口，开启 rootPortal 可脱离裁剪/变换祖先，页面需配置 RootPortalHost。两种模式均不拦截触摸和无障碍焦点。布局尺寸由原生 layoutchange 更新，文字/图片/布局/间距等属性直接驱动渲染。
+
+每实例最多渲染 2048 单元，防止极小单元或极大容器耗尽原生节点；超出时只覆盖前 2048 单元。常规 100px 水印在手机视口约需 36 个单元。纯 UI 水印不提供防篡改或截图防护。
+
+独立详情 `/ui-demo/watermark` 对齐当前局部文字、图片、多行文本和全局水印示例，复用公共 Cell/Switch/Checkbox/Radio；全局支持文字/图片与网格/错位切换。
+
+参考：https://wot-ui.cn/component/watermark.html 、https://wot-ui.cn/demo/#/subPages/watermark/Index 。
+
+
+# Swiper 轮播图
+
+从 `packages/daisu-ui/src/index.ts` 导入 `Swiper`、`SwiperRef`。组合官方 `@lynx-js/lynx-ui` Swiper/SwiperItem 和公共 SwiperNav，拖动与分页动画在主线程执行；图片使用公共 Img；卡片通过 neighborHeight 与原生滑动进度在同一主线程同步改变高度，无结束后的二次 CSS 动画。原生裁剪模式直接随父容器尺寸变化，避免逐帧跨线程测量/回写。无 DOM、浏览器触摸监听或 uni-app 依赖。
+
+```tsx
+const [current, setCurrent] = useState(0);
+<Swiper list={['a.jpg', 'b.jpg']} current={current} onChange={setCurrent}
+  indicator={{type:'dots-bar'}} />
+```
+
+| 参数 | 类型 / 默认值 | 说明 |
+| --- | --- | --- |
+| list | readonly (string \| Record<string, unknown>)[] | 图片地址或对象列表；空列表不创建分页内核 |
+| current / defaultCurrent | number / 0 | current 为受控值；未传时使用内部状态 |
+| autoplay / interval | boolean / true；number / 5000 | 自动播放与间隔，单位 ms；拖动或动画期间暂停计时，结束后重新计时 |
+| duration / loop | number / 300；boolean / true | 原生动画时长 ms；非循环到末项后停止自动播放 |
+| height | number \| string / 192 | 数字为 px；字符串按 Img 尺寸规则处理 |
+| displayMultipleItems | number / 1 | 同时显示数量，归一为 1 到列表长度间的整数 |
+| neighborHeight | number / undefined | 邻项高度 px；启用原生进度卡片动画，限制在 0 到当前轮播高度间，不再叠加图片 height 过渡 |
+| previousMargin / nextMargin | number / 0 | 两侧留白，单位 px；不接受 CSS 字符串或 rpx |
+| indicator | boolean \| SwiperIndicator / true | false 隐藏；对象包含 type、minShowNum、showControls |
+| indicatorPosition | 八位置 / bottom | left、top-left、top、top-right、bottom-left、bottom、bottom-right、right |
+| valueKey / textKey | string / value、text | 对象中的图片地址和右上角标题字段 |
+| imageMode | ImgMode / aspectFill | 使用公共 Img 支持的模式 |
+| renderItem | ({item,index}) => ReactNode | 自定义每项内容；字符串/数字会包裹原生 text |
+| renderIndicator | ({current,total}) => ReactNode | 自定义指示器，优先于内置指示器 |
+| customIndicatorClass / customItemClass | string | 指示器与所有项目的样式类 |
+| customPrevClass / customNextClass | string | 前一项、后一项的样式类，可实现卡片效果 |
+| customTextClass / customTextStyle | string / CSSProperties | 标题样式 |
+| className / style | string / CSSProperties | 外层样式 |
+
+`SwiperIndicator`：`type?:'dots'|'dots-bar'|'fraction'='dots'`、`minShowNum?:number=2`、`showControls?:boolean=false`。点指示器可点击切换；非循环首尾隐藏不可用的切换按钮。
+
+`onChange(current, source)` 在分页结束时触发，source 为 `'autoplay' | 'touch' | 'nav'`；程序切换不误报为 touch。受控父组件需回填索引，拒绝回填时静默恢复受控值；外部 current 变化使用动画，回退使用即时归位。受控索引和 defaultCurrent 的非有限值归零，循环时取模，非循环时限制到合法范围。外部 current 也应保持规范化，避免业务状态与可见索引不同。
+
+`onClick(index,item)` 点击轮播项时触发，滑动期间不触发。ref 暴露 `swipeTo(index)`、`swipeNext()`、`swipePrev()`，均带动画；循环上一项/下一项使用原生相邻分页，避免从首尾横跨整个列表。自动播放定时器随关闭、列表变化和卸载清理。组件使用独立空测量节点的原生 layoutchange 初始化，隔离子项布局事件，支持父容器尺寸变化。双滑块增加首尾复制项，覆盖循环时露出的相邻滑块。
+
+内置圆点色通过 `--cso-ui-swiper-dot-color`（#c9cbd4）与 `--cso-ui-swiper-dot-active-color`（#fff）定制。图片、标题和浮在图片上的指示器在深色模式保持可读；卡片背景继承页面主题。
+
+当前官方 lynx-ui Swiper 只公开横向分页，**不移植 direction=vertical**。Flutter 宿主未提供视频播放协议，**不提供视频项、autoplayVideo、muted、videoLoop、stopPreviousVideo 或 stopAutoplayWhenVideoPlay**；不要把视频地址当作图片传入。平台专属 easingFunction、snapToEdge、支付宝 adjustHeight/adjustVerticalHeight 未移植，不提供无效果的占位参数。原生动画曲线由 lynx-ui 控制，无法保证与 uni-app 每一帧相同。
+
+独立详情 `/ui-demo/swiper`：三种指示器、手动切换、自定义字段、卡片、同时展示两项、自定义指示器、属性控制和内容插槽，共十个轮播。保留参考的支持项尺寸与分组，省略垂直和三个视频示例；自定义指示器示例适配为横向滑动。复用公共 Img、Cell、Switch、Gap、Button，支持深色模式。
+
+参考：https://wot-ui.cn/component/swiper.html 、https://wot-ui.cn/demo/#/subPages/swiper/Index 、https://lynxjs.org/next/lynx-ui/components/swiper 。
+
+关联 SwiperNav 已提取为公共组件，参数见 [swiper-nav.md](swiper-nav.md)，适用于 ImagePreview 等自定义指示器插槽。
+
+Img 性能补充：scaleToFill/aspectFit/aspectFill 直接使用原生百分比尺寸，父容器动画不触发逐帧背景测量/像素回写；其他模式保留原生测量。
+
+
+# ImagePreview 图片预览
+
+从 `packages/daisu-ui/src/index.ts` 导入 `ImagePreview`、`useImagePreview`。组合公共 Overlay、Swiper、Img、Icon，原生等比显示与主线程横向分页，支持深色模式和 RootPortal。每个 hook 管理一个组件实例，使用 props 连接，不使用 Vue inject 或全局 selector 注册表。
+
+```tsx
+const preview = useImagePreview();
+<Button label="预览" onTap={() => preview.previewImage({images:['a.jpg','b.jpg'],startPosition:1})} />
+<ImagePreview {...preview.props} rootPortal />
+```
+
+组件或 hook 默认参数：`images?:readonly string[]=[]`、`startPosition?:number=0`、`showIndex?:boolean=true`、`loop?:boolean=true`、`closeable?:boolean=true`、`closeIcon?:string='close'`（公共 Icon 名）、`closeIconPosition?:'top-left'|'top-right'='top-right'`、`closeOnClick?:boolean=true`、`zIndex?:number=1000`。
+
+事件：`onOpen()/onClose()` 在显示状态变化时触发一次；`onChange(index)` 在分页结束时触发；`onClick(index)` 点击当前项时触发；`onLongPress(index)` 通过原生 bindlongpress 转发。滑动期间不触发点击关闭。
+
+React 控制参数：`show?:boolean`、`onShowChange(show)`、`options?:ImagePreviewOptions`（覆盖直接传入的默认属性）、`requestKey?:number=0`、`rootPortal?:boolean=false`、`duration?:number=300`、`className/style`。注意 onChange 是索引事件，显示状态回填使用 onShowChange。启用 rootPortal 时页面必须有 RootPortalHost。
+
+`useImagePreview(defaults?)` 返回 `{props,previewImage,closeImagePreview}`。previewImage 接受图片数组或 ImagePreviewOptions，每次调用都会替换本次选项并重置起点；上一次的隐藏页码等选项不会泄漏到下一次。不同 hook 完全独立。挂载组件后再调用，关闭使用 closeImagePreview。
+
+组件 ref：`open(input?)`、`close()`、`setActive(index)`。未传 show 时可由 ref 管理开关；传 show 时需通过 onShowChange 回填。open 的参数接受数组/选项，不传参数则使用组件配置。索引的非有限值归零，负数/超长值限制到合法范围；空数组只保留可关闭的空浮层。关闭动画结束后卸载轮播，释放图片节点，快速重开会取消旧离场。
+
+插槽：`renderClose(close)`、`renderIndicator({current,total})`、`renderContent({current,total,images,close})`，返回 ReactNode。自定义关闭优先于 closeable，自定义指示器优先于 showIndex。底部内容可以绝对定位并包含按钮。可通过公共 `SwiperNav` 复刻点条状指示器：`<SwiperNav current={current} total={total} type="dots-bar" style={{bottom:'64px'}}/>`。
+
+浮层背景默认 rgba(0,0,0,.75)，通过 `--cso-ui-image-preview-bg` 或 style 定制；页码/关闭按钮距顶部 16px，默认白色。和当前官网一样使用 aspectFit 分页查看；不增加未经宿主支持的保存图片、微信长按菜单或视频播放接口，不提供 showMenuByLongpress 空参数。原生长按事件不等同于平台菜单。业务已有的 Flutter media.image.preview 协议保持独立，按页面需要选择 UI 预览或宿主预览适配器。
+
+独立详情 `/ui-demo/image-preview` 对齐官网 10 个分组项、11 个入口：基本/数组、起始位置、隐藏页码/关闭、两种关闭位置、禁用点击关闭/循环、事件与自定义指示器/底部说明。
+
+参考：https://wot-ui.cn/component/image-preview.html 、https://wot-ui.cn/demo/#/subPages/imagePreview/Index 。
+
+验证：11 个入口按钮的坐标和尺寸与官网一致；全屏/页码/关闭几何、真实滑动、禁用关闭、回调、自定义插槽和浅深模式已核对。
+
+
+# SwiperNav 轮播指示器
+
+从 `packages/daisu-ui/src/index.ts` 导入 `SwiperNav`。与公共 Swiper 共用三种指示器和导航按钮，用于 ImagePreview 的自定义插槽；无分页状态、计时器或手势内核。
+
+```tsx
+<SwiperNav current={1} total={5} type="dots-bar" style={{bottom:'64px'}}/>
+```
+
+参数：`current?:number=0`、`total?:number=0`、`type?:'dots'|'dots-bar'|'fraction'='dots'`、`indicatorPosition?:'left'|'top-left'|'top'|'top-right'|'bottom-left'|'bottom'|'bottom-right'|'right'='bottom'`、`minShowNum?:number=2`、`showControls?:boolean=false`、`hidePrev/hideNext?:boolean=false`、`className/style`。非法数字归零，索引限制到合法范围，空列表隐藏。需要放在有尺寸的定位容器中。
+
+`onChange({dir:'prev'|'next'})` 发送导航意图，由父组件更新索引；`onSelect(index)` 可选，传入后圆点可以直接选择页。组件自身不修改 current。圆点/点条/分数与八种位置使用公共 Swiper 样式和 Token；示例见 `/ui-demo/swiper` 与 `/ui-demo/image-preview` 自定义插槽。
+
+这是 Wot 的 wd-swiper-nav 的横向版本；不提供垂直方向和无实际作用的 autoplay 配置。
+
+
+# Table 表格
+
+从 `packages/daisu-ui/src/index.ts` 导入 `Table`、`TableColumn<T>`。独立详情 `/ui-demo/table` 对照当前 Wot Table 的 14 组示例，支持深色模式，复用 SortButton、Pagination 和 InputNumber。
+
+```tsx
+const columns: TableColumn<Person>[] = [
+  { prop: 'name', label: '姓名', fixed: true, width: 100 },
+  { prop: 'score', label: '分数', sortable: true, align: 'center' },
+];
+<Table data={rows} columns={columns} height={400}
+  onSortMethod={({ prop, sortDirection }) => setRows(sortRows(rows, prop, sortDirection))}
+  onRowClick={({ rowIndex }) => selectRow(rows[rowIndex])} />
+```
+
+使用 React `columns` 配置替代 Wot 的 `wd-table-column` 子组件。每列 `prop` 对应行属性，`label` 为表头；`width` 默认 100px，可为数字或 Lynx 支持的 CSS 长度（包括百分比和 calc）；`align` 为 left / center / right，默认 left；`fixed`、`sortable` 默认 false。仅支持左侧固定列；建议将固定列连续放在最前。`render({row,index})` 对应 value 插槽，返回 ReactNode 或文本，index 始终是 data 中的绝对索引。
+
+参数：
+
+| 参数 | 默认值 | 说明 |
+| --- | --- | --- |
+| data / columns | 必传 | 只读数组；组件不修改或排序原始数据 |
+| border / stripe | true / true | 边框与斑马纹，表头随 stripe 着色 |
+| height | 不设置 | 最大可见高度，不含外边框；设置后表体可纵向滚动。数字为 px，字符串为可解析的 Lynx 固定长度；高度百分比需要父级具有明确高度 |
+| showHeader / fixedHeader | true / true | 是否展示、固定表头；无 height 时随页面自然滚动 |
+| ellipsis | false | 默认换行；开启后普通文本最多两行 |
+| index | false | true 或列配置；默认标题“序号”、宽 100rpx（13.333333vw），从 1 开始 |
+| cellPadding | [12,16] | 单元格内边距 px，数字或 [垂直,水平]；原生测量与行高同步使用，富文本表格传 0 后由内容负责边距 |
+| rowHeight | 44 | 非虚拟模式最小行高，文本和自定义内容可撑高；虚拟模式为严格固定行高，单位 px |
+| spanMethod | — | `({row,column,rowIndex,columnIndex}) => {rowspan,colspan}` 或 `[rowspan,colspan]`；0 隐藏单元格，调用方负责覆盖区域的 0 配置 |
+| virtual / buffer | false / 5 | 有明确 height 时开启固定行高的缓冲窗口；不挂载全部行。虚拟模式不组合 rowspan/colspan，可用独立非虚拟表格展示合并行 |
+| rowKey | 行索引 | 行属性名或 `(row,index)=>string\|number`，编辑/重排场景请传稳定唯一值 |
+| className / style | — | 根容器扩展 |
+
+`onSortMethod(column)` 包含列配置（不含 render）与 `sortDirection: 0 | 1 | -1`；循环为未排序→升序→降序→重置，同时清空其他列箭头。由调用方处理排序，组件不猜测数值/字符串/服务端规则。`onRowClick({rowIndex})` 点击任意单元格发出；自定义交互组件可自行拦截冒泡。
+
+固定列通过主线程滚动事件同步，表头与表体共用横向滚动容器，避免每帧 React 更新。列宽由独立空节点测量；普通模式根据内容原生布局事件计算整行高度，不使用 DOM。虚拟模式只更新可视缓冲行窗口，编辑值必须保存在业务数据中，不能只放在会卸载的单元格本地 state。默认表头44px；自定义内容受列宽约束，跨列合并不建议越过固定列边界。
+
+当前在线 Wot 默认 ellipsis=false、rowHeight=44，旧安装技能描述的 true/50 不适用于本实现。没有移植 uni-app 组件注册、CSS grid/sticky 的浏览器依赖；使用原生滚动与布局同步。虚拟滚动针对固定行高；超大/无限业务列表仍使用项目既有 List，勿替换业务 List 或 FeedList。
+
+
+# BarCode 条形码
+
+从 `packages/daisu-ui/src/index.ts` 导入 `BarCode`、`BarCodeRef` 和 `BarCodeFormat`。独立示例 `/ui-demo/bar-code`，对照 Wot 当前 12 组示例、38 个条码实例，覆盖常见格式、位置/间距、颜色、尺寸、字体、导出和特殊格式尺寸。
+
+```tsx
+const ref = useRef<BarCodeRef>(null);
+<BarCode ref={ref} value="690123456789" format="EAN13"
+  onValid={valid => setValid(valid)} onError={error => setError(error.message)} />
+const svgDataUrl = await ref.current!.exportImage();
+```
+
+复用固定版本 JsBarcode 3.12.3（MIT）的纯编码模块，禁止将导入改为 `jsbarcode` 根入口，后者包含 DOM / Canvas 渲染器。条纹由 Lynx 原生 SVG 绘制，文字使用原生 text，不依赖 Serval 不完整的 font-family / font-weight / font-style 支持。EAN/UPC 具有真实校验位、分段数字和加长保护条，不是装饰线条。
+
+| 参数 | 默认值 | 说明 |
+| --- | --- | --- |
+| value | — | string / number；空值不显示，0 是有效内容，最多128字符 |
+| format | auto | auto、CODE128、CODE128A、CODE128B、CODE128C、EAN13、EAN8、UPC、UPCE、CODE39、ITF14、MSI、MSI10、MSI11、MSI1010、MSI1110、pharmacode、codabar |
+| width / height | 200 / 100 | 整体尺寸，单位px，必须为有限正数；包括留白、条纹和文字。不是单根条纹宽度 |
+| text | 空字符串 | 自定义显示文字；默认使用编码后的文字，包括自动计算的校验位 |
+| font / fontSize | monospace / 20 | 原生字体与最大字号；文本通过独立原生布局测量，宽度不足时缩小字号；字体实际效果取决于宿主可用字体 |
+| fontOptions | 空字符串 | bold / italic / bold italic |
+| textMargin | 2 | 条纹与文字间距，非负有限数字 |
+| background / lineColor | #ffffff / #000000 | 背景色与条纹/文字颜色 |
+| margin | 10 | 四边留白，非负有限数字 |
+| marginTop / marginBottom / marginLeft / marginRight | margin | 各边留白，允许0 |
+| displayValue | true | 是否展示文字 |
+| textAlign | center | left / center / right；EAN13/EAN8/UPC/UPCE 默认数字保持分段居中，自定义text时使用该参数 |
+| textPosition | bottom | top / bottom |
+| className / style | — | 根容器扩展；改变绘图尺寸请使用width/height |
+
+`onValid(boolean)`：每次有关参数引发的编码校验完成时触发，结果相同也会触发；表示内容合法，不能替代绘图或导出的成功结果。空值以及编码前选项校验失败不触发。`onError(Error)`：编码、尺寸或布局失败时触发。非法输入不保留旧条码；有效编码在宽高不足时也会绘制失败。自定义业务错误反馈由调用方处理。
+
+Ref：`getSvg():string` 获取包含字体和文字的标准 SVG；`exportImage():Promise<string>` 返回 `data:image/svg+xml;charset=utf-8,...`，无效或空条码拒绝 Promise。示例调用实际导出结果并展示。当前 Flutter 宿主未提供 Canvas/位图保存协议，因此返回 SVG data URL，**不是 Wot 的 PNG tempFilePath**，不支持写入相册或假造本地文件路径。外部 SVG 使用标准字体属性；宿主若要将 SVG 导出为 PNG，需补充实际的宿主图像转换协议。
+
+深色模式随页面切换；条码默认保留白底黑条以保持扫描对比度，需要自定义时显式配置 background / lineColor。SVG 使用连续坐标保留编码比例，原生文字的字体和基线由平台排版，未照搬 Canvas 的平台像素取整。所有格式都应使用足够宽度和真实扫码设备验收；当前已验证编码模块与 H5 展示，未声明真机扫码验收。
+
+
+# QrCode 二维码
+
+从 `daisu-ui` 导入 `QrCode`、`QrCodeProps`、`QrCodeRef`。独立示例 `/ui-demo/qr-code`。
+
+```tsx
+const qr = useRef<QrCodeRef>(null);
+<QrCode ref={qr} text="https://wot-ui.cn" size={200} correctLevel="H" />
+```
+
+真实 QR Byte 编码，自动版本 1–40；中文和 emoji 按 UTF-8 编码，不截断为低八位。L/M/Q/H 纠错，默认 H。超出编码容量或参数错误触发 onError，不保留旧码。
+
+参数沿用 Wot camelCase：text=''、size=200(px)、correctLevel='H'、colorDark='#000000'、colorLight='#FFFFFF'、margin=0(px)；logo=''、logoWidth/Height=70、logoBackgroundColor='#FFFFFF'、logoRadius=0、logoBorderColor=''、logoBorderWidth=0；dotType='square'（square/dots/rounded/liquid）、dotScale=1（0–1）；enableGradient=false、gradientColor='#000000'、gradientColors=[]、gradientDirection='diagonal'（horizontal/vertical/diagonal/角度）；backgroundImage=''。className/style 替代 custom-class/custom-style，onClick/onError 对应事件。
+
+原生 SVG 渲染码点，原生 image 叠加背景与 Logo，避免依赖 Canvas 或 SVG 内嵌位图的移动端支持。rounded 和 liquid 按官网逐点圆角规则绘制，渐变使用原生 linearGradient。二维码默认固定黑白颜色，深色主题仍保留对比度；示例容器使用主题 Token。
+
+Ref 的 getSvg() 返回SVG源码并保留外部图片引用。exportMode默认svg，exportImage返回SVG data URL，但若Logo/背景含非内嵌图片则拒绝导出，避免资源丢失。浏览器宿主先调用 daisu-ui/web 的 registerDaisuWebComponents，再设置 exportMode="browser"，exportImage异步加载并内嵌图片后通过Canvas返回完整PNG data URL；图片跨域需CORS许可，失败拒绝Promise。示例直接用Img展示此返回值，不用getSvg代替实际结果。Flutter尚无位图合成后端。size限制0–4096，margin小于size/2。
+
+九个官网分组场景（含三种码点）与导出结果展示。装饰参数可能降低扫码成功率，实际内容需在目标扫码器验证，特别是过大 Logo、低对比度、缩点与无静区。原生 iOS/Android SVG、图片和扫码结果仍需真机回归。
+
+验证：npm test 全量通过；H5 390px 视口 11个实例位置/尺寸与官网逐项一致，导出按钮真实触屏点击已通过，浅深截图已检查。
+
+
+# RichText 富文本
+
+```tsx
+import { RichText } from 'daisu-ui';
+<RichText content='<h2>周末出走</h2><p>走慢一点，<strong>看看远处。</strong></p>' />
+```
+
+实现位于 `packages/daisu-ui/src/RichText.tsx`，独立详情 `/ui-demo/rich-text`。HTML 经 htmlparser2 解析成 Lynx view/text/image，表格复用公共 Table，图片预览复用公共 ImagePreview；不执行 HTML，不加载编辑器运行时。
+
+| 参数 | 默认 | 说明 |
+| --- | --- | --- |
+| mediaMode | none | none 过滤音视频；browser 使用已注册的 daisu-ui/web 浏览器播放器 |
+| content | '' | HTML 字符串；为空、过滤后为空、解析失败显示 children |
+| selectable | false | 映射原生 text-selection；选择体验依目标平台 |
+| previewImage | true | 已加载的普通图片点击自动预览；链接图片只触发 linkClick |
+| enableAnchor | false | 开启目录与原生锚点查询 |
+| baseUrl | 无 | HTTP(S) 基址，只补全图片资源，不改 href |
+| allowDataImage | false | 允许不超过 64 KiB 的 PNG/JPEG/GIF/WebP Base64 图片；不接受 SVG，不自动预览 |
+| tagStyle / classStyles | 无 | Record<string,string>；默认样式→tagStyle→classStyles→HTML style；不直接使用页面同名 class |
+| loadingImage / errorImage | 无 | 加载/失败占位图片；占位失败退回文字，不重复触发资源错误 |
+| onScrollToAnchor | 无 | 接入实际父滚动容器，参数 {id,rect,offset,duration}，可返回 Promise |
+| className / style | 无 | 根节点类名与 CSSProperties |
+
+事件：onLoad({imageCount}) 在解析及节点更新后触发，不等待图片加载；onError 为 `{source:'parse',message,code?}` 或 `{source:'image',src,index}`；onImageLoad({src,index,width,height}) 每个图片实例成功时一次；onImageClick({src,index}) 只针对已加载的普通图片；onLinkClick({href}) 处理文字链接与图片链接，组件不自动执行导航。
+
+图片支持 original-src 高清预览地址、data-preview="false" 排除预览、width/height 与 alt。默认未指定高度的图片按容器宽度等比显示；指定高度使用 aspectFill。只有首次实际点击普通图片时挂载公共预览，需要页面根部已有 RootPortalHost；纯文本与链接图片不强制依赖 Portal。
+
+Ref：getText() 返回过滤后的纯文本；getHeadings() 返回 `{id,level,text}[]` 副本；getAnchorRect(id) 查询当前原生视口坐标；scrollToAnchor(id,{offset=0,duration=300}) 调用提供的 onScrollToAnchor。未配置滚动适配器时 reject，不假定宿主存在 uni.pageScrollTo。详情示例对接真实父 scroll-view，完整长文按页面展开并提供六章目录。内容替换、卸载、无效/不可见目标或新定位请求会使旧查询/定位失败；滚动 Promise 的完成时间由适配器负责。
+
+支持标题、段落、强调、引用、代码文本、换行、图片、链接、figure/figcaption、有序/无序及嵌套列表。Quill 对齐/缩进/字号/字体类和任务列表只读标记通过显式映射生效；另含 wangEditor 与 TinyMCE 的独立切换示例。表格用 colgroup/col 指定像素/百分比列宽，rowspan/colspan 通过原生 Table 合并布局；宽表格横向滚动。未定义列宽时均分容器，和浏览器的自动列宽算法有差异。代码保留换行，复杂空白排版与编辑器插件不保证完全复刻。
+
+过滤 script/style/iframe/object/embed/SVG/MathML/未支持的媒体嵌入、事件属性及危险地址。只保留基础字体、颜色、尺寸、边框、间距样式，忽略外部 CSS、定位、Flex/Grid、CSS url()/expression()。限制 200000 字符、10000 节点、128 层、2000000 输出字符；表格额外限制 100 列/10000 布局格，防止合并参数扩张内存。超限触发明确 code 并展示 children，不静默截断文章。
+
+浏览器音视频接入：在浏览器宿主入口（非 Lynx Bundle）中调用 `import {registerRichTextMedia} from 'daisu-ui/web'; registerRichTextMedia();`，然后向 RichText 传 `mediaMode="browser"`。默认 `mediaMode="none"`，原生 Flutter 继续过滤 audio/video，不创建未注册元素。
+
+浏览器模式支持 video/audio 的 src、title、poster、loop、muted，以及最多 16 个去重后的直接子级 source 资源回退；只接受 HTTP(S) 或相对地址，忽略 autoplay。视频使用 HTML5 控件（含浏览器支持的全屏），音频使用播放/暂停条。链接/媒体使用原生 DOM 媒体 API，DOM 代码仅在独立 web 入口中加载。
+
+Ref 增加 playMedia(id)、pauseMedia(id?)、seekMedia(id,seconds)，同步返回 boolean 仅表示是否发送指令。ID 需唯一、不含空白/控制字符且不超过128字符；不存在/重复/未挂载/终止失败返回false，负数和非有限进度返回false；不传ID的 pauseMedia 暂停当前实例的全部媒体。单个组件中开始播放会暂停其余媒体，多个 RichText 实例相互独立。seek 不启动播放：元数据未就绪时排队，随元数据/缓冲更新重试，以 seeked 确认；超过10秒未完成发出 SEEK_FAILED，可重试；已知时长时裁剪至结尾。
+
+事件：onMediaPlay / onMediaPause / onMediaEnded({id,type,src})；onMediaTimeUpdate({id,type,src,currentTime,duration})，只报告实际播放器进度。音视频错误通过 onError({source:'audio'|'video',src,message,code?})；PLAY_REJECTED 是可重试的浏览器播放限制，SEEK_FAILED 是可重试定位失败。资源错误在候选源耗尽后才报告，重新挂载/内容替换重置失败状态。示例增加两段真实资源、片段定位、播放/暂停/5秒跳转及错误重载；仅收到实际5秒进度后显示成功。浏览器页面隐藏、pagehide、节点卸载都会暂停，卸载还释放 src 和所有事件监听；旧异步播放结果不会重新启动已卸载媒体。
+
+没有暴露 lazyLoad：公共 Img 及当前原生后端未提供可验证的统一懒加载参数。Flutter 尚未暴露音视频播放接口，因此浏览器模式不能视为原生音视频已完成；原生示例明确提示在浏览器体验。
+
+主题使用 --cso-ui-rich-text-color/font-size/line-height/link-color/video-height/image-state-bg/image-state-color，默认回落公共语义 Token；固定 HTML 颜色优先。原生选择文字、图片和表格测量仍需 iOS/Android 真机回归。
+
+Demo 排版核对：状态区使用三个 small 实心按钮，正文不增加卡片边距，空状态单独使用灰底居中提示；长文展开/收起和六章目录使用靠左实心小按钮，底部提供「收起手记，回到开头」。预览及链接图片限宽 320px；邀请函、编辑器内容为 12px 内边距/1px 边框/8px 圆角，主题卡片使用灰底及独立浅深色配置；反馈提示为绿色浅底。链接带下划线，示例将链接色设为绿色。默认段落间距 12px、标题相对字号、列表缩进 24px；正数相邻块间距由组件显式合并。宽表格示例显式指定列宽以对齐原生平台与参考的浏览器自动列宽差异。
+
+# VideoPreview 视频预览
+
+浏览器版本，位于 `packages/daisu-ui/src/VideoPreview.tsx`；独立示例 `/ui-demo/video-preview`。默认248px播放区、全屏区域、左右关闭位置、ref及两个独立hook实例，对照 Wot Demo。实际播放使用 HTML5 video。
+
+浏览器宿主入口先注册：
+
+```ts
+import { registerDaisuWebComponents } from 'daisu-ui/web';
+registerDaisuWebComponents(); // 挂载 lynx-view 之前执行，不能放入 Lynx Bundle
+```
+
+```tsx
+const preview = useVideoPreview();
+<Button label="预览" onTap={() => preview.previewVideo({ url: 'https://example.com/video.mp4', poster: 'https://example.com/poster.jpg', title: '视频' })} />
+<VideoPreview {...preview.props} mediaMode="browser" rootPortal />
+```
+
+| 参数 | 默认 | 说明 |
+| --- | --- | --- |
+| mediaMode | none | browser 开启已经注册的浏览器播放器；Flutter暂无后端 |
+| url / poster / title | 无 | 视频、封面与标题；支持HTTP(S)和相对地址，不执行脚本/data/file地址 |
+| show / onShowChange | 非受控 | 可选受控显示；hook提供同一组合 |
+| fullScreen | false | 播放区域填满预览层；默认区域高度248px；HTML5控件仍可进入浏览器原生全屏 |
+| closePosition | left-top | left-top / right-top，距边16px |
+| zIndex | 1000 | 公共Overlay层级 |
+| onOpen / onClose | 无 | 层实际打开和关闭时各触发一次；重复关闭不重复回调 |
+| onError | 无 | {src,message}，实际资源加载/播放失败及不支持的调用 |
+| rootPortal | false | 使用时根部须已放置RootPortalHost |
+| duration | 300 | 公共Overlay淡入淡出毫秒数 |
+| className / style | 无 | 根层样式 |
+
+Ref：`open(VideoPreviewOptions):boolean`、`close()`；open按当前调用替换旧参数，无效地址或无浏览器后端返回false。`VideoPreviewOptions` 含 url/poster/title/fullScreen/closePosition/zIndex/onOpen/onClose；此次传入的配置高于组件默认配置。受控模式中调用open/close通过onShowChange通知调用方。
+
+`useVideoPreview(defaults?)` 返回 `{props,previewVideo(video),closeVideoPreview()}`。每个hook绑定自己的VideoPreview，无需Vue的selector/注入机制；两个实例不会串用选项。调用方需要将props挂到对应组件，hook不会自行往页面插入DOM。
+
+点击关闭按钮、播放器外的遮罩或Escape关闭预览并暂停；关闭、替换及组件卸载会移除播放器、释放src及其监听。Escape退出HTML5原生全屏时先由浏览器处理。页面隐藏/pagehide自动暂停。视频不自动播放，浏览器可能要求用户点击播放器后才允许播放。
+
+主题：--cso-ui-video-preview-bg、--cso-ui-video-preview-video-height。浏览器主线程实现仅存在于daisu-ui/web；Flutter端尚未接入video元素及播放协议，不能把本页浏览器通过视为真机支持。当前不提供无效果的selector或原生临时视频文件接口。
+
+# ImgCropper 图片裁剪
+
+浏览器版本，位于 `packages/daisu-ui/src/ImgCropper.tsx`，独立详情 `/ui-demo/img-cropper`。浏览器宿主先调用 `import {registerDaisuWebComponents} from 'daisu-ui/web'; registerDaisuWebComponents();`，再挂载lynx-view。DOM、选图和Canvas仅在该浏览器入口加载。
+
+```tsx
+const [show, setShow] = useState(false);
+<ImgCropper show={show} onShowChange={setShow} mode="browser"
+  autoChoose aspectRatio="1:1" onConfirm={result => console.info(result)} />
+```
+
+| 参数 | 默认 | 说明 |
+| --- | --- | --- |
+| mode | none | browser启用已注册的浏览器编辑器；Flutter暂无裁剪后端 |
+| show / onShowChange | false | 打开与关闭；未传show时可通过ref.open/close控制 |
+| imgSrc | '' | HTTP(S)、相对地址、同源Blob或8MiB以内PNG/JPEG/WebP/GIF Base64；SVG/file等不支持；跨域图片服务器须允许CORS读取，否则无法导出 |
+| autoChoose | false | 打开且imgSrc为空时尝试打开文件选择；浏览器限制时仍可点击编辑器中的「选择图片」 |
+| imgWidth / imgHeight | 无 | 初始宽/高，正数px或百分比；始终保留原比例，并按裁剪框锁边，不拉伸图片 |
+| aspectRatio | 1:1 | 正数width:height，比例0.02–50；示例含1:1、3:2、16:9、16:10 |
+| disabledRotate | false | 隐藏旋转按钮并阻止setRotate |
+| exportScale | 2 | 导出像素/裁剪框CSS像素，有限正数且不超过8；结果每边1–4096、总计不超过1600万像素，超限报错 |
+| maxScale | 3 | 相对当前角度最小覆盖比例的最大缩放，1–20 |
+| quality | 1 | 0–1，JPEG压缩质量；PNG由浏览器无损编码 |
+| fileType | png | png / jpg / jpeg；jpeg归一为jpg |
+| cancelButtonText / confirmButtonText | 取消 / 完成 | 底部操作文案 |
+| topInset / zIndex | 0 / 1000 | 顶部保留区域及公共Overlay层级；示例保留44px导航栏 |
+| rootPortal | false | 根部已有RootPortalHost时可启用 |
+| className / style | 无 | 编辑器外层样式 |
+
+交互：单指/鼠标拖动，双指缩放，鼠标滚轮以指针位置缩放；旋转按钮每次顺时针90°。边界在旋转后的图像坐标中约束四个裁剪角，任意setRotate角度都不会露空。默认裁剪框距左右20px，最多占可用高度85%；示例390×844视口保留44px导航栏后，框位于(20,165)，尺寸350×350。
+
+事件：`onConfirm({tempFilePath,width,height,fileType})` 来自真实Canvas编码；`onCancel()`；`onImgLoaded({res:{width,height}})`；`onImgLoadError({err})`；`onError({message,phase?})` 为配置/加载/导出错误。确认、取消会请求关闭；加载/导出失败保持编辑器以便重试。切换内容、取消或关闭后，迟到的图片加载和Canvas结果不会提交。
+
+浏览器的tempFilePath是可读取/预览/下载的 **Blob URL**，不等于Flutter或uni-app文件系统路径。PNG保留透明通道，JPEG以白色底合成；宽高是实际输出像素，默认350px方框生成700×700图片。文件选择支持20MB以内PNG/JPEG/WebP/GIF，GIF导出当前帧。
+
+Ref：`open(src?):boolean`、`close()`、`chooseImage():boolean`、`confirm():boolean`、`setRotate(deg):boolean`、`resetImg():boolean`、`revertIsAnimation(animation):boolean`；boolean表示是否发出指令，结果以事件为准。`downloadResult(url):boolean` 下载本实例导出的结果；`revokeResult(url)` 提前释放旧结果。编辑器关闭后仍保留结果以供页面显示，组件卸载时会释放所有结果及文件选择创建的源Blob URL；异步上传/持久化应在卸载前读取Blob。示例替换旧头像会立即回收旧结果。
+
+浏览器内使用Canvas 2D真实导出，跨域失败有明确错误。没有接入上传服务器，详情将Wot「裁剪后上传」改为「裁剪后导出」，实际下载JPEG；调用方可通过自己的上传适配器处理Blob，不能把临时URL当远端已上传地址。Flutter的选图/裁剪/导出协议仍待实现。
+
+浏览器确认按钮可通过 --cso-ui-img-cropper-confirm-bg 定制，默认回落公共primary主题色。浏览器完整排版与Lynx组件样式分离；原生侧不会创建浏览器自定义元素。

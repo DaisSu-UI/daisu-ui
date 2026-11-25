@@ -1,0 +1,11 @@
+.ui-upload{display:flex;flex-direction:row;flex-wrap:wrap;position:relative;}
+.ui-upload-add,.ui-upload-preview{position:relative;width:var(--ui-upload-size);height:var(--ui-upload-size);border-radius:4px;margin-bottom:8px;overflow:hidden;flex-shrink:0;}
+.ui-upload-preview{margin-right:8px;}
+.ui-upload-border{position:absolute;top:0;left:0;right:0;bottom:0;border:1px solid var(--cso-ui-line);border-radius:4px;pointer-events:none;}
+.ui-upload-add{display:flex;flex-direction:column;align-items:center;justify-content:center;background-color:var(--cso-ui-canvas);border:1px dashed var(--cso-ui-line);}
+.ui-upload-add text{font-size:14px;line-height:20px;color:var(--cso-ui-text-muted);}
+.ui-upload-picture,.ui-upload-image{width:100%;height:100%;}
+.ui-upload-remove{position:absolute;right:0;top:0;border-bottom-left-radius:4px;padding:2px;background-color:rgba(0,0,0,.55);}
+.ui-upload-status{position:absolute;top:0;bottom:0;left:0;right:0;background-color:rgba(0,0,0,.55);display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.ui-upload-status text{font-size:14px;line-height:20px;color:#fff;}
+.ui-upload-evoke-slot{align-self:flex-start;}

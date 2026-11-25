@@ -1,0 +1,23 @@
+.ui-avatar { display: flex; align-items: center; justify-content: center; flex-shrink: 0; align-self: flex-start; overflow: hidden; background-color: var(--cso-ui-avatar-bg,var(--cso-ui-line)); }
+.ui-avatar-round { border-radius: 9999px; }
+.ui-avatar-square { border-radius: 4px; }
+.ui-avatar-text { max-width: 100%; font-weight: 500; color: var(--cso-ui-avatar-text,var(--cso-ui-text-auxiliary, var(--cso-ui-text-muted))); text-align: center; white-space: nowrap; }
+.ui-avatar-image { width: 100%; height: 100%; }
+.ui-avatar-icon { display: flex; align-items: center; justify-content: center; }
+.ui-avatar-icon .ui-icon { width: 100% !important; height: 100% !important; }
+
+
+
+
+.ui-avatar-group { display: flex; flex-direction: row; }
+.ui-avatar-group-vertical { flex-direction: column; align-items: flex-start; }
+.ui-avatar-group-item { position: relative; }
+.ui-avatar-collapse { background-color: var(--cso-ui-avatar-collapse-bg, #ebedf0); }
+.ui-avatar-collapse .ui-avatar-text { color: var(--cso-ui-avatar-collapse-color, #969799); }
+
+
+
+
+
+.ui-avatar-icon-light{display:var(--cso-ui-light-display,flex);}
+.ui-avatar-icon-dark{display:var(--cso-ui-dark-display,none);}

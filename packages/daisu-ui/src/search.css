@@ -1,0 +1,23 @@
+.ui-search{--ui-search-field-bg:var(--cso-ui-surface);display:flex;flex-direction:row;align-items:center;width:100%;padding:8px 12px;background-color:var(--cso-ui-surface);}
+.ui-search-block{position:relative;flex:1;min-width:0;margin-right:6px;border-radius:9999px;background-color:var(--ui-search-field-bg);display:flex;flex-direction:row;align-items:center;}
+.ui-search-filled{--ui-search-field-bg:var(--cso-ui-canvas);}
+.ui-search-light{background-color:var(--cso-ui-canvas);}
+.ui-search-outline{position:absolute;z-index:1;pointer-events:none;left:0;top:0;width:100%;height:100%;border-radius:9999px;border-width:1px;border-style:solid;border-color:var(--cso-ui-surface-muted);}
+.ui-search-field{position:relative;flex:1;min-width:0;height:36px;padding:0 12px;display:flex;flex-direction:row;align-items:center;}
+.ui-search-edit-area{position:relative;flex:1;min-width:0;height:36px;}
+.ui-search-editor{height:36px;}
+.ui-search-editor .ui-textfield-body,.ui-search-editor .ui-textfield-native{height:36px;}
+.ui-search-cover{position:absolute;left:0;top:0;width:100%;height:36px;display:flex;flex-direction:row;align-items:center;justify-content:center;background-color:var(--ui-search-field-bg);border-radius:9999px;}
+.ui-search-glyph{position:relative;display:flex;align-items:center;justify-content:center;margin-right:4px;flex-shrink:0;}
+
+
+
+.ui-search-placeholder{font-size:14px;line-height:20px;color:var(--cso-ui-text-placeholder,#a9acb8);}
+.ui-search-clear{margin-left:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ui-search-clear-glyph{margin-right:0;}
+.ui-search-cancel{font-size:14px;line-height:20px;color:var(--cso-ui-primary);flex-shrink:0;}
+.ui-search-input-suffix{margin-left:8px;display:flex;flex-direction:row;align-items:center;flex-shrink:0;}
+.ui-search-prefix,.ui-search-suffix{display:flex;flex-direction:row;align-items:center;flex-shrink:0;}
+
+.ui-search-glyph-light{display:var(--cso-ui-light-display,flex);}
+.ui-search-glyph-dark{display:var(--cso-ui-dark-display,none);}

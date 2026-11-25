@@ -1,0 +1,19 @@
+.ui-segmented { width: 100%; border-radius: 4px; padding: 4px; background-color: var(--cso-ui-surface-muted); box-sizing: border-box; }
+.ui-segmented-track { position: relative; display: flex; flex-direction: row; align-items: stretch; }
+.ui-segmented-item { flex-shrink: 0; min-width: 0; box-sizing: border-box; position: relative; padding: 2px 12px; display: flex; align-items: center; justify-content: center; border-radius: 4px; }
+.ui-segmented-label { color: var(--cso-ui-text-muted); font-size: 16px; line-height: 24px; text-align: center; }
+.ui-segmented-item-active .ui-segmented-label { color: var(--cso-ui-primary); font-weight: 600; }
+.ui-segmented-item-disabled { opacity: .4; }
+.ui-segmented-slider { position: absolute; top: 0; bottom: 0; left: 0; border-radius: 4px; background-color: var(--cso-ui-surface); transition: transform 200ms cubic-bezier(.645,.045,.355,1); }
+.ui-segmented-outline { padding: 0; background-color: transparent; }
+.ui-segmented-outline .ui-segmented-item { padding: 6px 16px; border-radius: 0; }
+.ui-segmented-outline .ui-segmented-item-first { border-radius: 4px 0 0 4px; }
+.ui-segmented-outline .ui-segmented-item-last { border-radius: 0 4px 4px 0; }
+.ui-segmented-outline .ui-segmented-item-first.ui-segmented-item-last { border-radius: 4px; }
+.ui-segmented-outline .ui-segmented-item-active { background-color: var(--cso-ui-primary); }
+.ui-segmented-outline .ui-segmented-item-active .ui-segmented-label { color: #fff; }
+.ui-segmented-outline-border { position: absolute; left: 0; right: 0; top: 0; bottom: 0; border-top: .5px solid var(--cso-ui-line); border-bottom: .5px solid var(--cso-ui-line); border-right: .5px solid var(--cso-ui-line); }
+.ui-segmented-item-first .ui-segmented-outline-border { border-left: .5px solid var(--cso-ui-line); border-radius: 4px 0 0 4px; }
+.ui-segmented-item-last .ui-segmented-outline-border { border-radius: 0 4px 4px 0; }
+.ui-segmented-item-first.ui-segmented-item-last .ui-segmented-outline-border { border-radius: 4px; }
+.ui-segmented-item-active .ui-segmented-outline-border { border-color: var(--cso-ui-primary); }

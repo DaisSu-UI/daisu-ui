@@ -1,0 +1,26 @@
+.ui-keyboard{width:100%;background-color:var(--cso-ui-surface-muted);}
+.ui-keyboard-header{position:relative;display:flex;flex-direction:row;align-items:center;justify-content:center;height:40px;}
+.ui-keyboard-title{display:flex;align-items:center;justify-content:center;}
+.ui-keyboard-title text{font-size:14px;line-height:20px;font-weight:400;color:var(--cso-ui-text-muted);}
+.ui-keyboard-close{position:absolute;right:0;top:0;bottom:0;padding:0 12px;display:flex;align-items:center;justify-content:center;}
+.ui-keyboard-close text{font-size:14px;line-height:20px;color:var(--cso-ui-primary);}
+.ui-keyboard-body{display:flex;flex-direction:row;padding-top:8px;padding-left:8px;}
+.ui-keyboard-body-with-header{padding-top:0;}
+.ui-keyboard-keys{display:flex;flex-direction:row;flex:3;flex-wrap:wrap;min-width:0;}
+.ui-keyboard-key-wrap{position:relative;flex:1 0 33%;padding:0 8px 8px 0;}
+.ui-keyboard-key-wider{flex:1 0 66%;}
+.ui-keyboard-key{display:flex;flex-direction:row;align-items:center;justify-content:center;height:48px;min-width:0;border-radius:4px;background-color:var(--cso-ui-surface);}
+.ui-keyboard-key text{font-size:24px;line-height:34px;font-weight:600;color:var(--cso-ui-text);}
+.ui-keyboard-key-pressed{background-color:var(--cso-ui-line);}
+.ui-keyboard-sidebar{display:flex;flex-direction:column;flex:1;min-width:0;}
+.ui-keyboard-key-large-wrap{flex:1;flex-basis:auto;}
+.ui-keyboard-key-large{position:absolute;top:0;left:0;right:8px;bottom:8px;height:auto;}
+.ui-keyboard-key-delete text,.ui-keyboard-key-close text{font-size:18px;line-height:26px;}
+.ui-keyboard-key-close{background-color:var(--cso-ui-primary);}
+.ui-keyboard-key-close text{color:var(--cso-ui-on-primary);}
+.ui-keyboard-key-close.ui-keyboard-key-pressed{background-color:var(--cso-ui-primary-pressed,var(--cso-ui-primary));opacity:.8;}
+.ui-keyboard-car-keys{flex:10;}
+.ui-keyboard-key-car-wrap{flex:1 0 10%;}
+.ui-keyboard-key-car-wrap.ui-keyboard-key-wider{flex:1 0 20%;}
+.ui-keyboard-key-car text{font-size:18px;line-height:26px;}
+.ui-keyboard-disabled .ui-keyboard-key{opacity:.4;}

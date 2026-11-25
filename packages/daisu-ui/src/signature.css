@@ -1,0 +1,5 @@
+.ui-signature{display:flex;flex-direction:column;}
+.ui-signature-content{display:flex;justify-content:center;align-items:center;overflow:hidden;border-radius:4px;border:1px solid var(--cso-ui-line);background-color:var(--cso-ui-signature-background,#fff);}
+.ui-signature-board{width:100%;position:relative;flex-shrink:0;}
+.ui-signature-svg{position:absolute;left:0;top:0;pointer-events:none;}
+.ui-signature-footer{margin-top:8px;display:flex;flex-direction:row;justify-content:flex-end;gap:8px;}

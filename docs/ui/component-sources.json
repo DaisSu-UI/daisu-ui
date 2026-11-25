@@ -1,0 +1,912 @@
+{
+  "button": {
+    "components": [
+      {
+        "name": "Button",
+        "path": "packages/daisu-ui/src/Button.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/button.tsx",
+    "doc": "docs/ui/components/button.md"
+  },
+  "icon": {
+    "components": [
+      {
+        "name": "Icon",
+        "path": "packages/daisu-ui/src/Icon.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/icon.tsx",
+    "doc": "docs/ui/components/icon.md"
+  },
+  "text": {
+    "components": [
+      {
+        "name": "Text",
+        "path": "packages/daisu-ui/src/Text.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/text.tsx",
+    "doc": "docs/ui/components/text.md"
+  },
+  "layout": {
+    "components": [
+      {
+        "name": "Row",
+        "path": "packages/daisu-ui/src/Layout.tsx"
+      },
+      {
+        "name": "Col",
+        "path": "packages/daisu-ui/src/Layout.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/layout.tsx",
+    "doc": "docs/ui/components/layout.md"
+  },
+  "card": {
+    "components": [
+      {
+        "name": "Card",
+        "path": "packages/daisu-ui/src/Card.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/card.tsx",
+    "doc": "docs/ui/components/card.md"
+  },
+  "cell": {
+    "components": [
+      {
+        "name": "Cell",
+        "path": "packages/daisu-ui/src/Cell.tsx"
+      },
+      {
+        "name": "CellGroup",
+        "path": "packages/daisu-ui/src/Cell.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/cell.tsx",
+    "doc": "docs/ui/components/cell.md"
+  },
+  "divider": {
+    "components": [
+      {
+        "name": "Divider",
+        "path": "packages/daisu-ui/src/Divider.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/divider.tsx",
+    "doc": "docs/ui/components/divider.md"
+  },
+  "fab": {
+    "components": [
+      {
+        "name": "Fab",
+        "path": "packages/daisu-ui/src/Fab.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/fab.tsx",
+    "doc": "docs/ui/components/fab.md"
+  },
+  "transition": {
+    "components": [
+      {
+        "name": "Transition",
+        "path": "packages/daisu-ui/src/Transition.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/transition.tsx",
+    "doc": "docs/ui/components/transition.md"
+  },
+  "resize": {
+    "components": [
+      {
+        "name": "Resize",
+        "path": "packages/daisu-ui/src/Resize.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/resize.tsx",
+    "doc": "docs/ui/components/resize.md"
+  },
+  "config-provider": {
+    "components": [
+      {
+        "name": "ConfigProvider",
+        "path": "packages/daisu-ui/src/ConfigProvider.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/config-provider.tsx",
+    "doc": "docs/ui/components/config-provider.md"
+  },
+  "root-portal": {
+    "components": [
+      {
+        "name": "RootPortal",
+        "path": "packages/daisu-ui/src/RootPortal.tsx"
+      },
+      {
+        "name": "RootPortalHost",
+        "path": "packages/daisu-ui/src/RootPortal.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/root-portal.tsx",
+    "doc": "docs/ui/components/root-portal.md"
+  },
+  "router": {
+    "components": [
+      {
+        "name": "RouterView",
+        "path": "packages/daisu-ui/src/router/RouterView.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/router.tsx",
+    "doc": "docs/ui/components/router.md"
+  },
+  "navbar": {
+    "components": [
+      {
+        "name": "Navbar",
+        "path": "packages/daisu-ui/src/Navbar.tsx"
+      },
+      {
+        "name": "NavbarCapsule",
+        "path": "packages/daisu-ui/src/Navbar.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/navigation.tsx",
+    "doc": "docs/ui/components/navbar.md"
+  },
+  "tabbar": {
+    "components": [
+      {
+        "name": "Tabbar",
+        "path": "packages/daisu-ui/src/Tabbar.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/tabbar.tsx",
+    "doc": "docs/ui/components/tabbar.md"
+  },
+  "tabs": {
+    "components": [
+      {
+        "name": "Tabs",
+        "path": "packages/daisu-ui/src/Tabs.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/tabs.tsx",
+    "doc": "docs/ui/components/tabs.md"
+  },
+  "segmented": {
+    "components": [
+      {
+        "name": "Segmented",
+        "path": "packages/daisu-ui/src/Segmented.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/segmented.tsx",
+    "doc": "docs/ui/components/segmented.md"
+  },
+  "sidebar": {
+    "components": [
+      {
+        "name": "Sidebar",
+        "path": "packages/daisu-ui/src/Sidebar.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/sidebar.tsx",
+    "doc": "docs/ui/components/sidebar.md"
+  },
+  "index-bar": {
+    "components": [
+      {
+        "name": "IndexBar",
+        "path": "packages/daisu-ui/src/IndexBar.tsx"
+      },
+      {
+        "name": "IndexAnchor",
+        "path": "packages/daisu-ui/src/IndexBar.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/index-bar.tsx",
+    "doc": "docs/ui/components/index-bar.md"
+  },
+  "pagination": {
+    "components": [
+      {
+        "name": "Pagination",
+        "path": "packages/daisu-ui/src/Pagination.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/pagination.tsx",
+    "doc": "docs/ui/components/pagination.md"
+  },
+  "backtop": {
+    "components": [
+      {
+        "name": "Backtop",
+        "path": "packages/daisu-ui/src/Backtop.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/backtop.tsx",
+    "doc": "docs/ui/components/backtop.md"
+  },
+  "tour": {
+    "components": [
+      {
+        "name": "Tour",
+        "path": "packages/daisu-ui/src/Tour.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/tour.tsx",
+    "doc": "docs/ui/components/tour.md"
+  },
+  "form-detail": {
+    "components": [
+      {
+        "name": "Form",
+        "path": "packages/daisu-ui/src/Form.tsx"
+      },
+      {
+        "name": "FormItem",
+        "path": "packages/daisu-ui/src/Form.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/form.tsx",
+    "doc": "docs/ui/components/form.md"
+  },
+  "rate": {
+    "components": [
+      {
+        "name": "Rate",
+        "path": "packages/daisu-ui/src/Rate.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/rate.tsx",
+    "doc": "docs/ui/components/rate.md"
+  },
+  "switch": {
+    "components": [
+      {
+        "name": "Switch",
+        "path": "packages/daisu-ui/src/Switch.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/switch.tsx",
+    "doc": "docs/ui/components/switch.md"
+  },
+  "input": {
+    "components": [
+      {
+        "name": "Input",
+        "path": "packages/daisu-ui/src/Input.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/input.tsx",
+    "doc": "docs/ui/components/input.md"
+  },
+  "textarea": {
+    "components": [
+      {
+        "name": "Textarea",
+        "path": "packages/daisu-ui/src/Textarea.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/textarea.tsx",
+    "doc": "docs/ui/components/textarea.md"
+  },
+  "input-number": {
+    "components": [
+      {
+        "name": "InputNumber",
+        "path": "packages/daisu-ui/src/InputNumber.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/input-number.tsx",
+    "doc": "docs/ui/components/input-number.md"
+  },
+  "search": {
+    "components": [
+      {
+        "name": "Search",
+        "path": "packages/daisu-ui/src/Search.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/search.tsx",
+    "doc": "docs/ui/components/search.md"
+  },
+  "checkbox": {
+    "components": [
+      {
+        "name": "Checkbox",
+        "path": "packages/daisu-ui/src/Checkbox.tsx"
+      },
+      {
+        "name": "CheckboxGroup",
+        "path": "packages/daisu-ui/src/Checkbox.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/checkbox.tsx",
+    "doc": "docs/ui/components/checkbox.md"
+  },
+  "radio": {
+    "components": [
+      {
+        "name": "Radio",
+        "path": "packages/daisu-ui/src/Radio.tsx"
+      },
+      {
+        "name": "RadioGroup",
+        "path": "packages/daisu-ui/src/Radio.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/radio.tsx",
+    "doc": "docs/ui/components/radio.md"
+  },
+  "slider": {
+    "components": [
+      {
+        "name": "Slider",
+        "path": "packages/daisu-ui/src/Slider.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/slider.tsx",
+    "doc": "docs/ui/components/slider.md"
+  },
+  "keyboard": {
+    "components": [
+      {
+        "name": "Keyboard",
+        "path": "packages/daisu-ui/src/Keyboard.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/keyboard.tsx",
+    "doc": "docs/ui/components/keyboard.md"
+  },
+  "password-input": {
+    "components": [
+      {
+        "name": "PasswordInput",
+        "path": "packages/daisu-ui/src/PasswordInput.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/password-input.tsx",
+    "doc": "docs/ui/components/password-input.md"
+  },
+  "picker": {
+    "components": [
+      {
+        "name": "Picker",
+        "path": "packages/daisu-ui/src/Picker.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/picker.tsx",
+    "doc": "docs/ui/components/picker.md"
+  },
+  "picker-view": {
+    "components": [
+      {
+        "name": "PickerView",
+        "path": "packages/daisu-ui/src/PickerView.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/picker-view.tsx",
+    "doc": "docs/ui/components/picker-view.md"
+  },
+  "select-picker": {
+    "components": [
+      {
+        "name": "SelectPicker",
+        "path": "packages/daisu-ui/src/SelectPicker.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/select-picker.tsx",
+    "doc": "docs/ui/components/select-picker.md"
+  },
+  "cascader": {
+    "components": [
+      {
+        "name": "Cascader",
+        "path": "packages/daisu-ui/src/Cascader.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/cascader.tsx",
+    "doc": "docs/ui/components/cascader.md"
+  },
+  "datetime-picker-view": {
+    "components": [
+      {
+        "name": "DatetimePickerView",
+        "path": "packages/daisu-ui/src/DatetimePickerView.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/datetime-picker-view.tsx",
+    "doc": "docs/ui/components/datetime-picker-view.md"
+  },
+  "datetime-picker": {
+    "components": [
+      {
+        "name": "DatetimePicker",
+        "path": "packages/daisu-ui/src/DatetimePicker.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/datetime-picker.tsx",
+    "doc": "docs/ui/components/datetime-picker.md"
+  },
+  "calendar": {
+    "components": [
+      {
+        "name": "Calendar",
+        "path": "packages/daisu-ui/src/Calendar.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/calendar.tsx",
+    "doc": "docs/ui/components/calendar.md"
+  },
+  "calendar-view": {
+    "components": [
+      {
+        "name": "CalendarView",
+        "path": "packages/daisu-ui/src/CalendarView.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/calendar-view.tsx",
+    "doc": "docs/ui/components/calendar-view.md"
+  },
+  "upload": {
+    "components": [
+      {
+        "name": "Upload",
+        "path": "packages/daisu-ui/src/Upload.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/upload.tsx",
+    "doc": "docs/ui/components/upload.md"
+  },
+  "img-cropper": {
+    "components": [
+      {
+        "name": "ImgCropper",
+        "path": "packages/daisu-ui/src/ImgCropper.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/img-cropper.tsx",
+    "doc": "docs/ui/components/img-cropper.md"
+  },
+  "signature": {
+    "components": [
+      {
+        "name": "Signature",
+        "path": "packages/daisu-ui/src/Signature.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/signature.tsx",
+    "doc": "docs/ui/components/signature.md"
+  },
+  "slide-verify": {
+    "components": [
+      {
+        "name": "SlideVerify",
+        "path": "packages/daisu-ui/src/SlideVerify.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/slide-verify.tsx",
+    "doc": "docs/ui/components/slide-verify.md"
+  },
+  "notice-bar": {
+    "components": [
+      {
+        "name": "NoticeBar",
+        "path": "packages/daisu-ui/src/NoticeBar.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/notice-bar.tsx",
+    "doc": "docs/ui/components/notice-bar.md"
+  },
+  "swipe-action": {
+    "components": [
+      {
+        "name": "SwipeAction",
+        "path": "packages/daisu-ui/src/SwipeAction.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/swipe-action.tsx",
+    "doc": "docs/ui/components/swipe-action.md"
+  },
+  "floating-panel": {
+    "components": [
+      {
+        "name": "FloatingPanel",
+        "path": "packages/daisu-ui/src/FloatingPanel.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/floating-panel.tsx",
+    "doc": "docs/ui/components/floating-panel.md"
+  },
+  "popover": {
+    "components": [
+      {
+        "name": "Popover",
+        "path": "packages/daisu-ui/src/Popover.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/popover.tsx",
+    "doc": "docs/ui/components/popover.md"
+  },
+  "toast": {
+    "components": [
+      {
+        "name": "Toast",
+        "path": "packages/daisu-ui/src/Toast.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/toast.tsx",
+    "doc": "docs/ui/components/toast.md"
+  },
+  "tooltip": {
+    "components": [
+      {
+        "name": "Tooltip",
+        "path": "packages/daisu-ui/src/Tooltip.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/tooltip.tsx",
+    "doc": "docs/ui/components/tooltip.md"
+  },
+  "drop-menu": {
+    "components": [
+      {
+        "name": "DropMenu",
+        "path": "packages/daisu-ui/src/DropMenu.tsx"
+      },
+      {
+        "name": "DropMenuItem",
+        "path": "packages/daisu-ui/src/DropMenu.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/drop-menu.tsx",
+    "doc": "docs/ui/components/drop-menu.md"
+  },
+  "dialog": {
+    "components": [
+      {
+        "name": "Dialog",
+        "path": "packages/daisu-ui/src/Dialog.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/dialog.tsx",
+    "doc": "docs/ui/components/dialog.md"
+  },
+  "action-sheet": {
+    "components": [
+      {
+        "name": "ActionSheet",
+        "path": "packages/daisu-ui/src/ActionSheet.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/action-sheet.tsx",
+    "doc": "docs/ui/components/action-sheet.md"
+  },
+  "popup": {
+    "components": [
+      {
+        "name": "Popup",
+        "path": "packages/daisu-ui/src/Popup.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/popup.tsx",
+    "doc": "docs/ui/components/popup.md"
+  },
+  "overlay": {
+    "components": [
+      {
+        "name": "Overlay",
+        "path": "packages/daisu-ui/src/Overlay.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/overlay.tsx",
+    "doc": "docs/ui/components/overlay.md"
+  },
+  "count-to": {
+    "components": [
+      {
+        "name": "CountTo",
+        "path": "packages/daisu-ui/src/CountTo.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/count-to.tsx",
+    "doc": "docs/ui/components/count-to.md"
+  },
+  "count-down": {
+    "components": [
+      {
+        "name": "CountDown",
+        "path": "packages/daisu-ui/src/CountDown.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/count-down.tsx",
+    "doc": "docs/ui/components/count-down.md"
+  },
+  "notify": {
+    "components": [
+      {
+        "name": "Notify",
+        "path": "packages/daisu-ui/src/Notify.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/notify.tsx",
+    "doc": "docs/ui/components/notify.md"
+  },
+  "circle": {
+    "components": [
+      {
+        "name": "Circle",
+        "path": "packages/daisu-ui/src/Circle.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/circle.tsx",
+    "doc": "docs/ui/components/circle.md"
+  },
+  "progress": {
+    "components": [
+      {
+        "name": "Progress",
+        "path": "packages/daisu-ui/src/Progress.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/progress.tsx",
+    "doc": "docs/ui/components/progress.md"
+  },
+  "loading": {
+    "components": [
+      {
+        "name": "Loading",
+        "path": "packages/daisu-ui/src/Loading.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/loading.tsx",
+    "doc": "docs/ui/components/loading.md"
+  },
+  "empty": {
+    "components": [
+      {
+        "name": "Empty",
+        "path": "packages/daisu-ui/src/Empty.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/display.tsx",
+    "doc": "docs/ui/components/empty.md"
+  },
+  "rich-text": {
+    "components": [
+      {
+        "name": "RichText",
+        "path": "packages/daisu-ui/src/RichText.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/rich-text.tsx",
+    "doc": "docs/ui/components/rich-text.md"
+  },
+  "qr-code": {
+    "components": [
+      {
+        "name": "QrCode",
+        "path": "packages/daisu-ui/src/QrCode.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/qr-code.tsx",
+    "doc": "docs/ui/components/qr-code.md"
+  },
+  "bar-code": {
+    "components": [
+      {
+        "name": "BarCode",
+        "path": "packages/daisu-ui/src/BarCode.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/bar-code.tsx",
+    "doc": "docs/ui/components/bar-code.md"
+  },
+  "table": {
+    "components": [
+      {
+        "name": "Table",
+        "path": "packages/daisu-ui/src/Table.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/table.tsx",
+    "doc": "docs/ui/components/table.md"
+  },
+  "image-preview": {
+    "components": [
+      {
+        "name": "ImagePreview",
+        "path": "packages/daisu-ui/src/ImagePreview.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/image-preview.tsx",
+    "doc": "docs/ui/components/image-preview.md"
+  },
+  "video-preview": {
+    "components": [
+      {
+        "name": "VideoPreview",
+        "path": "packages/daisu-ui/src/VideoPreview.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/video-preview.tsx",
+    "doc": "docs/ui/components/video-preview.md"
+  },
+  "swiper": {
+    "components": [
+      {
+        "name": "Swiper",
+        "path": "packages/daisu-ui/src/Swiper.tsx"
+      },
+      {
+        "name": "SwiperNav",
+        "path": "packages/daisu-ui/src/SwiperNav.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/swiper.tsx",
+    "doc": "docs/ui/components/swiper.md"
+  },
+  "watermark": {
+    "components": [
+      {
+        "name": "Watermark",
+        "path": "packages/daisu-ui/src/Watermark.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/watermark.tsx",
+    "doc": "docs/ui/components/watermark.md"
+  },
+  "curtain": {
+    "components": [
+      {
+        "name": "Curtain",
+        "path": "packages/daisu-ui/src/Curtain.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/curtain.tsx",
+    "doc": "docs/ui/components/curtain.md"
+  },
+  "sticky": {
+    "components": [
+      {
+        "name": "Sticky",
+        "path": "packages/daisu-ui/src/Sticky.tsx"
+      },
+      {
+        "name": "StickyBox",
+        "path": "packages/daisu-ui/src/Sticky.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/sticky.tsx",
+    "doc": "docs/ui/components/sticky.md"
+  },
+  "steps": {
+    "components": [
+      {
+        "name": "Steps",
+        "path": "packages/daisu-ui/src/Steps.tsx"
+      },
+      {
+        "name": "Step",
+        "path": "packages/daisu-ui/src/Steps.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/steps.tsx",
+    "doc": "docs/ui/components/steps.md"
+  },
+  "skeleton": {
+    "components": [
+      {
+        "name": "Skeleton",
+        "path": "packages/daisu-ui/src/Skeleton.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/skeleton.tsx",
+    "doc": "docs/ui/components/skeleton.md"
+  },
+  "img": {
+    "components": [
+      {
+        "name": "Img",
+        "path": "packages/daisu-ui/src/Img.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/img.tsx",
+    "doc": "docs/ui/components/img.md"
+  },
+  "grid": {
+    "components": [
+      {
+        "name": "Grid",
+        "path": "packages/daisu-ui/src/Grid.tsx"
+      },
+      {
+        "name": "GridItem",
+        "path": "packages/daisu-ui/src/Grid.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/grid.tsx",
+    "doc": "docs/ui/components/grid.md"
+  },
+  "sort-button": {
+    "components": [
+      {
+        "name": "SortButton",
+        "path": "packages/daisu-ui/src/SortButton.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/sort-button.tsx",
+    "doc": "docs/ui/components/sort-button.md"
+  },
+  "collapse": {
+    "components": [
+      {
+        "name": "Collapse",
+        "path": "packages/daisu-ui/src/Collapse.tsx"
+      },
+      {
+        "name": "CollapseViewMore",
+        "path": "packages/daisu-ui/src/Collapse.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/collapse.tsx",
+    "doc": "docs/ui/components/collapse.md"
+  },
+  "avatar": {
+    "components": [
+      {
+        "name": "Avatar",
+        "path": "packages/daisu-ui/src/Avatar.tsx"
+      },
+      {
+        "name": "AvatarGroup",
+        "path": "packages/daisu-ui/src/Avatar.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/avatar.tsx",
+    "doc": "docs/ui/components/avatar.md"
+  },
+  "badge": {
+    "components": [
+      {
+        "name": "Badge",
+        "path": "packages/daisu-ui/src/Badge.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/badge.tsx",
+    "doc": "docs/ui/components/badge.md"
+  },
+  "gap": {
+    "components": [
+      {
+        "name": "Gap",
+        "path": "packages/daisu-ui/src/Gap.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/gap.tsx",
+    "doc": "docs/ui/components/gap.md"
+  },
+  "loadmore": {
+    "components": [
+      {
+        "name": "Loadmore",
+        "path": "packages/daisu-ui/src/Loadmore.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/loadmore.tsx",
+    "doc": "docs/ui/components/loadmore.md"
+  },
+  "tag": {
+    "components": [
+      {
+        "name": "Tag",
+        "path": "packages/daisu-ui/src/Tag.tsx"
+      }
+    ],
+    "demo": "apps/demo/src/features/ui-demo/examples/tag.tsx",
+    "doc": "docs/ui/components/tag.md"
+  }
+}

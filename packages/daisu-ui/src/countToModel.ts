@@ -1,0 +1,3 @@
+export const countToNumber=(value:number,fallback=0)=>Number.isFinite(value)?value:fallback;
+export function countToValue(start:number,end:number,progress:number,easing=true){const p=Math.max(0,Math.min(1,progress)),ratio=p===1?1:easing?1-Math.pow(2,-10*p):p;return start+(end-start)*ratio;}
+export function formatCountTo(value:number,decimals=0,decimal='.',separator=','){const digits=Number.isFinite(decimals)?Math.max(0,Math.min(20,Math.floor(decimals))):0;const [integer,fraction]=countToNumber(value).toFixed(digits).split('.');return integer!.replace(/\B(?=(\d{3})+(?!\d))/g,()=>separator)+(fraction===undefined?'':decimal+fraction);}

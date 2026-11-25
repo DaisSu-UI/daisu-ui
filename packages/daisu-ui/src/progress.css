@@ -1,0 +1,16 @@
+.ui-progress{width:100%;height:18px;display:flex;flex-direction:row;align-items:center;}
+.ui-progress-track{position:relative;flex:1;min-width:0;height:8px;background-color:var(--cso-ui-surface-muted);overflow:hidden;border-radius:9999px;}
+.ui-progress-fill{position:absolute;top:0;left:0;height:100%;border-radius:9999px;background-color:var(--cso-ui-primary);transition-property:width;transition-timing-function:linear;display:flex;flex-direction:row;align-items:center;}
+.ui-progress-label{width:34px;margin-left:8px;font-size:14px;line-height:18px;color:var(--cso-ui-text);flex-shrink:0;white-space:nowrap;}
+.ui-progress-icon{margin-left:8px;width:18px;height:18px;flex-shrink:0;}
+.ui-progress-dark-icon{display:none;}
+.theme-dark .ui-progress-light-icon{display:none;}
+.theme-dark .ui-progress-dark-icon{display:flex;}
+.ui-progress-inner .ui-progress-track{height:100%;}
+.ui-progress-inner .ui-progress-label{width:auto;margin-left:0;padding:0 8px;color:#fff;}
+.ui-progress-inner .ui-progress-icon{margin:0;padding:0 8px;width:34px;}
+.ui-progress-align-left{justify-content:flex-start;}
+.ui-progress-align-center{justify-content:center;}
+.ui-progress-align-right{justify-content:flex-end;}
+.ui-progress-zero.ui-progress-inner .ui-progress-fill{background-color:var(--cso-ui-primary-soft-pressed,#e5edff);}
+.ui-progress-zero.ui-progress-inner .ui-progress-label{color:var(--cso-ui-text-muted);}

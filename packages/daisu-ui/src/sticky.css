@@ -1,0 +1,7 @@
+.ui-sticky{position:relative;display:flex;flex-direction:column;align-self:flex-start;align-items:flex-start;min-width:1px;min-height:1px;flex-shrink:0;}
+.ui-sticky-container,.ui-sticky-content{display:flex;flex-direction:column;align-items:flex-start;align-self:flex-start;flex-shrink:0;min-width:1px;min-height:1px;}
+.ui-sticky-box{position:relative;display:flex;flex-direction:column;}
+
+.ui-sticky,.ui-sticky-box{overflow:visible;}
+/* A prefix ending at the anchor bottom catches jumps across the whole viewport. */
+.ui-sticky-sentinel{position:absolute;left:0;top:calc(100% - 1000000px);width:1px;height:1000000px;pointer-events:none;}

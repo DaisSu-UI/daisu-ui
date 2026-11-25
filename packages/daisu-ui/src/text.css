@@ -1,0 +1,7 @@
+.ui-text { font-size: 14px; line-height: 20px; text-overflow: ellipsis; }
+.ui-text-default { color: var(--cso-ui-text-auxiliary, var(--cso-ui-text-muted)); }
+.ui-text-primary { color: var(--cso-ui-primary); }
+.ui-text-error { color: var(--cso-ui-danger); }
+.ui-text-success { color: var(--cso-ui-success); }
+.ui-text-warning { color: var(--cso-ui-warning); }
+.ui-text-bold { font-weight: 700; }

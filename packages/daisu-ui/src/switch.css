@@ -1,0 +1,12 @@
+.ui-switch { --ui-switch-size: 26px; align-self: flex-start; position: relative; min-width: calc(var(--ui-switch-size) * 1.8 + 4px); height: calc(var(--ui-switch-size) + 4px); padding: 2px 8px 2px calc(var(--ui-switch-size) + 2px); background-color: var(--cso-ui-line-strong, #c9cbd4); display: flex; flex-direction: row; align-items: center; transition: background-color 200ms ease; }
+.ui-switch-round { border-radius: 9999px; }
+.ui-switch-square { border-radius: 2px; }
+.ui-switch-active { background-color: var(--cso-ui-primary); padding-left: 8px; padding-right: calc(var(--ui-switch-size) + 2px); }
+.ui-switch-label { min-width: 0; display: flex; flex-direction: row; align-items: center; margin-left: 4px; }
+.ui-switch-active .ui-switch-label { margin-left: 0; margin-right: 4px; }
+.ui-switch-label text { color: #fff; font-size: 14px; line-height: var(--ui-switch-size); }
+.ui-switch-action { position: absolute; top: 2px; left: 2px; width: var(--ui-switch-size); height: var(--ui-switch-size); border-radius: 9999px; background-color: #fff; display: flex; flex-direction: row; align-items: center; justify-content: center; transition: left 200ms ease; }
+.ui-switch-action .ui-loading { align-self: center; flex-shrink: 0; }
+.ui-switch-active .ui-switch-action { left: calc(100% - var(--ui-switch-size) - 2px); }
+.ui-switch-square .ui-switch-action { border-radius: 2px; }
+.ui-switch-disabled { opacity: .4; }

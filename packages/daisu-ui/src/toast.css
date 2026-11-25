@@ -1,0 +1,13 @@
+.ui-toast-position { position: fixed; left: 0; width: 100%; display: flex; flex-direction: row; justify-content: center; pointer-events: none; }
+.ui-toast-position-middle { top: 50%; transform: translateY(-50%); }
+.ui-toast-position-top { top: 10%; }
+.ui-toast-position-middle-top { top: 31.2%; }
+.ui-toast-position-bottom { top: 90%; }
+.ui-toast { max-width: 300px; padding: 16px; box-sizing: border-box; border-radius: 8px; background-color: rgba(0, 0, 0, .75); display: flex; align-items: center; justify-content: center; pointer-events: auto; }
+.ui-toast-horizontal { flex-direction: row; }
+.ui-toast-vertical { flex-direction: column; }
+.ui-toast-icon { display: flex; flex-direction: row; align-items: center; justify-content: center; flex-shrink: 0; }
+.ui-toast-icon .ui-loading { align-self: center; }
+.ui-toast-msg { color: #fff; font-size: 16px; line-height: 24px; text-align: left; word-break: break-all; flex-shrink: 1; font-family: Arial, sans-serif; }
+.ui-toast-horizontal .ui-toast-icon + .ui-toast-msg { margin-left: 8px; }
+.ui-toast-vertical .ui-toast-icon + .ui-toast-msg { margin-top: 6px; }

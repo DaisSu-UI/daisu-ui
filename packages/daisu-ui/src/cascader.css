@@ -1,0 +1,16 @@
+.ui-cascader-header .ui-action-sheet-title{font-size:18px;line-height:26px;font-weight:600;}
+.ui-cascader-content{position:relative;}
+.ui-cascader-scroll{height:336px;}
+.ui-cascader-option{padding:16px 12px;display:flex;flex-direction:row;align-items:center;}
+.ui-cascader-option-content{flex:1;min-width:0;}
+.ui-cascader-option-label{font-size:16px;line-height:24px;color:var(--cso-ui-text);}
+.ui-cascader-option-active .ui-cascader-option-label{color:var(--cso-ui-primary);font-weight:600;}
+.ui-cascader-option-disabled .ui-cascader-option-label{color:var(--cso-ui-disabled-text);}
+.ui-cascader-tip{margin-top:2px;font-size:12px;line-height:18px;color:var(--cso-ui-text-muted);}
+.ui-cascader-confirm text{font-size:15px;line-height:22px;color:var(--cso-ui-primary);}
+.ui-cascader-confirm-disabled{opacity:.4;}
+.ui-cascader .ui-action-sheet-close{right:12px;}
+.ui-cascader-loading{position:absolute;top:44px;bottom:0;left:0;right:0;display:flex;align-items:center;justify-content:center;}
+.ui-cascader-is-loading{opacity:.4;}
+.ui-cascader-close-light{display:var(--cso-ui-light-display);}
+.ui-cascader-close-dark{display:var(--cso-ui-dark-display);}

@@ -1,0 +1,4 @@
+.ui-qr-code { position: relative; flex-shrink: 0; }
+.ui-qr-code-surface { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.ui-qr-code-logo { position: absolute; border-style: solid; }
+.ui-qr-code-export { position: absolute; width: 0; height: 0; overflow: hidden; }

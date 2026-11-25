@@ -1,0 +1,56 @@
+.ui-button {
+  --ui-button-color: var(--cso-ui-primary);
+  --ui-button-bg: var(--cso-ui-button-primary-bg, var(--cso-ui-primary));
+  --ui-button-soft: var(--cso-ui-primary-soft, #fff3eb);
+  --ui-button-outline: var(--ui-button-color);
+  --ui-button-pressed: var(--cso-ui-primary-pressed, var(--ui-button-color));
+  --ui-button-pressed-bg: var(--ui-button-pressed);
+  --ui-button-pressed-outline: var(--ui-button-pressed);
+  --ui-button-pressed-soft: var(--cso-ui-primary-soft-pressed, var(--ui-button-soft));
+  --ui-button-foreground: var(--cso-ui-button-primary-color, var(--cso-ui-on-primary));
+  --ui-button-height: var(--cso-ui-button-height, 40px);
+  --ui-button-font-size: var(--cso-ui-button-font-size, 16px);
+  position: relative;
+  min-width: 0;
+  height: var(--ui-button-height);
+  padding: 0 16px;
+  border-radius: var(--cso-ui-button-radius, 4px);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background-color: var(--ui-button-bg);
+}
+.ui-button-success { --ui-button-color: var(--cso-ui-success); --ui-button-bg: var(--cso-ui-success); --ui-button-soft: var(--cso-ui-success-soft, #f3fbf9); --ui-button-pressed: var(--cso-ui-success-pressed, var(--ui-button-color)); --ui-button-pressed-soft: var(--cso-ui-success-soft-pressed, var(--ui-button-soft)); }
+.ui-button-info { --ui-button-color: var(--cso-ui-text); --ui-button-bg: var(--cso-ui-surface-muted); --ui-button-soft: var(--cso-ui-canvas); --ui-button-outline: var(--cso-ui-line); --ui-button-foreground: var(--cso-ui-text); --ui-button-pressed: var(--cso-ui-text-muted); --ui-button-pressed-bg: var(--cso-ui-line); --ui-button-pressed-outline: var(--cso-ui-line-strong, var(--cso-ui-line)); --ui-button-pressed-soft: var(--cso-ui-surface-muted); }
+.ui-button-warning { --ui-button-color: var(--cso-ui-warning); --ui-button-bg: var(--cso-ui-warning); --ui-button-soft: var(--cso-ui-warning-soft, #fff6eb); --ui-button-pressed: var(--cso-ui-warning-pressed, var(--ui-button-color)); --ui-button-pressed-soft: var(--cso-ui-warning-soft-pressed, var(--ui-button-soft)); }
+.ui-button-danger { --ui-button-color: var(--cso-ui-danger); --ui-button-bg: var(--cso-ui-danger); --ui-button-soft: var(--cso-ui-danger-soft, #fff5f5); --ui-button-pressed: var(--cso-ui-danger-pressed, var(--ui-button-color)); --ui-button-pressed-soft: var(--cso-ui-danger-soft-pressed, var(--ui-button-soft)); }
+.ui-button-neutral { --ui-button-color: var(--cso-ui-text-muted); --ui-button-bg: var(--cso-ui-text-muted); --ui-button-soft: var(--cso-ui-surface-muted); --ui-button-pressed: var(--ui-button-color); --ui-button-pressed-soft: var(--ui-button-soft); }
+.ui-button-mini { --ui-button-height: 28px; --ui-button-font-size: 14px; padding: 0 12px; }
+.ui-button-small { --ui-button-height: 32px; --ui-button-font-size: 14px; padding: 0 12px; }
+.ui-button-large { --ui-button-height: 44px; padding: 0 20px; }
+.ui-button-block { width: 100%; }
+.ui-button-round { border-radius: 9999px; }
+.ui-button-label, .ui-button-icon text { color: var(--ui-button-foreground); font-size: var(--ui-button-font-size); line-height: var(--ui-button-height); font-weight: 400; }
+.ui-button-border { position: absolute; left: 0; right: 0; top: 0; bottom: 0; border-radius: var(--cso-ui-button-radius, 4px); border-width: 0; border-style: solid; border-color: var(--ui-button-outline); pointer-events: none; }
+.ui-button-round .ui-button-border { border-radius: 9999px; }
+.ui-button-plain, .ui-button-dashed, .ui-button-text { --ui-button-foreground: var(--ui-button-color); background-color: transparent; }
+.ui-button-soft, .ui-button-subtle { --ui-button-foreground: var(--ui-button-color); background-color: var(--ui-button-soft); }
+.ui-button-plain .ui-button-border, .ui-button-dashed .ui-button-border, .ui-button-subtle .ui-button-border { border-width: 1px; }
+.ui-button-dashed .ui-button-border { border-style: dashed; }
+.ui-button-hairline .ui-button-border { border-width: 0.5px; }
+.ui-button-disabled { opacity: 0.4; }
+.ui-button-interactive.ui-button-pressed { opacity: var(--cso-ui-button-pressed-opacity, 0.85); background-color: var(--ui-button-pressed-bg); }
+.ui-button-plain.ui-button-interactive.ui-button-pressed, .ui-button-dashed.ui-button-interactive.ui-button-pressed, .ui-button-text.ui-button-interactive.ui-button-pressed { --ui-button-foreground: var(--ui-button-pressed); opacity: 1; background-color: var(--ui-button-soft); }
+.ui-button-soft.ui-button-interactive.ui-button-pressed, .ui-button-subtle.ui-button-interactive.ui-button-pressed { --ui-button-foreground: var(--ui-button-pressed); background-color: var(--ui-button-pressed-soft); }
+.ui-button-interactive.ui-button-pressed .ui-button-border { border-color: var(--ui-button-pressed-outline); }
+.ui-button-icon { width: 20px; height: 20px; margin-right: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ui-button-mini .ui-button-icon { width: 14px; height: 14px; margin-right: 4px; }
+.ui-button-small .ui-button-icon { width: 16px; height: 16px; margin-right: 4px; }
+.ui-button-large .ui-button-icon { width: 22px; height: 22px; }
+.ui-button-icon-only { width: var(--ui-button-height); padding: 0; }
+.ui-button-icon-only .ui-button-icon { margin-right: 0; }
+.ui-button-spinner { width: 20px; height: 20px; padding: 2px; margin-right: 6px; box-sizing: border-box; flex-shrink: 0; animation: ui-button-spin 800ms linear infinite; }
+.ui-button-spinner-ring { width: 16px; height: 16px; border-radius: 50%; background-image: conic-gradient(transparent 0deg, transparent 90deg, var(--ui-button-foreground) 330deg, var(--ui-button-foreground) 360deg); mask-image: radial-gradient(closest-side, transparent 85%, #fff 85%, #fff 100%); }
+@keyframes ui-button-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }

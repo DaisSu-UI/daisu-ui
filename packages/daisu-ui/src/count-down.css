@@ -1,0 +1,2 @@
+.ui-count-down{display:flex;flex-direction:row;color:var(--cso-ui-text);font-size:14px;line-height:20px;}
+.ui-count-down-text{font-size:inherit;line-height:inherit;color:inherit;}
