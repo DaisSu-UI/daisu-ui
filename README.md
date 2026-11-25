@@ -31,6 +31,10 @@ Demo 支持组件独立路径与深色模式，文档站可从 iframe 独立打�
 
 Git 远程：`git@git.zilueit.com:daisu-ui/daisu-ui.git`。迁移清单见 [MIGRATION.json](MIGRATION.json)。
 
+## 从 Git 安装与发布
+
+无需发布到 npmjs。执行 `npm run ui:git:release` 可校验并发布 Git 安装包；Runner 接入后，版本 Tag 自动执行相同校验与发布。配置和安装说明见 [GitLab CI 与 Git 发布](docs/ci/git-release.md)。
+
 ## AI 与 MCP
 
 安装依赖后执行 `npm run mcp` 可启动本地 stdio 服务；客户端直接使用 `node` 加 `apps/mcp/index.mjs` 的绝对路径连接。提供组件列表、组件文档、Demo 源码、全文搜索和更新记录五个工具。完整 JSON、VS Code 和 Codex 配置见 [MCP 接入](apps/docs/ai/mcp.md)，总览见 [AI 使用指南](docs/ui/AI_GUIDE.md)。`npm run test:mcp` 验证真实客户端连接，`npm test` 包含该测试。MCP workspace 为 private，随仓库使用。
