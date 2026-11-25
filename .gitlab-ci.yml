@@ -55,7 +55,7 @@ publish:git:
 
 publish:npm:
   stage: publish
-  when: manual
+  when: on_success
   before_script: []
   dependencies:
     - verify
