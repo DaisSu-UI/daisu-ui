@@ -1,8 +1,11 @@
 export const aiPages = [
-  { id: 'ai-guide', label: 'AI 总览', source: 'docs/ui/AI_GUIDE.md' },
+  { id: 'ai-guide', label: 'AI 总览', source: 'apps/docs/ai/overview.md' },
   { id: 'ai-llm', label: 'LLMs.txt', source: 'apps/docs/ai/llm.md' },
-  { id: 'ai-mcp', label: 'MCP 接入', source: 'apps/docs/ai/mcp.md' },
+  { id: 'ai-cli', label: '@daisu-ui/cli', source: 'apps/docs/ai/cli.md' },
   { id: 'ai-skills', label: 'AI Skills', source: 'apps/docs/ai/skills.md' },
+];
+export const relatedAiPages = [
+  { id: 'ai-mcp', label: 'MCP 接入', source: 'apps/docs/ai/mcp.md' },
 ];
 export const documentationGroups = [
   { id: 'quickstart', label: '快速开始', section: 'guide', pages: [
@@ -29,9 +32,10 @@ export const documentationGroups = [
   ] },
 ];
 export const guideGroups = documentationGroups.filter(group => group.section === 'guide');
-export const articlePages = documentationGroups.flatMap(group => group.pages).filter(page => page.id);
+export const articlePages = documentationGroups.flatMap(group => group.pages).filter(page => page.id).flatMap(page => page.id === 'ai-cli' ? [page, ...relatedAiPages] : [page]);
 export function pageSection(id) {
   if (id === 'changelog') return 'versions';
+  if (relatedAiPages.some(page => page.id === id)) return 'ai';
   return documentationGroups.find(group => group.pages.some(page => page.id && page.id === id))?.section || 'components';
 }
 export function headingId(page, label) {

@@ -3,9 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "npm run ui:demo:build --prefix ../.. && node generate.mjs && node build.mjs",
-    "check": "node generate.mjs --check",
-    "dev": "node serve.mjs"
+    "build": "npm run ui:demo:build --prefix ../.. && node ../../scripts/prepare-docs.mjs && node build.mjs",
+    "check": "node ../../scripts/prepare-docs.mjs --check",
+    "dev": "node ../../scripts/dev-docs.mjs"
   },
   "devDependencies": {
     "highlight.js": "^11.11.1",

@@ -1,5 +1,5 @@
 {
-  "targetDirectory": "/media/youzi/Project/workProject/daisu-ui",
+  "targetDirectory": "/media/youzi/Project/workProject/DaiSu-UI/daisu-ui",
   "remote": "git@git.zilueit.com:daisu-ui/daisu-ui.git",
   "status": "extracted",
   "applicationIntegrationTestsKeptInMainProject": [

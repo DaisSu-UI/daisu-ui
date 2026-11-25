@@ -6,7 +6,7 @@
 
 ## 是否需要手动引入样式
 
-从 daisu-ui 导入组件时，入口会自动加载样式。消费项目应保留 CSS 副作用，并使用公开 exports。
+从 @daisu-ui/ui 导入组件时，入口会自动加载样式。消费项目应保留 CSS 副作用，并使用公开 exports。
 
 ## 为什么浮层需要根节点配置
 
@@ -22,4 +22,4 @@
 
 ## 当前版本如何安装
 
-当前版本处于 beta 开发阶段。已发布版本可按 [快速上手](#/getting-started) 安装；未发布版本可通过独立仓库生成的 tarball 安装。版本菜单列出实际更新记录。
+UI 包 @daisu-ui/ui 已发布 npmjs，使用 npm install @daisu-ui/ui@beta 或固定版本安装。CLI 独立安装 npm install -g @daisu-ui/cli@beta。详见 [快速上手](#/getting-started) 与 [CLI 工具](#/ai-cli)。版本菜单列出更新记录，不会改变 npm 依赖。

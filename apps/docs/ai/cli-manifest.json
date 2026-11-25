@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "generator": {
+    "package": "@daisu-ui/cli",
+    "version": "0.1.0-beta.3"
+  },
+  "files": {
+    "overview.md": "ec1d0e56190f960f05e7e702b94732f9640c73aafc02096eb98931479cfa8e9d",
+    "cli.md": "23510c96003b1e6032cee5c8c71c05fb05cbffcea8a6861ae6493546da8e0a72",
+    "mcp.md": "c0913283daf178e1227b821f6201d5b8a6e236133f2b6d5d8ad3657e00321f5a",
+    "skills.md": "810892d6ae50cfb0c018253517ed7f249e0ab292739a206543c196b2b4bab05f"
+  }
+}

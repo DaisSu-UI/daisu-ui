@@ -1,5 +1,16 @@
 # 版本发布与 npm / Git 安装
 
+## 当前 npm 发布状态
+
+以下版本已在 npmjs 公开发布（2026-11-25 核对），新项目优先使用 npm 安装。组件库与 CLI 是两个独立包，分别升级和发布。
+
+| npm 包 | 已发布版本 | beta 标签 | 用途 |
+| --- | --- | --- | --- |
+| [@daisu-ui/ui](https://www.npmjs.com/package/@daisu-ui/ui) | 0.1.0-beta.4 | 0.1.0-beta.4 | ReactLynx 运行时组件依赖 |
+| [@daisu-ui/cli](https://www.npmjs.com/package/@daisu-ui/cli) | 0.1.0-beta.3 | 0.1.0-beta.3 | API 查询、MCP 和 Agent 开发工具 |
+
+注册表当前 latest 也指向上述 beta 版本；预发布仍建议显式使用 @beta 或精确版本。dist-tag 会变化，使用 npm view <包名> dist-tags --json 核对；历史 0.0.0-stage 是首次审核占位，不作为组件或 CLI 的安装目标。
+
 ## npm 安装
 
 组件包名为 **`@daisu-ui/ui`**，beta 版本这样安装：
@@ -31,7 +42,7 @@ npm 只发布 `packages/daisu-ui` 构建的 UI 库：`dist/`、类型声明、�
 
 ## 完整发布示例
 
-下面假设当前为 `0.1.0-beta.4`，准备下一个版本 `0.1.0-beta.5`。命令均在仓库根目录执行；已发布版本和已有标签不得覆盖。
+下面假设当前为 `0.1.0-beta.5`，准备下一个版本 `0.1.0-beta.5`。命令均在仓库根目录执行；已发布版本和已有标签不得覆盖。
 
 ### 1. 开发并更新版本
 
@@ -134,7 +145,7 @@ npm run ui:npm:publish
 # 在消费项目执行
 npm install @daisu-ui/ui@0.1.0-beta.5
 # 需要回退时
-npm install @daisu-ui/ui@0.1.0-beta.4
+npm install @daisu-ui/ui@0.1.0-beta.5
 # 跟随当前 beta（仍需提交更新后的锁文件）
 npm install @daisu-ui/ui@beta
 ```
@@ -159,7 +170,7 @@ npm install '@daisu-ui/ui@git+ssh://git@git.zilueit.com/daisu-ui/daisu-ui.git#np
 
 安装方需具备仓库 SSH 读取权限。本地 Git 发布可先运行 `npm run ui:git:release -- --dry-run`，确认后执行 `npm run ui:git:release`，同样要求源码已进入远端 main。
 
-GitLab 配置和重试说明见 [版本发布说明](git-release.md)，Runner 启停见 [Runner 维护说明](local-runner.md)。UI npm 发布与业务 Lynx Bundle / Manifest、Demo 和文档站部署分别执行。
+Runner 启停见 [Runner 维护说明](local-runner.md)。CLI 的安装与 MCP 接入见 [AI 总览](#/ai-guide)，CLI 的 npm 包在独立仓库发布，UI 发布流水线不会自动发布 CLI。UI npm 发布与业务 Lynx Bundle / Manifest、Demo 和文档站部署分别执行。
 
 ## 已完成的一次性配置
 

@@ -1,6 +1,9 @@
-# CSO Lynx UI Full Guide
+# Daisu UI Full Guide
 
-`@daisu-ui/ui` 是本仓库 workspace 内的独立 npm UI 包，基于 `@lynx-js/react` 与 `@lynx-js/lynx-ui`。
+`@daisu-ui/ui` 是独立 ReactLynx 组件库，基于 `@lynx-js/react` 与 `@lynx-js/lynx-ui`。组件、Demo 与 API 文档由 UI 仓库维护；CLI、MCP、客户端接入与消费端 Skill 由独立 CLI 仓库维护。组件包名为 @daisu-ui/ui，安装和发布以当前 README 与版本发布说明为准；CLI 为独立的 @daisu-ui/cli，可通过 npm install -g @daisu-ui/cli@beta 安装。
+
+UI 源码：git@git.zilueit.com:daisu-ui/daisu-ui.git
+CLI 源码：git@git.zilueit.com:daisu-ui/cli.git
 
 ## Public API
 
@@ -23,7 +26,7 @@
 
 - `Segmented`：options支持字符串/数值/SegmentedOption<T>{value,disabled?,payload?}，value/onChange(option)或defaultValue；theme(card/outline)、整体disabled、onClick(option)（先change后click）、renderLabel({option,active,disabled})、className。无效或缺省value显示首项，空列表无滑块，不在挂载时回调；值严格匹配。卡片滑块200ms cubic-bezier(.645,.045,.355,1)，百分比定位自动适应缩放/弹窗。未提供vibrateShort（宿主无协议）、updateActiveStyle（无需测量）、旧版size；五组六例及平台差异见 `docs/ui/components/segmented.md`。
 
-- `Router`：基于 TanStack Router 的代码路由。`src/app/routes.ts` 集中定义路径、动态参数、validateSearch、页面组件和领域转换；新增页面同步 routeTypes、routePages 与 screens。`src/app/router.ts` 提供 createAppRouter/useAppRouter 与旧宿主地址兼容。业务优先 `await router.navigate({ to, params, search, replace })`，返回 Promise<boolean>；push/replace/back/reset/restore 也为异步，true 不保证 loader 成功。replace 仅替换栈顶。`packages/daisu-ui/src/router` 提供场景 key、保活、转场、侧滑、beforeEach/afterEach 和历史桥接。useRoute 返回所在场景的领域路由，useRouteMatch 返回 TanStack match；保活页面使用场景 hooks，避免原始 hooks 读到顶层参数。原始 DOM Link/Outlet 不用于 Lynx 场景。RouterView 自动提供 Provider；业务树还依赖 App 注入 BusinessSceneContext。H5 路径 URL/history.state 支持刷新、前进后退和守卫回滚；Flutter 通过可选 navigation.sync 接入。默认页显式注册 `/index`，省略时匹配已注册默认页，URL 与历史统一保留 `/index`；Demo 首页 `/ui-demo/index`，示例 `/ui-demo/router`。备案查看、编辑、新增分别为 `/detail`、`/edit`、`/add`，旧 detail?mode 链接继续兼容并规范地址。路径参数表、业务及独立接入示例、守卫、生命周期、宿主协议和常见问题详见 `docs/ui/components/router.md`。
+- `Router`：独立代码路由入口为 daisu-ui/router，使用前在应用入口加载 daisu-ui/router/runtime。通过 TanStack 的 createRootRoute/createRoute 创建路由树，createRouter 配置 initial、toPath、fromMatch 与 stringify，RouterView 绑定 router 并通过 renderRoute 渲染页面。支持页面保活、守卫与转场，历史及 Flutter 适配由消费项目接入；不依赖原业务应用的 src/app、BusinessSceneContext 或业务页面注册表。完整参数、事件与真实示例以 docs/ui/components/router.md 和 apps/demo/src/features/ui-demo/examples/router.tsx 为准。
 
 - `Pagination`：value/onChange(number)或defaultValue；total优先于totalPage，pageSize默认10，边界禁用；支持prevText/nextText、showIcon/showMessage、hideIfOnePage、buttonVariant(text/plain/dashed/base)、四个render插槽和className。渲染状态提供prev/next方法。空数据按1页处理，默认隐藏；详见 `docs/ui/components/pagination.md`。
 - `Tabbar`：items数据包含title/name/icon/value(徽标)/isDot/max/badgeProps/renderIcon({active})/children/className；value/defaultValue默认0，onChange({value})，名称严格匹配、无名称用索引。支持fixed/placeholder/bordered(默认false)、shape(default/round)、safeAreaInsetBottom/bottomSafeAreaHeight(宿主数值)、activeColor/inactiveColor(内置SVG用实际色值)、zIndex默认10。beforeChange支持boolean/Promise，拒绝/异常取消、仅最新点击可生效；切换value、改名称及卸载取消待确认。五组十例，示例弹窗/提示为私有组合；已复用公共Badge并支持完整badgeProps。详见 `docs/ui/components/tabbar.md`。
@@ -61,7 +64,7 @@
 
 ## Component examples
 
-运行 `npm run h5:dev` 后访问 `?demo=ui` 打开首页，点击圆角分组标题展开组件列表，允许同时展开多个分类；展开/收起采用 300ms ease-in-out 高度过渡，不添加内容淡入或上移动画。点击条目进入独立示例页，返回时保留首页展开状态。使用 `?demo=ui&component=button`、`collapse`、`cell`、`input`、`tag` 等参数可直达组件示例，详情页返回首页。Flutter 可传入 `page: 'ui-demo/button'` 作为初始页面。
+在 UI 独立仓库运行 `npm run ui:demo:dev`，访问 http://localhost:3091/#/ui-demo/index。使用 `?component=button`、collapse、cell、input、tag 等参数直达组件详情。分组由折叠面板展开，详情页独立展示，返回时保留首页分组状态。`npm run ui:docs:dev` 在 http://localhost:3090 提供文档与内嵌 Demo；源码或文档变更后需重新构建。浏览器预览不代表 Flutter 或原生宿主能力已验收。
 
 示例页使用 44px 居中导航栏和 `DemoGroup` / `ExampleBlock` 分组，以实际控件展示各项能力；Button 示例覆盖类型、状态、变体、尺寸、图标与块级布局。Cell 展示页面使用灰色分组背景；Slider 展示默认、管道、刻度与纵向布局。示例样式位于 `apps/demo/src/features/ui-demo/styles.css`，颜色与尺寸由 Daisu UI 组件设计定义。公共组件入口自动加载 `@daisu-ui/ui/styles.css`，应用无需手动导入（内部引入 `button.css`、`cell.css` 和 `slider.css`），示例页蓝色主题仅作用于 `.ui-demo-page`。
 
@@ -74,10 +77,12 @@
 
 ## AI workflow
 
-1. 读取 `AGENTS.md`、本文件和 `https://lynxjs.org/next/llms.txt`。
-2. 涉及控件时使用 `lynx-ui` skill；涉及线程、生命周期时使用 `reactlynx-best-practices` skill；涉及样式兼容时使用 `lynx-check-css-support` skill。
-3. 本仓库提供本地 stdio MCP Server（npm run mcp；客户端执行 node + apps/mcp/index.mjs 的绝对路径）。通过 list_components、get_component、get_demo、search_docs、get_changelog 查询当前 checkout 的资料。完整配置见 apps/docs/ai/mcp.md；修改文档后重启服务加载最新资料。
-4. 仅修改任务所需模块，并验证 Lynx/H5/Flutter 宿主边界。
+1. 消费项目先读自己的规则，使用 daisu doctor、data list 或 MCP daisu_status 核对项目依赖和离线资料版本。CLI --version 是工具版本，查询命令的 --version <版本> 才选择组件数据。
+2. 使用 list/search 选型，info/doc/demo/token 核对公开 API、真实示例和主题。MCP 对应 daisu_list、daisu_search、daisu_info、daisu_doc、daisu_demo、daisu_token；完整接入以 apps/docs/ai/{cli,mcp,skills}.md 为准。
+3. 消费端 Skill 由 CLI 的 agent init 安装；只需 MCP 用 mcp init。客户端需要完成信任或启用，并在实际会话调用工具，不能把 doctor 的独立握手当作会话验收。
+4. 库维护者读取 UI 的 AGENTS.md、本文件与 https://lynxjs.org/next/llms.txt，按任务使用 .agents/skills 中的 Lynx API、CSS 兼容性、ReactLynx 与官方 UI 技能。不要假定消费项目已安装这些维护者技能。
+5. 仅使用公开入口，完成消费项目自己的类型检查、测试和构建；原生媒体、键盘、手势和列表性能在目标设备验证。CLI 静态分析不替代这些检查。
+6. 本地协作仓库就绪时，正常构建自动同步 UI → CLI 快照与 CLI → UI 接入说明；可用显式 sync / docs export 排查，CI 与 --check 只读。安装后的查询不自动联网或刷新源码。
 
 - `Overlay`：show=false、duration=300(ms/{enter,leave}/boolean)、lockScroll=true、zIndex=10、rootPortal=false、children/className/style、onTap及六个进入离开事件。黑色55%遮罩，退出完成前阻挡点击，受控关闭；内容catchtap隔离。原生consume-slide-event/catchtouchmove，无DOM滚动锁；内部scroll-view需显式enable-scroll同步，Flutter外部滚动不由组件控制。rootPortal需RootPortalHost，局部主题由内容类提供。详情overlay.md，示例/ui-demo/overlay。
 

@@ -5,8 +5,7 @@
 - `packages/daisu-ui`：发布到 npm 的 `@daisu-ui/ui` 组件包，保留 JSX、类型声明及自动样式加载。
 - `apps/demo`：独立 Lynx / 浏览器示例，示例源码的唯一维护位置。
 - `apps/docs`：API 文档站、源码面板与内嵌 Demo。
-- `apps/mcp`：本地 stdio MCP Server，供 AI 查询组件文档、API、Demo 与主题变量。
-- `docs/ui`：组件文档、AI 指南、LLM 文档及平台能力说明。
+- `docs/ui`：组件文档、LLM 约束与平台能力说明。
 - `fixtures/ui-consumer`：独立 tarball 消费验收工程。
 
 ```bash
@@ -27,7 +26,7 @@ Demo 支持组件独立路径与深色模式，文档站可从 iframe 独立打�
 
 浏览器宿主需通过 `@daisu-ui/ui/web` 注册媒体、裁剪和二维码导出后端；Flutter 宿主能力由使用方提供。真实平台支持范围见 [媒体能力](docs/ui/MEDIA_CAPABILITIES.md)。
 
-仅发布 `@daisu-ui/ui` workspace；Demo、文档和 MCP 均为 private。消费项目使用 npm 版本、Git 安装 Tag 或 tarball，通过公开 API 使用组件。
+仅发布 `@daisu-ui/ui` workspace；Demo 和文档均为 private；CLI/MCP 在独立仓库维护。消费项目使用 npm 版本、Git 安装 Tag 或 tarball，通过公开 API 使用组件。
 
 Git 远程：`git@git.zilueit.com:daisu-ui/daisu-ui.git`。迁移清单见 [MIGRATION.json](MIGRATION.json)。
 
@@ -194,4 +193,8 @@ GitLab 配置和重试说明见 [版本发布说明](docs/ci/git-release.md)，R
 
 ## AI 与 MCP
 
-安装依赖后执行 `npm run mcp` 可启动本地 stdio 服务；客户端直接使用 `node` 加 `apps/mcp/index.mjs` 的绝对路径连接。提供组件列表、组件文档、Demo 源码、全文搜索和更新记录五个工具。完整 JSON、VS Code 和 Codex 配置见 [MCP 接入](apps/docs/ai/mcp.md)，总览见 [AI 使用指南](docs/ui/AI_GUIDE.md)。`npm run test:mcp` 验证真实客户端连接，`npm test` 包含该测试。MCP workspace 为 private，随仓库使用。
+AI 工具由独立的 `@daisu-ui/cli` 提供（[CLI 源码](https://git.zilueit.com/daisu-ui/cli)，SSH：`git@git.zilueit.com:daisu-ui/cli.git`），支持离线查询、全文搜索、项目检查、MCP 和消费端 Skill。使用方式见 [AI 总览](apps/docs/ai/overview.md)、[CLI 工具](apps/docs/ai/cli.md)、[MCP 接入](apps/docs/ai/mcp.md) 与 [AI Skills](apps/docs/ai/skills.md)。
+
+这些接入页面由 CLI 生成并提交到本仓库。两端按 `DaiSu-UI/{daisu-ui,cli}` 同级维护且开发依赖已安装时，正常构建自动同步，文档开发服务持续监听并更新，刷新浏览器查看；无需再单独运行同步命令。单独检出 UI 时使用已保存资料构建并验证摘要，CI 只读校验。组件文档、LLM 约束、维护者 AGENTS 与 Lynx 技能仍由本仓库维护。同步与检查流程见 [独立仓库开发](docs/ui/WORKSPACE.md)。
+
+本机维护目录为 `/media/youzi/Project/workProject/DaiSu-UI/daisu-ui`，CLI 为同级 `cli`；工具和构建不依赖这个固定路径。CLI 推荐通过 npm install -g @daisu-ui/cli@beta 安装，也支持 Git 源码或 tarball；接入、版本选择、客户端配置及验证步骤以 AI 页面为准。

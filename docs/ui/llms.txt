@@ -1,12 +1,16 @@
 # Daisu UI
 
-独立 ReactLynx UI 库的文档入口。
+独立 ReactLynx UI 库的文档入口。组件资料由 UI 维护，CLI/MCP 从带版本的离线快照提供查询。
+
+- UI 源码：git@git.zilueit.com:daisu-ui/daisu-ui.git
+- CLI 源码：git@git.zilueit.com:daisu-ui/cli.git
 
 - 组件导出：`packages/daisu-ui/src/index.ts`
 - Token：`packages/daisu-ui/src/tokens.ts` 和 `@daisu-ui/ui/styles.css`
 - 运行示例：`apps/demo/src/features/ui-demo/UiDemoPage.tsx`
 - 示例目录：`apps/demo/src/features/ui-demo/examples/`
-- AI 使用指南：`docs/ui/AI_GUIDE.md`
+- AI 使用指南：`apps/docs/ai/overview.md`
+- CLI、MCP 与消费端 Skill 接入：`apps/docs/ai/cli.md`、`apps/docs/ai/mcp.md`、`apps/docs/ai/skills.md`（由独立 CLI 生成）
 - 逐组件参数映射：`docs/ui/components/`
 - Sidebar 参数及三个联动子页：`docs/ui/components/sidebar.md`
 - IndexBar 参数及整屏索引示例：`docs/ui/components/index-bar.md`
@@ -147,7 +151,10 @@ RichText 富文本：packages/daisu-ui 中的原生 HTML 解析、图文/链接�
 
 VideoPreview / useVideoPreview 与 ImgCropper 已提供浏览器后端：宿主入口调用 daisu-ui/web 的 registerDaisuWebComponents；组件分别设置 mediaMode="browser"、mode="browser"。视频预览默认248px或全屏，hook按实例隔离；裁剪为真实Canvas PNG/JPEG，tempFilePath是Blob URL，须按生命周期回收。Flutter仍缺对应后端。见 components/video-preview.md、components/img-cropper.md。
 
-## MCP Server
+## AI 工具接入
 
-安装仓库依赖后运行 npm run mcp；客户端直接通过 node + apps/mcp/index.mjs 的绝对路径建立 stdio 连接。完整客户端配置：apps/docs/ai/mcp.md。
-工具：list_components、get_component（full/api/examples/tokens）、get_demo、search_docs、get_changelog。资源：daisu-ui://docs/llms、daisu-ui://docs/llms-full、daisu-ui://docs/agent-rules。
+独立的 @daisu-ui/cli 提供离线组件查询、全文搜索、项目检查、MCP 和消费端 Skill；按项目依赖或显式版本选择随包快照。接入步骤与实际工具清单见 apps/docs/ai/cli.md、apps/docs/ai/mcp.md 和 apps/docs/ai/skills.md。组件资料变化后由开发构建自动协作或显式 sync 刷新知识快照；安装后的查询不会自动读取当前 checkout。
+
+先完成 CLI 安装，再在消费项目执行 daisu data list、doctor、info、doc、demo、token；MCP 会话先调用 daisu_status。CLI 已发布 npmjs，推荐 npm install -g @daisu-ui/cli@beta；也可从 Git 源码或 tarball 使用。文档站版本、CLI 自身版本和组件数据版本分别管理；文档页不会自动更新 CLI 快照。
+
+约束资源为 daisu://guides/llms、daisu://guides/llms-full、daisu://guides/component-ai-notes。历史快照可能未收录。客户端接入用 agent init（MCP+Skill+Instructions）或 mcp init（仅 MCP），先 dry-run 再确认执行；独立握手不等于实际会话可用。

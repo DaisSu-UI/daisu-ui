@@ -425,9 +425,15 @@ if (errors.length) {
   );
   process.exit(1);
 }
-if (process.argv.includes("--check")) {
-  console.log(`Checked ${generatedExamples.length} examples.`);
-  process.exit(0);
+const checkOnly = process.argv.includes("--check");
+const drift = [];
+async function writeGenerated(path, content) {
+  let previous;
+  try { previous = await readFile(path, "utf8"); }
+  catch (error) { if (error.code !== "ENOENT") throw error; }
+  if (previous === content) return;
+  if (checkOnly) drift.push(path.slice(root.length + 1));
+  else await writeFile(path, content);
 }
 const sources = {};
 for (const item of catalog) {
@@ -633,12 +639,13 @@ for (const item of catalog) {
         ]),
     )}`;
   content += `\n## 源代码\n\n${componentSources.map((source) => `[${source.name} 组件源码](./sources/${id}/${basename(source.path)}.txt)`).join(" · ")}${demo ? ` · [示例源码](./sources/${id}/demo.tsx.txt)` : ""} · [文档源码](./sources/${id}/docs.md.txt)\n`;
-  await writeFile(resolve(root, doc), content);
+  await writeGenerated(resolve(root, doc), content);
 }
-await writeFile(
+await writeGenerated(
   resolve(root, "docs/ui/component-sources.json"),
   JSON.stringify(sources, null, 2) + "\n",
 );
+if (drift.length) throw new Error(`组件文档未同步：${drift.join("、")}。本地构建会自动更新。`);
 console.log(
-  `Generated ${Object.keys(sources).length - 1} component guides; checked ${generatedExamples.length} consumer examples. Button guide preserved.`,
+  `${checkOnly ? "Checked" : "Generated"} ${Object.keys(sources).length - 1} component guides; checked ${generatedExamples.length} consumer examples. Button guide preserved.`,
 );
