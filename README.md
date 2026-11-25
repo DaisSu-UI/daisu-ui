@@ -29,3 +29,7 @@ Demo 支持组件独立路径与深色模式，文档站可从 iframe 独立打�
 仅发布 `daisu-ui` workspace；Demo 和文档均为 private。`npm run ui:pack` 在 `artifacts/` 生成 tarball。CSO 主项目通过该 tarball 消费公开 API，无需链接本仓库源码，之后可切换为已发布的 npm 版本。
 
 Git 远程：`git@git.zilueit.com:daisu-ui/daisu-ui.git`。迁移清单见 [MIGRATION.json](MIGRATION.json)。
+
+## 从 Git 安装与发布
+
+无需发布到 npmjs。执行 `npm run ui:git:release` 可校验并发布 Git 安装包；Runner 接入后，版本 Tag 自动执行相同校验与发布。配置和安装说明见 [GitLab CI 与 Git 发布](docs/ci/git-release.md)。

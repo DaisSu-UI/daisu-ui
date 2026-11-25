@@ -1,4 +1,4 @@
-# CSO Lynx UI
+# Daisu UI
 
 内部 ReactLynx UI 库的文档入口。
 
