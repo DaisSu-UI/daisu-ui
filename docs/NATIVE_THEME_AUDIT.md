@@ -1,6 +1,6 @@
 # Lynx 4.0 全库主题与滚动检查
 
-检查覆盖全部组件样式、颜色继承、内置 SVG 图标与滑动拦截。颜色依据 Flutter 宿主 `lib/core/theme/design_tokens.dart`、`app_colors.dart`、`app_theme.dart`，不依赖宿主源码参与构建。
+修复版：`@daisu-ui/ui@0.1.0-beta.8`。检查覆盖全库 80 份 CSS、颜色继承、内置 SVG 图标与滑动拦截，其中 19 份样式需要转换普通属性的嵌套变量回退。颜色依据 Flutter 宿主 `lib/core/theme/design_tokens.dart`、`app_colors.dart`、`app_theme.dart`，不依赖宿主源码参与构建。
 
 | 语义 | 浅色 | 深色 |
 | --- | --- | --- |
