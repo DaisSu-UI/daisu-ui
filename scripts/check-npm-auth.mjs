@@ -32,8 +32,10 @@ function checkNpmAuth() {
     let packages;
     try {
       packages = JSON.parse(npm(['access', 'list', 'packages', username, '--json']));
-    } catch {
-      throw new Error('无法查询 npm 包权限；请核对 Token 授权范围及 npm 注册表连接');
+    } catch (error) {
+      const stderr = String(error?.stderr ?? '');
+      const code = stderr.match(/npm (?:error|ERR!) code ([A-Z0-9_]+)/)?.[1];
+      throw new Error(`无法查询 npm 包权限${code ? `（npm ${code}）` : '（未返回有效的权限数据）'}；Token 身份验证已通过`);
     }
     assert.equal(packages[metadata.name], 'read-write', '当前 npm 账号没有 @daisu-ui/ui 的读写权限，或 Token 未授权此包');
     console.log('npm Token 身份验证通过；@daisu-ui/ui 的账号读写权限检查通过。');
