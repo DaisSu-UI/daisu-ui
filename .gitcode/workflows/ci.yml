@@ -43,4 +43,3 @@ jobs:
         run: npm run ui:check
       - name: Pack the UI package
         run: npm run ui:pack
-
