@@ -47,7 +47,7 @@ daisu mcp print --client vscode
 daisu mcp print --client codex
 ```
 
-下面展示全局安装 npm install -g @daisu-ui/cli@beta 后的简洁配置，使用 daisu mcp。客户端必须能在 PATH 找到 daisu；工作目录应为消费项目。需要固定目录时，args 使用 ["mcp", "--cwd", "/absolute/path/to/consumer-project"]。合并服务条目到已有配置，不覆盖整个文件。
+下面展示全局安装 npm install -g @daisu-ui/cli@latest 后的简洁配置，使用 daisu mcp。客户端必须能在 PATH 找到 daisu；工作目录应为消费项目。需要固定目录时，args 使用 ["mcp", "--cwd", "/absolute/path/to/consumer-project"]。合并服务条目到已有配置，不覆盖整个文件。
 
 print 只输出配置，不写文件。默认生成本机 Node 和 CLI 的绝对入口及消费项目目录，适合编辑器无法读取全局 PATH 的情况；目录含空格时保留为单个参数。
 

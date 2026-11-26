@@ -19,7 +19,7 @@
 需要 Node.js >=20.19.0。当前发布在 npmjs，预发布建议显式安装 beta 标签：
 
 ```bash
-npm install -g @daisu-ui/cli@beta
+npm install -g @daisu-ui/cli@latest
 daisu --version
 ```
 
@@ -28,9 +28,9 @@ daisu --version
 不全局安装也可使用：
 
 ```bash
-npx --yes @daisu-ui/cli@beta info Button
+npx --yes @daisu-ui/cli@latest info Button
 # 或安装为消费项目的开发依赖
-npm install --save-dev @daisu-ui/cli@beta
+npm install --save-dev @daisu-ui/cli@latest
 npx --no-install daisu info Button
 ```
 
@@ -211,7 +211,7 @@ daisu update
 daisu update --check
 ```
 
-data check 校验版本索引、结构和 SHA-256 摘要。update 默认只报告本地状态；--check 才联网查询 CLI 更新，不自动安装。升级 CLI 可重新执行 npm install -g @daisu-ui/cli@beta；升级后按 data list 核对实际收录的组件版本。
+data check 校验版本索引、结构和 SHA-256 摘要。update 默认只报告本地状态；--check 才联网查询 CLI 更新，不自动安装。升级 CLI 可重新执行 npm install -g @daisu-ui/cli@latest；升级后按 data list 核对实际收录的组件版本。
 
 ## 源码开发与资料同步
 

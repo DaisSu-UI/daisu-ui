@@ -12,7 +12,7 @@
 
 ## 安装前准备
 
-先执行 npm install -g @daisu-ui/cli@beta，或按 [CLI 工具](#/ai-cli) 使用项目依赖和源码入口。在需要生成代码的消费项目执行接入命令，不要把 CLI 仓库作为目标项目。源码用户用 `node /absolute/path/to/cli/dist/index.js` 替代 daisu；项目开发依赖用户用 `npx --no-install daisu`。
+先执行 npm install -g @daisu-ui/cli@latest，或按 [CLI 工具](#/ai-cli) 使用项目依赖和源码入口。在需要生成代码的消费项目执行接入命令，不要把 CLI 仓库作为目标项目。源码用户用 `node /absolute/path/to/cli/dist/index.js` 替代 daisu；项目开发依赖用户用 `npx --no-install daisu`。
 
 ## 一次接入
 
