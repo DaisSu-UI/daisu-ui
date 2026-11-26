@@ -12,7 +12,7 @@ npm run build
 npm run dev
 ```
 
-打开终端输出的 http://localhost:3092。下载包固定 @daisu-ui/ui@0.1.0-beta.4，并保存锁文件；升级时显式调整版本并重新验证。也可从 UI 仓库 examples/quickstart 获取相同工程。需要 Node.js ^20.19.0 或 >=22.12.0。
+打开终端输出的 http://localhost:3092。下载包固定 @daisu-ui/ui@0.1.0-beta.7，并保存锁文件；升级时显式调整版本并重新验证。也可从 UI 仓库 examples/quickstart 获取相同工程。需要 Node.js ^20.19.0 或 >=22.12.0。
 
 ## 文件与产物
 
