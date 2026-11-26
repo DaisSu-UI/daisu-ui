@@ -1,6 +1,6 @@
 # 独立仓库开发
 
-组件库已从 yxt-cso-lynx 完整拆出。本仓库管理 `packages/daisu-ui`、`apps/demo` 和 `apps/docs`，不依赖主业务工程。
+本仓库独立管理 `packages/daisu-ui`、`apps/demo`、`apps/docs` 和接入示例；组件包与构建不依赖消费方业务工程。
 
 日常只在 `packages/daisu-ui/src` 修改组件，在 `apps/demo/src/features/ui-demo` 修改示例；无需同步主项目文件。`npm run ui:demo:dev` 构建并运行独立 Demo（3091），`npm run ui:docs:dev` 构建并预览文档（3090）。`npm run build` 构建库、Demo 与文档；文档产物 `apps/docs/dist` 可独立部署并支持子路径。
 
@@ -8,7 +8,7 @@
 
 `npm test` 验证库与 Demo，`npm run test:types` 检查 Demo 类型。`npm run ui:check` 会创建临时工程、安装真实 tarball，并检查声明、保留 JSX、自动样式及 Lynx/Web 编译。`npm run ui:pack` 输出 `artifacts/daisu-ui-*.tgz`。
 
-CSO 的 Flutter 桥接、业务路由及其集成测试留在原工程；消费方安装 Git 版本 Tag 或 tarball 并使用公开入口，源码维护不再跨仓库。初始化迁移信息见根目录 `MIGRATION.json`。
+消费方通过 npm 版本、Git 安装标签或 tarball 使用公开入口，并自行管理业务路由、账号、网络和宿主桥接。文件来源及生成规则见 [文件维护清单](../MAINTENANCE.md)。
 
 文档站页头提供 AI 菜单，提供 AI 总览、LLMs.txt、@daisu-ui/cli 和 AI Skills 四个主入口；完整 MCP 详情从总览和 CLI 页面访问。版本号菜单依据 CHANGELOG 的实际版本标题生成，定位对应更新记录，不切换为不存在的历史文档快照。LLM 文档构建为站点根路径下的 llms.txt 与 llms-full.txt。
 
@@ -20,7 +20,7 @@ CLI、MCP、客户端与消费端 Skill 由独立的 `@daisu-ui/cli` 仓库维�
 
 本仓库 `npm run build` 与 `npm run ui:docs:build` 默认发现已安装开发依赖的同级 CLI，自动生成组件说明、导出接入页并刷新 CLI 知识快照；无需手动同步。`npm run ui:docs:dev` 同时监听两端源文件，修改后自动更新文档与必要的 Demo Bundle，刷新浏览器查看。CLI 的 `npm run build` / `npm run dev` 也会同步。监听合并修改并串行执行，忽略生成文件，内容相同不重写快照时间或生成文件。
 
-只检出 UI 时继续校验已保存的接入页摘要，保持独立构建；CI 和文档 `check` 只读。非同级目录用 `DAISU_UI_CLI_SOURCE` 指定 CLI，CLI 用 `DAISU_UI_SOURCE` 指定 UI；`DAISU_UI_AUTO_SYNC=0` 可关闭自动协作，显式路径错误会直接报错。`npm run test:ai-docs` 验证校验器。组件资料以本仓库为准并提取到 CLI；接入说明以 CLI 为准并导出到本仓库。维护者 AGENTS 与 Lynx 技能保留在本仓库。
+只检出 UI 时继续校验已保存的接入页摘要，保持独立构建；CI 和文档 `check` 只读。非同级目录用 `DAISU_UI_CLI_SOURCE` 指定 CLI，CLI 用 `DAISU_UI_SOURCE` 指定 UI；`DAISU_UI_AUTO_SYNC=0` 可关闭自动协作，显式路径错误会直接报错。`npm run test:ai-docs` 验证校验器。组件资料以本仓库为准并提取到 CLI；接入说明以 CLI 为准并导出到本仓库。维护者 AGENTS 保留在本仓库；外部 Lynx 技能由开发者本机管理，仓库不保存其参考资料副本。
 
 ## 版本发布
 
@@ -28,7 +28,7 @@ CLI、MCP、客户端与消费端 Skill 由独立的 `@daisu-ui/cli` 仓库维�
 
 ## 目录与 AI 文档维护
 
-本机当前目录为 /media/youzi/Project/workProject/DaiSu-UI/daisu-ui；CLI 为同级 cli。源码地址分别是 git@github.com:DaisSu-UI/daisu-ui.git 与 git@github.com:DaisSu-UI/cli.git。这些路径仅用于本机定位，构建和查询不依赖固定目录。
+推荐工作区布局为 <workspace>/{daisu-ui,cli}。源码地址分别是 git@github.com:DaisSu-UI/daisu-ui.git 与 git@github.com:DaisSu-UI/cli.git；构建和查询不依赖固定的本机目录。
 
 修改接入说明时，在 CLI 的 src/site-docs.ts 维护总览、安装、MCP 和 Skills，由正常构建自动导出到 UI；LLM 页面 apps/docs/ai/llm.md 及 docs/ui 中的约束由 UI 维护。客户端配置片段从真实适配器生成，验证时使用临时项目，不修改真实编辑器配置。文档中明确区分工具版本、组件数据版本与实际会话验收。
 
@@ -40,4 +40,4 @@ CLI、MCP、客户端与消费端 Skill 由独立的 `@daisu-ui/cli` 仓库维�
 
 全文搜索从真实 Markdown 章节生成 search-index.json；示例预览仅在浏览器宿主中扫描实际 Demo 标题，通过来源与请求标识校验的消息定位示例，不把 DOM 代码放进原生 Bundle。兼容表源为 apps/docs/platforms.mjs，默认不声明真机通过。接入工程维护在 examples，ZIP 排除本机依赖缓存。
 
-运行 npm run test:docs:browser 和 npm run test:docs:release。GitHub Documentation 工作流生成已验证站点产物，手动部署和回滚可复用同一产物；GitLab 保留兼容文档任务。实际服务器尚未配置时不声称已上线，完整流程见 apps/docs/pages/docs-deployment.md。
+运行 npm run test:docs:browser 和 npm run test:docs:release。GitHub Documentation 工作流生成已验证站点产物，手动部署和回滚可复用同一产物；GitLab 保留兼容文档任务。GitHub Pages 与组织首页发布流程见 apps/docs/pages/docs-deployment.md；其他服务器部署按实际配置启用。

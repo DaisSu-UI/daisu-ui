@@ -32,7 +32,9 @@ Demo 支持组件独立路径与深色模式，文档站可从 iframe 独立打�
 
 仅发布 `@daisu-ui/ui` workspace；Demo 和文档均为 private；CLI/MCP 在独立仓库维护。消费项目使用 npm 版本、Git 安装 Tag 或 tarball，通过公开 API 使用组件。
 
-默认推送远程为 `github`：`git@github.com:DaisSu-UI/daisu-ui.git`。旧 GitLab / GitCode 远程仅保留历史访问，日常代码和版本标签只推送 GitHub。迁移清单见 [MIGRATION.json](../MIGRATION.json)。
+主仓库为 `git@github.com:DaisSu-UI/daisu-ui.git`。本机使用 `github` 远程；直接从 GitHub 克隆时通常为 `origin`。日常代码和版本标签推送 GitHub，main / developer 由文末的同步工作流镜像到 GitLab。
+
+文件的唯一维护来源、生成命令与本地产物清单见 [文件维护清单](MAINTENANCE.md)。
 
 ## npm 安装
 
@@ -71,9 +73,9 @@ GitHub Actions 为 UI 的自动验证和 npm 发布入口；GitLab 自动发布�
 
 AI 工具由独立的 `@daisu-ui/cli` 提供（[CLI 源码](https://github.com/DaisSu-UI/cli)，SSH：`git@github.com:DaisSu-UI/cli.git`），支持离线查询、全文搜索、项目检查、MCP 和消费端 Skill。使用方式见 [AI 总览](../apps/docs/ai/overview.md)、[CLI 工具](../apps/docs/ai/cli.md)、[MCP 接入](../apps/docs/ai/mcp.md) 与 [AI Skills](../apps/docs/ai/skills.md)。
 
-这些接入页面由 CLI 生成并提交到本仓库。两端按 `DaiSu-UI/{daisu-ui,cli}` 同级维护且开发依赖已安装时，正常构建自动同步，文档开发服务持续监听并更新，刷新浏览器查看；无需再单独运行同步命令。单独检出 UI 时使用已保存资料构建并验证摘要，CI 只读校验。组件文档、LLM 约束、维护者 AGENTS 与 Lynx 技能仍由本仓库维护。同步与检查流程见 [独立仓库开发](ui/WORKSPACE.md)。
+这些接入页面由 CLI 生成并提交到本仓库。两端按 `DaiSu-UI/{daisu-ui,cli}` 同级维护且开发依赖已安装时，正常构建自动同步，文档开发服务持续监听并更新，刷新浏览器查看；无需再单独运行同步命令。单独检出 UI 时使用已保存资料构建并验证摘要，CI 只读校验。组件文档、LLM 约束与维护者 AGENTS 由本仓库维护；外部 Lynx 技能由开发者在本机按需安装和更新。同步与检查流程见 [独立仓库开发](ui/WORKSPACE.md)。
 
-本机维护目录为 `/media/youzi/Project/workProject/DaiSu-UI/daisu-ui`，CLI 为同级 `cli`；工具和构建不依赖这个固定路径。CLI 推荐通过 npm install -g @daisu-ui/cli@beta 安装，也支持 Git 源码或 tarball；接入、版本选择、客户端配置及验证步骤以 AI 页面为准。
+推荐将 UI 与 CLI 按 `<workspace>/{daisu-ui,cli}` 并列检出；工具和构建不依赖固定的本机路径。CLI 推荐通过 npm install -g @daisu-ui/cli@beta 安装，也支持 Git 源码或 tarball；接入、版本选择、客户端配置及验证步骤以 AI 页面为准。
 
 ## GitHub → GitLab 自动同步
 

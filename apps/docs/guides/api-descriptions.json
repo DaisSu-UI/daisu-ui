@@ -619,7 +619,6 @@
   "steps": {},
   "sticky": {},
   "swipe-action": {},
-  "swiper-nav": {},
   "swiper": {
     "list": "图片地址或对象列表；空列表不创建分页内核",
     "current": "current 为受控值；未传时使用内部状态",
