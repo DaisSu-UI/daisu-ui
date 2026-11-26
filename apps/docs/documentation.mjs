@@ -35,7 +35,7 @@ ${entries
 
 从 @daisu-ui/ui、@daisu-ui/ui/router、@daisu-ui/ui/utils、@daisu-ui/ui/web 等公开入口导入；组件入口自动加载样式。文字放在 text 元素内，使用 ConfigProvider 的语义变量和主题作用域。业务账号、网络与宿主协议由消费项目提供。浏览器预览不能代替原生媒体、键盘、手势与列表性能验收。
 
-CLI 为 @daisu-ui/cli，可用 npm install -g @daisu-ui/cli@beta 安装；查询和 MCP 使用随包快照，不自动读取网站或当前 UI 源码。先运行 daisu data list / doctor，或调用 daisu_status，核对已收录版本。数据缺失时更新到包含该版本的 CLI 或使用其 Git 源码，不用其他版本 API 冒充。
+CLI 为 @daisu-ui/cli，可用 npm install -g @daisu-ui/cli@latest 安装；查询和 MCP 使用随包快照，不自动读取网站或当前 UI 源码。先运行 daisu data list / doctor，或调用 daisu_status，核对已收录版本。数据缺失时更新到包含该版本的 CLI 或使用其 Git 源码，不用其他版本 API 冒充。
 
 ## 源码与维护
 

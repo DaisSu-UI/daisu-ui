@@ -1,6 +1,6 @@
 # Daisu UI Full Guide
 
-`@daisu-ui/ui` 是独立 ReactLynx 组件库，基于 `@lynx-js/react` 与 `@lynx-js/lynx-ui`。组件、Demo 与 API 文档由 UI 仓库维护；CLI、MCP、客户端接入与消费端 Skill 由独立 CLI 仓库维护。组件包名为 @daisu-ui/ui，安装和发布以当前 README 与版本发布说明为准；CLI 为独立的 @daisu-ui/cli，可通过 npm install -g @daisu-ui/cli@beta 安装。
+`@daisu-ui/ui` 是独立 ReactLynx 组件库，基于 `@lynx-js/react` 与 `@lynx-js/lynx-ui`。组件、Demo 与 API 文档由 UI 仓库维护；CLI、MCP、客户端接入与消费端 Skill 由独立 CLI 仓库维护。组件包名为 @daisu-ui/ui，安装和发布以当前 README 与版本发布说明为准；CLI 为独立的 @daisu-ui/cli，可通过 npm install -g @daisu-ui/cli@latest 安装。
 
 UI 源码：git@github.com:DaisSu-UI/daisu-ui.git
 CLI 源码：git@github.com:DaisSu-UI/cli.git

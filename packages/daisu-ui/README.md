@@ -175,7 +175,7 @@ Daisu UI 的原生引擎编译目标为 Lynx 4.0，浏览器使用 Lynx Web。�
 
 ## AI 与 CLI
 
-独立的 [CLI 仓库](https://github.com/DaisSu-UI/cli) 提供离线组件查询、MCP 和消费端 Skill，通过 npm install -g @daisu-ui/cli@beta 安装，也支持 Git 源码和 tarball。先核对实际组件版本，再用 daisu info/doc/demo/token 查询；客户端一键接入使用 daisu agent init，仅 MCP 使用 daisu mcp init。
+独立的 [CLI 仓库](https://github.com/DaisSu-UI/cli) 提供离线组件查询、MCP 和消费端 Skill，通过 npm install -g @daisu-ui/cli@latest 安装，也支持 Git 源码和 tarball。先核对实际组件版本，再用 daisu info/doc/demo/token 查询；客户端一键接入使用 daisu agent init，仅 MCP 使用 daisu mcp init。
 
 在 UI 仓库运行 npm run ui:docs:dev，可从 AI 菜单访问总览、LLMs.txt、CLI、MCP 与 Skills。CLI 快照不会因文档站或源码更新自动刷新；项目编译与原生能力仍需独立验证。
 

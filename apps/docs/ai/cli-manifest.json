@@ -5,9 +5,9 @@
     "version": "0.1.0-beta.7"
   },
   "files": {
-    "overview.md": "a16d1d15f367c19714fd8a4ed4382766ac314af7fd19c639b319fd20e5c22a78",
-    "cli.md": "6f8dde635dbea4fe342f9d7a0d595d81e528dc2ffa852d47501c1c10099011e9",
-    "mcp.md": "f478d3bf8613ea1ebb38a906536aeb6945d5e49702b3d3181267a720b89d8031",
-    "skills.md": "dd6c807725fe4b0b4febfc4fa315bc30487f7cc7c2524baa766dadfe07d6065d"
+    "overview.md": "0a9e109cfabf897a47fbd861b1f859cb8c3a8826d2fab2bde71b4b8cebcd91a1",
+    "cli.md": "a3f01e59ec99320210d10c2ebbaf3b79b1ce13aac0be65e2a1e370bd4b566bf6",
+    "mcp.md": "168befc7b34adaee7663c352c78b350a9fcd4d251e0ca2ee98718774cece7558",
+    "skills.md": "ca8fd6c7507b5717ce6b0a413f88bcf31bc07a102658a8f9bca9a27ce9ab2bc6"
   }
 }

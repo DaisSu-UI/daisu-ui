@@ -75,7 +75,7 @@ AI 工具由独立的 `@daisu-ui/cli` 提供（[CLI 源码](https://github.com/D
 
 这些接入页面由 CLI 生成并提交到本仓库。两端按 `DaiSu-UI/{daisu-ui,cli}` 同级维护且开发依赖已安装时，正常构建自动同步，文档开发服务持续监听并更新，刷新浏览器查看；无需再单独运行同步命令。单独检出 UI 时使用已保存资料构建并验证摘要，CI 只读校验。组件文档、LLM 约束与维护者 AGENTS 由本仓库维护；外部 Lynx 技能由开发者在本机按需安装和更新。同步与检查流程见 [独立仓库开发](ui/WORKSPACE.md)。
 
-推荐将 UI 与 CLI 按 `<workspace>/{daisu-ui,cli}` 并列检出；工具和构建不依赖固定的本机路径。CLI 推荐通过 npm install -g @daisu-ui/cli@beta 安装，也支持 Git 源码或 tarball；接入、版本选择、客户端配置及验证步骤以 AI 页面为准。
+推荐将 UI 与 CLI 按 `<workspace>/{daisu-ui,cli}` 并列检出；工具和构建不依赖固定的本机路径。CLI 推荐通过 npm install -g @daisu-ui/cli@latest 安装，也支持 Git 源码或 tarball；接入、版本选择、客户端配置及验证步骤以 AI 页面为准。
 
 ## GitHub → GitLab 自动同步
 
