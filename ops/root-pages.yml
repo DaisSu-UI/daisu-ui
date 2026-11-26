@@ -9,20 +9,17 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: organization-pages
   cancel-in-progress: false
 
 jobs:
-  publish:
+  sync:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
-    environment:
-      name: github-pages
-      url: https://daissu-ui.github.io/
+    outputs:
+      changed: ${{ steps.site.outputs.changed }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -36,11 +33,33 @@ jobs:
       - name: Pull the verified project site
         id: site
         run: node ui-source/scripts/pull-project-site.mjs --current https://daissu-ui.github.io/ --output site
-      - uses: actions/configure-pages@v5
-        if: steps.site.outputs.changed == 'true'
       - uses: actions/upload-pages-artifact@v4
         if: steps.site.outputs.changed == 'true'
         with:
           path: site
+
+  deploy:
+    needs: sync
+    if: needs.sync.outputs.changed == 'true'
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: https://daissu-ui.github.io/
+    steps:
+      - uses: actions/configure-pages@v5
+      - name: Wait for the uploaded Pages artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for attempt in $(seq 1 10); do
+            available=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" --jq '[.artifacts[] | select(.name == "github-pages")] | length')
+            if [ "$available" -eq 1 ]; then exit 0; fi
+            sleep 3
+          done
+          echo 'The uploaded Pages artifact is not readable yet.' >&2
+          exit 1
       - uses: actions/deploy-pages@v4
-        if: steps.site.outputs.changed == 'true'
