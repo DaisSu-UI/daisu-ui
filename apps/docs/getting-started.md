@@ -57,12 +57,14 @@ CLI 与组件库分别安装。全局安装已发布的 CLI 后，在消费项�
 
 ```bash
 npm install -g @daisu-ui/cli@beta
+daisu data list
+daisu doctor .
 daisu info Button
 daisu agent init --client cursor --dry-run
 daisu agent init --client cursor --yes
 ```
 
-CLI 提供离线知识查询、MCP 和消费端 Skill，不是运行组件的必需依赖。客户端 ID、简洁 MCP 配置和版本选择见 [AI 总览](#/ai-guide)、[CLI 工具](#/ai-cli) 与 [MCP 接入](#/ai-mcp)。
+CLI 提供离线知识查询、MCP 和消费端 Skill，不是运行组件的必需依赖。先确认 data list 收录了项目的组件版本；若缺失，按 [CLI 版本匹配步骤](#/ai-cli?section=ai-cli-版本缺失时的处理) 更新工具或使用源码入口，组件本身可继续按本站对应版本文档使用。客户端 ID、简洁 MCP 配置和版本选择见 [AI 总览](#/ai-guide)、[CLI 工具](#/ai-cli) 与 [MCP 接入](#/ai-mcp)。
 
 ## 升级与回退
 

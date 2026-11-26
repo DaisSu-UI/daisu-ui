@@ -32,7 +32,7 @@
     "ui:npm:prepare": "npm run ui:build && node scripts/prepare-npm-package.mjs",
     "ui:npm:publish": "node scripts/publish-npm-package.mjs",
     "ui:npm:release": "node scripts/check-release-source.mjs --require-main && npm test && npm run test:git-release && npm run test:npm-release && npm run test:types && npm run build && npm run ui:check && npm run ui:pack && node scripts/prepare-npm-package.mjs && node scripts/publish-npm-package.mjs",
-    "test:ai-docs": "node --test apps/docs/check-ai-docs.test.mjs scripts/cli-sync.test.mjs"
+    "test:ai-docs": "node --test apps/docs/check-ai-docs.test.mjs apps/docs/documentation.test.mjs scripts/cli-sync.test.mjs"
   },
   "devDependencies": {
     "@lynx-js/react": "^0.126.2",

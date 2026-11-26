@@ -1,8 +1,8 @@
 import { g, e } from "./shared.mjs";
 export default {
   "form-detail": g(
-    "表单用于组织字段布局与校验。Form 管理数据模型和校验规则，FormItem 描述字段并承载输入控件。",
-    "Form FormItem",
+    "表单用于组织字段布局与校验。Form 管理数据模型和校验规则，FormItem 描述字段并承载输入控件。zodAdapter(schema, options?) 将支持 safeParseAsync 的 schema 转为 FormSchema；字段错误路径使用点分隔，根级错误使用空路径，不会自动使用 schema 的转换结果更新 model。options 可传 isRequired(path) 函数或 { isRequired }，必填推断由调用方提供，不从 schema 内部结构猜测。Zod 是消费项目自选依赖；业务状态仍以受控 model 管理。",
+    "Form FormItem zodAdapter",
     e(
       "基础用法",
       "受控表单",

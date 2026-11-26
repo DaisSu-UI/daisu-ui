@@ -16,7 +16,7 @@ Daisu UI 提供面向 ReactLynx 的组件文档、版本化离线知识库、CLI
 
 ### 第一次使用
 
-CLI 当前版本为 `0.1.0-beta.3`，在 npmjs 使用 beta 标签。先按 [CLI 安装说明](#/ai-cli) 安装 @daisu-ui/cli@beta；也可从 Git 源码构建或安装本地 tarball。CLI 安装完成后，下面的命令均可离线查询；组件包和 CLI 是两个独立的安装项。
+CLI 在 npmjs 使用 beta 标签，安装后的实际版本用 daisu --version 核对。先按 [CLI 安装说明](#/ai-cli) 安装 @daisu-ui/cli@beta；也可从 Git 源码构建或安装本地 tarball。CLI 安装完成后，下面的命令均可离线查询；组件包和 CLI 是两个独立的安装项。
 
 在消费项目执行：
 
@@ -55,7 +55,7 @@ npm install -g @daisu-ui/cli@beta
 ```
 
 
-客户端需要能在 PATH 中找到 daisu，并在消费项目目录启动服务。需要固定项目时，在 args 中加上 --cwd 与消费项目绝对路径；VS Code、Codex 使用各自的配置格式，详见 [MCP 接入](#/ai-mcp)。
+客户端需要能在 PATH 中找到 daisu，并在消费项目目录启动服务；先用 data list 和 doctor 核对所需组件版本是否已收录。缺失时按 [CLI 版本匹配步骤](#/ai-cli?section=ai-cli-版本缺失时的处理) 处理。需要固定项目时，在 args 中加上 --cwd 与消费项目绝对路径；VS Code、Codex 使用各自的配置格式，详见 [MCP 接入](#/ai-mcp)。
 
 ### 希望 Agent 完成开发任务
 
@@ -111,4 +111,4 @@ daisu agent doctor --client cursor
 - [平台适配](#/platforms) · [定制主题](#/theme-customization)
 - [UI 源码仓库](https://git.zilueit.com/daisu-ui/daisu-ui) · [CLI 源码仓库](https://git.zilueit.com/daisu-ui/cli)
 
-本文由 `@daisu-ui/cli@0.1.0-beta.3` 生成。内容在 CLI 仓库维护；更新方式见 [CLI 工具](#/ai-cli)。
+本文由 `@daisu-ui/cli@0.1.0-beta.5` 生成。内容在 CLI 仓库维护；更新方式见 [CLI 工具](#/ai-cli)。

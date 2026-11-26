@@ -12,7 +12,7 @@ CSO 的 Flutter 桥接、业务路由及其集成测试留在原工程；消费�
 
 文档站页头提供 AI 菜单，提供 AI 总览、LLMs.txt、@daisu-ui/cli 和 AI Skills 四个主入口；完整 MCP 详情从总览和 CLI 页面访问。版本号菜单依据 CHANGELOG 的实际版本标题生成，定位对应更新记录，不切换为不存在的历史文档快照。LLM 文档构建为站点根路径下的 llms.txt 与 llms-full.txt。
 
-指南、设计系统、AI 与左侧完整目录共用 apps/docs/public/navigation.js 配置。指南按快速开始、工程实践与社区分组；设计系统包含设计、定制主题、深色模式和样式覆盖。导航中只配置有实际内容的页面。
+指南、设计系统、AI 与左侧完整目录共用 apps/docs/public/navigation.js 配置。指南按快速开始、工程实践、组合与工具、社区分组；设计系统包含设计、定制主题、深色模式和样式覆盖。导航中只配置有实际内容的页面。
 
 文档阅读页采用完整左侧目录、中央正文与右侧页内目录布局。顶部搜索支持 Ctrl/⌘ K，覆盖指南与组件页面。AI 总览按接入方式、推荐路径、能力地图和延伸阅读组织，逐组件约束保存在 COMPONENT_AI_NOTES.md，并生成 component-ai-notes.txt。
 
@@ -31,3 +31,7 @@ CLI、MCP、客户端与消费端 Skill 由独立的 `@daisu-ui/cli` 仓库维�
 本机当前目录为 /media/youzi/Project/workProject/DaiSu-UI/daisu-ui；CLI 为同级 cli。源码地址分别是 git@git.zilueit.com:daisu-ui/daisu-ui.git 与 git@git.zilueit.com:daisu-ui/cli.git。这些路径仅用于本机定位，构建和查询不依赖固定目录。
 
 修改接入说明时，在 CLI 的 src/site-docs.ts 维护总览、安装、MCP 和 Skills，由正常构建自动导出到 UI；LLM 页面 apps/docs/ai/llm.md 及 docs/ui 中的约束由 UI 维护。客户端配置片段从真实适配器生成，验证时使用临时项目，不修改真实编辑器配置。文档中明确区分工具版本、组件数据版本与实际会话验收。
+
+文档构建导出每篇指南和组件的 Markdown，llms.txt 从实际组件清单与导航生成。浏览器链接按共享别名表解析，保留章节锚点与外部 URL；构建校验站内页面、资源和章节，缺失时失败。Runner 说明作为版本发布的补充页提供，AI 主菜单保持四项。
+
+“组合与工具”收录表单行、同步输入、PagedList、轻量控件、工具 Hook 与浏览器注册。公开可调用导出必须关联文档，生成器检查覆盖范围；CLI 区分组件 Props 与 Hook / 工具的调用参数。相关示例同样参加消费端类型检查。

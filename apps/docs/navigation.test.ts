@@ -13,7 +13,7 @@ const pointer=(target:Element,type:string,pointerType:string)=>{const event=new 
 test('AI pages are article pages and version targets are backed by actual changelog headings',()=>{
  expect(aiPages.every(page=>pageSection(page.id)==='ai')).toBe(true);
  expect(new Set(articlePages.map(page=>page.id)).size).toBe(articlePages.length);
- expect(documentationGroups.map(group=>group.label)).toEqual(['快速开始','设计系统','AI','工程实践','社区']);
+ expect(documentationGroups.map(group=>group.label)).toEqual(['快速开始','设计系统','AI','工程实践','组合与工具','社区']);
  expect(aiPages.map(page=>page.label)).toEqual(['AI 总览','LLMs.txt','@daisu-ui/cli','AI Skills']);
  expect(pageSection('ai-mcp')).toBe('ai');
  expect(articlePages.some(page=>page.id==='ai-mcp')).toBe(true);

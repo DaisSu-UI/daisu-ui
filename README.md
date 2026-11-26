@@ -22,7 +22,9 @@ npm run ui:demo:dev  # http://localhost:3091/#/ui-demo/index
 npm run ui:docs:dev  # http://localhost:3090
 ```
 
-Demo 支持组件独立路径与深色模式，文档站可从 iframe 独立打开 Demo。当前文档预览为静态构建，修改组件、示例或 Markdown 后重新执行构建。构建指南源文件位于 `apps/docs/guides`，平台接入补充说明位于 `apps/docs/guides/platform-notes.mjs`。
+文档开发服务默认监听 `0.0.0.0:3090`，同一局域网可使用 `http://<本机局域网 IP>:3090` 访问，内嵌 Demo 共用此地址。可用 `DAISU_DOCS_HOST` 和 `DAISU_DOCS_PORT` 调整监听地址与端口；仅需本机访问时，执行 `DAISU_DOCS_HOST=127.0.0.1 npm run ui:docs:dev`。
+
+Demo 支持组件独立路径与深色模式，文档站可从 iframe 独立打开 Demo。文档产物为静态文件；同级 CLI 已安装开发依赖时，文档开发服务会监听组件、示例和 Markdown 并自动重建，刷新浏览器查看。单独检出 UI 或关闭自动同步时，修改后需重新执行构建。构建指南源文件位于 `apps/docs/guides`，平台接入补充说明位于 `apps/docs/guides/platform-notes.mjs`。
 
 浏览器宿主需通过 `@daisu-ui/ui/web` 注册媒体、裁剪和二维码导出后端；Flutter 宿主能力由使用方提供。真实平台支持范围见 [媒体能力](docs/ui/MEDIA_CAPABILITIES.md)。
 

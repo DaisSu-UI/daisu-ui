@@ -63,9 +63,9 @@ const [show, setShow] = useState(false);
 | duration | 对应 Popup 参数 | `number \| boolean` | `200` |
 | rootPortal | 原生 Portal，需要 RootPortalHost | `boolean` | — |
 | closeOnClickModal | 选择 / 点击遮罩后请求关闭 | `boolean` | — |
-| lazyRender | 对应 Popup 参数 | `boolean` | — |
 | safeAreaInsetBottom | 宿主安全区数值，px | `boolean` | `true` |
 | safeAreaBottom | 宿主安全区数值，px | `number` | — |
+| lazyRender | 对应 Popup 参数 | `boolean` | — |
 | actions | {name?,description?,color?,disabled?,loading?}[] | `readonly ActionSheetAction[]` | `[]` |
 | panels | 一维 Panel[] / 二维 Panel[][]；有 panels 时优先显示 | `readonly ActionSheetPanel[] \| readonly (readonly ActionSheetPanel[])[]` | `[]` |
 | title | 标题 / 取消按钮文案 | `string` | — |

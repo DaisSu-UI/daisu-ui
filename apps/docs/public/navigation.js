@@ -7,6 +7,15 @@ export const aiPages = [
 export const relatedAiPages = [
   { id: 'ai-mcp', label: 'MCP 接入', source: 'apps/docs/ai/mcp.md' },
 ];
+export const relatedGuidePages = [{ id: 'local-runner', label: '本地 GitLab Runner', source: 'docs/ci/local-runner.md' }];
+export const supportingPages = [
+  { id: 'form-rows', label: '表单行封装', source: 'docs/ui/components/form-rows.md' },
+  { id: 'synced-input', label: '同步输入封装', source: 'docs/ui/components/synced-input.md' },
+  { id: 'paged-list', label: 'PagedList 分页列表', source: 'docs/ui/components/paged-list.md' },
+  { id: 'compact-controls', label: '轻量控件', source: 'docs/ui/components/compact-controls.md' },
+  { id: 'utilities', label: '工具与按压反馈', source: 'docs/ui/components/utilities.md' },
+  { id: 'web-registration', label: '浏览器能力注册', source: 'docs/ui/components/web-registration.md' },
+];
 export const documentationGroups = [
   { id: 'quickstart', label: '快速开始', section: 'guide', pages: [
     { id: 'introduction', label: '介绍', source: 'apps/docs/pages/introduction.md' },
@@ -26,16 +35,18 @@ export const documentationGroups = [
     { id: 'publishing', label: '版本发布', source: 'docs/ci/git-release.md' },
     { id: 'changelog', label: '更新日志', source: 'packages/daisu-ui/CHANGELOG.md' },
   ] },
+  { id: 'composition', label: '组合与工具', section: 'guide', pages: supportingPages },
   { id: 'community', label: '社区', section: 'guide', pages: [
     { id: 'contributing', label: '贡献指南', source: 'apps/docs/pages/contributing.md' },
     { label: '源码仓库', href: 'https://git.zilueit.com/daisu-ui/daisu-ui', external: true },
   ] },
 ];
 export const guideGroups = documentationGroups.filter(group => group.section === 'guide');
-export const articlePages = documentationGroups.flatMap(group => group.pages).filter(page => page.id).flatMap(page => page.id === 'ai-cli' ? [page, ...relatedAiPages] : [page]);
+export const articlePages = documentationGroups.flatMap(group => group.pages).filter(page => page.id).flatMap(page => page.id === 'ai-cli' ? [page, ...relatedAiPages] : page.id === 'publishing' ? [page, ...relatedGuidePages] : [page]);
 export function pageSection(id) {
   if (id === 'changelog') return 'versions';
   if (relatedAiPages.some(page => page.id === id)) return 'ai';
+  if (relatedGuidePages.some(page => page.id === id)) return 'guide';
   return documentationGroups.find(group => group.pages.some(page => page.id && page.id === id))?.section || 'components';
 }
 export function headingId(page, label) {

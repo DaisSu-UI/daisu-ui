@@ -1,160 +1,140 @@
 # Daisu UI
 
-独立 ReactLynx UI 库的文档入口。组件资料由 UI 维护，CLI/MCP 从带版本的离线快照提供查询。
+> 面向 ReactLynx 的组件库。当前文档对应 @daisu-ui/ui@0.1.0-beta.4；API、示例与平台范围以同版本公开类型和文档为准。
 
-- UI 源码：git@git.zilueit.com:daisu-ui/daisu-ui.git
-- CLI 源码：git@git.zilueit.com:daisu-ui/cli.git
+## 阅读顺序
 
-- 组件导出：`packages/daisu-ui/src/index.ts`
-- Token：`packages/daisu-ui/src/tokens.ts` 和 `@daisu-ui/ui/styles.css`
-- 运行示例：`apps/demo/src/features/ui-demo/UiDemoPage.tsx`
-- 示例目录：`apps/demo/src/features/ui-demo/examples/`
-- AI 使用指南：`apps/docs/ai/overview.md`
-- CLI、MCP 与消费端 Skill 接入：`apps/docs/ai/cli.md`、`apps/docs/ai/mcp.md`、`apps/docs/ai/skills.md`（由独立 CLI 生成）
-- 逐组件参数映射：`docs/ui/components/`
-- Sidebar 参数及三个联动子页：`docs/ui/components/sidebar.md`
-- IndexBar 参数及整屏索引示例：`docs/ui/components/index-bar.md`
-- 路由开发指南（路径与参数、新页面注册、导航与守卫、保活、H5 / Flutter 历史同步、常见问题）：`docs/ui/components/router.md`
-- Backtop 参数与滚动接入：`docs/ui/components/backtop.md`
-- Divider 参数与兼容接口：`docs/ui/components/divider.md`
-- Gap 参数与宿主安全区：`docs/ui/components/gap.md`
-- Badge 参数与导航复用：`docs/ui/components/badge.md`
-- Avatar 与 AvatarGroup 参数：`docs/ui/components/avatar.md`
-- Tag 标签参数与原生动态新增：`docs/ui/components/tag.md`
-- Loading 加载指示器参数：`docs/ui/components/loading.md`
-- Loadmore 加载更多参数与List示例：`docs/ui/components/loadmore.md`
-- Overlay 遮罩层与滚动边界：`docs/ui/components/overlay.md`
-- Popup 弹出层与嵌套弹窗：`docs/ui/components/popup.md`
-- ActionSheet 动作与多行面板：`docs/ui/components/action-sheet.md`
-- Dialog 弹框与 useDialog：`docs/ui/components/dialog.md`
-- Switch 开关及异步确认：`docs/ui/components/switch.md`
-- SwipeAction 左右滑动与异步关闭：`docs/ui/components/swipe-action.md`
-- FloatingPanel 浮动面板与拖动吸附：`docs/ui/components/floating-panel.md`
-- Popover 普通/菜单气泡与动态内容：`docs/ui/components/popover.md`
-- Toast 轻提示与显式useToast实例：`docs/ui/components/toast.md`
-- Tooltip 12向文字提示与原生定位：`docs/ui/components/tooltip.md`
-- DropMenu 下拉菜单与关联筛选：`docs/ui/components/drop-menu.md`
-- SortButton 排序按钮：`docs/ui/components/sort-button.md`
-- Rate 评分及半星：`docs/ui/components/rate.md`
-- Tabs 标签页与原有样式兼容：`docs/ui/components/tabs.md`
-- Tour 漫游与原生目标滚动接入：`docs/ui/components/tour.md`
-- Input 原生输入与紧凑表单布局：`docs/ui/components/input.md`
-- Textarea 多行输入与自适应高度：`docs/ui/components/textarea.md`
-- 全分类批次与验收进度：`docs/ui/IMPLEMENTATION_PLAN.md`
+先确认项目安装版本。本文链接指向可直接读取的 Markdown，无需执行文档站 JavaScript；链接相对于本站 llms.txt 地址解析。
 
-开发前读取仓库根目录 `AGENTS.md` 和 Lynx 官方文档：
-https://lynxjs.org/next/llms.txt
+## 指南与 AI 接入
 
-组件使用约束：示例从 daisu-ui 导入公共组件，业务功能、网络和 Flutter 协议由消费项目提供，不从本库依赖主项目文件。使用 `--cso-ui-*` 语义 Token，禁止为深色主题复制一套组件样式。
+- [介绍](./introduction.md)
+- [快速上手](./getting-started.md)
+- [常见问题](./faq.md)
+- [设计](./design.md)
+- [定制主题](./theme-customization.md)
+- [深色模式](./dark-mode.md)
+- [样式覆盖](./style-overrides.md)
+- [AI 总览](./ai-guide.md)
+- [LLMs.txt](./ai-llm.md)
+- [@daisu-ui/cli](./ai-cli.md)
+- [MCP 接入](./ai-mcp.md)
+- [AI Skills](./ai-skills.md)
+- [组件库集成](./integration.md)
+- [平台适配](./platforms.md)
+- [版本发布](./publishing.md)
+- [本地 GitLab Runner](./local-runner.md)
+- [更新日志](./changelog.md)
+- [贡献指南](./contributing.md)
 
-- InputNumber 计数器、精度/步进/异步与长按：`docs/ui/components/input-number.md`
+## 组件文档
 
-- Search 搜索框、焦点策略与菜单插槽：`docs/ui/components/search.md`
+- [Button 按钮](./button.md): Button
+- [Icon 图标](./icon.md): Icon
+- [Text 文本](./text.md): Text
+- [Layout 布局](./layout.md): Row、Col
+- [Card 卡片](./card.md): Card
+- [Cell 单元格](./cell.md): Cell、CellGroup
+- [Divider 分割线](./divider.md): Divider
+- [Fab 悬浮按钮](./fab.md): Fab
+- [Transition 动画](./transition.md): Transition
+- [Resize 监听元素尺寸变化](./resize.md): Resize
+- [ConfigProvider 全局配置](./config-provider.md): ConfigProvider
+- [Root Portal 根节点传送门](./root-portal.md): RootPortal、RootPortalHost
+- [Router 路由](./router.md): RouterView、RouterProvider、RouteScreen、useRouter、useRoute、useRouterSnapshot、useRouteMatch、createRouter、connectRouterHistory、parseRoutePath、routePath、parseRouterHistoryState、shouldFinishBack
+- [Navbar 导航栏](./navbar.md): Navbar、NavbarCapsule
+- [Tabbar 标签栏](./tabbar.md): Tabbar
+- [Tab 标签页](./tabs.md): Tabs
+- [Segmented 分段器](./segmented.md): Segmented
+- [Sidebar 侧边栏](./sidebar.md): Sidebar
+- [IndexBar 索引栏](./index-bar.md): IndexBar、IndexAnchor
+- [Pagination 分页](./pagination.md): Pagination
+- [Backtop 回到顶部](./backtop.md): Backtop
+- [Tour 漫游](./tour.md): Tour
+- [Form 表单](./form-detail.md): Form、FormItem、zodAdapter
+- [Rate 评分](./rate.md): Rate
+- [Switch 开关](./switch.md): Switch
+- [Input 输入框](./input.md): Input
+- [Textarea 文本域](./textarea.md): Textarea
+- [InputNumber 计数器](./input-number.md): InputNumber
+- [Search 搜索框](./search.md): Search
+- [Checkbox 复选框](./checkbox.md): Checkbox、CheckboxGroup
+- [Radio 单选](./radio.md): Radio、RadioGroup
+- [Slider 滑块](./slider.md): Slider
+- [Keyboard 虚拟键盘](./keyboard.md): Keyboard
+- [PasswordInput 密码输入框](./password-input.md): PasswordInput
+- [Picker 选择器](./picker.md): Picker
+- [PickerView 选择器视图](./picker-view.md): PickerView
+- [SelectPicker 单复选选择器](./select-picker.md): SelectPicker
+- [Cascader 级联选择](./cascader.md): Cascader
+- [DatetimePickerView 日期时间选择器视图](./datetime-picker-view.md): DatetimePickerView
+- [DatetimePicker 日期时间选择器](./datetime-picker.md): DatetimePicker
+- [Calendar 日历选择器](./calendar.md): Calendar
+- [CalendarView 日历面板](./calendar-view.md): CalendarView
+- [Upload 上传](./upload.md): Upload
+- [ImgCropper 图片裁剪](./img-cropper.md): ImgCropper
+- [Signature 签名](./signature.md): Signature
+- [SlideVerify 滑动验证](./slide-verify.md): SlideVerify
+- [NoticeBar 通知栏](./notice-bar.md): NoticeBar
+- [SwipeAction 滑动操作](./swipe-action.md): SwipeAction
+- [FloatingPanel 浮动面板](./floating-panel.md): FloatingPanel
+- [Popover 气泡](./popover.md): Popover
+- [Toast 轻提示](./toast.md): Toast
+- [Tooltip 文字提示](./tooltip.md): Tooltip
+- [DropMenu 下拉菜单](./drop-menu.md): DropMenu、DropMenuItem
+- [Dialog 对话框](./dialog.md): Dialog
+- [ActionSheet 动作面板](./action-sheet.md): ActionSheet
+- [Popup 弹出层](./popup.md): Popup
+- [Overlay 遮罩层](./overlay.md): Overlay
+- [CountTo 数字滚动](./count-to.md): CountTo
+- [CountDown 倒计时](./count-down.md): CountDown
+- [Notify 消息通知](./notify.md): Notify
+- [Circle 环形进度条](./circle.md): Circle
+- [Progress 进度条](./progress.md): Progress
+- [Loading 加载指示器](./loading.md): Loading
+- [Empty 缺省提示](./empty.md): Empty
+- [RichText 富文本](./rich-text.md): RichText
+- [QRCode 二维码](./qr-code.md): QrCode
+- [BarCode 条形码](./bar-code.md): BarCode
+- [Table 表格](./table.md): Table
+- [ImagePreview 图片预览](./image-preview.md): ImagePreview
+- [VideoPreview 视频预览](./video-preview.md): VideoPreview
+- [Swiper 轮播图](./swiper.md): Swiper、SwiperNav
+- [Watermark 水印](./watermark.md): Watermark
+- [Curtain 幕帘](./curtain.md): Curtain
+- [Sticky 粘性布局](./sticky.md): Sticky、StickyBox
+- [Steps 步骤条](./steps.md): Steps、Step
+- [Skeleton 骨架屏](./skeleton.md): Skeleton
+- [Img 图片](./img.md): Img
+- [Grid 宫格](./grid.md): Grid、GridItem
+- [SortButton 排序按钮](./sort-button.md): SortButton
+- [Collapse 折叠面板](./collapse.md): Collapse、CollapseViewMore
+- [Avatar 头像](./avatar.md): Avatar、AvatarGroup
+- [Badge 徽标](./badge.md): Badge
+- [Gap 间隔槽](./gap.md): Gap
+- [loadmore 加载更多](./loadmore.md): Loadmore
+- [Tag 标签](./tag.md): Tag
+- [表单行封装](./form-rows.md): FormFieldRow、FormInputRow、FormNumberRow、FormRadioRow、FormSelectRow、FormTextareaRow
+- [同步输入封装](./synced-input.md): SyncedInput、SyncedTextarea
+- [PagedList 分页列表](./paged-list.md): PagedList
+- [轻量控件](./compact-controls.md): EmptyState、NumberStepper
+- [工具与按压反馈](./utilities.md): usePressState、calendarValues、calendarWeekNumber、datetimeLabel、datetimePad、swiperIndex
+- [浏览器能力注册](./web-registration.md): registerDaisuWebComponents、registerRichTextMedia、registerImgCropper、registerQrCodeExport
 
-- radio：`docs/ui/components/radio.md`
+## 扩展约束
 
-- checkbox：`docs/ui/components/checkbox.md`
+- [详细组件与平台约束](./llms-full.txt)
+- [逐组件生成约束](./component-ai-notes.txt)
 
-- picker：`docs/ui/components/picker.md`
+## 使用规则
 
-- select-picker：`docs/ui/components/select-picker.md`
+从 @daisu-ui/ui、@daisu-ui/ui/router、@daisu-ui/ui/utils、@daisu-ui/ui/web 等公开入口导入；组件入口自动加载样式。文字放在 text 元素内，使用 ConfigProvider 的语义变量和主题作用域。业务账号、网络与宿主协议由消费项目提供。浏览器预览不能代替原生媒体、键盘、手势与列表性能验收。
 
-- datetime-picker：`docs/ui/components/datetime-picker.md`
+CLI 为 @daisu-ui/cli，可用 npm install -g @daisu-ui/cli@beta 安装；查询和 MCP 使用随包快照，不自动读取网站或当前 UI 源码。先运行 daisu data list / doctor，或调用 daisu_status，核对已收录版本。数据缺失时更新到包含该版本的 CLI 或使用其 Git 源码，不用其他版本 API 冒充。
 
-- calendar：`docs/ui/components/calendar.md`
+## 源码与维护
 
-- cascader：`docs/ui/components/cascader.md`
-
-- upload：`docs/ui/components/upload.md`
-
-- slide-verify：`docs/ui/components/slide-verify.md`
-
-- Form / FormItem、schema适配及五个独立子页面：`docs/ui/components/form.md`
-
-- Keyboard 虚拟键盘、车牌语言与安全区：`docs/ui/components/keyboard.md`
-
-- PasswordInput 密码网格、提示与Keyboard组合：`docs/ui/components/password-input.md`
-
-- ConfigProvider 全局默认值、主题变量与Portal继承：`docs/ui/components/config-provider.md`
-
-- PickerView: components/picker-view.md — 独立滚轮；字段映射、禁用、多列/级联、滚动事件和完整 Ref 查询。
-
-- Picker: components/picker.md — 八例独立 Demo、draft 确认与取消、异步校验、Ref 显隐。
-
-- SelectPicker: components/select-picker.md — 单/复选独立十例、搜索高亮、即时 draft change、确认回填及 RootPortal 组合。
-
-- Cascader 静态/异步级联、字段映射与11例：`docs/ui/components/cascader.md`
-
-- DatetimePickerView 九例、日期边界/过滤与原生滚轮：`docs/ui/components/datetime-picker-view.md`
-
-- DatetimePicker 单值/区间、异步确认与14个入口：`docs/ui/components/datetime-picker.md`
-
-- CalendarView 九种模式、可视月份挂载与9个面板示例：`docs/ui/components/calendar-view.md`
-
-- Calendar 十六入口、草稿/提交、快捷项及异步确认：`docs/ui/components/calendar.md`
-
-- SlideVerify 八例、触摸坐标/尺寸测量与重置：`docs/ui/components/slide-verify.md`
-
-Upload：11例独立详情，单图片宿主上传、数量/覆盖/预览/异步拦截；选择与上传不可拆分，无多选/视频/手动上传。参数与能力边界：components/upload.md。
-
-Progress 进度条：15条进度独立详情、内置百分比、状态、颜色阶段、原生线性过渡；参见 components/progress.md。
-
-Circle 环形进度条：九个原生SVG圆环示例，线性渐变、方向、内容插槽与可中断动画；参数和描边规则见 components/circle.md。
-
-Notify 消息通知：14入口、四类型/悬浮样式、显式useNotify实例、续期与关闭动画；参数、Portal安全区和事件语义见 components/notify.md。
-
-Signature 签名：原生SVG书写、速度笔锋、分组撤销恢复、可移植PNG导出；七画板/弹窗/横屏详情和能力边界见 components/signature.md。
-
-Grid/GridItem 宫格：14组独立详情、列数/正方形/间距/徽标、横向反向与显式路由回调；见 components/grid.md。
-
-CountDown/useCountDown：截止时间计时、格式进位、暂停恢复及Grid控制区；五项详情和事件语义见 components/count-down.md。
-
-CountTo 数字滚动：10例、指数/线性缓动、精度/分隔符/主题、暂停恢复与Grid控制区；见 components/count-to.md。
-
-Img 图片：49图独立详情、14种原生模式/裁剪、加载失败插槽、等比自适应及显式宿主预览；参数和平台边界见 components/img.md。
-
-Empty 缺省提示：新版98px图标方案、11例独立详情、大小/图片/插槽和底部操作；保留业务EmptyState，参见 components/empty.md。
-
-NoticeBar 通知栏：12条独立详情、原生水平/垂直轮播、速度/停留、关闭/多行/插槽与Ref重置；生命周期及参数见 components/notice-bar.md。
-
-Card 卡片：business默认兼容、standard/rectangle官网样式、完整插槽与七卡片详情，见 components/card.md。
-
-Skeleton 骨架屏：四预设、真实行列配置、原生扫光/闪烁、loading独占插槽及15实例详情，见 components/skeleton.md。
-
-Steps 步骤条：横向/竖向、点状、显式状态和自定义内容；十组独立详情，见 components/steps.md。
-
-Sticky 粘性布局：原生观察/测量、顶部偏移、容器末尾约束、动态插入与五组详情，见 components/sticky.md。
-
-Curtain 幕帘：原生等比图片、七关闭位置、公共缩放过渡与九入口详情，见 components/curtain.md。
-
-Watermark 水印：原生文字/SVG/图片重复、局部/全屏与错位布局、触摸穿透和公共控件详情，见 components/watermark.md。
-
-- Swiper 横向轮播、原生动画、受控索引与十例详情：`docs/ui/components/swiper.md`
-
-Swiper 卡片与双滑块修复：独立尺寸测量、neighborHeight 主线程进度及循环复制项，详见 components/swiper.md。
-
-- ImagePreview 图片预览：`docs/ui/components/image-preview.md`
-
-- SwiperNav 轮播指示器：`docs/ui/components/swiper-nav.md`
-
-Table 表格：14组独立详情、排序/固定列/合并单元格/分页和虚拟窗口；columns配置替代wd-table-column，排序与编辑由调用方保存，见 components/table.md。
-
-BarCode 条形码：18种真实编码、原生SVG条纹与text排版、完整详情；仅导入JsBarcode纯编码模块，exportImage返回SVG data URL而非PNG临时路径，见 components/bar-code.md。
-
-QrCode 二维码：UTF-8真实编码、四纠错级别、四码点/渐变、原生背景与Logo。默认SVG导出拒绝未内嵌的外部图片；浏览器宿主注册 daisu-ui/web 并设置 exportMode="browser" 后，exportImage 返回包含Logo与背景的完整PNG data URL，直接交给Img展示；跨域图片须允许CORS。详见 components/qr-code.md。
-
-RichText 富文本：packages/daisu-ui 中的原生 HTML 解析、图文/链接、公共Table合并布局与ImagePreview、编辑器样例和长文目录；不执行HTML；浏览器通过 daisu-ui/web 注册播放器并设置 mediaMode="browser"，支持音视频、播放/暂停/seek；Flutter 音视频与 lazyLoad 尚未接入。见 components/rich-text.md。
-
-视频预览与图片裁剪的实际宿主能力核对和接入缺口：MEDIA_CAPABILITIES.md。
-
-样式接入：从 `@daisu-ui/ui` 导入组件即可自动加载组件样式，无需额外导入 CSS。
-
-VideoPreview / useVideoPreview 与 ImgCropper 已提供浏览器后端：宿主入口调用 daisu-ui/web 的 registerDaisuWebComponents；组件分别设置 mediaMode="browser"、mode="browser"。视频预览默认248px或全屏，hook按实例隔离；裁剪为真实Canvas PNG/JPEG，tempFilePath是Blob URL，须按生命周期回收。Flutter仍缺对应后端。见 components/video-preview.md、components/img-cropper.md。
-
-## AI 工具接入
-
-独立的 @daisu-ui/cli 提供离线组件查询、全文搜索、项目检查、MCP 和消费端 Skill；按项目依赖或显式版本选择随包快照。接入步骤与实际工具清单见 apps/docs/ai/cli.md、apps/docs/ai/mcp.md 和 apps/docs/ai/skills.md。组件资料变化后由开发构建自动协作或显式 sync 刷新知识快照；安装后的查询不会自动读取当前 checkout。
-
-先完成 CLI 安装，再在消费项目执行 daisu data list、doctor、info、doc、demo、token；MCP 会话先调用 daisu_status。CLI 已发布 npmjs，推荐 npm install -g @daisu-ui/cli@beta；也可从 Git 源码或 tarball 使用。文档站版本、CLI 自身版本和组件数据版本分别管理；文档页不会自动更新 CLI 快照。
-
-约束资源为 daisu://guides/llms、daisu://guides/llms-full、daisu://guides/component-ai-notes。历史快照可能未收录。客户端接入用 agent init（MCP+Skill+Instructions）或 mcp init（仅 MCP），先 dry-run 再确认执行；独立握手不等于实际会话可用。
+- [UI 源码](https://git.zilueit.com/daisu-ui/daisu-ui)
+- [CLI 源码](https://git.zilueit.com/daisu-ui/cli)
+- 组件源码：packages/daisu-ui/src；示例：apps/demo/src/features/ui-demo；API 文档：docs/ui/components。
+- 维护者先读取 AGENTS.md；UI 文档生成、CLI 快照与接入说明在开发构建时同步，CI 与 --check 只读验证。

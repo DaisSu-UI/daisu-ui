@@ -40,18 +40,18 @@ import { Button } from '@daisu-ui/ui';
 | offset | 相对目标元素的偏移 | `BubbleOffset` | — |
 | disabled | 是否禁用 | `boolean` | — |
 | className | 根节点自定义类名 | `string` | — |
-| style | 根节点样式 | `CSSProperties` | — |
+| children | 自定义内容 | `ReactNode` | — |
 | show | 是否显示 | `boolean` | — |
-| defaultShow | 非受控模式的初始显示状态 | `boolean` | — |
-| placement | 浮层相对触发元素的位置 | `BubblePlacement` | — |
-| visibleArrow | 是否显示气泡箭头 | `boolean` | — |
-| showClose | 是否显示关闭按钮 | `boolean` | — |
 | duration | 动画或显示时长，单位 ms | `number` | — |
 | rootPortal | 挂载到 RootPortalHost；使用前需配置宿主 | `boolean` | — |
+| style | 根节点样式 | `CSSProperties` | — |
+| placement | 浮层相对触发元素的位置 | `BubblePlacement` | — |
+| defaultShow | 非受控模式的初始显示状态 | `boolean` | — |
+| visibleArrow | 是否显示气泡箭头 | `boolean` | — |
+| showClose | 是否显示关闭按钮 | `boolean` | — |
 | arrowClassName | 气泡箭头类名 | `string` | — |
 | popClassName | 气泡面板类名 | `string` | — |
 | popStyle | 气泡面板样式 | `CSSProperties` | — |
-| children | 自定义内容 | `ReactNode` | — |
 | contentNode | contentNode 配置 | `ReactNode` | — |
 | content | 内容 | `string` | `''` |
 
@@ -59,10 +59,10 @@ import { Button } from '@daisu-ui/ui';
 
 | 事件 | 说明 | 类型 |
 | --- | --- | --- |
-| onChange | 值发生变化时触发 | (event: { show: boolean }) => void |
 | onShowChange | 显示状态变化时触发 | (show: boolean) => void |
-| onOpen | 打开时触发 | () => void |
+| onChange | 值发生变化时触发 | (event: { show: boolean }) => void |
 | onClose | 关闭时触发 | () => void |
+| onOpen | 打开时触发 | () => void |
 
 ## 内容插槽
 

@@ -51,15 +51,15 @@ const [visible, setVisible] = useState(false);
 
 | 参数 | 说明 | 类型 / 可选值 | 默认值 |
 | --- | --- | --- | --- |
-| value | 当前值；传入后由调用方更新 | `CalendarValue` | — |
+| type | 类型 | `CalendarType` | `'date'` |
 | disabled | 是否禁用 | `boolean` | — |
 | className | 根节点自定义类名 | `string` | `''` |
 | style | 根节点样式 | `CSSProperties` | — |
-| type | 类型 | `CalendarType` | `'date'` |
+| value | 当前值；传入后由调用方更新 | `CalendarValue` | — |
+| immediateChange | 输入时是否立即触发变化 | `boolean` | — |
 | minDate | 最小可选择日期 | `number` | — |
 | maxDate | 最大可选择日期 | `number` | — |
 | formatter | 内容格式化函数 | `(day: CalendarDayItem) => Partial<CalendarDayItem>` | — |
-| immediateChange | 输入时是否立即触发变化 | `boolean` | — |
 | firstDayOfWeek | 每周起始日期，0 表示星期日 | `number` | — |
 | defaultTime | 未指定时分秒时使用的默认时间 | `string \| readonly string[]` | — |
 | maxRange | 允许选择的最大范围 | `number` | — |
@@ -126,8 +126,6 @@ const [visible, setVisible] = useState(false);
 ## 数据类型
 
 ```tsx
-export type CalendarValue = number | readonly (number | null)[] | null;
-
 export type CalendarType =
   | 'date'
   | 'dates'
@@ -138,6 +136,8 @@ export type CalendarType =
   | 'weekrange'
   | 'month'
   | 'monthrange';
+
+export type CalendarValue = number | readonly (number | null)[] | null;
 
 export type CalendarDayItem = {
   date: number;

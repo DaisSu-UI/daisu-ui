@@ -52,12 +52,13 @@ const [value, setValue] = useState('');
 | 参数 | 说明 | 类型 / 可选值 | 默认值 |
 | --- | --- | --- | --- |
 | error | 是否展示错误状态 | `boolean` | — |
-| focus | 是否获取输入焦点 | `boolean` | — |
+| disabled | 是否禁用 | `boolean` | — |
+| className | 根节点自定义类名 | `string` | — |
+| style | 根节点样式 | `CSSProperties` | — |
 | value | 当前值；传入后由调用方更新 | `string \| number` | — |
 | defaultValue | 非受控模式的初始值 | `string \| number` | — |
 | placeholder | 占位内容或输入提示 | `string` | — |
 | maxlength | 最大输入长度，-1 表示不限制 | `number` | — |
-| disabled | 是否禁用 | `boolean` | — |
 | readonly | 是否只读 | `boolean` | — |
 | clearable | 是否显示清空入口 | `boolean` | — |
 | clearTrigger | 清空入口显示条件 | `'always' \| 'focus'` | — |
@@ -67,6 +68,7 @@ const [value, setValue] = useState('');
 | prefixIcon | 前置图标名称 | `string` | — |
 | prefix | 前置内容 | `ReactNode` | — |
 | showWordLimit | 是否显示字数统计 | `boolean` | — |
+| focus | 是否获取输入焦点 | `boolean` | — |
 | confirmType | 键盘确认按钮类型 | `'done' \| 'go' \| 'next' \| 'search' \| 'send'` | — |
 | confirmHold | 确认后是否保持键盘 | `boolean` | — |
 | avoidKeyboard | 是否避让键盘 | `boolean` | — |
@@ -79,9 +81,7 @@ const [value, setValue] = useState('');
 | inputFilter | 原生输入过滤表达式 | `string` | — |
 | showSoftInputOnFocus | 聚焦时是否打开系统键盘 | `boolean` | — |
 | ignoreCompositionEvent | 是否在输入法合成结束后统一更新值 | `boolean` | — |
-| className | 根节点自定义类名 | `string` | — |
 | inputClassName | 输入区域类名 | `string` | — |
-| style | 根节点样式 | `CSSProperties` | — |
 | autoHeight | 是否随内容自动增高 | `boolean` | — |
 | height | 高度 | `number` | — |
 | minHeight | 最小高度 | `number` | — |
@@ -92,6 +92,7 @@ const [value, setValue] = useState('');
 
 | 事件 | 说明 | 类型 |
 | --- | --- | --- |
+| onTap | 点击时触发 | () => void |
 | onChange | 值发生变化时触发 | (value: string) => void |
 | onInput | 原生输入事件 | (event: TextFieldEvent) => void |
 | onFocus | 获得焦点时触发 | (event: TextFieldEvent) => void |
@@ -100,7 +101,6 @@ const [value, setValue] = useState('');
 | onClear | 清空内容时触发 | () => void |
 | onClickPrefixIcon | 对应操作发生时触发 | () => void |
 | onClickSuffixIcon | 对应操作发生时触发 | () => void |
-| onTap | 点击时触发 | () => void |
 | onKeyboardHeightChange | 对应操作发生时触发 | (event: { height: number }) => void |
 | onLineChange | 对应操作发生时触发 | (event: { lineCount: number }) => void |
 

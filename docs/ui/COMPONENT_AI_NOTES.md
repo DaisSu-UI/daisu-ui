@@ -77,3 +77,7 @@ RichText 富文本：packages/daisu-ui 中的原生 HTML 解析、图文/链接�
 VideoPreview / useVideoPreview 与 ImgCropper 已提供浏览器后端：宿主入口调用 daisu-ui/web 的 registerDaisuWebComponents；组件分别设置 mediaMode="browser"、mode="browser"。视频预览默认248px或全屏，hook按实例隔离；裁剪为真实Canvas PNG/JPEG，tempFilePath是Blob URL，须按生命周期回收。Flutter仍缺对应后端。见 components/video-preview.md、components/img-cropper.md。
 
 浏览器自定义元素通过 NodesRef.invoke 暴露的方法必须同步返回可结构化克隆的值，不能直接返回 Promise。异步操作在方法内部启动，再通过携带请求标识的自定义事件发送结果；QrCode 的浏览器导出采用此方式，组件 ref 层仍可提供 Promise API。
+
+## 补充封装与工具
+
+公开辅助 API 也必须关联使用文档，见 components/form-rows.md、synced-input.md、paged-list.md、compact-controls.md、utilities.md、web-registration.md 与 router.md。Form 行不自动注册 Form 校验；FormInputRow 的 disabled 仅为外观，不能生成完整禁用示例。新页面优先使用标准 Input / FormItem / InputNumber / Empty。Synced 输入的 onInput 是字符串回调，外部 value 由 setValue 同步。PagedList 必须有明确高度、唯一 listId 和 FeedListRef，调用方管理 refreshing 与加载防重，不替换滚动后端。路由 Hook 在正确 Provider / 场景内使用，路由实例保持稳定；usePressState 的 start/end 是后台事件函数。浏览器注册仅在宿主入口运行，不能放进 Lynx Bundle。Hook / 工具函数使用真实调用签名，不把首参展开成组件 Props。

@@ -23,7 +23,7 @@ npm install -g @daisu-ui/cli@beta
 daisu --version
 ```
 
-安装完成后可使用 daisu 命令。需要固定 CLI 版本时，将 beta 换为具体版本，例如 0.1.0-beta.3。
+安装完成后可使用 daisu 命令。需要固定 CLI 版本时，先用 npm view @daisu-ui/cli versions --json 查询已发布列表，再将 beta 换为其中的精确版本。
 
 不全局安装也可使用：
 
@@ -169,7 +169,7 @@ daisu agent doctor --client cursor
 | --version <版本> | 组件查询、项目分析及 MCP 服务 | 选择已收录组件版本或范围，latest 表示随包最新快照 |
 | --cwd <目录> | 支持该选项的查询、接入和服务命令 | 指定版本识别或客户端目标目录 |
 | --limit <数量> | search | 限制结果数，为 1–20，默认 8 |
-| --strict | doctor、usage、lint | 严格模式，具体退出状态以对应命令为准 |
+| --strict | lint | 将 lint 警告也视为失败；doctor 和 usage 不额外产生 lint 警告诊断 |
 
 ```bash
 daisu --version
@@ -182,6 +182,26 @@ daisu info Button --cwd /absolute/path/to/project
 顶层 --version 显示 CLI 自身版本；子命令后的 --version 选择组件资料。默认依次检查显式版本、项目实际安装版本、最近 package.json 依赖声明、随包 latest。不存在对应快照时明确报错，不把其他版本冒充当前 API。
 
 尚未安装的 file、workspace、Git 依赖无法确定精确版本，会给出警告并使用随包数据；先安装组件包或选择已收录版本。当前包使用 @daisu-ui/ui，历史 daisu-ui 快照的导入入口以返回的 importFrom 为准。
+
+## 版本缺失时的处理
+
+UI 包和 CLI 的 npm 版本分别发布，网站或 Git 中的新快照不会自动进入已经安装的 CLI。先执行 daisu data list；若目标版本不存在，更新到收录它的 CLI 后再次核对。
+
+例如，npm 的 @daisu-ui/cli@0.1.0-beta.3 随包数据截止 UI 0.1.0-beta.3，而 CLI Git 仓库已收录 UI 0.1.0-beta.4。使用 UI beta.4 时需要包含 beta.4 快照的后续 CLI，或从 Git 源码构建。--version latest 只选择已有快照，不能让旧包获得新 API。
+
+从 Git 构建后，在消费项目用构建入口查询或重新配置客户端：
+
+```bash
+git clone git@git.zilueit.com:daisu-ui/cli.git
+cd cli
+npm ci
+npm run build
+node dist/index.js data list
+node /absolute/path/to/cli/dist/index.js info Button --cwd /absolute/path/to/project
+node /absolute/path/to/cli/dist/index.js mcp init --client cursor --dry-run --cwd /absolute/path/to/project
+```
+
+确认计划后再执行 init --yes；不能把其他组件版本的参数当作当前版本的用法。消费项目也可使用与已收录快照匹配的组件版本。维护者需单独发布新 CLI 才能把新增快照分发给 npm 用户。
 
 ## 数据校验与更新
 
@@ -214,4 +234,4 @@ daisu docs export --ui-dir /absolute/path/to/daisu-ui --check
 
 --check 严格只读。版本数据提交到 CLI，接入页面和摘要清单提交到 UI，不手工修改生成页。开发文档、CLI npm 发布、组件 npm 发布与业务 Bundle 分别执行。
 
-本文由 `@daisu-ui/cli@0.1.0-beta.3` 生成。内容在 CLI 仓库维护；更新方式见 [CLI 工具](#/ai-cli)。
+本文由 `@daisu-ui/cli@0.1.0-beta.5` 生成。内容在 CLI 仓库维护；更新方式见 [CLI 工具](#/ai-cli)。

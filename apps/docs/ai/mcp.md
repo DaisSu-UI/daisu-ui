@@ -171,7 +171,7 @@ guide 支持 llms、llms-full、component-ai-notes；历史快照未收录时会
 ## 迁移与排查
 
 - 找不到命令：使用源码入口绝对路径，或检查 Node 与 CLI 的安装位置。迁移目录后重新预览 init，不要保留旧入口。
-- 版本缺失：先调用 daisu_status 或执行 daisu data list，补充对应快照；不要强制使用不匹配的 API。
+- 版本缺失：先调用 daisu_status 或执行 daisu data list，再使用收录目标版本的 CLI 或 Git 源码入口，详见 [版本匹配步骤](#/ai-cli?section=ai-cli-版本缺失时的处理)。
 - 项目诊断目录不对：项目范围配置中的 --cwd 应指向消费项目，不是 CLI 或 UI 仓库。
 - 已配置但会话没有工具：检查信任、启用状态和工具过滤；重启或重新加载客户端后实际调用验证。
 - 已有同名服务：先确认原配置归属。旧的 UI 仓库 apps/mcp 已退役，新服务统一使用 CLI 的 daisu_* 工具与 daisu:// 资源；手工配置需先备份并合并替换同名服务。
@@ -179,4 +179,4 @@ guide 支持 llms、llms-full、component-ai-notes；历史快照未收录时会
 
 - [CLI 工具](#/ai-cli) · [AI Skills](#/ai-skills) · [AI 总览](#/ai-guide)
 
-本文由 `@daisu-ui/cli@0.1.0-beta.3` 生成。内容在 CLI 仓库维护；更新方式见 [CLI 工具](#/ai-cli)。
+本文由 `@daisu-ui/cli@0.1.0-beta.5` 生成。内容在 CLI 仓库维护；更新方式见 [CLI 工具](#/ai-cli)。

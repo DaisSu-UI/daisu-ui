@@ -534,7 +534,9 @@
     "style": "根节点类名与 CSSProperties"
   },
   "root-portal": {},
-  "router": {},
+  "router": {
+    "router": "由 createRouter 创建的稳定路由实例"
+  },
   "search": {},
   "segmented": {
     "options": "等宽选项；值须唯一，字符串与数值严格区分",
@@ -780,5 +782,45 @@
     "className": "根层样式",
     "style": "根层样式"
   },
-  "watermark": {}
+  "watermark": {},
+  "form-rows": {
+    "label": "左侧字段标题",
+    "required": "显示必填星号，不执行校验",
+    "last": "隐藏底部分隔线",
+    "disabled": "禁用外观与部分回调拦截；具体边界见本页说明",
+    "error": "调用方提供的错误文案，非空时显示",
+    "onInput": "输入后的字符串回调，调用方回写 value",
+    "onChange": "变化后的字符串回调，调用方回写 value",
+    "onBlur": "失焦通知，无事件参数",
+    "onTap": "请求打开调用方的选择面板",
+    "onClear": "请求清空选择值，必填回调",
+    "value": "受控字符串值",
+    "clearable": "是否显示清空入口",
+    "maxlines": "原生多行输入的最大行数"
+  },
+  "synced-input": {
+    "onInput": "输入后的字符串回调，非原生事件；调用方回写 value",
+    "onBlur": "失焦通知，无事件参数",
+    "softInputMode": "宿主键盘调整模式，默认 nothing",
+    "avoidKeyboard": "是否启用原生键盘避让，默认 false",
+    "maxlines": "原生多行输入的最大行数"
+  },
+  "paged-list": {
+    "listId": "页面及保活场景内唯一的 FeedList 标识",
+    "listRef": "官方 FeedListRef 引用，可访问列表控制器",
+    "refreshing": "下拉刷新状态，回调开始设 true，结束设 false",
+    "footer": "FeedList 底部节点，必填，可传 null",
+    "onRefresh": "原生下拉刷新开始通知，调用方发起刷新",
+    "onLoadMore": "触底通知，调用方负责防重和结束判断",
+    "onLayoutComplete": "FeedList 布局完成通知",
+    "children": "列表项，按 FeedList 约定提供稳定 item-key"
+  },
+  "compact-controls": {
+    "actionLabel": "空状态操作按钮文案，非空时显示按钮",
+    "onAction": "点击空状态按钮时触发，不自动请求数据",
+    "value": "受控字符串数字值",
+    "onChange": "变化后的字符串数字回调",
+    "onBlur": "失焦归一化后通知，无事件参数",
+    "disabled": "拦截步进按钮和输入回调，不原生禁用输入及失焦归一化"
+  }
 }

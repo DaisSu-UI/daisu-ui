@@ -54,10 +54,13 @@ const [visible, setVisible] = useState(false);
 | --- | --- | --- | --- |
 | filter | 选项过滤函数 | `DatetimeFilter` | — |
 | loading | 加载状态或自定义加载内容 | `boolean` | — |
+| type | 类型 | `DatetimePickerType` | — |
 | disabled | 是否禁用 | `boolean` | — |
 | className | 根节点自定义类名 | `string` | `''` |
 | style | 根节点样式 | `CSSProperties` | — |
-| type | 类型 | `DatetimePickerType` | — |
+| itemHeight | 数据项高度 | `number` | — |
+| visibleItemCount | 滚轮可见行数 | `number` | — |
+| immediateChange | 输入时是否立即触发变化 | `boolean` | — |
 | minDate | 最小可选择日期 | `number` | — |
 | maxDate | 最大可选择日期 | `number` | — |
 | minHour | 最小时 | `number` | — |
@@ -71,9 +74,6 @@ const [visible, setVisible] = useState(false);
 | boundaryMaxDate | 可浏览的最大日期 | `number` | — |
 | formatter | 内容格式化函数 | `(type: DatetimeColumnType, value: number) => string` | — |
 | columnFormatter | 选项列格式化函数 | `(columns: PickerOption[][]) => PickerOption[][]` | — |
-| itemHeight | 数据项高度 | `number` | — |
-| visibleItemCount | 滚轮可见行数 | `number` | — |
-| immediateChange | 输入时是否立即触发变化 | `boolean` | — |
 | value | 当前值；传入后由调用方更新 | `V` | — |
 | visible | 是否显示选择面板 | `boolean` | — |
 | title | 标题内容 | `string` | `''` |

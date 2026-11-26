@@ -3,7 +3,7 @@ import { readFile, stat } from 'node:fs/promises';
 import { dirname, extname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), 'dist');
-const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.txt': 'text/plain; charset=utf-8', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.wasm': 'application/wasm', '.bundle': 'application/octet-stream' };
+const mime = { '.md': 'text/markdown; charset=utf-8', '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.txt': 'text/plain; charset=utf-8', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.wasm': 'application/wasm', '.bundle': 'application/octet-stream' };
 const server = createServer(async (request, response) => {
   try {
     const url = new URL(request.url, 'http://localhost');
@@ -14,6 +14,8 @@ const server = createServer(async (request, response) => {
     response.end(await readFile(path));
   } catch { response.writeHead(404).end('Not found'); }
 });
-server.listen(Number(process.env.DAISU_DOCS_PORT || 3090), '127.0.0.1', () => {
-  console.log(`Daisu UI docs: http://localhost:${server.address().port}`);
+const host = process.env.DAISU_DOCS_HOST || '0.0.0.0';
+server.listen(Number(process.env.DAISU_DOCS_PORT || 3090), host, () => {
+  const address = host === '0.0.0.0' ? 'localhost' : host;
+  console.log(`Daisu UI docs: http://${address}:${server.address().port} (host: ${host})`);
 });

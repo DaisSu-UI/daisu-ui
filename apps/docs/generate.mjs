@@ -1,3 +1,5 @@
+import { renderLlmIndex } from "./documentation.mjs";
+import { articlePages, supportingPages } from "./public/navigation.js";
 import { readFile, writeFile, mkdir, access } from "node:fs/promises";
 import { dirname, resolve, basename } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -11,12 +13,21 @@ import display from "./guides/display.mjs";
 import propertyLabels from "./guides/property-labels.mjs";
 import explanations from "./guides/explanations.mjs";
 
+import supporting from "./guides/supporting.mjs";
+
 import platformNotes from "./guides/platform-notes.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, "../..");
 const uiRoot = resolve(root, "packages/daisu-ui");
-const guides = { ...basic, ...navigation, ...form, ...feedback, ...display };
+const guides = {
+  ...basic,
+  ...navigation,
+  ...form,
+  ...feedback,
+  ...display,
+  ...supporting,
+};
 const descriptionsByPage = JSON.parse(
   await readFile(resolve(here, "guides/api-descriptions.json"), "utf8"),
 );
@@ -32,6 +43,8 @@ const exports = new Map();
 for (const [entry, from] of [
   ["src/index.ts", "@daisu-ui/ui"],
   ["src/router/index.ts", "@daisu-ui/ui/router"],
+  ["src/utils.ts", "@daisu-ui/ui/utils"],
+  ["src/web/index.ts", "@daisu-ui/ui/web"],
 ]) {
   const module = program.getSourceFile(resolve(uiRoot, entry));
   for (let symbol of checker.getExportsOfModule(
@@ -50,7 +63,9 @@ const catalogText = await readFile(
 const { componentGroups } = await import(
   `data:text/javascript;base64,${Buffer.from(ts.transpile(catalogText, { module: ts.ModuleKind.ESNext })).toString("base64")}`
 );
-const catalog = componentGroups.flatMap((group) => group.items);
+const catalog = componentGroups
+  .flatMap((group) => group.items)
+  .concat(supportingPages);
 const descriptions = {
   value: "当前值；传入后由调用方更新",
   defaultValue: "非受控模式的初始值",
@@ -264,6 +279,7 @@ function exampleCode(body) {
       ["useState", "useRef", "useEffect", "useMemo", "createRef"].includes(name)
     )
       add("@lynx-js/react", name);
+    else if (name === "FeedListRef") add("@lynx-js/lynx-ui", name, true);
     else if (["createRootRoute", "createRoute"].includes(name))
       add("@tanstack/react-router", name);
     else if (exports.has(name)) {
@@ -429,8 +445,11 @@ const checkOnly = process.argv.includes("--check");
 const drift = [];
 async function writeGenerated(path, content) {
   let previous;
-  try { previous = await readFile(path, "utf8"); }
-  catch (error) { if (error.code !== "ENOENT") throw error; }
+  try {
+    previous = await readFile(path, "utf8");
+  } catch (error) {
+    if (error.code !== "ENOENT") throw error;
+  }
   if (previous === content) return;
   if (checkOnly) drift.push(path.slice(root.length + 1));
   else await writeFile(path, content);
@@ -464,7 +483,14 @@ for (const item of catalog) {
   const prior = new Map(
     Object.entries(descriptionsByPage[basename(doc, ".md")] || {}),
   );
-  let content = `# ${label}\n\n${guide.intro}\n\n\`\`\`tsx\nimport { ${names.join(", ")} } from '${exports.get(names[0]).from}';\n\`\`\`\n`;
+  const imports = new Map();
+  for (const name of names) {
+    const from = exports.get(name).from;
+    if (!imports.has(from)) imports.set(from, []);
+    imports.get(from).push(name);
+  }
+  let content = `# ${label}\n\n${guide.intro}\n\n\`\`\`tsx\n${[...imports].map(([from, values]) => `import { ${values.join(", ")} } from '${from}';`).join("\n")}\n\`\`\`\n`;
+  if (guide.details) content += `\n${guide.details}\n`;
   const imported = new Set(names);
   let lastSection;
   for (const [index, example] of guide.examples.entries()) {
@@ -484,13 +510,41 @@ for (const item of catalog) {
     );
     content += `\n### ${example.title}\n\n${description}\n\n\`\`\`tsx\n${snippet}\`\`\`\n`;
   }
-  if (platformNotes[id]) content += `\n## 平台与资源说明\n\n${platformNotes[id]}\n`;
-  content += "\n## Attributes 属性\n";
+  if (platformNotes[id])
+    content += `\n## 平台与资源说明\n\n${platformNotes[id]}\n`;
+  content += names.some((name) => /^[A-Z]/.test(name))
+    ? "\n## Attributes 属性\n"
+    : "\n## 函数签名\n";
   const all = [];
+  const callableTypes = [];
   for (const name of names) {
+    const entry = exports.get(name);
+    const declaration =
+      entry.symbol.valueDeclaration || entry.symbol.declarations?.[0];
+    const callable = checker.getTypeOfSymbolAtLocation(
+      entry.symbol,
+      declaration,
+    );
+    const signature = callable.getCallSignatures()[0];
+    if (!/^[A-Z]/.test(name)) {
+      callableTypes.push(
+        checker.signatureToString(
+          signature,
+          declaration,
+          ts.TypeFormatFlags.NoTruncation,
+        ),
+      );
+      content += `\n### ${name}\n\n\`\`\`ts\n${name}${checker.signatureToString(signature, declaration, ts.TypeFormatFlags.NoTruncation)}\n\`\`\`\n`;
+      continue;
+    }
     const typeName = name === "Tabs" ? "StandardTabsProps" : `${name}Props`;
     const props = fields(typeName);
-    if (!props.length) throw Error(`No public props found for ${name}`);
+    if (!props.length) {
+      if (signature?.parameters.length)
+        throw Error(`No public props found for ${name}`);
+      content += `\n### ${name}\n\n无属性；使用前须满足上文的上下文要求。\n`;
+      continue;
+    }
     const initial = defaults(name);
     all.push(...props.map((field) => ({ ...field, component: name })));
     const rows = props
@@ -569,8 +623,8 @@ for (const item of catalog) {
       ]),
     )}`;
   const typeNames = new Set();
-  for (const field of all)
-    for (const match of field.type.matchAll(/\b[A-Z][A-Za-z0-9]+\b/g)) {
+  for (const type of [...all.map((field) => field.type), ...callableTypes])
+    for (const match of type.matchAll(/\b[A-Z][A-Za-z0-9]+\b/g)) {
       const name = match[0];
       const entry = exports.get(name);
       const declaration = entry?.symbol.declarations?.find(
@@ -609,8 +663,9 @@ for (const item of catalog) {
       })) +
       "\x60\x60\x60\n";
   }
-  content +=
-    "\n## 主题定制\n\n页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。\n\n```tsx\nimport { ConfigProvider } from '@daisu-ui/ui';\n\n<ConfigProvider theme=\"dark\">\n  {/* 页面内容 */}\n</ConfigProvider>\n```\n";
+  if (names.some((name) => /^[A-Z]/.test(name)))
+    content +=
+      "\n## 主题定制\n\n页面主题可通过 [ConfigProvider 全局配置](config-provider.md) 统一设置。局部外观使用本组件属性表中的颜色、尺寸及自定义类名调整。\n\n```tsx\nimport { ConfigProvider } from '@daisu-ui/ui';\n\n<ConfigProvider theme=\"dark\">\n  {/* 页面内容 */}\n</ConfigProvider>\n```\n";
   const variables = new Set();
   for (const source of componentSources) {
     const cssName = basename(source.path, ".tsx").replace(
@@ -641,11 +696,57 @@ for (const item of catalog) {
   content += `\n## 源代码\n\n${componentSources.map((source) => `[${source.name} 组件源码](./sources/${id}/${basename(source.path)}.txt)`).join(" · ")}${demo ? ` · [示例源码](./sources/${id}/demo.tsx.txt)` : ""} · [文档源码](./sources/${id}/docs.md.txt)\n`;
   await writeGenerated(resolve(root, doc), content);
 }
+// Every public callable needs authored guidance; aliases may share a source page.
+const owned = new Map(
+  Object.values(sources).flatMap((entry) =>
+    entry.components.map((component) => [component.name, component.path]),
+  ),
+);
+for (const [name, entry] of exports) {
+  const declaration =
+    entry.symbol.valueDeclaration || entry.symbol.declarations?.[0];
+  if (
+    !(entry.symbol.flags & ts.SymbolFlags.Value) ||
+    !declaration ||
+    !checker
+      .getTypeOfSymbolAtLocation(entry.symbol, declaration)
+      .getCallSignatures().length
+  )
+    continue;
+  const path = declaration.getSourceFile().fileName.slice(root.length + 1);
+  if (
+    !owned.has(name) &&
+    ![...owned.values()].includes(path) &&
+    !(/^use[A-Z]/.test(name) && owned.has(name.slice(3)))
+  )
+    throw new Error(`Missing public API documentation: ${name}`);
+}
 await writeGenerated(
   resolve(root, "docs/ui/component-sources.json"),
   JSON.stringify(sources, null, 2) + "\n",
 );
-if (drift.length) throw new Error(`组件文档未同步：${drift.join("、")}。本地构建会自动更新。`);
+const libraryMetadata = JSON.parse(
+  await readFile(resolve(uiRoot, "package.json"), "utf8"),
+);
+const documentationEntries = [
+  ...new Map(
+    [
+      ...Object.entries(sources).map(([id, entry]) => ({
+        id,
+        source: entry.doc,
+        label: catalog.find((item) => item.id === id)?.label || id,
+        names: entry.components.map((component) => component.name),
+      })),
+      ...articlePages.filter((page) => !sources[page.id]),
+    ].map((entry) => [entry.id, entry]),
+  ).values(),
+];
+await writeGenerated(
+  resolve(root, "docs/ui/llms.txt"),
+  renderLlmIndex(libraryMetadata.version, documentationEntries),
+);
+if (drift.length)
+  throw new Error(`组件文档未同步：${drift.join("、")}。本地构建会自动更新。`);
 console.log(
   `${checkOnly ? "Checked" : "Generated"} ${Object.keys(sources).length - 1} component guides; checked ${generatedExamples.length} consumer examples. Button guide preserved.`,
 );

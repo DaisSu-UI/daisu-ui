@@ -1,9 +1,9 @@
 # Form 表单
 
-表单用于组织字段布局与校验。Form 管理数据模型和校验规则，FormItem 描述字段并承载输入控件。
+表单用于组织字段布局与校验。Form 管理数据模型和校验规则，FormItem 描述字段并承载输入控件。zodAdapter(schema, options?) 将支持 safeParseAsync 的 schema 转为 FormSchema；字段错误路径使用点分隔，根级错误使用空路径，不会自动使用 schema 的转换结果更新 model。options 可传 isRequired(path) 函数或 { isRequired }，必填推断由调用方提供，不从 schema 内部结构猜测。Zod 是消费项目自选依赖；业务状态仍以受控 model 管理。
 
 ```tsx
-import { Form, FormItem } from '@daisu-ui/ui';
+import { Form, FormItem, zodAdapter } from '@daisu-ui/ui';
 ```
 
 ## 基础用法
@@ -144,6 +144,12 @@ const schema: FormSchema = {
 | style | 根节点样式 | `CSSProperties` | — |
 | children | 自定义内容 | `ReactNode` | — |
 
+### zodAdapter
+
+```ts
+zodAdapter(schema: { safeParseAsync: (model: unknown) => Promise<{ success: boolean; error?: { issues: readonly { path: readonly PropertyKey[]; message: string; }[]; }; }>; }, options?: FormSchema["isRequired"] | { isRequired?: FormSchema["isRequired"]; }): FormSchema
+```
+
 ## Events 事件
 
 | 事件 | 说明 | 类型 |
@@ -217,4 +223,4 @@ import { ConfigProvider } from '@daisu-ui/ui';
 
 ## 源代码
 
-[Form 组件源码](./sources/form-detail/Form.tsx.txt) · [FormItem 组件源码](./sources/form-detail/Form.tsx.txt) · [示例源码](./sources/form-detail/demo.tsx.txt) · [文档源码](./sources/form-detail/docs.md.txt)
+[Form 组件源码](./sources/form-detail/Form.tsx.txt) · [FormItem 组件源码](./sources/form-detail/Form.tsx.txt) · [zodAdapter 组件源码](./sources/form-detail/formModel.ts.txt) · [示例源码](./sources/form-detail/demo.tsx.txt) · [文档源码](./sources/form-detail/docs.md.txt)
