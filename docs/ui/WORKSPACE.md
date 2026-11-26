@@ -24,7 +24,7 @@ CLI、MCP、客户端与消费端 Skill 由独立的 `@daisu-ui/cli` 仓库维�
 
 ## 版本发布
 
-日常通过 `v<版本>` 源码 Tag 触发 GitLab 校验和自动发布，消费方安装 `npm-v<版本>` 标签。版本更新、锁文件、流水线检查、升级/回退与失败重试见 [版本发布说明](../ci/git-release.md)，本机 Runner 启停见 [维护说明](../ci/local-runner.md)。文档站“工程实践 → 版本发布”复用同一份说明。
+组件的源码版本标签、npm 发布和 Git 分发以 [版本发布说明](../ci/git-release.md) 为准；当前 GitLab 不自动发布组件包。文档站由独立 Documentation 工作流维护，与组件发版分别验收。本机 Runner 启停见 [维护说明](../ci/local-runner.md)。
 
 ## 目录与 AI 文档维护
 
@@ -35,3 +35,9 @@ CLI、MCP、客户端与消费端 Skill 由独立的 `@daisu-ui/cli` 仓库维�
 文档构建导出每篇指南和组件的 Markdown，llms.txt 从实际组件清单与导航生成。浏览器链接按共享别名表解析，保留章节锚点与外部 URL；构建校验站内页面、资源和章节，缺失时失败。Runner 说明作为版本发布的补充页提供，AI 主菜单保持四项。
 
 “组合与工具”收录表单行、同步输入、PagedList、轻量控件、工具 Hook 与浏览器注册。公开可调用导出必须关联文档，生成器检查覆盖范围；CLI 区分组件 Props 与 Hook / 工具的调用参数。相关示例同样参加消费端类型检查。
+
+## 文档站验收与发布
+
+全文搜索从真实 Markdown 章节生成 search-index.json；示例预览仅在浏览器宿主中扫描实际 Demo 标题，通过来源与请求标识校验的消息定位示例，不把 DOM 代码放进原生 Bundle。兼容表源为 apps/docs/platforms.mjs，默认不声明真机通过。接入工程维护在 examples，ZIP 排除本机依赖缓存。
+
+运行 npm run test:docs:browser 和 npm run test:docs:release。GitHub Documentation 工作流生成已验证站点产物，手动部署和回滚可复用同一产物；GitLab 保留兼容文档任务。实际服务器尚未配置时不声称已上线，完整流程见 apps/docs/pages/docs-deployment.md。

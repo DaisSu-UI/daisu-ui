@@ -1,5 +1,5 @@
 import {afterEach,expect,test} from '@rstest/core';
-import {createDocumentSearch} from './public/search.js';
+import {searchDocuments,createDocumentSearch} from './public/search.js';
 afterEach(()=>document.body.replaceChildren());
 function mount(){
  document.body.innerHTML='<button id="open">搜索</button><dialog><input><div data-search-results></div><p data-search-status></p><button data-search-close>关闭</button></dialog>';
@@ -19,4 +19,10 @@ test('empty search results do not navigate and the dialog cancels without changi
  const {dialog,input,selected,trigger}=mount();input.value='unknown document';input.dispatchEvent(new Event('input'));input.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));
  expect(selected).toEqual([]);expect(dialog.querySelector('[data-search-status]')!.textContent).toContain('未找到');expect(input.hasAttribute('aria-activedescendant')).toBe(false);
  dialog.dispatchEvent(new Event('cancel',{cancelable:true}));expect(dialog.open).toBe(false);expect(document.activeElement).toBe(trigger);
+});
+
+test('full-text ranking prefers the exact API heading and preserves section routes',()=>{
+ const result=searchDocuments([{id:'other',label:'文档',text:'说明 usePressState 的作用'},{id:'utilities',label:'工具',heading:'usePressState',text:'enabled pressed',href:'#/utilities?section=api'}],'usePressState');
+ expect(result.matches[0]!.href).toBe('#/utilities?section=api');
+ expect(searchDocuments([{id:'button',label:'Button',text:'rootPortal 自定义弹层'}],'rootPortal').total).toBe(1);
 });

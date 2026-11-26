@@ -95,4 +95,4 @@ UI 仓库中的 AGENTS.md 和 .agents/skills 用于组件库维护，覆盖 Lynx
 
 - [MCP 配置和会话验证](#/ai-mcp) · [CLI 与版本快照](#/ai-cli) · [AI 总览](#/ai-guide)
 
-本文由 `@daisu-ui/cli@0.1.0-beta.5` 生成。内容在 CLI 仓库维护；更新方式见 [CLI 工具](#/ai-cli)。
+本文由 `@daisu-ui/cli@0.1.0-beta.6` 生成。内容在 CLI 仓库维护；更新方式见 [CLI 工具](#/ai-cli)。

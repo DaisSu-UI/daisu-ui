@@ -7,3 +7,7 @@ artifacts/
 *.tsbuildinfo
 .env*
 .DS_Store
+
+**/.dart_tool/
+**/.flutter-plugins-dependencies
+**/build/

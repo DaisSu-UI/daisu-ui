@@ -31,3 +31,9 @@ Lynx 应用根据宿主协议分发 Bundle。Web 预览通过后，仍需核对�
 - [Upload API](upload.md)
 - [VideoPreview API](video-preview.md)
 - [ImgCropper API](img-cropper.md)
+
+## 完整工程与支持范围
+
+- [浏览器最小工程与下载](./web-quickstart.md)
+- [Flutter Manifest 与宿主接入](./flutter-quickstart.md)
+- [平台兼容性总表](./compatibility.md)

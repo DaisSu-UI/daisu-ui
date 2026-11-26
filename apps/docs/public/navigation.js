@@ -32,6 +32,10 @@ export const documentationGroups = [
   { id: 'practice', label: '工程实践', section: 'guide', pages: [
     { id: 'integration', label: '组件库集成', source: 'apps/docs/pages/integration.md' },
     { id: 'platforms', label: '平台适配', source: 'apps/docs/pages/platforms.md' },
+    { id: 'compatibility', label: '平台兼容性总表', source: 'apps/docs/pages/compatibility.md' },
+    { id: 'web-quickstart', label: '浏览器完整接入', source: 'apps/docs/pages/web-quickstart.md' },
+    { id: 'flutter-quickstart', label: 'Flutter 完整接入', source: 'apps/docs/pages/flutter-quickstart.md' },
+    { id: 'docs-deployment', label: '文档站部署', source: 'apps/docs/pages/docs-deployment.md' },
     { id: 'publishing', label: '版本发布', source: 'docs/ci/git-release.md' },
     { id: 'changelog', label: '更新日志', source: 'packages/daisu-ui/CHANGELOG.md' },
   ] },
