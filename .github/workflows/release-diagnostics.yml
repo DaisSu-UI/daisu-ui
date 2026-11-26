@@ -28,6 +28,8 @@ jobs:
           lines = [line for line in text.splitlines() if 'Publish a version tag or preview main' in line and any(marker in line for marker in markers)]
           report = '\n'.join(lines[:60]) or 'No npm publication marker was recorded by the publishing step.'
           print(report)
+          annotation = report.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
+          print('::notice title=npm publication receipt::' + annotation)
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
               summary.write('## npm publication receipt\n\n```text\n' + report + '\n```\n')
           PY
