@@ -12,7 +12,7 @@ npm install --save-exact @daisu-ui/ui@0.1.0-beta.7
 
 组件包已发布到 [npmjs](https://www.npmjs.com/package/@daisu-ui/ui)，固定版本示例使用 0.1.0-beta.7，@beta 会安装该标签当前指向的版本。上面两种安装方式任选其一；npm 安装不需要克隆组件库或配置源码仓库 SSH。安装后提交消费项目的 package.json 和锁文件。
 
-项目需使用 ReactLynx，并在 Rspeedy 中启用 `pluginReactLynx({ engineVersion: '4.0' })`。当前开发类型固定为 `@lynx-js/types@4.0.0`，组件 peerDependency 接受 `^4.0.0`，与 4.0 宿主对齐；原生能力仍需设备验收；其他依赖版本以包的 `peerDependencies` 为准。
+项目需使用 ReactLynx，并在 Rspeedy 中启用 `pluginReactLynx({ engineVersion: '4.0', enableCSSInheritance: true })`，并安装 `@lynx-js/config-rsbuild-plugin@0.2.4`，配置 `pluginLynxConfig({ enableCSSInlineVariables: true })`。建议用 `customCSSInheritanceList` 将继承限制为 `color`、字体、行高、对齐和缩进属性。当前开发类型固定为 `@lynx-js/types@4.0.0`，组件 peerDependency 接受 `^4.0.0`，与 4.0 宿主对齐；原生能力仍需设备验收；其他依赖版本以包的 `peerDependencies` 为准。
 
 若构建插件仍依赖 `@lynx-js/tasm@0.0.49`，在消费项目根 `package.json` 添加 `"overrides": { "@lynx-js/tasm": "0.0.53" }` 并重新安装依赖，以保持与本仓库相同的编译工具链。已有 4.2 Bundle 须重新构建、替换远端文件并更新 Manifest 哈希。
 

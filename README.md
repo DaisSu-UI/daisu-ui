@@ -87,7 +87,7 @@ root.render(<App />);
 | `@lynx-js/types` | `^4.0.0`；开发固定为 `4.0.0` |
 | `@types/react` | `^18.3.0` |
 
-使用 Rspeedy 的 `pluginReactLynx({ engineVersion: '4.0' })` 构建。组件包保留 JSX，由消费项目的 ReactLynx 编译器完成转换。
+使用 Rspeedy 的 `pluginReactLynx` 构建，设置 `engineVersion: '4.0'`、`enableCSSInheritance: true`，并通过 `@lynx-js/config-rsbuild-plugin` 的 `pluginLynxConfig({ enableCSSInlineVariables: true })` 启用行内主题变量。建议限制继承属性为文字相关属性，完整配置与全库检查见 [原生主题说明](docs/NATIVE_THEME_AUDIT.md)。组件包保留 JSX，由消费项目的 ReactLynx 编译器完成转换。
 
 本仓库使用以下编译器 override，消费项目可保持相同工具链并重新安装依赖：
 

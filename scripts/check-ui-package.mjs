@@ -106,6 +106,7 @@ try {
 
   const { createRspeedy } = await import('@lynx-js/rspeedy');
   const { pluginReactLynx } = await import('@lynx-js/react-rsbuild-plugin');
+  const { pluginLynxConfig } = await import('@lynx-js/config-rsbuild-plugin');
   const build = await createRspeedy({
     cwd: temporary,
     loadEnv: false,
@@ -124,7 +125,7 @@ try {
         lynx: {},
         web: { output: { distPath: { root: 'dist-web' } } },
       },
-      plugins: [pluginReactLynx({ engineVersion: '4.0' })],
+      plugins: [pluginReactLynx({ engineVersion: '4.0', enableCSSInheritance: true, customCSSInheritanceList: ['color', 'font-size', 'font-weight', 'font-family', 'font-style', 'line-height', 'text-align', 'text-indent'] }), pluginLynxConfig({ enableCSSInlineVariables: true })],
     },
   });
   await build.build();
@@ -133,6 +134,10 @@ try {
   for (const entry of ['app', 'button']) {
     const decoded = await decode_wasm(readFileSync(join(temporary, `dist/${entry}.lynx.bundle`)));
     assert.equal(decoded['engine-version'], '4.0', `${entry} Bundle must target Lynx 4.0`);
+    const config = JSON.parse(decoded['page-config']);
+    assert.equal(config.enableCSSInlineVariables, true, 'Scoped/inline theme variables must be enabled');
+    assert.equal(config.enableCSSInheritance, true, 'Text descendants must inherit their component styles');
+    assert(decoded.css.text.includes('--_daisu-var-'), 'Nested fallbacks must use native-compatible aliases');
   }
   const buttonBundle = readFileSync(join(temporary, 'dist-web/button.web.bundle'), 'utf8');
   assert(buttonBundle.includes('--ui-button-foreground'), 'Named Button import lost its automatic CSS during production tree shaking');

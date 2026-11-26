@@ -59,8 +59,8 @@ export function Tag({ type, tone, size: sizeProp, variant, plain, label = '', ch
   const outlined = effectiveVariant === 'plain' || effectiveVariant === 'dashed';
   const foreground: CSSProperties = { color };
   const rootStyle: CSSProperties = { ...foreground, ...(bgColor && (effectiveVariant === 'dark' || effectiveVariant === 'light') ? { backgroundColor: bgColor } : {}), ...style };
-  const glyphColor = color || (effectiveVariant === 'dark' ? '#fff' : palette[effectiveType]);
-  const glyph = (name: string) => <view className="ui-tag-glyph"><Icon name={name} size={glyphSize} color={glyphColor} className="ui-tag-glyph-light" />{!color && effectiveType === 'default' && effectiveVariant !== 'dark' ? <Icon name={name} size={glyphSize} color="#e5e6eb" className="ui-tag-glyph-dark" /> : null}</view>;
+  const glyphColor = color || (effectiveVariant === 'dark' ? '#fff' : effectiveType === 'default' ? 'var(--cso-ui-text-regular)' : palette[effectiveType]);
+  const glyph = (name: string) => <view className="ui-tag-glyph"><Icon name={name} size={glyphSize} color={glyphColor} className="ui-tag-glyph-light" />{!color && effectiveType === 'default' && effectiveVariant !== 'dark' ? <Icon name={name} size={glyphSize} color="var(--cso-ui-text-regular)" className="ui-tag-glyph-dark" /> : null}</view>;
   const tap = () => {
     'background only';
     if (dynamic) { setEditing(true); return; }

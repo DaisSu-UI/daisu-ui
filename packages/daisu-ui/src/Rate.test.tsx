@@ -45,7 +45,7 @@ test('Rate disabled preserves active and custom colors unless disabledColor is e
     const screen = render(<Rate value={2} disabled activeColor="#12b886" />);
     expect(screen.container.querySelector('.ui-rate-disabled')).not.toBeNull();
     expect(screen.container.querySelector('.ui-rate-fill svg')?.getAttribute('content')).toContain('fill="#12b886"');
-    expect(screen.container.querySelector('.ui-rate-default-light')?.getAttribute('content')).toContain('fill="#c9cbd4"');
+    expect(screen.container.querySelector('.ui-rate-default-light')?.getAttribute('content')).toContain('fill="#c0c4cc"');
     screen.rerender(<Rate value={2} disabled disabledColor="#888888" />);
     expect(screen.container.querySelector('.ui-rate-fill svg')?.getAttribute('content')).toContain('fill="#888888"');
   } finally { cleanup(); }

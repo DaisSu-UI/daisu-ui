@@ -156,8 +156,8 @@ import { ConfigProvider } from '@daisu-ui/ui';
 | `--cso-ui-rich-text-line-height` | 当前组件 |
 | `--cso-ui-rich-text-video-height` | 当前组件 |
 | `--cso-ui-surface-muted` | 共享主题 |
-| `--cso-ui-text` | 共享主题 |
 | `--cso-ui-text-muted` | 共享主题 |
+| `--cso-ui-text-regular` | 共享主题 |
 
 ## 源代码
 

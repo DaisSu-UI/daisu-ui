@@ -552,7 +552,7 @@ focused 默认为 true，调用方可显式控制焦点状态。
 
 # ConfigProvider 全局配置
 
-从 `@daisu-ui/ui` 导入 ConfigProvider、useConfigProvider 及同名 TypeScript 类型。App 根节点已绑定 Flutter 的主题状态，原有业务主题颜色及组件内置默认值保持不变。
+从 `@daisu-ui/ui` 导入 ConfigProvider、useConfigProvider 及同名 TypeScript 类型。App 根节点已绑定 Flutter 的主题状态，文字灰阶与 Flutter core/theme 对齐：浅色标题 #303133、正文 #606266、辅助 #909399；深色 #e6e8eb、#babec5、#8a8f99。原生工程需开启 enableCSSInheritance（限定文字属性）与 pluginLynxConfig({ enableCSSInlineVariables: true })；普通属性嵌套 var 回退由组件包构建转换为私有自定义变量引用。SVG 图标在生成前解析 ConfigProvider 颜色变量。
 
 ## 实际 API
 

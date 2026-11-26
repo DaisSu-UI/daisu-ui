@@ -6,7 +6,7 @@
 .ui-popup-anchor-right { top: 0; bottom: 0; right: 0; }
 .ui-popup { background-color: var(--cso-ui-surface); color: var(--cso-ui-text); }
 .ui-popup-left, .ui-popup-right { height: 100%; }
-.ui-popup-body { position: relative; width: 100%; flex: 1; }
+.ui-popup-body { position: relative; width: 100%; flex: 1; min-height: 0; display: flex; flex-direction: column; }
 .ui-popup-safe-area { width: 100%; flex-shrink: 0; }
 .ui-popup-header { width: 100%; min-height: 72px; padding: 20px 16px; display: flex; flex-direction: column; justify-content: center; flex-shrink: 0; }
 .ui-popup-header-closable { padding-right: 72px; }

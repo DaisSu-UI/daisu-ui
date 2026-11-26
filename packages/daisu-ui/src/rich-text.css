@@ -1,4 +1,4 @@
-.ui-rich-text { width:100%; min-width:0; color:var(--cso-ui-rich-text-color,var(--cso-ui-text)); font-size:var(--cso-ui-rich-text-font-size,14px); line-height:var(--cso-ui-rich-text-line-height,1.7); }
+.ui-rich-text { width:100%; min-width:0; color:var(--cso-ui-rich-text-color,var(--cso-ui-text-regular)); font-size:var(--cso-ui-rich-text-font-size,14px); line-height:var(--cso-ui-rich-text-line-height,1.7); }
 .ui-rich-text-line { color:inherit; font-size:inherit; line-height:inherit; text-indent:inherit; text-align:inherit; }
 .ui-rich-text-block { width:100%; min-width:0; }
 .ui-rich-text-list { width:100%; padding-left:24px; }

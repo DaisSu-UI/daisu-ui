@@ -48,7 +48,7 @@ export function Popup({ show = false, onChange, onClose, onClickModal, position 
     {modal ? <Overlay show={show} duration={duration} lockScroll={lockScroll} zIndex={zIndex} style={modalStyle} onTap={() => { 'background only'; onClickModal?.(); if (closeOnClickModal) close('modal'); }} /> : null}
     <view className={`ui-popup-anchor ui-popup-anchor-${position}`} style={{ zIndex: zIndex + 1 }}>
       <Transition {...lifecycle} show={show} name={transition ?? motions[position]} duration={duration} lazyRender={lazyRender} destroy={false} interactiveDuringLeave className={`ui-popup ui-popup-${position} ${round ? 'ui-popup-round' : ''} ${className}`} style={style}>
-        <view className="ui-popup-body" event-through={false} consume-slide-event={lockScroll ? [[-180, 180]] : undefined} catchtouchmove={lockScroll ? () => {} : undefined} catchtap={() => {}}>
+        <view className="ui-popup-body" event-through={false} catchtap={() => {}}>
           {title != null && title !== false ? <view className={`ui-popup-header ${closable ? 'ui-popup-header-closable' : ''}`}>
             {typeof title === 'string' || typeof title === 'number' ? <text className="ui-popup-title">{title}</text> : title}
           </view> : null}

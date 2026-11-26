@@ -111,7 +111,7 @@ export function Upload({ fileList = emptyFiles, onChange, adapter, disabled: dis
       {renderPreviewCover?.({ file, index })}
     </view>)}
     {!readonly && withinLimit ? <view className={`${children ? 'ui-upload-evoke-slot' : 'ui-upload-add'} ${evokeClassName}`} bindtap={() => { 'background only'; void choose(); }} accessibility-element accessibility-traits="button" accessibility-label={disabled ? '上传已禁用' : uploading ? `上传中${Math.round(progress)}%` : uploadText ?? '上传图片'}>
-      {uploading ? <><Loading type={loadingType} size={loadingSize} /><text>{Math.round(progress)}%</text></> : children ?? <><Icon name={uploadIcon} size={32} color={disabled ? '#c9cbd4' : '#868a9c'} />{uploadText ? <text>{uploadText}</text> : null}{limit > 0 && showLimitNum ? <text className="ui-upload-count">（{fileList.length}/{limit}）</text> : null}</>}
+      {uploading ? <><Loading type={loadingType} size={loadingSize} /><text>{Math.round(progress)}%</text></> : children ?? <><Icon name={uploadIcon} size={32} color={disabled ? 'var(--cso-ui-disabled-text)' : 'var(--cso-ui-text-muted)'} />{uploadText ? <text>{uploadText}</text> : null}{limit > 0 && showLimitNum ? <text className="ui-upload-count">（{fileList.length}/{limit}）</text> : null}</>}
     </view> : null}
   </view>;
 }

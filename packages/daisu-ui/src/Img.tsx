@@ -62,7 +62,7 @@ function ImgSource({ src = '', previewSrc, width, height, mode = 'scaleToFill', 
         if (!active.current || state.current !== 'loading') return;
         state.current = 'error'; setStatus('error'); onError?.(event);
       }} /> : null}
-    {status === 'loading' && showLoading ? <view className="ui-img-placeholder ui-img-loading-placeholder">{loading ?? <Icon name="image" size={32} color="#a9acb8" />}</view> : null}
-    {status === 'error' && showError ? <view className="ui-img-placeholder ui-img-error-placeholder">{error ?? <Icon name="image-failloading" size={32} color="#a9acb8" />}</view> : null}
+    {status === 'loading' && showLoading ? <view className="ui-img-placeholder ui-img-loading-placeholder">{loading ?? <Icon name="image" size={32} color="var(--cso-ui-text-placeholder)" />}</view> : null}
+    {status === 'error' && showError ? <view className="ui-img-placeholder ui-img-error-placeholder">{error ?? <Icon name="image-failloading" size={32} color="var(--cso-ui-text-placeholder)" />}</view> : null}
   </view>;
 }

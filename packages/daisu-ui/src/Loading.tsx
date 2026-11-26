@@ -1,3 +1,4 @@
+import { useThemeColor } from './themeColor.js';
 import { useMemo } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import type { CSSProperties } from '@lynx-js/types';
@@ -20,6 +21,7 @@ export type LoadingProps = {
 };
 
 export function Loading({ type = 'circular', color = '#1c64fd', size = 28, text, label, children, direction = label !== undefined ? 'horizontal' : 'vertical', className = '', spinnerClassName = '', style }: LoadingProps) {
+  color = useThemeColor(color);
   const dimension = loadingDimension(size);
   const content = children ?? text ?? label;
   const svg = useMemo(() => type === 'circular' ? circularLoadingSvg(color) : '', [type, color]);

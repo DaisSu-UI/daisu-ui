@@ -9,7 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@daisu-ui/ui": "0.1.0-beta.7",
+    "@daisu-ui/ui": "0.1.0-beta.8",
     "@lynx-js/lynx-core": "0.1.4",
     "@lynx-js/react": "0.126.2",
     "@lynx-js/web-core": "0.26.5"
@@ -20,7 +20,8 @@
     "@lynx-js/types": "4.0.0",
     "@rsbuild/core": "2.2.9",
     "@types/react": "18.3.0",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "@lynx-js/config-rsbuild-plugin": "0.2.4"
   },
   "overrides": {
     "@lynx-js/tasm": "0.0.53"

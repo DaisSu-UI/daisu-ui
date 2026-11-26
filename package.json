@@ -1,7 +1,7 @@
 {
   "name": "daisu-ui-workspace",
   "private": true,
-  "version": "0.1.0-beta.7",
+  "version": "0.1.0-beta.8",
   "type": "module",
   "workspaces": [
     "packages/*",
@@ -19,7 +19,7 @@
     "ui:docs:build": "npm run build --workspace @daisu-ui/docs",
     "ui:docs:dev": "npm run ui:docs:build && npm run dev --workspace @daisu-ui/docs",
     "build": "npm run ui:docs:build",
-    "test": "rstest run && node --test scripts/lynx-runtime.test.mjs && npm run test:ai-docs",
+    "test": "rstest run && node --test scripts/lynx-runtime.test.mjs scripts/native-css.test.mjs && npm run test:ai-docs",
     "pretest": "npm run ui:build",
     "test:types": "npm run ui:build && npm run typecheck --workspace @daisu-ui/demo",
     "benchmark:area": "node scripts/benchmark-demo-area.mjs",
@@ -38,6 +38,7 @@
     "docs:pack": "node scripts/docs-release.mjs pack"
   },
   "devDependencies": {
+    "@lynx-js/config-rsbuild-plugin": "0.2.4",
     "@lynx-js/react": "^0.126.2",
     "@lynx-js/react-rsbuild-plugin": "^0.20.3",
     "@lynx-js/rspeedy": "^0.18.0",
@@ -49,6 +50,7 @@
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^7.0.0",
     "@types/react": "^18.3.0",
+    "css-tree": "3.2.1",
     "fflate": "0.8.2",
     "jsdom": "^27.4.0",
     "typescript": "^6.0.3"

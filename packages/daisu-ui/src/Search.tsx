@@ -19,8 +19,8 @@ const content = (node: ReactNode) => typeof node === 'string' || typeof node ===
 function Glyph({ clear = false }: { clear?: boolean }) {
   const name = clear ? 'close-circle-fill' : 'search-line';
   return <view className={`ui-search-glyph ${clear ? 'ui-search-clear-glyph' : ''}`}>
-    <Icon name={name} size={clear ? 20 : 18} color={clear ? '#c9cbd4' : '#4e5369'} className="ui-search-glyph-light" />
-    <Icon name={name} size={clear ? 20 : 18} color={clear ? '#6b7085' : '#e5e6eb'} className="ui-search-glyph-dark" />
+    <Icon name={name} size={clear ? 20 : 18} color={clear ? 'var(--cso-ui-disabled-text)' : 'var(--cso-ui-text-regular)'} className="ui-search-glyph-light" />
+    <Icon name={name} size={clear ? 20 : 18} color={clear ? 'var(--cso-ui-disabled-text)' : 'var(--cso-ui-text-regular)'} className="ui-search-glyph-dark" />
   </view>;
 }
 export const Search = forwardRef<SearchRef, SearchProps>(function Search({ value, defaultValue = '', onChange, type = 'text', placeholder = '搜索', cancelTxt = '取消', variant = 'plain', hideCancel = false, disabled = false, maxlength = -1, placeholderLeft = false, focus, focusWhenClear = false, placeholderColor, prefix, inputSuffix, suffix, onSearch, onCancel, onClear, onFocus, onBlur, onTap, inputClassName = '', className = '', style }, ref) {

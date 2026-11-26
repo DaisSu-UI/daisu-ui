@@ -144,6 +144,7 @@ import { ConfigProvider } from '@daisu-ui/ui';
 | `--cso-ui-text` | 共享主题 |
 | `--cso-ui-text-auxiliary` | 共享主题 |
 | `--cso-ui-text-muted` | 共享主题 |
+| `--cso-ui-text-regular` | 共享主题 |
 
 ## 源代码
 

@@ -79,15 +79,6 @@ import { ConfigProvider } from '@daisu-ui/ui';
 </ConfigProvider>
 ```
 
-### CSS 变量
-
-以下变量可通过 ConfigProvider 的 themeVars 覆盖，未设置时使用当前主题与组件的默认样式。
-
-| 变量 | 作用范围 |
-| --- | --- |
-| `--cso-ui-dark-display` | 共享主题 |
-| `--cso-ui-light-display` | 共享主题 |
-
 ## 源代码
 
 [Icon 组件源码](./sources/icon/Icon.tsx.txt) · [示例源码](./sources/icon/demo.tsx.txt) · [文档源码](./sources/icon/docs.md.txt)

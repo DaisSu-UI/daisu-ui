@@ -91,7 +91,7 @@ export const Fab = forwardRef<FabRef, FabProps>(function Fab({ active, defaultAc
         global-bindmousemove={draggable ? event => { 'background only'; move(event); } : undefined}
         global-bindmouseup={draggable ? event => { 'background only'; finish(event); } : undefined}
         consume-slide-event={draggable ? [[0, 360]] : undefined}>
-        {trigger ? typeof trigger === 'function' ? trigger({ active: expanded, disabled }) : trigger : <Button className="ui-fab-default-trigger" tone={tone} round disabled={disabled} icon={<Icon name={expanded ? activeIcon : inactiveIcon === 'add' ? 'plus' : inactiveIcon} size={32} color={tone === 'neutral' ? '#4e5369' : '#fff'} />} accessibilityLabel={expanded ? '收起动作菜单' : '展开动作菜单'} />}
+        {trigger ? typeof trigger === 'function' ? trigger({ active: expanded, disabled }) : trigger : <Button className="ui-fab-default-trigger" tone={tone} round disabled={disabled} icon={<Icon name={expanded ? activeIcon : inactiveIcon === 'add' ? 'plus' : inactiveIcon} size={32} color={tone === 'neutral' ? 'var(--cso-ui-text-regular)' : '#fff'} />} accessibilityLabel={expanded ? '收起动作菜单' : '展开动作菜单'} />}
       </view>
       {expandable ? <Transition show={expanded} name={[]} className={`ui-fab-actions ui-fab-actions-${menuDirection}`} enterClassName={`ui-fab-offset-${menuDirection}`} leaveToClassName={`ui-fab-offset-${menuDirection}`} enterActiveClassName="ui-fab-actions-animating" leaveActiveClassName="ui-fab-actions-animating"><view className="ui-fab-action-content" user-interaction-enabled={!disabled}>{children}</view></Transition> : null}
     </view>

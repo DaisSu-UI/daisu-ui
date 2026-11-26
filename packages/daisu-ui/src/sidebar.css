@@ -4,7 +4,7 @@
 .ui-sidebar-label { font-size: 14px; line-height: 20px; color: var(--cso-ui-text); }
 .ui-sidebar-active { background-color: var(--cso-ui-surface); }
 .ui-sidebar-active .ui-sidebar-label { color: var(--cso-ui-primary); font-weight: 700; }
-.ui-sidebar-disabled .ui-sidebar-label { color: var(--cso-ui-line-strong, #c9cbd4); }
+.ui-sidebar-disabled .ui-sidebar-label { color: var(--cso-ui-disabled-text, #c0c4cc); }
 .ui-sidebar-prefix { border-bottom-right-radius: 8px; }
 .ui-sidebar-suffix { border-top-right-radius: 8px; }
 .ui-sidebar-indicator { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 2px; height: 20px; background-color: var(--cso-ui-primary); }

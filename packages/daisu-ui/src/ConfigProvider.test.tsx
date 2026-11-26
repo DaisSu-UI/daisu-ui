@@ -1,13 +1,14 @@
 import { expect, test } from '@rstest/core';
-import { cleanup, fireEvent, render } from '@lynx-js/react/testing-library';
+import { cleanup, fireEvent, render, waitFor } from '@lynx-js/react/testing-library';
 import { ConfigProvider, useConfigProvider } from './ConfigProvider.js';
 import { configThemeVars } from './configContext.js';
 import { Button } from './Button.js';
 import { Tag } from './Tag.js';
+import { RootPortal, RootPortalHost } from './RootPortal.js';
 
 function Snapshot() {
-  const {theme,themeVars,button,tag}=useConfigProvider();
-  return <text className="config-snapshot">{JSON.stringify({theme,themeVars,button,tag})}</text>;
+  const {theme,themeVars,button,tag,tokens}=useConfigProvider();
+  return <text className="config-snapshot">{JSON.stringify({theme,themeVars,button,tag,tokens})}</text>;
 }
 test('ConfigProvider merges nested defaults and variables, preserves false/explicit props and isolates siblings', () => {
   try {
@@ -44,4 +45,16 @@ test('ConfigProvider updates live, removes stale variables/defaults and reads sc
 
 test('ConfigProvider maps supported aliases/units, skips unknown or nonfinite variables and preserves raw tokens', () => {
   expect(configThemeVars({buttonPrimaryBgColor:'#07c160',buttonPrimaryColor:'#fff',buttonHeight:44,onPrimary:'#111','--cso-ui-custom-gap':'2rem',buttonRadius:Infinity})).toEqual({'--cso-ui-button-primary-bg':'#07c160','--cso-ui-button-primary-color':'#fff','--cso-ui-button-height':'44px','--cso-ui-on-primary':'#111','--cso-ui-custom-gap':'2rem'});
+});
+
+test('nested configuration carries its theme selector and tokens across a native portal', async () => {
+  try {
+    const tree = (theme: 'light' | 'dark') => <ConfigProvider theme="light"><RootPortalHost><ConfigProvider theme={theme}><RootPortal><Snapshot /></RootPortal></ConfigProvider></RootPortalHost></ConfigProvider>;
+    const screen = render(tree('dark'));
+    await waitFor(() => expect(screen.container.querySelector('.ui-config-portal.theme-dark')).toBeTruthy());
+    expect(JSON.parse(screen.container.querySelector('.config-snapshot')!.textContent!).tokens['--cso-ui-text']).toBe('#e6e8eb');
+    screen.rerender(tree('light'));
+    await waitFor(() => expect(screen.container.querySelector('.ui-config-portal.theme-light')).toBeTruthy());
+    expect(JSON.parse(screen.container.querySelector('.config-snapshot')!.textContent!).tokens['--cso-ui-text']).toBe('#303133');
+  } finally { cleanup(); }
 });

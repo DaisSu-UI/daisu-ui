@@ -111,8 +111,8 @@ import { ConfigProvider } from '@daisu-ui/ui';
 | --- | --- |
 | `--cso-ui-canvas` | 共享主题 |
 | `--cso-ui-dark-display` | 共享主题 |
+| `--cso-ui-disabled-text` | 共享主题 |
 | `--cso-ui-light-display` | 共享主题 |
-| `--cso-ui-line-strong` | 共享主题 |
 | `--cso-ui-primary` | 共享主题 |
 | `--cso-ui-surface` | 共享主题 |
 | `--cso-ui-text` | 共享主题 |

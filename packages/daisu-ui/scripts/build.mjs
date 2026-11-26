@@ -2,6 +2,8 @@ import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync } from
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
+import { writeFileSync } from 'node:fs';
+import { nativeCompatibleCSS } from './native-css.mjs';
 
 const packageRoot = fileURLToPath(new URL('..', import.meta.url));
 const sourceRoot = join(packageRoot, 'src');
@@ -63,7 +65,8 @@ function copyAssets(directory) {
     if (!entry.name.endsWith('.css') && !entry.name.endsWith('.svg') && entry.name !== 'styles.d.ts' && !entry.name.startsWith('LICENSE')) continue;
     const destination = join(outputRoot, relative(sourceRoot, source));
     mkdirSync(dirname(destination), { recursive: true });
-    cpSync(source, destination);
+    if (entry.name.endsWith('.css')) writeFileSync(destination, nativeCompatibleCSS(readFileSync(source, 'utf8')));
+    else cpSync(source, destination);
   }
 }
 copyAssets(sourceRoot);

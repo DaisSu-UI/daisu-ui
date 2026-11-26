@@ -31,5 +31,5 @@ export function ConfigProvider({ theme, themeVars, button, tag, children, classN
     };
     return { config, scope };
   }, [parent, theme, themeVars, button, tag, style]);
-  return <ConfigContext.Provider value={config}><view className={`ui-config-provider ${className}`} style={{ ...scope, ...style }}>{children}</view></ConfigContext.Provider>;
+  return <ConfigContext.Provider value={config}><view className={`ui-config-provider theme-${config.theme} ${className}`} style={{ ...scope, ...style }}>{children}</view></ConfigContext.Provider>;
 }

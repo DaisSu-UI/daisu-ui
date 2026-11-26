@@ -19,5 +19,5 @@ export function RootPortalHost({ children }: RootPortalHostProps) {
 export function RootPortal({ children }: RootPortalProps) {
   const target = useContext(PortalTarget), config = useContext(ConfigContext);
   if (target === undefined) throw new Error('RootPortal requires a RootPortalHost at the page root.');
-  return target ? createPortal(config ? <ConfigContext.Provider value={config}><view className="ui-config-portal" style={config.tokens}>{children}</view></ConfigContext.Provider> : children, target) : null;
+  return target ? createPortal(config ? <ConfigContext.Provider value={config}><view className={`ui-config-portal theme-${config.theme}`} style={config.tokens}>{children}</view></ConfigContext.Provider> : children, target) : null;
 }

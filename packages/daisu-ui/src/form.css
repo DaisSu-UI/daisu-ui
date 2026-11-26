@@ -3,7 +3,7 @@
 .ui-form-item-error{margin-top:4px;color:var(--cso-ui-danger);font-size:12px;line-height:16px;}
 .ui-form-item-value{font-size:14px;line-height:20px;color:var(--cso-ui-text);}
 .ui-form-item-placeholder{font-size:14px;line-height:20px;color:var(--cso-ui-text-placeholder,var(--cso-ui-text-muted));}
-.ui-form-item-disabled .ui-cell-title,.ui-form-item-disabled .ui-form-item-value,.ui-form-item-disabled .ui-form-item-placeholder{color:var(--cso-ui-text-disabled,#c9cbd4);}
+.ui-form-item-disabled .ui-cell-title,.ui-form-item-disabled .ui-form-item-value,.ui-form-item-disabled .ui-form-item-placeholder{color:var(--cso-ui-text-disabled,var(--cso-ui-disabled-text));}
 
 .ui-form>.ui-form-item:first-child .ui-cell-border{display:none;}
 

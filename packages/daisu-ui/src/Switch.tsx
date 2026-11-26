@@ -58,6 +58,6 @@ export function Switch({ value, defaultValue = false, onChange, activeValue = tr
   const controlStyle = { '--ui-switch-size': loadingDimension(size), backgroundColor: active ? activeColor : inactiveColor, ...style };
   return <view className={`ui-switch ui-switch-${shape} ${active ? 'ui-switch-active' : ''} ${disabled ? 'ui-switch-disabled' : ''} ${className}`} style={controlStyle} bindtap={() => { void toggle(); }} accessibility-element accessibility-traits="button" accessibility-label={`${accessibilityLabel}，${active ? '开启' : '关闭'}`}>
     <view className="ui-switch-label">{icon ? typeof icon === 'string' ? <Icon name={icon} size={13} color="#fff" /> : icon : <text>{active ? activeText : inactiveText}</text>}</view>
-    <view className="ui-switch-action">{loading || pending ? <Loading size={14} color={activeColor ?? '#1c64fd'} {...loadingProps} /> : actionIcon ? typeof actionIcon === 'string' ? <Icon name={actionIcon} size={16} color={active ? activeColor ?? '#1c64fd' : '#a9acb8'} /> : actionIcon : null}</view>
+    <view className="ui-switch-action">{loading || pending ? <Loading size={14} color={activeColor ?? '#1c64fd'} {...loadingProps} /> : actionIcon ? typeof actionIcon === 'string' ? <Icon name={actionIcon} size={16} color={active ? activeColor ?? '#1c64fd' : 'var(--cso-ui-text-placeholder)'} /> : actionIcon : null}</view>
   </view>;
 }

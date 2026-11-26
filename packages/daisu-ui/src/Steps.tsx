@@ -17,7 +17,7 @@ export function Step({ title, description, icon, status, className='', style }: 
   const state=status??(index<(group?.active??0)?'finished':index===(group?.active??0)?'process':'wait');
   const primary=config.tokens['--cso-ui-primary']??(config.theme==='dark'?'#4d80f0':'#1c64fd');
   const danger=config.tokens['--cso-ui-danger']??'#f14646';
-  const glyphColor=state==='error'?danger:state==='wait'?(config.theme==='dark'?'#868a9c':'#868a9c'):primary;
+  const glyphColor=state==='error'?danger:state==='wait'?'var(--cso-ui-text-muted)':primary;
   const spacing=group?.space, dimension=typeof spacing==='number'?`${Math.max(0,Number.isFinite(spacing)?spacing:0)}px`:spacing;
   const copy=(value:ReactNode,cls:string)=><view className={cls}>{typeof value==='string'||typeof value==='number'?<text className={`${cls}-text`}>{value}</text>:value}</view>;
   return <view className={`ui-step ui-step-${state} ${vertical?'ui-step-vertical':''} ${dot?'ui-step-dotted':''} ${group?.alignCenter&&!vertical?'ui-step-center':''} ${className}`} style={{width:vertical?'100%':dimension??`${100/(group?.count||1)}%`,...(vertical&&dimension?{height:dimension}:{}),...style}} accessibility-element accessibility-label={`${index+1}，${typeof title==='string'?title:titles[state]}，${titles[state]}`}>
