@@ -17,7 +17,7 @@ jobs:
       - name: Read the beta.5 publication run
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh api repos/DaisSu-UI/daisu-ui/actions/jobs/139700009008/logs > "$RUNNER_TEMP/npm-publication.log"
+        run: gh api repos/DaisSu-UI/daisu-ui/actions/runs/45757666419/logs > "$RUNNER_TEMP/npm-publication.log"
       - name: Report publication mode and registry response
         run: |
           python3 - <<'PY'
