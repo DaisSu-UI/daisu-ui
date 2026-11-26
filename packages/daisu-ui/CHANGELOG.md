@@ -1,6 +1,15 @@
 # 更新日志
 
-记录 Daisu UI 的版本变化。npm 组件包名为 `@daisu-ui/ui`，GitLab 保留源码与 Git 安装产物。
+记录 Daisu UI 的版本变化。npm 组件包名为 `@daisu-ui/ui`，源码与自动发布入口为 GitHub。
+
+## 0.1.0-beta.5
+
+2026-11-26 · 导航栏修复与 GitHub 自动发布
+
+- 修复业务导航栏返回箭头缺失，统一使用内置 SVG 图标。
+- 新增业务导航栏 `backButtonEffect="glass"`：支持宿主提供的 iOS Liquid Glass 材质，并补充平台差异说明及示例。
+- 统一仓库和 npm README 展示，源码链接更新为 GitHub。
+- npm 发布迁移到 GitHub Actions，加入 Token 身份与目标包权限检查、main 发布预演及版本标签发布流程。
 
 ## 0.1.0-beta.4
 
@@ -19,6 +28,14 @@
 - npm 仅包含 UI 库的 ESM、保留 JSX 的组件、声明、样式和许可证；不包含 Demo、文档应用或 MCP。
 - 建立 `developer` 开发、`main` 稳定源码、`npm-dist` 产物分支，发布前核对源码已合并到远端 `main`。
 - 增加 npm 产物校验、beta/latest 发布命令及 README 的完整发布操作示例。
+
+## 未发布
+
+- npm 安装成为快速上手与集成主流程；版本发布页同步已公开的 UI/CLI 版本，AI 总览及 MCP 详情提供全局 daisu mcp 的简洁配置。
+
+- 本地构建自动对齐 CLI 知识与接入说明；文档开发服务监听两端修改，支持串行更新与无变化跳过，CI 保持只读校验。
+
+- AI 接入统一由独立 CLI 提供，移除仓库内重复 MCP；文档站接入页面改为 CLI 生成并校验摘要，保留组件与 LLM 约束的独立维护。
 
 ## 0.1.0-beta.2
 

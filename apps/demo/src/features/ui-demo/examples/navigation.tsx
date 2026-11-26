@@ -21,6 +21,7 @@ export function NavigationExample({ onBack, onHome }: { onBack: () => void; onHo
       <ExampleBlock title="带搜索栏" noPadding><Navbar variant="standard" leftText="返回" leftArrow rightText="设置" title={<view className="demo-navbar-search"><Icon name="search-line" size={16} color="#4e5369" /><SyncedInput value={keyword} onInput={setKeyword} placeholder="搜索" maxlength={100} className="demo-navbar-search-input" /></view>} /></ExampleBlock>
     </DemoGroup>
     <DemoGroup title="原有默认样式"><ExampleBlock title="默认导航栏（56px）" noPadding><Navbar title="医疗机构备案" onBack={onBack} rightLabel="保存" onRight={show} /></ExampleBlock></DemoGroup>
+    <DemoGroup title="玻璃返回按钮"><ExampleBlock title="Liquid Glass" description="iOS 26+ 且宿主支持时显示原生液态玻璃；Android 使用背景模糊，H5 显示圆形返回按钮。" noPadding><Navbar title="医疗机构备案" backButtonEffect="glass" onBack={onBack} rightLabel="保存" onRight={show} /></ExampleBlock></DemoGroup>
     <view className="demo-navbar-spacer" />
     {notice ? <view className="demo-cell-toast" user-interaction-enabled={false}><text>{notice}</text></view> : null}
   </view>;

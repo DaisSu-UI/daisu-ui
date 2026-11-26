@@ -136,6 +136,54 @@
       {
         "name": "RouterView",
         "path": "packages/daisu-ui/src/router/RouterView.tsx"
+      },
+      {
+        "name": "RouterProvider",
+        "path": "packages/daisu-ui/src/router/hooks.tsx"
+      },
+      {
+        "name": "RouteScreen",
+        "path": "packages/daisu-ui/src/router/hooks.tsx"
+      },
+      {
+        "name": "useRouter",
+        "path": "packages/daisu-ui/src/router/hooks.tsx"
+      },
+      {
+        "name": "useRoute",
+        "path": "packages/daisu-ui/src/router/hooks.tsx"
+      },
+      {
+        "name": "useRouterSnapshot",
+        "path": "packages/daisu-ui/src/router/hooks.tsx"
+      },
+      {
+        "name": "useRouteMatch",
+        "path": "packages/daisu-ui/src/router/hooks.tsx"
+      },
+      {
+        "name": "createRouter",
+        "path": "packages/daisu-ui/src/router/core.ts"
+      },
+      {
+        "name": "connectRouterHistory",
+        "path": "packages/daisu-ui/src/router/core.ts"
+      },
+      {
+        "name": "parseRoutePath",
+        "path": "packages/daisu-ui/src/router/location.ts"
+      },
+      {
+        "name": "routePath",
+        "path": "packages/daisu-ui/src/router/location.ts"
+      },
+      {
+        "name": "parseRouterHistoryState",
+        "path": "packages/daisu-ui/src/router/location.ts"
+      },
+      {
+        "name": "shouldFinishBack",
+        "path": "packages/daisu-ui/src/router/RouterView.tsx"
       }
     ],
     "demo": "apps/demo/src/features/ui-demo/examples/router.tsx",
@@ -248,6 +296,10 @@
       {
         "name": "FormItem",
         "path": "packages/daisu-ui/src/Form.tsx"
+      },
+      {
+        "name": "zodAdapter",
+        "path": "packages/daisu-ui/src/formModel.ts"
       }
     ],
     "demo": "apps/demo/src/features/ui-demo/examples/form.tsx",
@@ -908,5 +960,125 @@
     ],
     "demo": "apps/demo/src/features/ui-demo/examples/tag.tsx",
     "doc": "docs/ui/components/tag.md"
+  },
+  "form-rows": {
+    "components": [
+      {
+        "name": "FormFieldRow",
+        "path": "packages/daisu-ui/src/FormFieldRow.tsx"
+      },
+      {
+        "name": "FormInputRow",
+        "path": "packages/daisu-ui/src/FormFieldRow.tsx"
+      },
+      {
+        "name": "FormNumberRow",
+        "path": "packages/daisu-ui/src/FormFieldRow.tsx"
+      },
+      {
+        "name": "FormRadioRow",
+        "path": "packages/daisu-ui/src/FormFieldRow.tsx"
+      },
+      {
+        "name": "FormSelectRow",
+        "path": "packages/daisu-ui/src/FormFieldRow.tsx"
+      },
+      {
+        "name": "FormTextareaRow",
+        "path": "packages/daisu-ui/src/FormFieldRow.tsx"
+      }
+    ],
+    "demo": null,
+    "doc": "docs/ui/components/form-rows.md"
+  },
+  "synced-input": {
+    "components": [
+      {
+        "name": "SyncedInput",
+        "path": "packages/daisu-ui/src/SyncedInput.tsx"
+      },
+      {
+        "name": "SyncedTextarea",
+        "path": "packages/daisu-ui/src/SyncedTextarea.tsx"
+      }
+    ],
+    "demo": null,
+    "doc": "docs/ui/components/synced-input.md"
+  },
+  "paged-list": {
+    "components": [
+      {
+        "name": "PagedList",
+        "path": "packages/daisu-ui/src/PagedList.tsx"
+      }
+    ],
+    "demo": null,
+    "doc": "docs/ui/components/paged-list.md"
+  },
+  "compact-controls": {
+    "components": [
+      {
+        "name": "EmptyState",
+        "path": "packages/daisu-ui/src/EmptyState.tsx"
+      },
+      {
+        "name": "NumberStepper",
+        "path": "packages/daisu-ui/src/NumberStepper.tsx"
+      }
+    ],
+    "demo": null,
+    "doc": "docs/ui/components/compact-controls.md"
+  },
+  "utilities": {
+    "components": [
+      {
+        "name": "usePressState",
+        "path": "packages/daisu-ui/src/usePressState.ts"
+      },
+      {
+        "name": "calendarValues",
+        "path": "packages/daisu-ui/src/calendarModel.ts"
+      },
+      {
+        "name": "calendarWeekNumber",
+        "path": "packages/daisu-ui/src/calendarModel.ts"
+      },
+      {
+        "name": "datetimeLabel",
+        "path": "packages/daisu-ui/src/datetimePickerModel.ts"
+      },
+      {
+        "name": "datetimePad",
+        "path": "packages/daisu-ui/src/datetimePickerModel.ts"
+      },
+      {
+        "name": "swiperIndex",
+        "path": "packages/daisu-ui/src/swiperModel.ts"
+      }
+    ],
+    "demo": null,
+    "doc": "docs/ui/components/utilities.md"
+  },
+  "web-registration": {
+    "components": [
+      {
+        "name": "registerDaisuWebComponents",
+        "path": "packages/daisu-ui/src/web/index.ts"
+      },
+      {
+        "name": "registerRichTextMedia",
+        "path": "packages/daisu-ui/src/web/richTextMediaElement.ts"
+      },
+      {
+        "name": "registerImgCropper",
+        "path": "packages/daisu-ui/src/web/imgCropperElement.ts"
+      },
+      {
+        "name": "registerQrCodeExport",
+        "path": "packages/daisu-ui/src/web/qrCodeExportElement.ts"
+      }
+    ],
+    "demo": null,
+    "doc": "docs/ui/components/web-registration.md"
   }
 }

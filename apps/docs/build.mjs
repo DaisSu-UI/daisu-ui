@@ -1,5 +1,7 @@
-import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
-import { basename, dirname, relative, resolve } from 'node:path';
+import { createDocumentationAliases, exportMarkdown } from './public/documentation-links.js';
+import { checkDocumentationLinks } from './documentation.mjs';
+import { cp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { basename, dirname, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js/lib/core';
@@ -32,7 +34,7 @@ const catalogJS = ts.transpile(source, { module: ts.ModuleKind.ESNext, target: t
 const { componentGroups } = await import(`data:text/javascript;base64,${Buffer.from(catalogJS).toString('base64')}`);
 const docsGroups = componentGroups.map(group => ({ ...group, items: group.items.filter(item => item.id !== 'ai-guide') })).filter(group => group.items.length);
 const aliases = { 'form-detail': 'form', 'input-number': 'stepper', tabs: 'tab' };
-const pages = {};
+const pages = {}, markdownSources = {};
 for (const group of docsGroups) {
   for (const item of group.items) {
     let content;
@@ -42,11 +44,12 @@ for (const group of docsGroups) {
     }
     if (!content) throw new Error(`Missing component documentation: ${item.id}`);
     content = content.replaceAll("from '@/ui'", "from '@daisu-ui/ui'").replaceAll('from "@/ui"', 'from "@daisu-ui/ui"');
+    markdownSources[item.id] = content;
     pages[item.id] = markdown.render(content);
   }
 }
 const changelog = await readFile(resolve(root, 'packages/daisu-ui/CHANGELOG.md'), 'utf8');
-for (const page of articlePages) pages[page.id] = markdown.render(page.id === 'changelog' ? changelog : await readFile(resolve(root, page.source), 'utf8'));
+for (const page of articlePages) { const content = page.id === 'changelog' ? changelog : await readFile(resolve(root, page.source), 'utf8'); markdownSources[page.id] = content; pages[page.id] = markdown.render(content); }
 const packageInfo = JSON.parse(await readFile(resolve(root, 'packages/daisu-ui/package.json'), 'utf8'));
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
@@ -68,6 +71,10 @@ async function emitSource(path, key) {
   }));
 }
 const sourceManifest = JSON.parse(await readFile(resolve(root, 'docs/ui/component-sources.json'), 'utf8'));
+const documentationEntries = [...Object.entries(sourceManifest).map(([id, entry]) => ({ id, source: entry.doc })), ...articlePages];
+const aliasesByName = createDocumentationAliases(documentationEntries);
+for (const [name, id] of Object.entries(aliasesByName)) await writeFile(resolve(output, name + '.md'), exportMarkdown(markdownSources[id], id, aliasesByName));
+
 for (const [id, entry] of Object.entries(sourceManifest)) {
   const folder = resolve(output, 'sources', id);
   await mkdir(folder, { recursive: true });
@@ -83,7 +90,12 @@ for (const [source, filename] of [
   ['docs/ui/components/button.md', 'button.md.txt'],
 ]) await emitSource(resolve(root, source), filename);
 const versions = changelogVersions(changelog, packageInfo.version);
-await writeFile(resolve(output, 'content.json'), JSON.stringify({ version: packageInfo.version, versions, groups: docsGroups, pages }));
+await writeFile(resolve(output, 'content.json'), JSON.stringify({ version: packageInfo.version, versions, groups: docsGroups, pages, aliases: aliasesByName }));
 for (const [source, name] of [['llms.txt', 'llms.txt'], ['llms-full.txt', 'llms-full.txt'], ['COMPONENT_AI_NOTES.md', 'component-ai-notes.txt']]) await cp(resolve(root, 'docs/ui', source), resolve(output, name));
 await cp(resolve(root, 'apps/demo/h5-dist'), resolve(output, 'demo'), { recursive: true });
+await checkDocumentationLinks(markdown, markdownSources, aliasesByName, async href => {
+  const path = resolve(output, decodeURIComponent(href));
+  if (path !== output && !path.startsWith(output + sep)) return false;
+  try { return (await stat(path)).isFile(); } catch (error) { if (error.code === 'ENOENT') return false; throw error; }
+});
 console.log(`Documentation built: ${Object.keys(pages).length} pages, embedded Demo → ${output}`);

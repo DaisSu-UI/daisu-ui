@@ -1,6 +1,7 @@
+import { resolveDocumentationHref } from './documentation-links.js';
 import { createDocumentSearch } from './search.js';
 import { createSourceViewer, sourceRoute } from './source-viewer.js';
-import { aiPages, articlePages, documentationGroups, guideGroups, pageSection, headingId, createNavigationMenus } from './navigation.js';
+import { aiPages, relatedAiPages, relatedGuidePages, articlePages, documentationGroups, guideGroups, pageSection, headingId, createNavigationMenus } from './navigation.js';
 
 const article = document.querySelector('#article');
 const catalog = document.querySelector('#catalog');
@@ -241,7 +242,7 @@ function updateNavigation(params) {
   document.querySelector('#guide-catalog').hidden = section === 'components';
   for (const link of document.querySelectorAll('#guide-catalog a, #guide-pages a, #design-pages a, #ai-pages a, #version-pages a')) {
     const selected = link.dataset.section ? current === 'changelog' && params.get('section') === link.dataset.section : link.hash === `#/${current}` && (!link.closest('#version-pages') || !params.get('section'));
-    link.classList.toggle('active', selected);
+    link.classList.toggle('active', selected || (current === 'ai-mcp' && link.hash === '#/ai-cli') || (current === 'local-runner' && link.hash === '#/publishing'));
     if (selected) link.setAttribute('aria-current', link.dataset.section ? 'location' : 'page'); else link.removeAttribute('aria-current');
   }
 }
@@ -280,9 +281,7 @@ function render() {
     const href = link.getAttribute('href');
     const sourceMatch = href.match(/^\.\/sources\/(.+\.txt)$/);
     if (sourceMatch) { link.href = sourceRoute(current, sourceMatch[1]); continue; }
-    const match = href.match(/(?:^|\/)([\w-]+)\.md(?:#.*)?$/);
-    const id = match?.[1] === 'form' ? 'form-detail' : match?.[1];
-    if (id && Object.hasOwn(content.pages, id)) link.href = `#/${id}`;
+    link.href = resolveDocumentationHref(href, current, content.aliases);
   }
   for (const block of article.querySelectorAll('pre')) {
     const wrapper = document.createElement('div');
@@ -340,7 +339,7 @@ try {
   const response = await fetch('./content.json');
   if (!response.ok) throw new Error(String(response.status));
   content = await response.json();
-  documentSearch.setDocuments([...documentationGroups.flatMap(group => group.pages.filter(page => page.id).map(page => ({ ...page, group: group.label }))), ...content.groups.flatMap(group => group.items.map(page => ({ ...page, group: group.label })))]);
+  documentSearch.setDocuments([...relatedAiPages.map(page => ({ ...page, group: 'AI' })), ...relatedGuidePages.map(page => ({ ...page, group: '工程实践' })), ...documentationGroups.flatMap(group => group.pages.filter(page => page.id).map(page => ({ ...page, group: group.label }))), ...content.groups.flatMap(group => group.items.map(page => ({ ...page, group: group.label })))]);
   document.querySelector('#document-search-trigger').disabled = false;
   renderCategories(); renderDocumentationNavigation(); renderVersionNavigation();
   render();

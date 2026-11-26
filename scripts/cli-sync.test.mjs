@@ -1,0 +1,22 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,mkdir,writeFile,rm,readFile,stat} from 'node:fs/promises';
+import {join} from 'node:path';
+import {tmpdir} from 'node:os';
+import {findCli,syncCli} from './sync-cli.mjs';
+test('UI stays independent; optional installed CLI receives exact UI path and readonly flags',async t=>{
+ const parent=await mkdtemp(join(tmpdir(),'daisu-ui-auto-'));t.after(()=>rm(parent,{recursive:true,force:true}));
+ const ui=join(parent,'daisu-ui'),cli=join(parent,'cli');await mkdir(ui);
+ assert.equal(await findCli(ui,{}),undefined);
+ assert((await syncCli({root:ui,env:{}})).skipped);
+ await assert.rejects(findCli(ui,{DAISU_UI_CLI_SOURCE:join(parent,'missing')}),/ENOENT/);
+ await mkdir(join(cli,'scripts'),{recursive:true});await mkdir(join(cli,'node_modules/typescript'),{recursive:true});
+ await writeFile(join(cli,'package.json'),'{"name":"@daisu-ui/cli","type":"module"}');
+ await writeFile(join(cli,'scripts/auto-sync.mjs'),`import{writeFile}from'node:fs/promises';await writeFile('arguments.json',JSON.stringify(process.argv.slice(2)));`);
+ assert.equal(await findCli(ui,{}),cli);
+ assert.equal(await findCli(ui,{DAISU_UI_AUTO_SYNC:'0'}),undefined);
+ await syncCli({root:ui,check:true,uiGenerated:true,env:{}});
+ assert.deepEqual(JSON.parse(await readFile(join(cli,'arguments.json'),'utf8')),['--ui-dir',ui,'--check','--ui-generated']);
+ await writeFile(join(cli,'scripts/auto-sync.mjs'),'process.exitCode=1');
+ await assert.rejects(syncCli({root:ui,env:{}}),/自动同步失败/);
+});

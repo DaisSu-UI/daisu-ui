@@ -43,9 +43,9 @@ git switch developer
 git pull --ff-only github developer
 npm ci
 # 按下一次实际发布版本调整三处版本；不能复用已发布版本。
-npm pkg set version=0.1.0-beta.5
-npm pkg set version=0.1.0-beta.5 --workspace @daisu-ui/ui
-npm pkg set 'dependencies.@daisu-ui/ui=0.1.0-beta.5' --workspace @daisu-ui/demo
+npm pkg set version=0.1.0-beta.6
+npm pkg set version=0.1.0-beta.6 --workspace @daisu-ui/ui
+npm pkg set 'dependencies.@daisu-ui/ui=0.1.0-beta.6' --workspace @daisu-ui/demo
 npm install --package-lock-only --ignore-scripts --no-audit --no-fund
 ```
 
@@ -76,9 +76,9 @@ git fetch github
 git switch main
 git pull --ff-only github main
 # 应无输出：同名标签不能复用或覆盖。
-git ls-remote --tags github 'refs/tags/v0.1.0-beta.5*'
-git tag -a v0.1.0-beta.5 -m 'Daisu UI 0.1.0-beta.5'
-git push github refs/tags/v0.1.0-beta.5
+git ls-remote --tags github 'refs/tags/v0.1.0-beta.6*'
+git tag -a v0.1.0-beta.6 -m 'Daisu UI 0.1.0-beta.6'
+git push github refs/tags/v0.1.0-beta.6
 ```
 
 GitHub 的 `Publish UI to npm` 工作流执行：版本及 main 来源校验 → npm Token 身份和包读写权限核对 → 安装依赖 → 发布脚本测试 → 组件测试 → 类型检查 → Demo/文档构建 → 独立 UI 包校验 → 打包及完整性校验 → 发布 `@daisu-ui/ui`。
@@ -88,7 +88,7 @@ npm 包只包含 UI 库 ESM、保留 JSX 的组件、类型、样式、README、
 ### 4. 核对 npm 结果
 
 ```bash
-npm view @daisu-ui/ui@0.1.0-beta.5 version dist.integrity --registry=https://registry.npmjs.org/
+npm view @daisu-ui/ui@0.1.0-beta.6 version dist.integrity --registry=https://registry.npmjs.org/
 npm view @daisu-ui/ui dist-tags --json --registry=https://registry.npmjs.org/
 ```
 

@@ -1,10 +1,10 @@
-# 媒体组件接入核对
+# 媒体组件接入与历史宿主核对
 
-2026-11-24，以本地实际 Flutter 工程和插件版本为准。
+这是 2026-11-24 对原业务工程及其 Flutter 宿主的核对记录，用于说明浏览器实现与原生接入的差别。独立 UI 仓库不包含下文的 Flutter 工程或 src/lib/host.ts，也不要求消费方采用同一插件版本；新的消费项目应核对自身宿主。当前浏览器 API 以组件文档和 @daisu-ui/ui/web 入口为准。
 
 2026-11-25 更新：当前 Lynx 工程的 Bundle 编译目标已设为 4.2，开发类型为 `@lynx-js/types@4.2.1`；本次未修改 Flutter 工程。下文宿主核对记录不代表宿主已升级。官方从 Lynx 4.1 提供实验性 `<video>`，但编译目标与类型升级不会自动完成宿主元素注册、媒体协议或真机验收。
 
-Flutter `yxt-cso-flutter/pubspec.yaml` 锁定 `lynx_view: 1.9.0`，不能依据 pub.dev 最新 1.12.0 推断已有能力。核对 1.9.0 发布归档的 iOS `LynxXElementRegistry.m` / podspec：注册 Input、SVG、Overlay、ViewPager、WebView 等，没有 video 或 Canvas 注册；Android 使用 XElement behaviors，不能据此承诺 iOS 同样支持视频。当前 `src/lib/host.ts` 和 Flutter `lib/core/lynx/lynx_bridge.dart` 只实现图片选择上传、图片/文件预览，没有视频播放器生命周期、音频播放控制或图片裁剪导出协议。
+Flutter `yxt-cso-flutter/pubspec.yaml` 锁定 `lynx_view: 1.9.0`，不能依据 pub.dev 最新 1.12.0 推断已有能力。核对 1.9.0 发布归档的 iOS `LynxXElementRegistry.m` / podspec：注册 Input、SVG、Overlay、ViewPager、WebView 等，没有 video 或 Canvas 注册；Android 使用 XElement behaviors，不能据此承诺 iOS 同样支持视频。当时原业务工程的 `src/lib/host.ts` 和 Flutter `lib/core/lynx/lynx_bridge.dart` 只实现图片选择上传、图片/文件预览，没有视频播放器生命周期、音频播放控制或图片裁剪导出协议。
 
 ## VideoPreview
 
@@ -24,6 +24,6 @@ Flutter 已依赖 image_cropper / extended_image，但尚未暴露 Lynx 裁剪�
 
 ## 已完成组件的边界
 
-QrCode/BarCode 使用纯编码和原生 SVG；BarCode 的 exportImage 返回 SVG data URL。QrCode 的浏览器 exportMode="browser" 已支持合成 Logo/背景并返回完整 PNG data URL；默认 SVG 模式拒绝未内嵌的外部图片，Flutter 尚无位图合成后端。两者不保存原生 PNG 临时文件；Signature 的 PNG 导出是自有笔迹像素编码，不具备任意 JPEG/PNG 图像解码、旋转和裁剪能力。RichText 默认过滤 audio/video；用户明确要求先实现浏览器后，已增加 daisu-ui/web 的 HTML5 播放器和显式 mediaMode="browser"，包含播放/暂停/定位/生命周期。Flutter 端仍未实现上述播放接口，浏览器能力不代表原生 VideoPreview 已完成。
+QrCode/BarCode 使用纯编码和原生 SVG；BarCode 的 exportImage 返回 SVG data URL。QrCode 的浏览器 exportMode="browser" 已支持合成 Logo/背景并返回完整 PNG data URL；默认 SVG 模式拒绝未内嵌的外部图片，Flutter 尚无位图合成后端。两者不保存原生 PNG 临时文件；Signature 的 PNG 导出是自有笔迹像素编码，不具备任意 JPEG/PNG 图像解码、旋转和裁剪能力。RichText 默认过滤 audio/video；用户明确要求先实现浏览器后，已增加 @daisu-ui/ui/web 的 HTML5 播放器和显式 mediaMode="browser"，包含播放/暂停/定位/生命周期。Flutter 端仍未实现上述播放接口，浏览器能力不代表原生 VideoPreview 已完成。
 
 这些是具体的宿主接入缺口，剩余清单继续保留未完成；浏览器实现已按用户明确要求单独提供，不能据此标记Flutter跨端能力已完成。

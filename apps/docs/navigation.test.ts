@@ -11,9 +11,12 @@ function mount(){
 const key=(target:Element,key:string)=>target.dispatchEvent(new KeyboardEvent('keydown',{key,bubbles:true,cancelable:true}));
 const pointer=(target:Element,type:string,pointerType:string)=>{const event=new Event(type);Object.assign(event,{pointerType});target.dispatchEvent(event);};
 test('AI pages are article pages and version targets are backed by actual changelog headings',()=>{
- expect(aiPages.map(page=>pageSection(page.id))).toEqual(['ai','ai','ai','ai']);
+ expect(aiPages.every(page=>pageSection(page.id)==='ai')).toBe(true);
  expect(new Set(articlePages.map(page=>page.id)).size).toBe(articlePages.length);
- expect(documentationGroups.map(group=>group.label)).toEqual(['快速开始','设计系统','AI','工程实践','社区']);
+ expect(documentationGroups.map(group=>group.label)).toEqual(['快速开始','设计系统','AI','工程实践','组合与工具','社区']);
+ expect(aiPages.map(page=>page.label)).toEqual(['AI 总览','LLMs.txt','@daisu-ui/cli','AI Skills']);
+ expect(pageSection('ai-mcp')).toBe('ai');
+ expect(articlePages.some(page=>page.id==='ai-mcp')).toBe(true);
  expect(pageSection('dark-mode')).toBe('design');
  expect(pageSection('faq')).toBe('guide');
  expect(pageSection('button')).toBe('components');expect(pageSection('changelog')).toBe('versions');

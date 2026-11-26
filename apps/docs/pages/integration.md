@@ -1,29 +1,31 @@
 # 组件库集成
 
-消费项目通过 daisu-ui 的公开入口使用组件，不直接引用独立仓库的内部源码。
+消费项目通过 @daisu-ui/ui 的公开入口使用组件，不直接引用独立仓库的内部源码。
 
 ## 公开入口
 
 | 入口 | 用途 |
 | --- | --- |
-| daisu-ui | 组件、hooks 与公开类型 |
-| daisu-ui/router | 路由、页面容器与历史适配 |
-| daisu-ui/router/location | 纯地址解析与历史状态类型 |
-| daisu-ui/router/runtime | Lynx 路由运行环境初始化 |
-| daisu-ui/utils | 公开辅助函数 |
-| daisu-ui/web | 浏览器自定义元素注册 |
+| @daisu-ui/ui | 组件、hooks 与公开类型 |
+| @daisu-ui/ui/router | 路由、页面容器与历史适配 |
+| @daisu-ui/ui/router/location | 纯地址解析与历史状态类型 |
+| @daisu-ui/ui/router/runtime | Lynx 路由运行环境初始化 |
+| @daisu-ui/ui/utils | 公开辅助函数 |
+| @daisu-ui/ui/web | 浏览器自定义元素注册 |
 
 ## 安装产物
 
 组件包提供保留 JSX 的 ESM、声明文件和样式，由消费项目的 ReactLynx 编译器处理。安装后核对 peerDependencies 和引擎版本。
 
-已发布的 Git 安装版本：
+组件包已发布到 npmjs，当前 beta 通过以下命令安装：
 
 ```bash
-npm install "git+ssh://git@git.zilueit.com/daisu-ui/daisu-ui.git#npm-v0.1.0-beta.2"
+npm install @daisu-ui/ui@beta
+# 固定当前已发布版本
+npm install --save-exact @daisu-ui/ui@0.1.0-beta.4
 ```
 
-安装端需有仓库读取权限和 Git/SSH。升级时显式安装新的 `npm-v<版本>` 标签，并提交消费项目的依赖和锁文件。开发版本也可在独立仓库运行 npm run ui:pack，再安装生成的 tarball。完整发布、升级和回退步骤见 [版本发布](#/publishing)。
+升级和回退均显式安装对应版本，并提交消费项目的 package.json 与锁文件。npm 安装不需要 GitLab SSH 权限；Git 安装标签与本地 tarball 作为补充分发方式，详见 [版本发布](#/publishing)。组件库与 CLI 独立安装和发版。
 
 ## 应用根节点
 

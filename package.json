@@ -1,7 +1,7 @@
 {
   "name": "daisu-ui-workspace",
   "private": true,
-  "version": "0.1.0-beta.4",
+  "version": "0.1.0-beta.5",
   "type": "module",
   "workspaces": [
     "packages/*",
@@ -19,7 +19,7 @@
     "ui:docs:build": "npm run build --workspace @daisu-ui/docs",
     "ui:docs:dev": "npm run ui:docs:build && npm run dev --workspace @daisu-ui/docs",
     "build": "npm run ui:docs:build",
-    "test": "rstest run && npm run test:mcp",
+    "test": "rstest run && npm run test:ai-docs",
     "pretest": "npm run ui:build",
     "test:types": "npm run ui:build && npm run typecheck --workspace @daisu-ui/demo",
     "benchmark:area": "node scripts/benchmark-demo-area.mjs",
@@ -28,12 +28,11 @@
     "ui:git:publish": "node scripts/publish-git-package.mjs",
     "ui:git:release": "node scripts/check-release-source.mjs --require-main && npm test && npm run test:git-release && npm run test:types && npm run build && npm run ui:check && npm run ui:pack && node scripts/prepare-git-package.mjs && node scripts/publish-git-package.mjs",
     "test:git-release": "node --test scripts/git-release.test.mjs",
-    "mcp": "node apps/mcp/index.mjs",
-    "test:mcp": "npm run test --workspace @daisu-ui/mcp",
     "test:npm-release": "node --test scripts/npm-release.test.mjs",
     "ui:npm:prepare": "npm run ui:build && node scripts/prepare-npm-package.mjs",
     "ui:npm:publish": "node scripts/publish-npm-package.mjs",
-    "ui:npm:release": "node scripts/check-release-source.mjs --require-main && npm test && npm run test:git-release && npm run test:npm-release && npm run test:types && npm run build && npm run ui:check && npm run ui:pack && node scripts/prepare-npm-package.mjs && node scripts/publish-npm-package.mjs"
+    "ui:npm:release": "node scripts/check-release-source.mjs --require-main && npm test && npm run test:git-release && npm run test:npm-release && npm run test:types && npm run build && npm run ui:check && npm run ui:pack && node scripts/prepare-npm-package.mjs && node scripts/publish-npm-package.mjs",
+    "test:ai-docs": "node --test apps/docs/check-ai-docs.test.mjs apps/docs/documentation.test.mjs scripts/cli-sync.test.mjs"
   },
   "devDependencies": {
     "@lynx-js/react": "^0.126.2",

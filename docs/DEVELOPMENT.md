@@ -41,7 +41,7 @@ Demo 支持组件独立路径与深色模式，文档站可从 iframe 独立打�
 ```bash
 npm install @daisu-ui/ui@beta
 # 固定版本，升级或回退时显式指定版本号
-npm install @daisu-ui/ui@0.1.0-beta.4
+npm install @daisu-ui/ui@0.1.0-beta.5
 ```
 
 ```tsx
