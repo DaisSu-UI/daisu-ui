@@ -42,8 +42,8 @@ export function publishNpmPackage(args = process.argv.slice(2)) {
   const integrity = `sha512-${createHash('sha512').update(readFileSync(archive)).digest('base64')}`;
   assert.equal(integrity, release.integrity, 'npm 产物校验和不匹配');
   checkReleaseSource({ root });
-  if (process.env.CI || process.env.ATOMGIT_ACTIONS === 'true') {
-    assert(process.env.NPM_TOKEN, '请在 GitCode 仓库密钥中配置 NPM_TOKEN');
+  if (process.env.CI || process.env.GITHUB_ACTIONS === 'true') {
+    assert(process.env.NPM_TOKEN, '请在 GitHub Actions Repository secrets 中配置 NPM_TOKEN');
   }
   const tag = npmReleaseTag(metadata.version, requested);
   const temporary = mkdtempSync(join(tmpdir(), 'daisu-npm-auth-'));

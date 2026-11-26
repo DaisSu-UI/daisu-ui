@@ -32,7 +32,7 @@ Demo 支持组件独立路径与深色模式，文档站可从 iframe 独立打�
 
 仅发布 `@daisu-ui/ui` workspace；Demo 和文档均为 private；CLI/MCP 在独立仓库维护。消费项目使用 npm 版本、Git 安装 Tag 或 tarball，通过公开 API 使用组件。
 
-Git 远程：`origin` 为 `git@git.zilueit.com:daisu-ui/daisu-ui.git`，`gitcode` 为 `git@gitcode.com:daisu/ui.git`。迁移清单见 [MIGRATION.json](../MIGRATION.json)。
+默认推送远程为 `github`：`git@github.com:DaisSu-UI/daisu-ui.git`。旧 GitLab / GitCode 远程仅保留历史访问，日常代码和版本标签只推送 GitHub。迁移清单见 [MIGRATION.json](../MIGRATION.json)。
 
 ## npm 安装
 
@@ -61,11 +61,11 @@ npm 只发布 `packages/daisu-ui` 构建的 UI 库：`dist/`、类型声明、�
 | `main` | 已验收源码；版本标签从此创建 |
 | `npm-dist` | 可选的 Git 安装产物，由发布脚本维护 |
 
-GitLab npm 自动发布已关闭，仅保留验证和现有手动文档部署；GitCode 发布工作流已准备，待平台开通后启用。GitCode Actions 目前需要申请开通；没有 Actions 入口时，应先向平台申请权限，提交配置文件不会自动开通。
+GitHub Actions 为 UI 的自动验证和 npm 发布入口；GitLab 自动发布保持关闭，GitCode 的待开通工作流已移除。
 
-完整的平台开通、`NPM_TOKEN` 仓库密钥、保护分支及标签、验证和发布步骤见 [GitCode npm 发布指南](ci/git-release.md)。工作流位于 `.gitcode/workflows/ci.yml` 与 `.gitcode/workflows/release.yml`：developer/main 推送和 PR 仅验证，`v<组件版本>` 标签推送在完成验证后发布 npm。
+完整的 `NPM_TOKEN` Repository secret、保护分支及标签、验证和发布步骤见 [GitHub npm 发布指南](ci/git-release.md)。工作流位于 `.github/workflows/ci.yml` 与 `.github/workflows/release.yml`：developer/main 推送和 PR 仅验证，`v<组件版本>` 标签推送在完成验证后发布 npm。
 
-本地双远程工作区的发布脚本优先校验 `gitcode/main`，从 GitCode 直接克隆时校验 `origin/main`。不会自动提升 developer 为稳定源码，发布前先合并并验收。GitLab 自动发布任务已移除，发布脚本也拒绝在 GitLab CI 中发布。
+本地有 `github` 远程时优先校验 `github/main`，从 GitHub 直接克隆时校验 `origin/main`。发布前先将 developer 合并到 GitHub main 并验收，再推送新版本标签。GitHub 的发布密钥需在网页设置中配置，不会由 Git 推送携带。
 
 ## AI 与 MCP
 

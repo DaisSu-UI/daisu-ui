@@ -21,7 +21,7 @@ test('npm 只打包 UI 库，拒绝额外工程文件、未合并提交和被修
   const remote = join(temporary, 'remote.git');
   const scripts = fileURLToPath(new URL('.', import.meta.url));
   const env = { ...process.env, npm_config_offline: 'true', npm_config_cache: join(temporary, 'cache'), npm_config_userconfig: join(temporary, 'npmrc') };
-  for (const key of ['CI', 'CI_COMMIT_TAG', 'GITLAB_CI', 'ATOMGIT_ACTIONS', 'ATOMGIT_REF', 'RELEASE_SOURCE_REMOTE', 'NPM_TOKEN', 'NODE_AUTH_TOKEN']) delete env[key];
+  for (const key of ['CI', 'CI_COMMIT_TAG', 'GITLAB_CI', 'GITHUB_ACTIONS', 'GITHUB_REF', 'RELEASE_SOURCE_REMOTE', 'NPM_TOKEN', 'NODE_AUTH_TOKEN']) delete env[key];
   const run = (command, args, cwd = source, overrides = {}) => execFileSync(command, args, { cwd, env: { ...env, ...overrides }, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
   const git = (...args) => run('git', args).trim();
   const execute = (name, ...args) => run(process.execPath, [join(source, 'scripts', name), ...args]);
@@ -62,13 +62,13 @@ test('npm 只打包 UI 库，拒绝额外工程文件、未合并提交和被修
     assert.match(execute('publish-npm-package.mjs', '--dry-run'), /dist-tag=beta/);
     const publish = [join(source, 'scripts/publish-npm-package.mjs'), '--dry-run'];
     assert.throws(() => run(process.execPath, publish, source, { CI: 'true', GITLAB_CI: 'true', CI_COMMIT_TAG: `v${metadata.version}` }), /GitLab 自动发布已关闭/);
-    const gitcode = {
-      CI: 'true', ATOMGIT_ACTIONS: 'true', ATOMGIT_REPOSITORY: 'daisu/ui', ATOMGIT_EVENT_NAME: 'Push',
-      ATOMGIT_REF: `refs/tags/v${metadata.version}`, ATOMGIT_SHA: git('rev-parse', 'HEAD'), NPM_TOKEN: 'fixture-token',
+    const github = {
+      CI: 'true', GITHUB_ACTIONS: 'true', GITHUB_REPOSITORY: 'DaisSu-UI/daisu-ui', GITHUB_EVENT_NAME: 'push',
+      GITHUB_REF: `refs/tags/v${metadata.version}`, GITHUB_SHA: git('rev-parse', 'HEAD'), NPM_TOKEN: 'fixture-token',
     };
-    assert.match(run(process.execPath, publish, source, gitcode), /dist-tag=beta/);
-    assert.throws(() => run(process.execPath, publish, source, { ...gitcode, ATOMGIT_REF: 'refs/heads/main' }), /对应的源码 Tag/);
-    assert.throws(() => run(process.execPath, publish, source, { ...gitcode, ATOMGIT_SHA: '0'.repeat(40) }), /提交与发布源码不一致/);
+    assert.match(run(process.execPath, publish, source, github), /dist-tag=beta/);
+    assert.throws(() => run(process.execPath, publish, source, { ...github, GITHUB_REF: 'refs/heads/main' }), /对应的源码 Tag/);
+    assert.throws(() => run(process.execPath, publish, source, { ...github, GITHUB_SHA: '0'.repeat(40) }), /提交与发布源码不一致/);
     git('switch', '-c', 'feature/unmerged');
     git('commit', '--allow-empty', '-m', 'unmerged');
     execute('prepare-npm-package.mjs');

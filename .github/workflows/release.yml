@@ -5,14 +5,11 @@ on:
     tags: ['v*']
 
 permissions:
-  repository: read
+  contents: read
 
 concurrency:
-  enable: true
-  max: 1
-  exceed-action: QUEUE
-  preemption:
-    enable: false
+  group: ui-npm-release
+  cancel-in-progress: false
 
 env:
   DAISU_UI_AUTO_SYNC: '0'
@@ -20,15 +17,18 @@ env:
 jobs:
   publish:
     name: Verify a version tag and publish @daisu-ui/ui
-    runs-on: [ubuntu-latest, x64, medium]
-    if: ${{ atomgit.repository == 'daisu/ui' && atomgit.ref_type == 'tag' }}
+    runs-on: ubuntu-latest
+    if: github.repository == 'DaisSu-UI/daisu-ui' && github.ref_type == 'tag'
     steps:
       - name: Checkout tagged source
-        uses: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Set up Node.js
-        uses: setup-node
+        uses: actions/setup-node@v4
         with:
           node-version: '24'
+          cache: npm
       - name: Verify version and accepted source
         run: node scripts/check-release-source.mjs --require-main
       - name: Install dependencies
@@ -48,7 +48,7 @@ jobs:
       - name: Prepare the verified npm archive
         run: node scripts/prepare-npm-package.mjs
       - name: Save release artifacts
-        uses: upload-artifact
+        uses: actions/upload-artifact@v4
         with:
           name: ui-npm-package
           path: |

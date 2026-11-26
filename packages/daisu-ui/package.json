@@ -94,7 +94,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@git.zilueit.com/daisu-ui/daisu-ui.git",
+    "url": "git+https://github.com/DaisSu-UI/daisu-ui.git",
     "directory": "packages/daisu-ui"
   }
 }

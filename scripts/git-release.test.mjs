@@ -13,7 +13,7 @@ test('Git 发布产物可由 npm 安装，更新保持历史，重复或过期�
   const remote = join(temporary, 'remote.git');
   const consumer = join(temporary, 'consumer');
   const env = { ...process.env, npm_config_cache: join(temporary, 'npm-cache') };
-  for (const name of ['CI', 'CI_COMMIT_TAG', 'CI_PROJECT_URL', 'GITLAB_CI', 'ATOMGIT_ACTIONS', 'ATOMGIT_REF', 'RELEASE_SOURCE_REMOTE', 'GIT_RELEASE_REMOTE', 'GIT_RELEASE_SSH_KEY', 'GIT_RELEASE_KNOWN_HOSTS']) delete env[name];
+  for (const name of ['CI', 'CI_COMMIT_TAG', 'CI_PROJECT_URL', 'GITLAB_CI', 'GITHUB_ACTIONS', 'GITHUB_REF', 'RELEASE_SOURCE_REMOTE', 'GIT_RELEASE_REMOTE', 'GIT_RELEASE_SSH_KEY', 'GIT_RELEASE_KNOWN_HOSTS']) delete env[name];
   const run = (command, args, cwd = source, overrides = {}) => execFileSync(command, args, {
     cwd, env: { ...env, ...overrides }, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'],
   });
@@ -49,15 +49,17 @@ test('Git 发布产物可由 npm 安装，更新保持历史，重复或过期�
     git('push', 'origin', 'HEAD:refs/heads/main');
 
     // With both remotes configured, an accepted GitLab commit cannot substitute
-    // for acceptance in GitCode. Explicit overrides still select the named remote.
-    const gitcodeRemote = join(temporary, 'gitcode.git');
-    run('git', ['init', '--bare', gitcodeRemote], temporary);
-    git('remote', 'add', 'gitcode', gitcodeRemote);
-    assert.throws(() => execute('check-release-source.mjs', '--require-main'), /无法读取 gitcode\/main/);
+    // for acceptance in GitHub. Explicit overrides still select the named remote.
+    const githubRemote = join(temporary, 'github.git');
+    run('git', ['init', '--bare', githubRemote], temporary);
+    git('remote', 'add', 'gitcode', remote);
+    git('remote', 'add', 'github', githubRemote);
+    assert.throws(() => execute('check-release-source.mjs', '--require-main'), /无法读取 github\/main/);
     assert.match(run(process.execPath, [join(source, 'scripts/check-release-source.mjs'), '--require-main'], source, { RELEASE_SOURCE_REMOTE: 'origin' }), /origin\/main/);
-    git('push', 'gitcode', 'HEAD:refs/heads/main');
-    assert.match(execute('check-release-source.mjs', '--require-main'), /gitcode\/main/);
+    git('push', 'github', 'HEAD:refs/heads/main');
+    assert.match(execute('check-release-source.mjs', '--require-main'), /github\/main/);
     assert.throws(() => run(process.execPath, [join(source, 'scripts/check-release-source.mjs'), '--require-main'], source, { RELEASE_SOURCE_REMOTE: '--invalid' }), /必须为 Git 远程名称/);
+    git('remote', 'remove', 'github');
     git('remote', 'remove', 'gitcode');
 
     // 开发提交尚未合入 main 时，CI 和本地发布都必须拒绝。

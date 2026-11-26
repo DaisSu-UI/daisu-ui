@@ -5,15 +5,14 @@ on:
     branches: [developer, main]
   pull_request:
     branches: [developer, main]
-  workflow_dispatch: {}
+  workflow_dispatch:
 
 permissions:
-  repository: read
+  contents: read
 
 concurrency:
-  enable: true
-  max: 2
-  exceed-action: QUEUE
+  group: ui-validation-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   DAISU_UI_AUTO_SYNC: '0'
@@ -21,14 +20,15 @@ env:
 jobs:
   verify:
     name: Test, build and validate the UI package
-    runs-on: [ubuntu-latest, x64, medium]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout source
-        uses: checkout
+        uses: actions/checkout@v4
       - name: Set up Node.js
-        uses: setup-node
+        uses: actions/setup-node@v4
         with:
           node-version: '24'
+          cache: npm
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
       - name: Validate release scripts

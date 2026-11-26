@@ -26,7 +26,7 @@ assert.equal(metadata.scripts, undefined, 'Git 安装包不能保留开发构建
 assert(existsSync(join(directory, 'dist/index.js')), '缺少编译产物');
 if (releaseTag()) assert.equal(releaseTag(), `v${metadata.version}`);
 assertPublishEnvironment(metadata.version, sourceCommit);
-if (process.env.CI || process.env.ATOMGIT_ACTIONS === 'true') {
+if (process.env.CI || process.env.GITHUB_ACTIONS === 'true') {
   assert(process.env.GIT_RELEASE_SSH_KEY, '请配置有仓库写权限的 GIT_RELEASE_SSH_KEY');
 }
 const { remote: sourceRemote } = checkReleaseSource({ root });
@@ -43,7 +43,7 @@ try {
     writeFileSync(knownHosts, env.GIT_RELEASE_KNOWN_HOSTS.trim() + '\n', { mode: 0o600 });
     env.GIT_SSH_COMMAND = `ssh -i '${key}' -o IdentitiesOnly=yes -o UserKnownHostsFile='${knownHosts}' -o StrictHostKeyChecking=yes`;
   }
-  const remote = env.GIT_RELEASE_REMOTE || (env.ATOMGIT_ACTIONS === 'true' ? `git@gitcode.com:${env.ATOMGIT_REPOSITORY}.git` : git(['remote', 'get-url', sourceRemote]));
+  const remote = env.GIT_RELEASE_REMOTE || (env.GITHUB_ACTIONS === 'true' ? `git@github.com:${env.GITHUB_REPOSITORY}.git` : git(['remote', 'get-url', sourceRemote]));
   const branch = 'npm-dist';
   const tag = `npm-v${metadata.version}`;
   git(['init', repository], root, env);

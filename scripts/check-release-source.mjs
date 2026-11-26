@@ -14,7 +14,7 @@ export function checkReleaseSource({ root = repositoryRoot, env = process.env } 
   }).trim();
   const sourceCommit = git(['rev-parse', 'HEAD']);
   const remotes = git(['remote']).split('\n');
-  const remote = env.RELEASE_SOURCE_REMOTE || (remotes.includes('gitcode') ? 'gitcode' : 'origin');
+  const remote = env.RELEASE_SOURCE_REMOTE || (remotes.includes('github') ? 'github' : 'origin');
   assert(/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(remote), 'RELEASE_SOURCE_REMOTE 必须为 Git 远程名称');
   const mainRef = `refs/remotes/${remote}/main`;
   const shallow = git(['rev-parse', '--is-shallow-repository']) === 'true';
@@ -44,6 +44,6 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     const { sourceCommit, remote } = checkReleaseSource();
     console.log(`发布来源校验通过：${sourceCommit} 已包含在 ${remote}/main`);
   } else {
-    console.log('分支流水线执行开发校验；版本 Tag 发布时必须验证 GitCode main');
+    console.log('分支流水线执行开发校验；版本 Tag 发布时必须验证 GitHub main');
   }
 }
