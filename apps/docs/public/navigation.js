@@ -48,6 +48,7 @@ export const documentationGroups = [
 export const guideGroups = documentationGroups.filter(group => group.section === 'guide');
 export const articlePages = documentationGroups.flatMap(group => group.pages).filter(page => page.id).flatMap(page => page.id === 'ai-cli' ? [page, ...relatedAiPages] : page.id === 'publishing' ? [page, ...relatedGuidePages] : [page]);
 export function pageSection(id) {
+  if (id === 'home') return 'home';
   if (id === 'changelog') return 'versions';
   if (relatedAiPages.some(page => page.id === id)) return 'ai';
   if (relatedGuidePages.some(page => page.id === id)) return 'guide';
