@@ -43,23 +43,4 @@ verify:
       - artifacts/git-package/
       - artifacts/npm-release.json
 
-publish:git:
-  stage: publish
-  before_script: []
-  dependencies:
-    - verify
-  script:
-    - node scripts/publish-git-package.mjs
-  only:
-    - /^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$/
-
-publish:npm:
-  stage: publish
-  when: on_success
-  before_script: []
-  dependencies:
-    - verify
-  script:
-    - node scripts/publish-npm-package.mjs
-  only:
-    - /^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$/
+# Package automatic publishing is disabled on GitLab.
