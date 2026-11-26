@@ -1,6 +1,15 @@
 # 更新日志
 
-记录 Daisu UI 的版本变化。npm 组件包名为 `@daisu-ui/ui`，GitLab 保留源码与 Git 安装产物。
+记录 Daisu UI 的版本变化。npm 组件包名为 `@daisu-ui/ui`，源码与自动发布入口为 GitHub。
+
+## 0.1.0-beta.5
+
+2026-11-26 · 导航栏修复与 GitHub 自动发布
+
+- 修复业务导航栏返回箭头缺失，统一使用内置 SVG 图标。
+- 新增业务导航栏 `backButtonEffect="glass"`：支持宿主提供的 iOS Liquid Glass 材质，并补充平台差异说明及示例。
+- 统一仓库和 npm README 展示，源码链接更新为 GitHub。
+- npm 发布迁移到 GitHub Actions，加入 Token 身份与目标包权限检查、main 发布预演及版本标签发布流程。
 
 ## 0.1.0-beta.4
 
