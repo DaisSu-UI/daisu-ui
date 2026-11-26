@@ -96,7 +96,7 @@ npm view @daisu-ui/ui dist-tags --json --registry=https://registry.npmjs.org/
 
 ## 发布预演的验证范围
 
-main 预演使用 GitHub 中实际配置的 `NPM_TOKEN`，通过 `npm whoami` 核对身份、`npm access list packages` 核对账号包读写权限，并对与当前源码及校验和匹配的 UI tarball 执行 `npm publish --dry-run`。预演不占用新版本号，也不覆盖现有版本。
+main 预演使用 GitHub 中实际配置的 `NPM_TOKEN`，通过 `npm whoami` 核对身份、`npm access list collaborators @daisu-ui/ui <用户名>` 核对目标包的账号读写权限，并对与当前源码及校验和匹配的 UI tarball 执行 `npm publish --dry-run`。预演不占用新版本号，也不覆盖现有版本。
 
 预演证明认证、可见的账号权限、构建和发布参数可用；Token 的最终写入策略、npm 2FA / 发布策略仍由真实版本发布时的注册表请求决定。
 
