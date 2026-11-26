@@ -2,6 +2,13 @@
 
 记录 Daisu UI 的版本变化。npm 组件包名为 `@daisu-ui/ui`，源码与自动发布入口为 GitHub。
 
+## 0.1.0-beta.7
+
+2026-11-26 · 修复原生图标渲染
+
+- 图标 SVG 颜色替换使用兼容的 split/join，移除对 String.replaceAll 的依赖，修复原生主线程 1101 与后台线程 201 的图标渲染异常。
+- 增加缺少 String.replaceAll 时的回归检查，覆盖重复颜色替换和 XML 转义。
+
 ## 0.1.0-beta.6
 
 2026-11-26 · Lynx 4.0 基线与统一弹层
