@@ -80,7 +80,7 @@ CLI 源码：git@github.com:DaisSu-UI/cli.git
 1. 消费项目先读自己的规则，使用 daisu doctor、data list 或 MCP daisu_status 核对项目依赖和离线资料版本。CLI --version 是工具版本，查询命令的 --version <版本> 才选择组件数据。
 2. 使用 list/search 选型，info/doc/demo/token 核对公开 API、真实示例和主题。MCP 对应 daisu_list、daisu_search、daisu_info、daisu_doc、daisu_demo、daisu_token；完整接入以 apps/docs/ai/{cli,mcp,skills}.md 为准。
 3. 消费端 Skill 由 CLI 的 agent init 安装；只需 MCP 用 mcp init。客户端需要完成信任或启用，并在实际会话调用工具，不能把 doctor 的独立握手当作会话验收。
-4. 库维护者读取 UI 的 AGENTS.md、本文件与 https://lynxjs.org/next/llms.txt，按任务使用 .agents/skills 中的 Lynx API、CSS 兼容性、ReactLynx 与官方 UI 技能。不要假定消费项目已安装这些维护者技能。
+4. 库维护者读取 UI 的 AGENTS.md、本文件与 https://lynxjs.org/next/llms.txt，按任务查阅官方 API、CSS 兼容性和 ReactLynx 双线程说明。外部 Lynx 技能由开发者本机按需安装和更新，不随 UI 仓库分发，不作为构建前提。
 5. 仅使用公开入口，完成消费项目自己的类型检查、测试和构建；原生媒体、键盘、手势和列表性能在目标设备验证。CLI 静态分析不替代这些检查。
 6. 本地协作仓库就绪时，正常构建自动同步 UI → CLI 快照与 CLI → UI 接入说明；可用显式 sync / docs export 排查，CI 与 --check 只读。安装后的查询不自动联网或刷新源码。
 
@@ -1251,7 +1251,7 @@ const [current, setCurrent] = useState(0);
 独立详情 `/ui-demo/swiper`：三种指示器、手动切换、自定义字段、卡片、同时展示两项、自定义指示器、属性控制和内容插槽，共十个轮播。保留参考的支持项尺寸与分组，省略垂直和三个视频示例；自定义指示器示例适配为横向滑动。复用公共 Img、Cell、Switch、Gap、Button，支持深色模式。
 
 
-关联 SwiperNav 已提取为公共组件，参数见 [swiper-nav.md](swiper-nav.md)，适用于 ImagePreview 等自定义指示器插槽。
+关联 SwiperNav 已提取为公共组件，参数见 [Swiper / SwiperNav](https://github.com/DaisSu-UI/daisu-ui/blob/main/docs/ui/components/swiper.md)，适用于 ImagePreview 等自定义指示器插槽。
 
 Img 性能补充：scaleToFill/aspectFit/aspectFill 直接使用原生百分比尺寸，父容器动画不触发逐帧背景测量/像素回写；其他模式保留原生测量。
 

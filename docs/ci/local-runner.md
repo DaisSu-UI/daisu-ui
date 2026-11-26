@@ -1,6 +1,6 @@
 # 本地 GitLab Runner
 
-当前项目 Runner 部署在开发机 `youzi-PC`，名称为 `daisu-ui-local-youzi-PC`，使用 Docker executor，锁定本项目并允许无标签任务。GitLab 不需要主动连接开发机，无需公网 IP 或开放入站端口。
+本地 Runner 可为 GitLab 镜像分支执行验证，使用 Docker executor，锁定本项目并允许无标签任务。实际在线状态以 GitLab 的 Runner 页面为准。GitLab 无需主动连接开发机。
 
 ## 已验证的版本
 
@@ -29,4 +29,4 @@ docker start daisu-ui-local-runner
 
 “设置 → CI/CD → Runners”可以查看 Runner 在线状态、暂停或恢复。若旧流水线已经失败或取消，Runner 上线不会自动重试历史失败任务；可点击重试，或推送新提交触发新的流水线。
 
-普通分支只执行验证，不需要仓库写入密钥。版本 Tag 的自动发布还需要 [Git 发布说明](git-release.md) 中的专用部署密钥和受保护 CI 变量；本地 Runner 注册令牌不等于仓库推送凭据。
+GitLab 自动发布组件包已关闭；版本标签与 npm 发布由 GitHub Actions 管理，见 [版本发布说明](git-release.md)。本地 Runner 用于 GitLab 验证及已有的手动文档任务，注册令牌不等于仓库写入或 npm 发布凭据。

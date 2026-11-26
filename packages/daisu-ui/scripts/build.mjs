@@ -68,6 +68,11 @@ function copyAssets(directory) {
 }
 copyAssets(sourceRoot);
 
+// Keep npm metadata documents in sync with their canonical workspace sources.
+for (const name of ['README.md', 'LICENSE']) {
+  cpSync(resolve(packageRoot, '../..', name), join(packageRoot, name));
+}
+
 const entry = readFileSync(join(outputRoot, 'index.js'), 'utf8');
 if (!entry.includes('./Button.jsx')) throw new Error('Expected preserved-JSX Button export');
 console.log('Daisu UI built: ESM, preserved JSX, declarations and CSS');

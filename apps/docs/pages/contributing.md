@@ -9,12 +9,12 @@ packages/daisu-ui/src/              组件源码
 apps/demo/src/features/ui-demo/     独立示例
 apps/docs/                          文档站与页面导航
 docs/ui/                           API 与 AI 文档
-.agents/skills/                    Lynx 开发技能
+docs/MAINTENANCE.md                文件来源与生成规则
 ```
 
 ## 开发流程
 
-先读取 AGENTS.md 和任务对应技能，再修改组件或文档。新增组件需提供独立示例，说明属性、事件、主题和平台范围。
+先读取 AGENTS.md 和 Lynx 官方文档，再修改组件或文档。外部 Lynx 技能可在本机按需安装和更新，`.agents/skills/` 不随仓库分发。新增组件需提供独立示例，说明属性、事件、主题和平台范围。
 
 ## 验证
 

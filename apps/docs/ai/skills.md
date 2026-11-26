@@ -89,7 +89,7 @@ daisu agent remove --client cursor --yes
 
 ## UI 库维护者技能
 
-UI 仓库中的 AGENTS.md 和 .agents/skills 用于组件库维护，覆盖 Lynx API、CSS 兼容性、双线程规则及设备验收。它们继续由 UI 仓库维护；消费端 Skill 由 CLI 维护。
+UI 仓库维护 AGENTS.md、组件 API、示例与平台约束。Lynx API、CSS 兼容性和双线程规则以官方文档为准；外部 Lynx 技能由开发者在本机按需安装和更新，.agents/skills/ 不纳入 UI 仓库版本控制，也不是构建前提。消费端 Skill 由 CLI 维护。
 
 在 UI 仓库修改组件时先遵循其维护规范，更新 API 文档与平台约束。本地协作仓库就绪时，构建自动同步 CLI 快照；其他布局按 CLI 工具页显式同步。消费项目安装的 daisu-ui Skill 不会替换维护者规则，也不会自动更新组件库。
 

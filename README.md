@@ -179,7 +179,7 @@ Daisu UI 的原生引擎目标为 Lynx 4.2，浏览器使用 Lynx Web。布局�
 
 ## 🤝 参与开发
 
-源码见 [Daisu UI GitHub 仓库](https://github.com/DaisSu-UI/daisu-ui)。本地开发、验证命令与版本发布流程见 [开发与发布指南](https://github.com/DaisSu-UI/daisu-ui/blob/developer/docs/DEVELOPMENT.md)，组件版本变化可查看安装包内的 `CHANGELOG.md`。
+源码见 [Daisu UI GitHub 仓库](https://github.com/DaisSu-UI/daisu-ui)。本地开发、验证命令与版本发布流程见 [开发与发布指南](https://github.com/DaisSu-UI/daisu-ui/blob/developer/docs/DEVELOPMENT.md)，文件来源和生成规则见 [维护清单](https://github.com/DaisSu-UI/daisu-ui/blob/developer/docs/MAINTENANCE.md)，组件版本变化可查看安装包内的 `CHANGELOG.md`。
 
 GitHub 的 main / developer 更新会自动同步到 GitLab 同名分支；部署密钥与手动重试方式见开发与发布指南。
 

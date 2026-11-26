@@ -1,4 +1,6 @@
 node_modules/
+# External agent skills are installed locally, not maintained by this repository.
+.agents/skills/
 .npm/
 **/dist/
 **/dist-web/

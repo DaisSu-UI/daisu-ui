@@ -64,7 +64,7 @@ Swiper 卡片使用 neighborHeight（示例 168px）启用主线程进度动画�
 
 ImagePreview 图片预览：原生等比图片、主线程分页、独立hook/受控/ref、事件与11入口详情，见 components/image-preview.md。
 
-SwiperNav 轮播指示器：公共三指示器/八位置/导航按钮；Swiper与ImagePreview复用，见 components/swiper-nav.md。
+SwiperNav 轮播指示器：公共三指示器/八位置/导航按钮；Swiper与ImagePreview复用，见 components/swiper.md 中的 SwiperNav API。
 
 Table 表格：14组独立详情、排序/固定列/合并单元格/分页和虚拟窗口；columns配置替代wd-table-column，排序与编辑由调用方保存，见 components/table.md。
 
