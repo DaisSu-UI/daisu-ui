@@ -13,6 +13,8 @@ const componentTrigger = document.querySelector('#component-trigger');
 const categories = document.querySelector('#component-categories');
 const catalogToggle = document.querySelector('#catalog-toggle');
 const sidebar = document.querySelector('.sidebar');
+const home = document.querySelector('#home');
+const workspace = document.querySelector('.workspace');
 const collapsedGroups = new Set();
 const mobileViewport = matchMedia('(max-width: 680px)');
 const isGuide = () => pageSection(current) !== 'components';
@@ -270,10 +272,28 @@ function preview() {
 }
 function render() {
   const [page, query = ''] = location.hash.slice(2).split('?');
-  const next = Object.hasOwn(content.pages, page) ? page : 'getting-started';
+  const next = !page || page === 'home' ? 'home' : Object.hasOwn(content.pages, page) ? page : 'getting-started';
   const params = new URLSearchParams(query);
   const section = params.get('section');
   const source = params.get('source');
+  const isHome = next === 'home';
+  home.hidden = !isHome;
+  workspace.hidden = isHome;
+  document.querySelector('.brand').removeAttribute('aria-current');
+  if (isHome) {
+    const changed = current !== next;
+    current = next;
+    sourceViewer.hide();
+    demoPreview.load(null);
+    setCatalogOpen(false);
+    updateNavigation(params);
+    for (const link of categories.querySelectorAll('a')) link.classList.remove('active');
+    headings = [];
+    document.querySelector('.brand').setAttribute('aria-current', 'page');
+    document.title = 'Daisu UI · 袋鼠 UI · ReactLynx 组件库';
+    if (changed) window.scrollTo(0, 0);
+    return;
+  }
   if (current === next) {
     updateNavigation(params);
     if (params.get('example')) demoPreview.focus(params.get('example'));
@@ -365,9 +385,16 @@ try {
   const response = await fetch('./content.json');
   if (!response.ok) throw new Error(String(response.status));
   content = await response.json();
+  const componentCount = content.groups.reduce((total, group) => total + group.items.length, 0);
+  for (const counter of home.querySelectorAll('[data-home-component-count]')) counter.textContent = String(componentCount);
+  home.querySelector('[data-home-version]').textContent = `v${content.version}`;
   documentSearch.setDocuments([...relatedAiPages.map(page => ({ ...page, group: 'AI' })), ...relatedGuidePages.map(page => ({ ...page, group: '工程实践' })), ...documentationGroups.flatMap(group => group.pages.filter(page => page.id).map(page => ({ ...page, group: group.label }))), ...content.groups.flatMap(group => group.items.map(page => ({ ...page, group: group.label })))]);
   documentSearch.setLoader(async () => { const response = await fetch('./search-index.json'); if (!response.ok) throw Error('Search index unavailable'); const records = await response.json(); if (!Array.isArray(records)) throw Error('Invalid search index'); return records; });
   document.querySelector('#document-search-trigger').disabled = false;
   renderCategories(); renderDocumentationNavigation(); renderVersionNavigation();
   render();
-} catch { article.textContent = '文档加载失败，请刷新页面重试。'; }
+} catch {
+  const page = location.hash.slice(2).split('?')[0];
+  if (page && page !== 'home') { home.hidden = true; workspace.hidden = false; }
+  article.textContent = '文档加载失败，请刷新页面重试。';
+}

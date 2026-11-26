@@ -1,6 +1,53 @@
 import { test, expect } from "@playwright/test";
 import MarkdownIt from "markdown-it";
 
+test("home is the default entry and documentation links return to it", async ({
+  page,
+  request,
+}) => {
+  const content = await (await request.get("content.json")).json();
+  const count = String(content.groups.reduce((total, group) => total + group.items.length, 0));
+  await page.goto("./");
+  await expect(page.locator("#home")).toBeVisible();
+  await expect(page.locator("#home-heading")).toContainText("ReactLynx");
+  await expect(page.locator("[data-home-version]")).toHaveText(`v${content.version}`);
+  await expect(page.locator("[data-home-component-count]")).toHaveText([count, count]);
+  await expect(page.locator(".home-feature")).toHaveCount(8);
+  await expect(page.locator(".workspace")).toBeHidden();
+  await expect(page.locator("#demo")).not.toHaveAttribute("src");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
+  await page.getByRole("link", { name: "快速开始", exact: true }).click();
+  await expect(page.locator("#article h1")).toBeVisible();
+  await expect(page.locator("#home")).toBeHidden();
+  await page.getByRole("link", { name: "Daisu UI · 袋鼠 UI 首页", exact: true }).click();
+  await expect(page.locator("#home")).toBeVisible();
+  await page.reload();
+  await expect(page.locator(".brand")).toHaveAttribute("aria-current", "page");
+  await expect(page.locator(".workspace")).toBeHidden();
+});
+
+test("home preserves theme and supports search and component previews", async ({ page }) => {
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.goto("./#/home");
+  await expect(page.getByRole("button", { name: "搜索文档", exact: true })).toBeEnabled();
+  await page.getByRole("switch", { name: "深色模式" }).click();
+  await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  await expect(page.locator("#home")).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
+  await page.keyboard.press("Control+k");
+  await page.locator("#document-search-input").fill("usePressState");
+  await expect(page.locator("#document-search").getByRole("option").first()).toContainText("usePressState");
+  await page.locator("#document-search-input").press("Enter");
+  await expect(page.locator("#article h1")).toHaveText("工具与按压反馈");
+  await page.locator(".brand").click();
+  await page.getByRole("link", { name: "浏览组件", exact: true }).click();
+  await expect(page.locator("#demo-status")).toHaveAttribute("data-state", "ready", { timeout: 30000 });
+  await page.locator(".brand").click();
+  await expect(page.locator("#demo")).not.toHaveAttribute("src");
+  await expect(page.locator("#home")).toBeVisible();
+});
+
 test("project site keeps source links and resources under its mount path", async ({
   page,
   request,
