@@ -109,6 +109,6 @@ daisu agent doctor --client cursor
 - [MCP 客户端配置与验证](#/ai-mcp)
 - [AI Skills 安装和项目规则](#/ai-skills)
 - [平台适配](#/platforms) · [定制主题](#/theme-customization)
-- [UI 源码仓库](https://git.zilueit.com/daisu-ui/daisu-ui) · [CLI 源码仓库](https://git.zilueit.com/daisu-ui/cli)
+- [UI 源码仓库](https://github.com/DaisSu-UI/daisu-ui) · [CLI 源码仓库](https://github.com/DaisSu-UI/cli)
 
 本文由 `@daisu-ui/cli@0.1.0-beta.6` 生成。内容在 CLI 仓库维护；更新方式见 [CLI 工具](#/ai-cli)。

@@ -10,7 +10,7 @@ npm install @daisu-ui/ui@beta
 npm install --save-exact @daisu-ui/ui@0.1.0-beta.4
 ```
 
-组件包已发布到 [npmjs](https://www.npmjs.com/package/@daisu-ui/ui)，固定版本示例使用已公开的 0.1.0-beta.4，@beta 会安装该标签当前指向的版本。上面两种安装方式任选其一；npm 安装不需要克隆组件库或配置 GitLab SSH。安装后提交消费项目的 package.json 和锁文件。
+组件包已发布到 [npmjs](https://www.npmjs.com/package/@daisu-ui/ui)，固定版本示例使用已公开的 0.1.0-beta.4，@beta 会安装该标签当前指向的版本。上面两种安装方式任选其一；npm 安装不需要克隆组件库或配置源码仓库 SSH。安装后提交消费项目的 package.json 和锁文件。
 
 项目需使用 ReactLynx，并在 Rspeedy 中启用 `pluginReactLynx({ engineVersion: '4.2' })`。当前开发类型为 `@lynx-js/types@4.2.1`，原生宿主引擎须为 Lynx 4.2 或更高版本；其他依赖版本以包的 `peerDependencies` 为准。
 

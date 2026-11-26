@@ -6,7 +6,7 @@
 
 | Skill | 内容 | 适用场景 | 源文件 |
 | --- | --- | --- | --- |
-| daisu-ui | 版本核对、API/示例查询、ReactLynx 约束与验证要求 | 组件选型、页面生成、主题和常见组件用法排查 | [SKILL.md](https://git.zilueit.com/daisu-ui/cli/blob/main/skills/daisu-ui/SKILL.md) |
+| daisu-ui | 版本核对、API/示例查询、ReactLynx 约束与验证要求 | 组件选型、页面生成、主题和常见组件用法排查 | [SKILL.md](https://github.com/DaisSu-UI/cli/blob/main/skills/daisu-ui/SKILL.md) |
 
 当前消费端技能随 [@daisu-ui/cli](https://www.npmjs.com/package/@daisu-ui/cli) 分发，通过下方 agent init 安装。UI 维护者的 Lynx 技能见本页末尾，分别服务于消费项目与组件库开发。
 

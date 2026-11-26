@@ -25,7 +25,7 @@ npm install @daisu-ui/ui@beta
 npm install --save-exact @daisu-ui/ui@0.1.0-beta.4
 ```
 
-升级和回退均显式安装对应版本，并提交消费项目的 package.json 与锁文件。npm 安装不需要 GitLab SSH 权限；Git 安装标签与本地 tarball 作为补充分发方式，详见 [版本发布](#/publishing)。组件库与 CLI 独立安装和发版。
+升级和回退均显式安装对应版本，并提交消费项目的 package.json 与锁文件。npm 安装不需要源码仓库 SSH 权限；Git 安装标签与本地 tarball 作为补充分发方式，详见 [版本发布](#/publishing)。组件库与 CLI 独立安装和发版。
 
 ## 应用根节点
 
