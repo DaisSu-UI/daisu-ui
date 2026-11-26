@@ -29,15 +29,15 @@ function checkNpmAuth() {
     } catch {
       throw new Error('npm 身份验证失败；请核对 NPM_TOKEN 是否有效、过期或被撤销');
     }
-    let packages;
+    let collaborators;
     try {
-      packages = JSON.parse(npm(['access', 'list', 'packages', username, '--json']));
+      collaborators = JSON.parse(npm(['access', 'list', 'collaborators', metadata.name, username, '--json']));
     } catch (error) {
       const stderr = String(error?.stderr ?? '');
       const code = stderr.match(/npm (?:error|ERR!) code ([A-Z0-9_]+)/)?.[1];
       throw new Error(`无法查询 npm 包权限${code ? `（npm ${code}）` : '（未返回有效的权限数据）'}；Token 身份验证已通过`);
     }
-    assert.equal(packages[metadata.name], 'read-write', '当前 npm 账号没有 @daisu-ui/ui 的读写权限，或 Token 未授权此包');
+    assert.equal(collaborators[username], 'read-write', '当前 npm 账号没有 @daisu-ui/ui 的读写权限，或 Token 未授权此包');
     console.log('npm Token 身份验证通过；@daisu-ui/ui 的账号读写权限检查通过。');
   } finally {
     rmSync(temporary, { recursive: true, force: true });
