@@ -1,6 +1,6 @@
 # Daisu UI
 
-> 面向 ReactLynx 的组件库。当前文档对应 @daisu-ui/ui@0.1.0-beta.4；API、示例与平台范围以同版本公开类型和文档为准。
+> 面向 ReactLynx 的组件库。当前文档对应 @daisu-ui/ui@0.1.0-beta.5；API、示例与平台范围以同版本公开类型和文档为准。
 
 ## 阅读顺序
 
