@@ -63,7 +63,7 @@ npm 只发布 `packages/daisu-ui` 构建的 UI 库：`dist/`、类型声明、�
 
 GitHub Actions 为 UI 的自动验证和 npm 发布入口；GitLab 自动发布保持关闭，GitCode 的待开通工作流已移除。
 
-完整的 `NPM_TOKEN` Repository secret、保护分支及标签、验证和发布步骤见 [GitHub npm 发布指南](ci/git-release.md)。工作流位于 `.github/workflows/ci.yml` 与 `.github/workflows/release.yml`：developer/main 推送和 PR 仅验证，`v<组件版本>` 标签推送在完成验证后发布 npm。
+完整的 `NPM_TOKEN` Repository secret、保护分支及标签、验证和发布步骤见 [GitHub npm 发布指南](ci/git-release.md)。工作流位于 `.github/workflows/ci.yml` 与 `.github/workflows/release.yml`：developer/main 推送和 PR 仅验证，`v<组件版本>` 标签推送在完成验证后发布 npm。main 上发布配置变更会自动预演，也可在 GitHub Actions 中手动选择 main 运行发布预演；main 只执行 dry-run，不创建 npm 版本。
 
 本地有 `github` 远程时优先校验 `github/main`，从 GitHub 直接克隆时校验 `origin/main`。发布前先将 developer 合并到 GitHub main 并验收，再推送新版本标签。GitHub 的发布密钥需在网页设置中配置，不会由 Git 推送携带。
 

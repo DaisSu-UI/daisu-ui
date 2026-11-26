@@ -14,11 +14,11 @@ UI 的 npm 自动发布工作流位于 `.github/workflows/release.yml`，由 Git
 | 分支或标签 | 用途 | GitHub 行为 |
 | --- | --- | --- |
 | `developer` | 日常组件、示例和文档开发 | 自动验证，不发布 npm |
-| `main` | 已验收源码和发布配置 | 自动验证，不发布 npm |
+| `main` | 已验收源码和发布配置 | 自动验证；发布脚本或发布工作流变更时执行 npm 预演，不写入注册表 |
 | `v<组件版本>` | 指向已进入 main 的源码提交 | 重新验证并发布 npm |
 | `npm-dist` / `npm-v<版本>` | 可选的 Git 安装产物 | 不由 npm 工作流创建 |
 
-`.github/workflows/ci.yml` 处理 developer/main 推送、对应 PR 和手动验证；`.github/workflows/release.yml` 只处理 `v*` 标签推送。自动发布进一步核对仓库必须为 `DaisSu-UI/daisu-ui`、事件必须为标签 push、标签必须等于组件包版本、触发 SHA 必须等于当前源码、源码必须已进入远端 main。
+`.github/workflows/ci.yml` 处理 developer/main 推送、对应 PR 和手动验证；`.github/workflows/release.yml` 处理 `v*` 标签实际发布，以及 main 上发布配置变更或手动触发的发布预演。自动发布进一步核对仓库必须为 `DaisSu-UI/daisu-ui`、事件必须为标签 push、标签必须等于组件包版本、触发 SHA 必须等于当前源码、源码必须已进入远端 main。
 
 本地同时有 `github` 和 `origin` 时，发布来源优先检查 `github/main`。GitHub 的干净克隆通常将 GitHub 命名为 `origin`，此时检查 `origin/main`。特殊环境可显式设置 `RELEASE_SOURCE_REMOTE=<远程名称>`；不会仅信任本地跟踪引用，而是重新 fetch 远端 main。
 
@@ -26,9 +26,9 @@ UI 的 npm 自动发布工作流位于 `.github/workflows/release.yml`，由 Git
 
 1. 在 [Settings → Secrets and variables → Actions](https://github.com/DaisSu-UI/daisu-ui/settings/secrets/actions) 中添加 Repository secret `NPM_TOKEN`。使用具有 `@daisu-ui/ui` 发布权限、满足 npm 当前 2FA 策略的 npm Granular Access Token。Token 不提交到 Git，也不在聊天或日志中输出。
 2. 在 Settings → Actions → General 中确认允许官方 Actions；保护 `main` 分支和 `v*` 标签，只允许发布负责人合并和创建版本标签。
-3. 在 [Actions](https://github.com/DaisSu-UI/daisu-ui/actions) 页面查看 `UI validation`；也可在已包含配置的分支上手动运行。全部检查通过后，再发布新版本。
+3. 在 [Actions](https://github.com/DaisSu-UI/daisu-ui/actions) 页面确认 `UI validation` 成功，再选择 `Publish UI to npm` → Run workflow → `main` 测试凭据和发布预演。main 始终执行 `--dry-run`，不会发布新版本；真实发布必须推送与组件版本匹配的版本标签。
 
-工作流使用 `actions/checkout@v4`、`actions/setup-node@v4`、`actions/upload-artifact@v4`，Node.js 24，以及 `ubuntu-latest` 托管 Runner。npm 密钥仅在最终发布步骤注入；普通测试和构建步骤不接收该密钥。beta 版本使用 `beta` dist-tag，正式版本使用 `latest`。
+工作流使用 `actions/checkout@v4`、`actions/setup-node@v4`、`actions/upload-artifact@v4`，Node.js 24，以及 `ubuntu-latest` 托管 Runner。npm 密钥仅在身份及包权限核对、最终发布或预演两个步骤注入；普通测试和构建步骤不接收该密钥。beta 版本使用 `beta` dist-tag，正式版本使用 `latest`。
 
 Git 推送只上传源码和工作流，不能上传 Repository secrets；配置文件已推送不代表 `NPM_TOKEN` 已配置或 npm 端发布已验证。
 
@@ -81,7 +81,7 @@ git tag -a v0.1.0-beta.5 -m 'Daisu UI 0.1.0-beta.5'
 git push github refs/tags/v0.1.0-beta.5
 ```
 
-GitHub 的 `Publish UI to npm` 工作流执行：版本及 main 来源校验 → 安装依赖 → 发布脚本测试 → 组件测试 → 类型检查 → Demo/文档构建 → 独立 UI 包校验 → 打包及完整性校验 → 发布 `@daisu-ui/ui`。
+GitHub 的 `Publish UI to npm` 工作流执行：版本及 main 来源校验 → npm Token 身份和包读写权限核对 → 安装依赖 → 发布脚本测试 → 组件测试 → 类型检查 → Demo/文档构建 → 独立 UI 包校验 → 打包及完整性校验 → 发布 `@daisu-ui/ui`。
 
 npm 包只包含 UI 库 ESM、保留 JSX 的组件、类型、样式、README、更新日志和许可证。根 workspace、Demo、文档站、CLI/MCP 和测试不进入 npm 包。发布归档与 `npm-release.json` 保存七天。
 
@@ -93,6 +93,12 @@ npm view @daisu-ui/ui dist-tags --json --registry=https://registry.npmjs.org/
 ```
 
 需要安装或回退时，在消费项目显式安装目标版本并提交锁文件。UI 和 CLI 是独立包；此工作流只发布 `@daisu-ui/ui`。
+
+## 发布预演的验证范围
+
+main 预演使用 GitHub 中实际配置的 `NPM_TOKEN`，通过 `npm whoami` 核对身份、`npm access list packages` 核对账号包读写权限，并对与当前源码及校验和匹配的 UI tarball 执行 `npm publish --dry-run`。预演不占用新版本号，也不覆盖现有版本。
+
+预演证明认证、可见的账号权限、构建和发布参数可用；Token 的最终写入策略、npm 2FA / 发布策略仍由真实版本发布时的注册表请求决定。
 
 ## 备用：手动发布
 

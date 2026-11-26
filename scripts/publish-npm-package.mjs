@@ -30,7 +30,7 @@ export function publishNpmPackage(args = process.argv.slice(2)) {
   assert.equal(git(['status', '--porcelain']), '', '请先提交源码变更，再发布已验证的版本');
   const metadata = JSON.parse(readFileSync(join(root, 'packages/daisu-ui/package.json'), 'utf8'));
   const sourceCommit = git(['rev-parse', 'HEAD']);
-  assertPublishEnvironment(metadata.version, sourceCommit);
+  assertPublishEnvironment(metadata.version, sourceCommit, process.env, { dryRun });
   const release = JSON.parse(readFileSync(join(root, 'artifacts/npm-release.json'), 'utf8'));
   assert.equal(metadata.name, '@daisu-ui/ui', '只允许发布 UI 库');
   assert.notEqual(metadata.private, true);
