@@ -1,0 +1,46 @@
+name: UI validation
+
+on:
+  push:
+    branches: [developer, main]
+  pull_request:
+    branches: [developer, main]
+  workflow_dispatch: {}
+
+permissions:
+  repository: read
+
+concurrency:
+  enable: true
+  max: 2
+  exceed-action: QUEUE
+
+env:
+  DAISU_UI_AUTO_SYNC: '0'
+
+jobs:
+  verify:
+    name: Test, build and validate the UI package
+    runs-on: [ubuntu-latest, x64, medium]
+    steps:
+      - name: Checkout source
+        uses: checkout
+      - name: Set up Node.js
+        uses: setup-node
+        with:
+          node-version: '24'
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Validate release scripts
+        run: node --test scripts/release-environment.test.mjs scripts/npm-release.test.mjs scripts/git-release.test.mjs
+      - name: Run component tests
+        run: npm test
+      - name: Check types
+        run: npm run test:types
+      - name: Build documentation and demos
+        run: npm run build
+      - name: Validate the standalone package
+        run: npm run ui:check
+      - name: Pack the UI package
+        run: npm run ui:pack
+

@@ -1,0 +1,62 @@
+name: Publish UI to npm
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  repository: read
+
+concurrency:
+  enable: true
+  max: 1
+  exceed-action: QUEUE
+  preemption:
+    enable: false
+
+env:
+  DAISU_UI_AUTO_SYNC: '0'
+
+jobs:
+  publish:
+    name: Verify a version tag and publish @daisu-ui/ui
+    runs-on: [ubuntu-latest, x64, medium]
+    if: ${{ atomgit.repository == 'daisu/ui' && atomgit.ref_type == 'tag' }}
+    steps:
+      - name: Checkout tagged source
+        uses: checkout
+      - name: Set up Node.js
+        uses: setup-node
+        with:
+          node-version: '24'
+      - name: Verify version and accepted source
+        run: node scripts/check-release-source.mjs --require-main
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Validate release scripts
+        run: node --test scripts/release-environment.test.mjs scripts/npm-release.test.mjs scripts/git-release.test.mjs
+      - name: Run component tests
+        run: npm test
+      - name: Check types
+        run: npm run test:types
+      - name: Build documentation and demos
+        run: npm run build
+      - name: Validate the standalone package
+        run: npm run ui:check
+      - name: Pack the UI package
+        run: npm run ui:pack
+      - name: Prepare the verified npm archive
+        run: node scripts/prepare-npm-package.mjs
+      - name: Save release artifacts
+        uses: upload-artifact
+        with:
+          name: ui-npm-package
+          path: |
+            artifacts/*.tgz
+            artifacts/npm-release.json
+          retention-days: 7
+      - name: Publish the verified archive to npm
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: node scripts/publish-npm-package.mjs
+

@@ -6,6 +6,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { checkReleaseSource } from './check-release-source.mjs';
+import { assertPublishEnvironment } from './release-environment.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const registry = 'https://registry.npmjs.org/';
@@ -28,20 +29,21 @@ export function publishNpmPackage(args = process.argv.slice(2)) {
   const git = args => execFileSync('git', args, { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
   assert.equal(git(['status', '--porcelain']), '', '请先提交源码变更，再发布已验证的版本');
   const metadata = JSON.parse(readFileSync(join(root, 'packages/daisu-ui/package.json'), 'utf8'));
+  const sourceCommit = git(['rev-parse', 'HEAD']);
+  assertPublishEnvironment(metadata.version, sourceCommit);
   const release = JSON.parse(readFileSync(join(root, 'artifacts/npm-release.json'), 'utf8'));
   assert.equal(metadata.name, '@daisu-ui/ui', '只允许发布 UI 库');
   assert.notEqual(metadata.private, true);
   assert.equal(release.name, metadata.name);
   assert.equal(release.version, metadata.version, 'npm 产物版本已过期，请重新校验并打包');
-  assert.equal(release.sourceCommit, git(['rev-parse', 'HEAD']), 'npm 产物源码已过期，请重新校验并打包');
+  assert.equal(release.sourceCommit, sourceCommit, 'npm 产物源码已过期，请重新校验并打包');
   assert.equal(release.filename, `daisu-ui-ui-${metadata.version}.tgz`);
   const archive = join(root, 'artifacts', release.filename);
   const integrity = `sha512-${createHash('sha512').update(readFileSync(archive)).digest('base64')}`;
   assert.equal(integrity, release.integrity, 'npm 产物校验和不匹配');
   checkReleaseSource({ root });
-  if (process.env.CI) {
-    assert.equal(process.env.CI_COMMIT_TAG, `v${metadata.version}`, 'CI 只允许从组件版本对应的源码 Tag 发布 npm');
-    assert(process.env.NPM_TOKEN, '请在 GitLab Secret variables 中配置受保护的 NPM_TOKEN');
+  if (process.env.CI || process.env.ATOMGIT_ACTIONS === 'true') {
+    assert(process.env.NPM_TOKEN, '请在 GitCode 仓库密钥中配置 NPM_TOKEN');
   }
   const tag = npmReleaseTag(metadata.version, requested);
   const temporary = mkdtempSync(join(tmpdir(), 'daisu-npm-auth-'));
