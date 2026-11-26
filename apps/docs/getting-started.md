@@ -76,3 +76,9 @@ npm install @daisu-ui/ui@beta
 ```
 
 开发分支、main 发布来源校验、版本标签和 npm / Git 分发见 [版本发布](#/publishing)。
+
+## 完整工程与支持范围
+
+- [浏览器最小工程与下载](./web-quickstart.md)
+- [Flutter Manifest 与宿主接入](./flutter-quickstart.md)
+- [平台兼容性总表](./compatibility.md)

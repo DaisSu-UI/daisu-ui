@@ -1,0 +1,31 @@
+{
+  "name": "daisu-ui-quickstart",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "rspeedy build && rsbuild build --config web/rsbuild.config.ts",
+    "dev": "rsbuild dev --config web/rsbuild.config.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@daisu-ui/ui": "0.1.0-beta.4",
+    "@lynx-js/react": "0.126.2",
+    "@lynx-js/lynx-core": "0.1.4",
+    "@lynx-js/web-core": "0.26.5"
+  },
+  "devDependencies": {
+    "@lynx-js/react-rsbuild-plugin": "0.20.3",
+    "@lynx-js/rspeedy": "0.18.0",
+    "@lynx-js/types": "4.2.1",
+    "@rsbuild/core": "2.2.9",
+    "@types/react": "18.3.0",
+    "typescript": "6.0.3"
+  },
+  "overrides": {
+    "@lynx-js/tasm": "0.0.53"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  }
+}

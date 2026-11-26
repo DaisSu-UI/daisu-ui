@@ -103,3 +103,49 @@ export async function checkDocumentationLinks(
   if (errors.length)
     throw new Error("Documentation links are invalid:\n" + errors.join("\n"));
 }
+
+/** Index actual Markdown sections, including API tables and code. */
+export function buildSearchIndex(markdown, sources, entries) {
+  const metadata = new Map(entries.map((entry) => [entry.id, entry]));
+  const result = [];
+  for (const [id, source] of Object.entries(sources)) {
+    const entry = metadata.get(id) || { label: id, group: "文档" };
+    const ids = new Set();
+    let record;
+    const add = (heading = "", section = "") => {
+      record = {
+        id,
+        label: entry.label,
+        group: entry.group || "文档",
+        heading,
+        href: `#/${id}${section ? "?section=" + encodeURIComponent(section) : ""}`,
+        text: "",
+      };
+      result.push(record);
+    };
+    add();
+    const tokens = markdown.parse(source, {});
+    for (let index = 0; index < tokens.length; index++) {
+      const token = tokens[index];
+      if (token.type === "heading_open" && ["h2", "h3"].includes(token.tag)) {
+        const label = (tokens[index + 1].children || [])
+          .map((child) =>
+            ["text", "code_inline"].includes(child.type) ? child.content : "",
+          )
+          .join("");
+        const base = headingId(id, label);
+        let section = base;
+        for (let suffix = 2; ids.has(section); suffix++)
+          section = base + "-" + suffix;
+        ids.add(section);
+        add(label, section);
+      }
+      if (["inline", "fence", "code_block"].includes(token.type))
+        record.text += token.content + " ";
+    }
+  }
+  return result.map((record) => ({
+    ...record,
+    text: record.text.replace(/\s+/g, " ").trim(),
+  }));
+}

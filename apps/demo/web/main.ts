@@ -1,3 +1,4 @@
+import { connectDocsPreview } from './docsPreview';
 import { registerDaisuWebComponents } from '@daisu-ui/ui/web';
 import '@lynx-js/web-core/plugins/scroll-view-mouse-drag';
 import '@lynx-js/web-core/client';
@@ -32,9 +33,14 @@ async function mount() {
     navigation.sync(state, message.action as NavigationAction | 'sync');
     return true;
   };
-  window.addEventListener('pagehide', () => navigation.dispose(), { once: true });
+  const preview = connectDocsPreview(view, query.get('docsToken'), query.get('component') || 'index');
+  window.addEventListener('pagehide', () => { navigation.dispose(); preview.dispose(); }, { once: true });
+  view.addEventListener('error', () => preview.error());
   view.addEventListener('error', event => console.error('Demo runtime error', event));
   document.body.append(view);
   view.url = new URL('app.web.bundle', base).href;
 }
-void mount();
+void mount().catch(error => {
+  console.error('Demo startup failed', error);
+  if (window.parent !== window) window.parent.postMessage({ channel: 'daisu-demo', type: 'error', token: new URLSearchParams(location.search).get('docsToken') }, location.origin);
+});

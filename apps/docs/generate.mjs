@@ -1,3 +1,4 @@
+import { compatibilityRows, renderCompatibility } from './platforms.mjs';
 import { renderLlmIndex } from "./documentation.mjs";
 import { articlePages, supportingPages } from "./public/navigation.js";
 import { readFile, writeFile, mkdir, access } from "node:fs/promises";
@@ -728,6 +729,7 @@ await writeGenerated(
 const libraryMetadata = JSON.parse(
   await readFile(resolve(uiRoot, "package.json"), "utf8"),
 );
+await writeGenerated(resolve(root, 'apps/docs/pages/compatibility.md'), renderCompatibility(libraryMetadata.version, compatibilityRows(sources, catalog)));
 const documentationEntries = [
   ...new Map(
     [
