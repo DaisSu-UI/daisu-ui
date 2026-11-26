@@ -1,5 +1,7 @@
 # Daisu UI
 
+Git 提交信息的标题和正文统一使用中文；技术名称、版本号和标识符保留原文。
+
 开发前阅读 https://lynxjs.org/next/llms.txt，并按任务查阅 Lynx 官方文档。外部 Lynx 技能由开发者在本机按需安装和更新；`.agents/skills/` 不纳入版本控制，不作为构建或 CI 前提。
 
 库代码位于 `packages/daisu-ui/src`；示例位于 `apps/demo/src/features/ui-demo`；文档位于 `docs/ui`，生成规则与示例说明位于 `apps/docs/guides`。生产包与独立构建不得硬依赖消费方业务工程或兄弟目录。组件包必须保留 JSX，公开入口自动加载样式；账号、Token、业务协议由宿主提供。
