@@ -1,0 +1,33 @@
+name: Inspect npm publication result
+
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/release-diagnostics.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read the beta.5 publication run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh run view 45757666419 --repo "$GITHUB_REPOSITORY" --log > "$RUNNER_TEMP/npm-publication.log"
+      - name: Report publication mode and registry response
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          text = Path(os.environ['RUNNER_TEMP'], 'npm-publication.log').read_text(errors='replace')
+          markers = ['发布 UI 库', '预演 UI 库', 'Publishing to', '+ @daisu-ui/ui', 'npm error', 'npm warn', 'dry-run', 'review', 'holding']
+          lines = [line for line in text.splitlines() if 'Publish a version tag or preview main' in line and any(marker in line for marker in markers)]
+          report = '\n'.join(lines[:60]) or 'No npm publication marker was recorded by the publishing step.'
+          print(report)
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+              summary.write('## npm publication receipt\n\n```text\n' + report + '\n```\n')
+          PY
