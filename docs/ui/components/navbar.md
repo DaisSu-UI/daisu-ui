@@ -52,6 +52,23 @@ import { Navbar, NavbarCapsule } from '@daisu-ui/ui';
 <Navbar variant="standard" title="详情" fixed placeholder bordered />
 ```
 
+## 内容形态
+
+### Liquid Glass 返回按钮
+
+业务导航栏可通过 backButtonEffect="glass" 启用原生 blur-view。iOS 26+ 且宿主支持 glass 材质时呈现 Liquid Glass 与按压交互；Android 使用 blur-radius 的背景模糊，H5 显示圆形返回按钮。原生宿主需集成支持这些属性的 Lynx SDK；H5 预览不代表原生材质验收。仅影响内置业务返回按钮，left 或 capsule 自定义内容优先，leftArrow=false 时不显示。
+
+```tsx
+<Navbar
+  title="医疗机构备案"
+  backButtonEffect="glass"
+  onBack={() => {
+    'background only';
+    console.log('返回');
+  }}
+/>
+```
+
 ## Attributes 属性
 
 ### Navbar
@@ -67,6 +84,7 @@ import { Navbar, NavbarCapsule } from '@daisu-ui/ui';
 | leftText | 两侧文案 | `string` | `''` |
 | rightText | 两侧文案 | `string` | — |
 | leftArrow | 业务圆形返回或standard的24px箭头 | `boolean` | — |
+| backButtonEffect | Native Liquid Glass on supported iOS 26+ hosts; other renderers retain the circular fallback. | `'default' \| 'glass'` | `'default'` |
 | bordered | 底部半像素边框，默认跟随当前在线 Demo 源码 | `boolean` | `false` |
 | fixed | 顶部固定，固定时生成对应变体及安全区的等高占位 | `boolean` | `false` |
 | placeholder | 顶部固定，固定时生成对应变体及安全区的等高占位 | `boolean` | `false` |

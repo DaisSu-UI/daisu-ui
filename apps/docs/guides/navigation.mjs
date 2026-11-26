@@ -42,6 +42,12 @@ export default {
       'return <Navbar variant="standard" title="详情" fixed placeholder bordered />;',
       "fixed 配合 placeholder 为内容保留导航栏高度。",
     ),
+    e(
+      "内容形态",
+      "Liquid Glass 返回按钮",
+      'return <Navbar title="医疗机构备案" backButtonEffect="glass" onBack={() => { \'background only\'; console.log("返回"); }} />;',
+      '业务导航栏可通过 backButtonEffect="glass" 启用原生 blur-view。iOS 26+ 且宿主支持 glass 材质时呈现 Liquid Glass 与按压交互；Android 使用 blur-radius 的背景模糊，H5 显示圆形返回按钮。原生宿主需集成支持这些属性的 Lynx SDK；H5 预览不代表原生材质验收。仅影响内置业务返回按钮，left 或 capsule 自定义内容优先，leftArrow=false 时不显示。',
+    ),
   ),
   tabbar: g(
     "标签栏用于切换应用中的主要页面，支持图标、徽标、异步切换校验和底部安全区。",
