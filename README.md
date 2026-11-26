@@ -1,202 +1,186 @@
-# Daisu UI · 袋鼠 UI
+<p align="center">
+  <img src="https://cdn.jsdelivr.net/npm/@daisu-ui/ui@beta/dist/brand/logo.svg" width="120" height="120" alt="Daisu UI 袋鼠 UI Logo" />
+</p>
 
-独立的 ReactLynx 组件库、组件 Demo 和 API 文档仓库。
+<h1 align="center">Daisu UI · 袋鼠 UI</h1>
 
-- `packages/daisu-ui`：发布到 npm 的 `@daisu-ui/ui` 组件包，保留 JSX、类型声明及自动样式加载。
-- `apps/demo`：独立 Lynx / 浏览器示例，示例源码的唯一维护位置。
-- `apps/docs`：API 文档站、源码面板与内嵌 Demo。
-- `docs/ui`：组件文档、LLM 约束与平台能力说明。
-- `fixtures/ui-consumer`：独立 tarball 消费验收工程。
+<p align="center">面向 ReactLynx 的移动端组件库</p>
+<p align="center">原生元素 · TypeScript · 主题定制 · 深色模式</p>
 
-```bash
-npm ci
-npm test
-npm run test:types
-npm run build
-npm run ui:check
-npm run ui:pack
-```
+<p align="center">
+  <a href="https://www.npmjs.com/package/@daisu-ui/ui"><img src="https://img.shields.io/npm/v/@daisu-ui/ui/beta?style=flat-square&amp;logo=npm&amp;color=FF6A00" alt="npm beta version" /></a>
+  <a href="https://www.npmjs.com/package/@daisu-ui/ui"><img src="https://img.shields.io/npm/dm/@daisu-ui/ui?style=flat-square&amp;logo=npm&amp;color=FF6A00" alt="npm downloads" /></a>
+  <a href="https://opensource.org/license/mit"><img src="https://img.shields.io/badge/license-MIT-FF6A00?style=flat-square" alt="MIT license" /></a>
+  <a href="https://lynxjs.org/"><img src="https://img.shields.io/badge/Lynx-%E2%89%A5%204.2-FF6A00?style=flat-square" alt="Lynx 4.2 or later" /></a>
+</p>
 
-```bash
-npm run ui:demo:dev  # http://localhost:3091/#/ui-demo/index
-npm run ui:docs:dev  # http://localhost:3090
-```
+## ✨ 特性
 
-文档开发服务默认监听 `0.0.0.0:3090`，同一局域网可使用 `http://<本机局域网 IP>:3090` 访问，内嵌 Demo 共用此地址。可用 `DAISU_DOCS_HOST` 和 `DAISU_DOCS_PORT` 调整监听地址与端口；仅需本机访问时，执行 `DAISU_DOCS_HOST=127.0.0.1 npm run ui:docs:dev`。
+- **丰富的移动端组件**：覆盖基础布局、表单输入、数据展示、导航、反馈和媒体交互。
+- **ReactLynx 原生元素**：基于 `@lynx-js/react` 与 `@lynx-js/lynx-ui`，保留 React 的组件开发方式。
+- **完整的 TypeScript 类型**：提供组件 Props、事件、Ref 与独立入口的类型声明。
+- **主题定制**：通过 `ConfigProvider` 和 CSS 变量统一外观，支持浅色、深色主题。
+- **开箱即用的样式**：导入组件时自动加载 CSS，无需单独引入样式文件。
+- **独立路由入口**：提供路由视图、导航 hooks 与宿主历史适配接口。
+- **宿主能力可扩展**：上传、媒体和页面历史通过适配接口接入应用。
 
-Demo 支持组件独立路径与深色模式，文档站可从 iframe 独立打开 Demo。文档产物为静态文件；同级 CLI 已安装开发依赖时，文档开发服务会监听组件、示例和 Markdown 并自动重建，刷新浏览器查看。单独检出 UI 或关闭自动同步时，修改后需重新执行构建。构建指南源文件位于 `apps/docs/guides`，平台接入补充说明位于 `apps/docs/guides/platform-notes.mjs`。
+## 📦 安装
 
-浏览器宿主需通过 `@daisu-ui/ui/web` 注册媒体、裁剪和二维码导出后端；Flutter 宿主能力由使用方提供。真实平台支持范围见 [媒体能力](docs/ui/MEDIA_CAPABILITIES.md)。
-
-仅发布 `@daisu-ui/ui` workspace；Demo 和文档均为 private；CLI/MCP 在独立仓库维护。消费项目使用 npm 版本、Git 安装 Tag 或 tarball，通过公开 API 使用组件。
-
-Git 远程：`git@git.zilueit.com:daisu-ui/daisu-ui.git`。迁移清单见 [MIGRATION.json](MIGRATION.json)。
-
-## npm 安装
-
-组件包名为 **`@daisu-ui/ui`**，beta 版本这样安装：
+当前为 beta 版本，建议显式安装 `beta` 渠道：
 
 ```bash
+# npm
 npm install @daisu-ui/ui@beta
-# 固定版本，升级或回退时显式指定版本号
+
+# pnpm
+pnpm add @daisu-ui/ui@beta
+
+# yarn
+yarn add @daisu-ui/ui@beta
+```
+
+需要锁定版本时：
+
+```bash
 npm install @daisu-ui/ui@0.1.0-beta.4
 ```
+
+本包包含 UI 库的 ESM、保留 JSX 的组件、类型声明、CSS 和许可证。Demo、文档应用和 CLI 不随组件包发布。
+
+## 🚀 快速上手
+
+在已经配置 ReactLynx 的项目中，从公开入口导入组件：
 
 ```tsx
-import { Button } from '@daisu-ui/ui';
-import { RouterView } from '@daisu-ui/ui/router';
+import { root } from '@lynx-js/react';
+import { Button, ConfigProvider, RootPortalHost } from '@daisu-ui/ui';
+
+function App() {
+  return (
+    <ConfigProvider theme="light">
+      <RootPortalHost>
+        <Button
+          label="开始使用 Daisu UI"
+          onTap={() => {
+            'background only';
+            console.log('Hello Daisu UI');
+          }}
+        />
+      </RootPortalHost>
+    </ConfigProvider>
+  );
+}
+
+root.render(<App />);
 ```
 
-组件入口自动加载 CSS。消费项目须具备 ReactLynx 工具链及满足 peerDependencies 的依赖，宿主引擎至少 Lynx 4.2；旧工具链需要在项目根添加 `"overrides": { "@lynx-js/tasm": "0.0.53" }`。安装后提交消费项目的 `package.json` 和 `package-lock.json`。
+组件入口自动加载样式。`RootPortalHost` 为弹窗、Toast 等浮层提供挂载位置，在应用根部配置一次，并放在同一个 `ConfigProvider` 内。
 
-npm 只发布 `packages/daisu-ui` 构建的 UI 库：`dist/`、类型声明、样式、README、更新日志与许可证。不发布根 workspace、Demo、文档站、CLI/MCP、测试或 TSX 源码。
+### 环境要求
 
-## 开发与发布分支
-
-| 分支 | 用途 | 操作方式 |
-| --- | --- | --- |
-| `developer` | 日常组件、示例、文档开发 | 功能分支合入此分支 |
-| `main` | 已验收的稳定发布源码，包括 beta | 从 developer 合并，版本 Tag 在此创建 |
-| `npm-dist` | 可从 Git 安装的构建产物 | 由发布脚本维护，不手工开发 |
-
-所有发布命令都会重新读取远端 `origin/main`，拒绝发布尚未合入 main 的提交。GitLab 设置 → 仓库 → Protected branches 中保护 `main`，允许合并/推送选择 Masters；Protected tags 中保护 `v*`。现有 `npm-v*` 是 Git 安装标签，与 npmjs 的 dist-tag 不同。
-
-## 完整发布示例
-
-下面假设当前为 `0.1.0-beta.4`，准备下一个版本 `0.1.0-beta.5`。命令均在仓库根目录执行；已发布版本和已有标签不得覆盖。
-
-### 1. 开发并更新版本
-
-```bash
-git switch developer
-git pull --ff-only origin developer
-npm ci
-# 完成组件、示例和 API 文档改动
-npm pkg set version=0.1.0-beta.5
-npm pkg set version=0.1.0-beta.5 --workspace @daisu-ui/ui
-npm pkg set 'dependencies.@daisu-ui/ui=0.1.0-beta.5' --workspace @daisu-ui/demo
-npm install --package-lock-only --ignore-scripts --no-audit --no-fund
-```
-
-在 `packages/daisu-ui/CHANGELOG.md` 顶部增加 `## 0.1.0-beta.5`、日期及具体变化。CLI 在独立仓库维护，无需同步其版本；Demo 与文档仍为 private。
-
-### 2. 验证并提交开发分支
-
-```bash
-npm test
-npm run test:git-release
-npm run test:npm-release
-npm run test:types
-npm run build
-npm run ui:check
-npm run ui:pack
-git diff --check
-git diff
-# 审核后明确添加本次涉及的文件；组件改动也一并添加
-git add package.json package-lock.json packages/daisu-ui/package.json packages/daisu-ui/CHANGELOG.md apps/demo/package.json
-git commit -m "chore: release @daisu-ui/ui 0.1.0-beta.5"
-git push origin developer
-```
-
-`ui:check` 会安装真实 tarball 并验证类型、保留 JSX、自动 CSS 和 Lynx/Web 消费构建。这里构建 Demo、文档是验证过程，它们不进入 npm 包。
-
-### 3. 合入 main，先验收再发版
-
-推荐在 GitLab 创建 `developer → main` 合并请求并审核。也可以由有权限的发布负责人执行：
-
-```bash
-git fetch origin
-git switch main
-git pull --ff-only origin main
-git merge --no-ff origin/developer -m "release: merge developer for 0.1.0-beta.5"
-git push origin main
-```
-
-等待 main 的 `verify` 流水线通过。原生能力变化还需完成对应设备回归。首次建立 main 时，由负责人在验收通过的 developer 提交上执行 `git switch -c main`、`git push -u origin main`；后续发版无需重复创建。
-
-### 4. 推送版本标签，自动发布
-
-一次性配置：在 GitLab 设置 → CI/CD → Secret variables 中保存 `NPM_TOKEN`，开启 **Protected**；在仓库设置中保护 `v*` 标签。Token 必须对 `@daisu-ui/ui` 有 **Read and write** 权限，并开启 **Bypass two-factor authentication (2FA)**。配置完成后，日常发布不需要再次登录 npm 或点击发布按钮，Token 到期后更换即可。
-
-Token 在 npm 网站头像菜单 → Access Tokens → Generate New Token → Granular Access Token 中创建。名称可填 `daisu-ui-publish`；Packages and scopes 授权 `@daisu-ui` 范围。Token 仅显示一次，复制到 GitLab 的 `NPM_TOKEN` 并保存，不提交到仓库。SSH 密钥与 npm 发布 Token 分别配置。
-
-在已验收的 main 提交创建版本 Tag，Tag 必须与组件包版本一致。先执行 `git ls-remote`，确认远端没有同名标签：
-
-```bash
-git switch main
-git pull --ff-only origin main
-git ls-remote --tags origin 'refs/tags/v0.1.0-beta.5'
-git tag -a v0.1.0-beta.5 -m "Daisu UI 0.1.0-beta.5"
-git push origin refs/tags/v0.1.0-beta.5
-```
-
-推送后打开 GitLab → CI/CD → 流水线，选择引用为 `v0.1.0-beta.5` 的流水线。流程自动执行：
-
-| 任务 | 行为 |
+| 依赖 | 版本 |
 | --- | --- |
-| `verify` | 检查版本与远端 main 来源，运行测试、类型检查、构建和独立包校验，准备 UI 发布产物 |
-| `publish:git` | verify 成功后自动更新 `npm-dist` 和 `npm-v<版本>` |
-| `publish:npm` | verify 成功后自动使用 `NPM_TOKEN` 发布 `@daisu-ui/ui` |
+| Lynx 原生引擎 | 4.2 或更高 |
+| `@lynx-js/react` | `^0.126.2` |
+| `@lynx-js/types` | `^4.2.1` |
+| `@types/react` | `^18.3.0` |
 
-三个任务成功后，再核对 npm 实际版本：
+使用 Rspeedy 的 `pluginReactLynx({ engineVersion: '4.2' })` 构建。组件包保留 JSX，由消费项目的 ReactLynx 编译器完成转换。
 
-```bash
-npm view @daisu-ui/ui@0.1.0-beta.5 version dist.integrity --registry=https://registry.npmjs.org/
-npm view @daisu-ui/ui dist-tags --json --registry=https://registry.npmjs.org/
+如果构建插件仍内置 `@lynx-js/tasm@0.0.49`，需要在项目根 `package.json` 配置支持 Lynx 4.2 的编译器并重新安装依赖：
+
+```json
+{
+  "overrides": {
+    "@lynx-js/tasm": "0.0.53"
+  }
+}
 ```
 
-普通推送 developer 或 main 只执行校验，只有版本标签触发发布。beta 版本自动发布到 `beta` 渠道，正式版本如 `0.1.0` 发布到 `latest`；Demo、文档应用和 CLI 不进入 npm 包。
+编译目标不会升级宿主引擎；宿主集成方须同步满足引擎版本要求。
 
-首次发布可能被 npm 放入分阶段审核：网页显示 `0.0.0-stage` / Temporary Holding Version 时，表示实际版本已提交但尚未公开。等待 npm 审核完成后，再核对版本、README 和安装结果，不重复发布。
+## 🧩 组件一览
 
-**备用：本地发布。** Runner 离线时，可在已合入远端 main 的干净源码上执行：
+| 分类 | 部分组件 |
+| --- | --- |
+| 基础与布局 | Button、Text、Icon、Row / Col、Grid、Cell、Card |
+| 表单与选择 | Input、Textarea、Form、Checkbox、Radio、Switch、Picker、Calendar、Upload |
+| 数据展示 | Avatar、Badge、Tag、Table、Progress、Skeleton、CountDown、Swiper |
+| 操作反馈 | Popup、Dialog、Toast、Notify、ActionSheet、Popover、Tooltip |
+| 导航与滚动 | Navbar、Tabbar、Tabs、Sidebar、IndexBar、PagedList、Backtop |
+| 媒体与工具 | Img、ImagePreview、RichText、VideoPreview、ImgCropper、QrCode、Signature |
 
-```bash
-npm ci
-npm login --registry=https://registry.npmjs.org/ --auth-type=web
-npm run ui:npm:release -- --dry-run
-npm run ui:npm:publish
+组件、hooks 和类型统一从 `@daisu-ui/ui` 导入，按实际场景组合使用。
+
+## 🎨 主题定制
+
+通过 `ConfigProvider` 统一设置主题：
+
+```tsx
+import { Button, ConfigProvider } from '@daisu-ui/ui';
+
+export function DarkExample() {
+  return (
+    <ConfigProvider theme="dark">
+      <Button label="深色模式" />
+    </ConfigProvider>
+  );
+}
 ```
 
-本地发布成功后，不再推送同版本的源码 Tag，避免自动 npm 任务重复发布；需要 Git 分发时，单独运行 `npm run ui:git:release`。若自动流程中 npm 已成功而 Git 任务失败，仅重试失败的 Git 任务。源码或版本发生变化后重新验证并使用新版本，不覆盖既有标签或 npm 版本。
+主题变量与组件属性均有 TypeScript 声明。需要自定义品牌色、间距或圆角时，可使用 `ConfigProvider` 的主题配置及 CSS 变量。
 
-### 5. 消费端升级、回退及继续开发
+## 🔌 公开入口
 
-```bash
-# 在消费项目执行
-npm install @daisu-ui/ui@0.1.0-beta.5
-# 需要回退时
-npm install @daisu-ui/ui@0.1.0-beta.4
-# 跟随当前 beta（仍需提交更新后的锁文件）
-npm install @daisu-ui/ui@beta
+| 入口 | 用途 |
+| --- | --- |
+| `@daisu-ui/ui` | 组件、hooks、类型与主题 tokens |
+| `@daisu-ui/ui/router` | 路由视图、路由 hooks 与宿主历史适配 |
+| `@daisu-ui/ui/router/runtime` | 路由运行环境初始化 |
+| `@daisu-ui/ui/router/location` | 无渲染依赖的地址编解码与历史类型 |
+| `@daisu-ui/ui/utils` | 日期、轮播和按压状态等辅助 API |
+| `@daisu-ui/ui/web` | 浏览器媒体、裁剪及二维码导出后端注册 |
+| `@daisu-ui/ui/styles.css` | 兼容的独立样式入口，常规使用无需手动导入 |
+
+### 浏览器媒体能力
+
+在浏览器宿主挂载 `<lynx-view>` 前注册 Web 后端：
+
+```ts
+import { registerDaisuWebComponents } from '@daisu-ui/ui/web';
+
+registerDaisuWebComponents();
 ```
 
-发布完成后回到组件库，把 main 的合并记录同步回开发分支，再继续开发：
+`RichText`、`VideoPreview` 使用 `mediaMode="browser"`，`ImgCropper` 使用 `mode="browser"`。浏览器后端提供 HTML5 音视频播放、图片裁剪和二维码 PNG 导出；原生宿主需要实现对应适配。
 
-```bash
-git switch developer
-git pull --ff-only origin developer
-git merge origin/main
-git push origin developer
+### 路由接入
+
+使用路由时，在加载路由逻辑前初始化运行环境：
+
+```ts
+import '@daisu-ui/ui/router/runtime';
+import { RouterView, createRouter } from '@daisu-ui/ui/router';
 ```
 
-## 可选：Git 仓库分发
+使用 TanStack 路由树 API 时，在应用中直接声明 `@tanstack/react-router@1.170.46`，并将 `react`、`react/jsx-runtime`、`react/jsx-dev-runtime` 分别映射到 ReactLynx 对应的兼容入口。
 
-需要仅通过自有 GitLab 安装时，Tag 流水线的 `publish:git` 生成 `npm-dist` 和 `npm-v<版本>`。先确认安装标签存在，再安装：
+## 📱 平台与宿主
 
-```bash
-git ls-remote --tags origin 'refs/tags/npm-v0.1.0-beta.5*'
-npm install '@daisu-ui/ui@git+ssh://git@git.zilueit.com/daisu-ui/daisu-ui.git#npm-v0.1.0-beta.5'
-```
+Daisu UI 的原生引擎目标为 Lynx 4.2，浏览器使用 Lynx Web。布局、手势、性能和原生能力需要在目标设备验收，当前 beta 尚未完成 Android / iOS 全部组件的完整真机回归。
 
-安装方需具备仓库 SSH 读取权限。本地 Git 发布可先运行 `npm run ui:git:release -- --dry-run`，确认后执行 `npm run ui:git:release`，同样要求源码已进入远端 main。
+上传通过 `UploadAdapter` 接入选图、上传和预览；路由通过 `RouterHistoryAdapter` 接入页面历史。网络请求、鉴权与业务会话由使用方应用负责。
 
-GitLab 配置和重试说明见 [版本发布说明](docs/ci/git-release.md)，Runner 启停见 [Runner 维护说明](docs/ci/local-runner.md)。UI npm 发布与业务 Lynx Bundle / Manifest、Demo 和文档站部署分别执行。
+## AI 与 CLI
 
-## AI 与 MCP
+独立的 [CLI 仓库](https://git.zilueit.com/daisu-ui/cli) 提供离线组件查询、MCP 和消费端 Skill，通过 npm install -g @daisu-ui/cli@beta 安装，也支持 Git 源码和 tarball。先核对实际组件版本，再用 daisu info/doc/demo/token 查询；客户端一键接入使用 daisu agent init，仅 MCP 使用 daisu mcp init。
 
-AI 工具由独立的 `@daisu-ui/cli` 提供（[CLI 源码](https://git.zilueit.com/daisu-ui/cli)，SSH：`git@git.zilueit.com:daisu-ui/cli.git`），支持离线查询、全文搜索、项目检查、MCP 和消费端 Skill。使用方式见 [AI 总览](apps/docs/ai/overview.md)、[CLI 工具](apps/docs/ai/cli.md)、[MCP 接入](apps/docs/ai/mcp.md) 与 [AI Skills](apps/docs/ai/skills.md)。
+在 UI 仓库运行 npm run ui:docs:dev，可从 AI 菜单访问总览、LLMs.txt、CLI、MCP 与 Skills。CLI 快照不会因文档站或源码更新自动刷新；项目编译与原生能力仍需独立验证。
 
-这些接入页面由 CLI 生成并提交到本仓库。两端按 `DaiSu-UI/{daisu-ui,cli}` 同级维护且开发依赖已安装时，正常构建自动同步，文档开发服务持续监听并更新，刷新浏览器查看；无需再单独运行同步命令。单独检出 UI 时使用已保存资料构建并验证摘要，CI 只读校验。组件文档、LLM 约束、维护者 AGENTS 与 Lynx 技能仍由本仓库维护。同步与检查流程见 [独立仓库开发](docs/ui/WORKSPACE.md)。
+## 🤝 参与开发
 
-本机维护目录为 `/media/youzi/Project/workProject/DaiSu-UI/daisu-ui`，CLI 为同级 `cli`；工具和构建不依赖这个固定路径。CLI 推荐通过 npm install -g @daisu-ui/cli@beta 安装，也支持 Git 源码或 tarball；接入、版本选择、客户端配置及验证步骤以 AI 页面为准。
+源码见 [Daisu UI GitCode 仓库](https://gitcode.com/daisu/ui)。本地开发、验证命令与版本发布流程见 [开发与发布指南](https://gitcode.com/daisu/ui/blob/developer/docs/DEVELOPMENT.md)，组件版本变化可查看安装包内的 `CHANGELOG.md`。
+
+## 📄 开源协议
+
+[MIT](https://opensource.org/license/mit)。第三方版权与改编说明见包内 `THIRD_PARTY_NOTICES.md`，Tabler 图标许可见 `dist/icons/LICENSE.tabler`。
