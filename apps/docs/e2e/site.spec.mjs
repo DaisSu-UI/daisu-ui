@@ -18,7 +18,11 @@ test("project site keeps source links and resources under its mount path", async
   const outside = [];
   page.on("request", (request) => {
     const url = new URL(request.url());
-    if (url.origin === base.origin && !url.pathname.startsWith(base.pathname))
+    if (
+      ["http:", "https:"].includes(url.protocol) &&
+      url.origin === base.origin &&
+      !url.pathname.startsWith(base.pathname)
+    )
       outside.push(url.pathname);
   });
   await page.goto("./#/button");
