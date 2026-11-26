@@ -1,0 +1,15 @@
+name: daisu_flutter_host
+description: Daisu UI remote Bundle host template; requires a Lynx 4.2 compatible native host.
+publish_to: none
+version: 0.0.0
+environment:
+  sdk: '>=3.8.0 <4.0.0'
+  flutter: '>=3.32.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  lynx_view: 1.13.4
+  crypto: 3.0.6
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

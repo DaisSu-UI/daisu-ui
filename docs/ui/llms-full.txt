@@ -1536,3 +1536,9 @@ Ref：`open(src?):boolean`、`close()`、`chooseImage():boolean`、`confirm():bo
 - RouterProvider / RouteScreen 和路由 Hook、路径/历史工具：见 components/router.md。保持 Router 实例稳定，遵守 Provider 与场景作用域。
 - zodAdapter：见 components/form.md；通过 safeParseAsync 适配，不从 schema 内部自动推断必填。
 - 浏览器注册函数：见 components/web-registration.md；仅浏览器宿主入口执行，注册不代表原生媒体或网络资源验收通过。
+
+## 接入工程与兼容性证据
+
+平台兼容性总表由 apps/docs/platforms.mjs 与真实公开 API 清单生成，原生状态默认待设备验收。浏览器可预览、TypeScript 通过、Flutter Dart 分析通过都不代表原生引擎/元素/手势已验收。独立工程见 examples/quickstart 与 examples/flutter-host，文档站提供 ZIP 下载、浏览器完整接入和 Flutter Manifest 接入指南。
+
+本次核对 lynx_view 1.13.4，其已解析的 lynx_view_android 1.12.4 与 lynx_view_ios 1.11.0 仍声明 Lynx 4.0.0；本库编译目标为 4.2，不能推荐仅安装这组插件就宣称兼容。原生宿主需完成 4.2 引擎与 XElement 适配，按实际锁文件和设备结果记录。不要降低组件编译目标来伪造验收。

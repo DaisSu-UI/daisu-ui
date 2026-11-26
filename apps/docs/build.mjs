@@ -1,5 +1,6 @@
+import { starterArchive } from './starter-archive.mjs';
 import { createDocumentationAliases, exportMarkdown } from './public/documentation-links.js';
-import { checkDocumentationLinks } from './documentation.mjs';
+import { buildSearchIndex, checkDocumentationLinks } from './documentation.mjs';
 import { cp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { basename, dirname, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -13,7 +14,7 @@ import bash from 'highlight.js/lib/languages/bash';
 import json from 'highlight.js/lib/languages/json';
 import markdownLanguage from 'highlight.js/lib/languages/markdown';
 import ts from 'typescript';
-import { articlePages, changelogVersions } from './public/navigation.js';
+import { articlePages, documentationGroups, changelogVersions } from './public/navigation.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '../..');
@@ -89,10 +90,14 @@ for (const [source, filename] of [
   ['apps/demo/src/features/ui-demo/examples/button.tsx', 'button-demo.tsx.txt'],
   ['docs/ui/components/button.md', 'button.md.txt'],
 ]) await emitSource(resolve(root, source), filename);
+const searchEntries = [...documentationGroups.flatMap(group => group.pages.filter(page => page.id).map(page => ({ ...page, group: group.label }))), ...articlePages.filter(page => !documentationGroups.some(group => group.pages.some(item => item.id === page.id))).map(page => ({ ...page, group: '工程实践' })), ...docsGroups.flatMap(group => group.items.map(page => ({ ...page, group: group.label })))];
+await writeFile(resolve(output, 'search-index.json'), JSON.stringify(buildSearchIndex(markdown, markdownSources, searchEntries)));
 const versions = changelogVersions(changelog, packageInfo.version);
 await writeFile(resolve(output, 'content.json'), JSON.stringify({ version: packageInfo.version, versions, groups: docsGroups, pages, aliases: aliasesByName }));
 for (const [source, name] of [['llms.txt', 'llms.txt'], ['llms-full.txt', 'llms-full.txt'], ['COMPONENT_AI_NOTES.md', 'component-ai-notes.txt']]) await cp(resolve(root, 'docs/ui', source), resolve(output, name));
 await cp(resolve(root, 'apps/demo/h5-dist'), resolve(output, 'demo'), { recursive: true });
+await mkdir(resolve(output, 'downloads'), { recursive: true });
+for (const [directory, filename] of [['examples/quickstart', 'daisu-ui-quickstart.zip'], ['examples/flutter-host', 'daisu-ui-flutter-host.zip']]) await writeFile(resolve(output, 'downloads', filename), await starterArchive(resolve(root, directory)));
 await checkDocumentationLinks(markdown, markdownSources, aliasesByName, async href => {
   const path = resolve(output, decodeURIComponent(href));
   if (path !== output && !path.startsWith(output + sep)) return false;

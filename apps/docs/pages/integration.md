@@ -46,3 +46,9 @@ import { ConfigProvider, RootPortalHost } from '@daisu-ui/ui';
 - [快速上手](#/getting-started)
 - [Router 开发指南](#/router)
 - [平台适配](#/platforms)
+
+## 完整工程与支持范围
+
+- [浏览器最小工程与下载](./web-quickstart.md)
+- [Flutter Manifest 与宿主接入](./flutter-quickstart.md)
+- [平台兼容性总表](./compatibility.md)

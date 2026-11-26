@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "@lynx-js/react",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "types": [
+      "@lynx-js/rspeedy/client"
+    ],
+    "noEmit": true
+  },
+  "include": [
+    "src",
+    "web"
+  ]
+}

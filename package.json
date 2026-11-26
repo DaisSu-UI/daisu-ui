@@ -32,13 +32,17 @@
     "ui:npm:prepare": "npm run ui:build && node scripts/prepare-npm-package.mjs",
     "ui:npm:publish": "node scripts/publish-npm-package.mjs",
     "ui:npm:release": "node scripts/check-release-source.mjs --require-main && npm test && npm run test:git-release && npm run test:npm-release && npm run test:types && npm run build && npm run ui:check && npm run ui:pack && node scripts/prepare-npm-package.mjs && node scripts/publish-npm-package.mjs",
-    "test:ai-docs": "node --test apps/docs/check-ai-docs.test.mjs apps/docs/documentation.test.mjs scripts/cli-sync.test.mjs"
+    "test:ai-docs": "node --test apps/docs/check-ai-docs.test.mjs apps/docs/documentation.test.mjs apps/docs/starter-archive.test.mjs scripts/cli-sync.test.mjs",
+    "test:docs:browser": "playwright test",
+    "test:docs:release": "node --test scripts/docs-release.test.mjs",
+    "docs:pack": "node scripts/docs-release.mjs pack"
   },
   "devDependencies": {
     "@lynx-js/react": "^0.126.2",
     "@lynx-js/react-rsbuild-plugin": "^0.20.3",
     "@lynx-js/rspeedy": "^0.18.0",
     "@lynx-js/types": "^4.2.1",
+    "@playwright/test": "1.58.2",
     "@rsbuild/core": "^2.2.9",
     "@rstest/core": "^0.12.1",
     "@tabler/icons": "3.53.0",

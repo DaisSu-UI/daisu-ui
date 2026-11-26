@@ -1,3 +1,4 @@
+import { createDemoPreview } from './demo-preview.js';
 import { resolveDocumentationHref } from './documentation-links.js';
 import { createDocumentSearch } from './search.js';
 import { createSourceViewer, sourceRoute } from './source-viewer.js';
@@ -57,7 +58,7 @@ const sourceViewer = createSourceViewer(document.querySelector('#source-viewer')
   history.replaceState(history.state, '', `#/${page || 'getting-started'}${suffix}`);
   sourceViewer.hide();
 });
-const documentSearch = createDocumentSearch(document.querySelector('#document-search'), id => { location.hash = `#/${id}`; });
+const documentSearch = createDocumentSearch(document.querySelector('#document-search'), target => { location.hash = target.startsWith('#/') ? target : `#/${target}`; });
 document.querySelector('#document-search-trigger').addEventListener('click', () => { navigationMenus.closeAll(); setCatalogOpen(false); documentSearch.open(); });
 document.querySelector('.main-nav').addEventListener('click', event => { if (event.target.closest('[data-menu-trigger]')) setCatalogOpen(false); });
 function scrollToSection(section) {
@@ -76,7 +77,7 @@ function renderOutline() {
     const base = headingId(current, label);
     let id = base;
     for (let suffix = 2; ids.has(id); suffix++) id = `${base}-${suffix}`;
-    ids.add(id); heading.id = id;
+    ids.add(id); heading.id = id; heading.dataset.label = label;
     const anchor = document.createElement('a');
     anchor.className = 'heading-anchor'; anchor.href = sectionLink(id);
     anchor.setAttribute('aria-label', `定位到${label}`); anchor.textContent = '#';
@@ -246,11 +247,26 @@ function updateNavigation(params) {
     if (selected) link.setAttribute('aria-current', link.dataset.section ? 'location' : 'page'); else link.removeAttribute('aria-current');
   }
 }
+const demoPreview = createDemoPreview(demo, {
+  status: document.querySelector('#demo-status'), select: document.querySelector('#demo-examples'),
+  retry: document.querySelector('#reload-demo'), open: document.querySelector('#open-demo'),
+  onExamples() {
+    article.querySelectorAll('.view-demo').forEach(button => button.remove());
+    let group;
+    for (const heading of article.querySelectorAll('h2, h3')) {
+      if (heading.tagName === 'H2') group = heading.dataset.label;
+      const example = demoPreview.match(heading.dataset.label, heading.tagName === 'H3' ? group : undefined);
+      if (!example) continue;
+      const button = document.createElement('button'); button.type = 'button'; button.className = 'view-demo'; button.textContent = '查看演示';
+      button.addEventListener('click', () => { demoPreview.focus(example.id); const params = new URLSearchParams({ section: heading.id, example: example.id }); history.replaceState(history.state, '', `#/${current}?${params}`); if (mobileViewport.matches) demo.scrollIntoView({ block: 'start' }); });
+      heading.append(button);
+    }
+  },
+});
 function preview() {
-  if (isGuide()) { demo.removeAttribute('src'); return; }
+  if (isGuide()) { demoPreview.load(null); return; }
   const url = `./demo/?component=${encodeURIComponent(current)}&theme=${theme}`;
-  demo.src = url;
-  document.querySelector('#open-demo').href = url;
+  demoPreview.load(url);
 }
 function render() {
   const [page, query = ''] = location.hash.slice(2).split('?');
@@ -260,6 +276,7 @@ function render() {
   const source = params.get('source');
   if (current === next) {
     updateNavigation(params);
+    if (params.get('example')) demoPreview.focus(params.get('example'));
     if (source) { void sourceViewer.show(source); return; }
     const wasOpen = sourceViewer.isOpen();
     sourceViewer.hide();
@@ -308,6 +325,15 @@ function render() {
     wrapper.setAttribute('role', 'region'); wrapper.setAttribute('aria-label', 'API 表格，可横向滚动');
     table.before(wrapper); wrapper.append(table);
   }
+  if (current === 'compatibility') {
+    const table = article.querySelector('table');
+    if (table) {
+      const label = document.createElement('label'); label.className = 'compatibility-filter'; label.textContent = '筛选组件或平台要求';
+      const filter = document.createElement('input'); filter.type = 'search'; filter.id = 'compatibility-filter'; filter.placeholder = '例如：Upload、未接入、input';
+      label.append(filter); table.closest('.table-scroll').before(label);
+      filter.addEventListener('input', () => { const query = filter.value.trim().toLowerCase(); for (const row of table.querySelectorAll('tbody tr')) row.hidden = !row.textContent.toLowerCase().includes(query); });
+    }
+  }
   renderOutline(); renderCatalog(); renderPagination(); preview(); scrollToSection(section); revealCurrentComponent(); queueOutline();
   if (source) void sourceViewer.show(source);
 }
@@ -319,7 +345,7 @@ document.querySelector('#theme').addEventListener('click', () => {
   if (content) preview();
 });
 search.addEventListener('input', () => { if (content) renderCatalog(); });
-document.querySelector('#reload-demo').addEventListener('click', preview);
+
 sidebar.addEventListener('click', event => { if (event.target.closest('a[href]')) setCatalogOpen(false); });
 document.addEventListener('keydown', event => {
   if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k' && !sourceViewer.isOpen()) { event.preventDefault(); if (content) documentSearch.open(); return; }
@@ -340,6 +366,7 @@ try {
   if (!response.ok) throw new Error(String(response.status));
   content = await response.json();
   documentSearch.setDocuments([...relatedAiPages.map(page => ({ ...page, group: 'AI' })), ...relatedGuidePages.map(page => ({ ...page, group: '工程实践' })), ...documentationGroups.flatMap(group => group.pages.filter(page => page.id).map(page => ({ ...page, group: group.label }))), ...content.groups.flatMap(group => group.items.map(page => ({ ...page, group: group.label })))]);
+  documentSearch.setLoader(async () => { const response = await fetch('./search-index.json'); if (!response.ok) throw Error('Search index unavailable'); const records = await response.json(); if (!Array.isArray(records)) throw Error('Invalid search index'); return records; });
   document.querySelector('#document-search-trigger').disabled = false;
   renderCategories(); renderDocumentationNavigation(); renderVersionNavigation();
   render();
