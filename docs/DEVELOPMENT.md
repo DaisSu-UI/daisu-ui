@@ -74,3 +74,13 @@ AI 工具由独立的 `@daisu-ui/cli` 提供（[CLI 源码](https://github.com/D
 这些接入页面由 CLI 生成并提交到本仓库。两端按 `DaiSu-UI/{daisu-ui,cli}` 同级维护且开发依赖已安装时，正常构建自动同步，文档开发服务持续监听并更新，刷新浏览器查看；无需再单独运行同步命令。单独检出 UI 时使用已保存资料构建并验证摘要，CI 只读校验。组件文档、LLM 约束、维护者 AGENTS 与 Lynx 技能仍由本仓库维护。同步与检查流程见 [独立仓库开发](ui/WORKSPACE.md)。
 
 本机维护目录为 `/media/youzi/Project/workProject/DaiSu-UI/daisu-ui`，CLI 为同级 `cli`；工具和构建不依赖这个固定路径。CLI 推荐通过 npm install -g @daisu-ui/cli@beta 安装，也支持 Git 源码或 tarball；接入、版本选择、客户端配置及验证步骤以 AI 页面为准。
+
+## GitHub → GitLab 自动同步
+
+GitHub `DaisSu-UI/daisu-ui` 为主仓库，推送 main / developer 后，[同步工作流](../.github/workflows/sync-gitlab.yml) 自动将本次提交推送到 `git@git.zilueit.com:daisu-ui/daisu-ui.git` 的同名分支。可在 GitHub Actions 的 **Sync branches to GitLab** 中选择对应分支手动运行。
+
+GitLab 项目使用专用的 `github-actions-ui-sync` Deploy Key，并允许写入；对应私钥存入本 GitHub 仓库的 Actions Repository secret `GITLAB_SSH_PRIVATE_KEY`。密钥仅供同步作业使用，临时文件权限为 0600，结束时清理。GitLab SSH 必须可从 GitHub Runner 访问。
+
+主机公钥固定于 `.github/gitlab_known_hosts`，启用严格主机校验。服务端更换主机密钥时，先核对新指纹再更新该文件。同步采用普通分支推送；GitLab 出现独立提交导致分叉时，需要协调合并历史后重试。
+
+同步不同步发布标签、不删除分支。npm 与文档发布继续使用 GitHub 中的现有工作流。

@@ -1,0 +1,54 @@
+name: Sync branches to GitLab
+
+on:
+  push:
+    branches: [main, developer]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sync-gitlab-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: github.repository == 'DaisSu-UI/daisu-ui' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/developer')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Prepare GitLab deploy key
+        env:
+          GITLAB_SSH_PRIVATE_KEY: ${{ secrets.GITLAB_SSH_PRIVATE_KEY }}
+        run: |
+          if [ -z "$GITLAB_SSH_PRIVATE_KEY" ]; then
+            echo '::error::Configure the GITLAB_SSH_PRIVATE_KEY repository secret.'
+            exit 1
+          fi
+          umask 077
+          mkdir -p "$RUNNER_TEMP/gitlab-sync"
+          printf '%s\n' "$GITLAB_SSH_PRIVATE_KEY" > "$RUNNER_TEMP/gitlab-sync/id_ed25519"
+          ssh-keygen -y -P '' -f "$RUNNER_TEMP/gitlab-sync/id_ed25519" > "$RUNNER_TEMP/gitlab-sync/id_ed25519.pub"
+          ssh-keygen -lf "$RUNNER_TEMP/gitlab-sync/id_ed25519.pub"
+      - name: Push branch to GitLab
+        env:
+          GIT_SSH_COMMAND: >-
+            ssh -F /dev/null
+            -i "${{ runner.temp }}/gitlab-sync/id_ed25519"
+            -o IdentitiesOnly=yes
+            -o BatchMode=yes
+            -o StrictHostKeyChecking=yes
+            -o UserKnownHostsFile="${{ github.workspace }}/.github/gitlab_known_hosts"
+            -o ConnectTimeout=15
+            -o ServerAliveInterval=15
+            -o ServerAliveCountMax=2
+        run: |
+          git remote add gitlab git@git.zilueit.com:daisu-ui/daisu-ui.git
+          git push gitlab "HEAD:refs/heads/$GITHUB_REF_NAME"
+      - name: Remove temporary deploy key
+        if: always()
+        run: rm -f "$RUNNER_TEMP/gitlab-sync/id_ed25519" "$RUNNER_TEMP/gitlab-sync/id_ed25519.pub"

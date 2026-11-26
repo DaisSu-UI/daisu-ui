@@ -11,3 +11,5 @@
 组件 API、示例与 LLM 约束在本仓库维护；CLI/MCP/客户端和消费端 Skill 在独立 CLI 仓库维护。`apps/docs/ai/overview.md`、`cli.md`、`mcp.md`、`skills.md` 与 `cli-manifest.json` 由 CLI 的 `docs export` 生成，不手工编辑。默认本地构建可与已安装依赖的同级 CLI 自动协作，文档开发服务持续监听；单独检出时仍独立构建。可用 DAISU_UI_CLI_SOURCE 指定 CLI、DAISU_UI_AUTO_SYNC=0 关闭；CI 与 --check 只读验证，自动同步不得触发发布。
 
 `docs/ui/llms.txt` 由 UI 文档生成器按真实组件与导航清单生成，不手工编辑；完整说明和逐组件约束分别维护在 llms-full.txt 与 COMPONENT_AI_NOTES.md。文档构建须通过页面、资源与章节链接校验，Markdown 导出应能被 AI 直接读取。
+
+GitHub → GitLab 同步只推送 main / developer 同名分支，不强推、不同步发布标签；使用 UI 项目专用 Deploy Key Secret 和已核对的主机公钥，临时私钥在作业结束后清理。
