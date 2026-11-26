@@ -2,6 +2,6 @@
 .ui-video-preview-stage { width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
 .ui-video-preview-video { width:100%; height:var(--cso-ui-video-preview-video-height,248px); }
 .ui-video-preview-fullscreen { height:100%; }
-.ui-video-preview-close { position:absolute; top:16px; width:24px; height:24px; display:flex; align-items:center; justify-content:center; }
+.ui-video-preview-close { position:absolute; top:16px; z-index:10; }
 .ui-video-preview-close-left-top { left:16px; }
 .ui-video-preview-close-right-top { right:16px; }

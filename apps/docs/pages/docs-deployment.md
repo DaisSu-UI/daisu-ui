@@ -42,17 +42,19 @@ DAISU_DOCS_BASE_PATH=/daisu-ui/ node apps/docs/serve.mjs
 
 https://daissu-ui.github.io/ 对应专用组织站仓库 DaisSu-UI/daissu-ui.github.io。首页与文档源码仍在 UI 仓库维护；组织站仓库只保存经过校验的发布产物。首页默认在根路径展示，文档使用哈希路由，已有 /daisu-ui/ 项目站链接仍可访问。
 
-将本节对应的工作流合并到 main 后，在已通过 gh auth login 登录的本机终端执行一次：
+将本节对应的脚本合并到 main 后，在已通过 gh auth login 登录、且 SSH 可写入组织站仓库的本机终端执行一次：
 
 ```bash
 bash ops/setup-root-pages.sh
 ```
 
-脚本创建公开组织站仓库、将其 Pages 设为 main 分支根目录，并生成只允许写入组织站仓库的部署密钥。私钥存入 UI 仓库的 DOCS_ROOT_DEPLOY_KEY Actions Secret；临时密钥文件随后删除，不会写入源码。DOCS_ROOT_PAGES_ENABLED 仓库变量设为 true 后，Documentation 的 Publish organization homepage 任务才会启用。脚本最后会触发一次 main 文档发布。
+脚本创建并核对专用组织站仓库，将 ops/root-pages.yml 安装为该仓库的发布工作流，并把 Pages 设置为 GitHub Actions。它使用组织站自身的 GITHUB_TOKEN，不需要跨仓库 Deploy Key、个人令牌 Secret 或额外仓库变量。
 
-后续每次 main 更新，组件、类型、文档与浏览器检查通过后，同一份校验产物会同时发布到项目站和组织根站。组织根站保留 .nojekyll 并从 main 分支发布；其 GitHub Pages 构建由专用 SSH 部署密钥的推送触发，UI 仓库的 GITHUB_TOKEN 不需要跨仓库写权限。
+UI main 的 Documentation 工作流先完成构建、浏览器与模板验收，再发布 /daisu-ui/ 项目站。组织站工作流每10分钟检查项目站的 site-manifest.json；只有发布清单变化时，才下载全部资源、核对 SHA-256 和必要文件并发布到根地址。未变化的站点会跳过部署；下载失败或摘要不匹配时不会替换线上内容。GitHub 定时任务可能延迟，首次发布或需要立即更新时，在组织站的 Actions 中手动运行 Publish Daisu UI homepage。
 
-初始化需要组织建仓权限和 UI 仓库 Actions Secret/Variable 管理权限。若同名仓库已存在且未标记为本项目的发布仓库，脚本会停止并保留其中内容。
+两处站点使用同一份已验证产物。源脚本和工作流在 UI 仓库维护；组织站仓库仅保存由初始化脚本管理的工作流。更新 ops/root-pages.yml 后重新运行初始化脚本同步。
+
+初始化需要组织建仓和 Pages 管理权限，以及组织站仓库的 SSH 写入权限。同名仓库未标记为本项目的发布仓库时，脚本会停止并保留其中内容；使用本机 SSH 别名时可通过 DAISU_ROOT_GIT_URL 指定组织站仓库地址。
 
 ### SSH 服务器部署
 

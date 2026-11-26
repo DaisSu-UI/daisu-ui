@@ -19,7 +19,7 @@ npm run dev
 | 文件 | 用途 |
 | --- | --- |
 | src/index.tsx | 按钮计数、主题切换与应用根节点 |
-| lynx.config.ts | ReactLynx 插件、Lynx 4.2 编译目标 |
+| lynx.config.ts | ReactLynx 插件、Lynx 4.0 编译目标 |
 | web/main.ts | 独立浏览器宿主，先注册扩展再挂载 lynx-view |
 | web/rsbuild.config.ts | 浏览器构建及开发服务，资源支持子路径 |
 | dist/app.lynx.bundle | 原生宿主需要下载的 Bundle |
@@ -63,7 +63,7 @@ root.render(<App />);
 ## 排查步骤
 
 - 空白页面：先检查网页脚本、app.web.bundle 和分块文件是否全部返回 200，确认使用 HTTP 服务而非 file://。
-- 编译失败：检查锁文件、peerDependencies、engineVersion=4.2 以及 tasm override；不要只升级类型而不升级编译器。
+- 编译失败：检查锁文件、peerDependencies、engineVersion=4.0 以及 tasm override；不要只升级类型而不升级编译器。
 - 弹层位置错误：确认根部只配置一次 RootPortalHost，并处于 ConfigProvider 内。
 - 输入或媒体差异：按 [兼容性总表](./compatibility.md) 分平台核对；浏览器运行不等同于原生验收。
 

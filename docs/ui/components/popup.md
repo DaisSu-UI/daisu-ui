@@ -1,6 +1,6 @@
 # Popup 弹出层
 
-弹出层用于展示临时操作或内容，支持多个弹出方向、遮罩、圆角和关闭按钮。
+弹出层用于展示临时操作或内容，支持多个弹出方向、遮罩、圆角、左侧标题和右上角圆形关闭按钮。
 
 ```tsx
 import { Popup } from '@daisu-ui/ui';
@@ -10,7 +10,7 @@ import { Popup } from '@daisu-ui/ui';
 
 ### 基础弹层
 
-通过 `show` 和 `onChange` 控制显示状态，设置 `closable` 显示关闭按钮。
+通过 `show` 和 `onChange` 控制显示状态；`title` 显示左对齐标题，`closable` 显示右上角 40px 圆形关闭按钮，标题会为按钮预留空间。
 
 ```tsx
 import { useState } from '@lynx-js/react';
@@ -26,7 +26,7 @@ const [show, setShow] = useState(false);
     setShow(true);
   }}
 />
-<Popup show={show} onChange={setShow} closable>
+<Popup show={show} onChange={setShow} title="等级权益" closable>
   <text>弹层内容</text>
 </Popup>
 ```
@@ -38,7 +38,14 @@ const [show, setShow] = useState(false);
 设置 `position="bottom"` 从底部弹出，配合 `round` 和 `safeAreaInsetBottom` 使用圆角及底部安全区。
 
 ```tsx
-<Popup show={false} position="bottom" round safeAreaInsetBottom>
+<Popup
+  show={false}
+  title="等级权益"
+  position="bottom"
+  round
+  closable
+  safeAreaInsetBottom
+>
   <text>底部内容</text>
 </Popup>
 ```
@@ -52,6 +59,7 @@ const [show, setShow] = useState(false);
 | transition | 居中 fade+zoom-in，其余对应方向 slide；可传名称数组 | `TransitionName \| readonly TransitionName[]` | — |
 | duration | 毫秒或boolean | `number \| boolean` | `300` |
 | closable | 关闭按钮 | `boolean` | `false` |
+| title | 左侧标题，支持文字或自定义节点；为关闭按钮预留空间 | `ReactNode` | — |
 | closeOnClickModal | 遮罩点击关闭 / 展示遮罩 | `boolean` | `true` |
 | modal | 遮罩点击关闭 / 展示遮罩 | `boolean` | `true` |
 | modalStyle | 遮罩 CSSProperties | `CSSProperties` | — |
@@ -84,6 +92,7 @@ const [show, setShow] = useState(false);
 
 | 名称 | 说明 | 类型 |
 | --- | --- | --- |
+| title | 左侧标题，支持文字或自定义节点；为关闭按钮预留空间 | ReactNode |
 | children | 面板样式、内容；根 Host 外层局部主题需自行传入类名 | ReactNode |
 
 ## 数据类型
@@ -125,9 +134,9 @@ import { ConfigProvider } from '@daisu-ui/ui';
 
 | 变量 | 作用范围 |
 | --- | --- |
+| `--cso-ui-layer-close-bg` | 共享主题 |
 | `--cso-ui-surface` | 共享主题 |
 | `--cso-ui-text` | 共享主题 |
-| `--cso-ui-text-muted` | 共享主题 |
 
 ## 源代码
 

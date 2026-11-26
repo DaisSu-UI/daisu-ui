@@ -62,7 +62,7 @@ const preview = useVideoPreview();
 | title | 视频、封面与标题；支持HTTP(S)和相对地址，不执行脚本/data/file地址 | `string` | — |
 | zIndex | 公共Overlay层级 | `number` | — |
 | fullScreen | 播放区域填满预览层；默认区域高度248px；HTML5控件仍可进入浏览器原生全屏 | `boolean` | — |
-| closePosition | left-top / right-top，距边16px | `'left-top' \| 'right-top'` | — |
+| closePosition | left-top / right-top；默认 right-top，按钮40px，距顶部及对应侧边16px | `'left-top' \| 'right-top'` | — |
 | show | 可选受控显示；hook提供同一组合 | `boolean` | — |
 | options | 选项配置 | `VideoPreviewOptions` | — |
 | requestKey | 重复请求标识，变化时重置当前展示 | `number` | `0` |

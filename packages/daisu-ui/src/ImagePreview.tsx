@@ -2,6 +2,7 @@ import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from '@l
 import type { ReactNode } from '@lynx-js/react';
 import type { CSSProperties } from '@lynx-js/types';
 import { Icon } from './Icon.js';
+import { LayerCloseButton } from './LayerCloseButton.js';
 import { Img } from './Img.js';
 import { Overlay } from './Overlay.js';
 import { Swiper } from './Swiper.js';
@@ -47,7 +48,7 @@ export const ImagePreview=forwardRef<ImagePreviewRef,ImagePreviewProps>(function
  return <Overlay show={visible} duration={duration} rootPortal={rootPortal} zIndex={zIndex} lockScroll className={`ui-image-preview ${className}`} style={style} onAfterLeave={()=>{ 'background only';closing.current=false;setActive(false); }}>
   {active?<Swiper key={`${requestKey}:${revision}`} list={images} height="100%" current={index} autoplay={false} loop={loop} indicator={false} className="ui-image-preview-swiper" onChange={next=>{ 'background only';if(!state.current.visible||closing.current)return;setCurrent(next);state.current.settings.onChange?.(next); }} onClick={clicked=>{ 'background only';if(!state.current.visible||closing.current)return;state.current.settings.onClick?.(clicked);if(closeOnClick)close(); }} renderItem={({item,index:itemIndex})=><view className="ui-image-preview-item" bindlongpress={()=>{ 'background only';if(state.current.visible&&!closing.current)state.current.settings.onLongPress?.(itemIndex); }}><Img src={String(item)} width="100%" height="100%" mode="aspectFit" showLoading={false} showError={false}/></view>}/>:null}
   {renderIndicator?<view className="ui-image-preview-custom-indicator" event-through>{slot(renderIndicator({current:index,total:images.length}))}</view>:showIndex&&images.length>1?<text className="ui-image-preview-index">{`${index+1} / ${images.length}`}</text>:null}
-  {renderClose?<view className="ui-image-preview-custom-close" catchtap={()=>{}}>{slot(renderClose(close))}</view>:closeable?<view className={`ui-image-preview-close ui-image-preview-close-${closeIconPosition}`} catchtap={close} accessibility-element accessibility-traits="button" accessibility-label="关闭图片预览"><Icon name={closeIcon} size={24} color="#fff"/></view>:null}
+  {renderClose?<view className="ui-image-preview-custom-close" catchtap={()=>{}}>{slot(renderClose(close))}</view>:closeable?<LayerCloseButton show={visible} className={`ui-image-preview-close ui-image-preview-close-${closeIconPosition}`} onClose={close} label="关闭图片预览"><Icon name={closeIcon} size={24}/></LayerCloseButton>:null}
   {renderContent?<view className="ui-image-preview-content" event-through>{slot(renderContent({current:index,total:images.length,images,close}))}</view>:null}
  </Overlay>;
 });

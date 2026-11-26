@@ -35,8 +35,7 @@ try {
   for (const name of Object.keys(metadata.peerDependencies)) dependencies[name] = localVersion(name);
   // Use the tested dependency versions while allowing npm to resolve the full
   // transitive graph in an isolated directory, without workspace symlinks.
-  // Keep the compiler override: the build plugins still pin TASM 0.0.49,
-  // whose encoder rejects the Lynx 4.2 target.
+  // Keep the same compiler override as the workspace and starter.
   const overrides = { ...JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')).overrides };
   for (const name of Object.keys(metadata.dependencies)) overrides[name] = localVersion(name);
   const consumer = { name: 'daisu-ui-consumer', private: true, type: 'module', dependencies, overrides };
@@ -125,11 +124,16 @@ try {
         lynx: {},
         web: { output: { distPath: { root: 'dist-web' } } },
       },
-      plugins: [pluginReactLynx({ engineVersion: '4.2' })],
+      plugins: [pluginReactLynx({ engineVersion: '4.0' })],
     },
   });
   await build.build();
   assert(existsSync(join(temporary, 'dist/app.lynx.bundle')), 'Standalone consumer did not emit a Lynx bundle');
+  const { decode_wasm } = require('@lynx-js/tasm');
+  for (const entry of ['app', 'button']) {
+    const decoded = await decode_wasm(readFileSync(join(temporary, `dist/${entry}.lynx.bundle`)));
+    assert.equal(decoded['engine-version'], '4.0', `${entry} Bundle must target Lynx 4.0`);
+  }
   const buttonBundle = readFileSync(join(temporary, 'dist-web/button.web.bundle'), 'utf8');
   assert(buttonBundle.includes('--ui-button-foreground'), 'Named Button import lost its automatic CSS during production tree shaking');
   console.log(`Daisu UI package verified: ${pack.filename}, ${paths.size} files, isolated npm install, types, ReactLynx build and automatic CSS`);

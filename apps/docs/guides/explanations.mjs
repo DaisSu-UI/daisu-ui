@@ -307,7 +307,7 @@ export default {
   },
   popup: {
     基础弹层:
-      "通过 `show` 和 `onChange` 控制显示状态，设置 `closable` 显示关闭按钮。",
+      "通过 `show` 和 `onChange` 控制显示状态；`title` 显示左对齐标题，`closable` 显示右上角 40px 圆形关闭按钮，标题会为按钮预留空间。",
     底部弹出:
       '设置 `position="bottom"` 从底部弹出，配合 `round` 和 `safeAreaInsetBottom` 使用圆角及底部安全区。',
   },

@@ -173,9 +173,7 @@ import { ConfigProvider } from '@daisu-ui/ui';
 | 变量 | 作用范围 |
 | --- | --- |
 | `--cso-ui-calendar-range-bg` | 当前组件 |
-| `--cso-ui-dark-display` | 共享主题 |
 | `--cso-ui-disabled-text` | 共享主题 |
-| `--cso-ui-light-display` | 共享主题 |
 | `--cso-ui-line` | 共享主题 |
 | `--cso-ui-on-primary` | 共享主题 |
 | `--cso-ui-primary` | 共享主题 |

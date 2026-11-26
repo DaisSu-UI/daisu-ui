@@ -153,9 +153,7 @@ import { ConfigProvider } from '@daisu-ui/ui';
 
 | 变量 | 作用范围 |
 | --- | --- |
-| `--cso-ui-dark-display` | 共享主题 |
 | `--cso-ui-disabled-text` | 共享主题 |
-| `--cso-ui-light-display` | 共享主题 |
 | `--cso-ui-primary` | 共享主题 |
 | `--cso-ui-text` | 共享主题 |
 | `--cso-ui-text-muted` | 共享主题 |

@@ -48,7 +48,7 @@ writeFileSync(join(destination, 'release.json'), JSON.stringify({
   version: metadata.version,
   sourceCommit,
   sourceTag: sourceTag || null,
-  engineVersion: '4.2',
+  engineVersion: '4.0',
 }, null, 2) + '\n');
 // 发布分支不执行源码流水线，也不落入实例的 Auto DevOps 默认配置。
 writeFileSync(join(destination, '.gitlab-ci.yml'), 'skip:package:\n  script: echo "组件发布产物"\n  only:\n    - /^__no_package_pipeline__$/\n');

@@ -43,7 +43,7 @@ Demo 支持组件独立路径与深色模式，文档站可从 iframe 独立打�
 ```bash
 npm install @daisu-ui/ui@beta
 # 固定版本，升级或回退时显式指定版本号
-npm install @daisu-ui/ui@0.1.0-beta.5
+npm install @daisu-ui/ui@0.1.0-beta.6
 ```
 
 ```tsx
@@ -51,7 +51,7 @@ import { Button } from '@daisu-ui/ui';
 import { RouterView } from '@daisu-ui/ui/router';
 ```
 
-组件入口自动加载 CSS。消费项目须具备 ReactLynx 工具链及满足 peerDependencies 的依赖，宿主引擎至少 Lynx 4.2；旧工具链需要在项目根添加 `"overrides": { "@lynx-js/tasm": "0.0.53" }`。安装后提交消费项目的 `package.json` 和 `package-lock.json`。
+组件入口自动加载 CSS。消费项目须具备 ReactLynx 工具链及满足 peerDependencies 的依赖，Bundle 使用 `engineVersion: '4.0'`，开发类型固定 `@lynx-js/types@4.0.0`；原生能力仍需设备验收；旧工具链需要在项目根添加 `"overrides": { "@lynx-js/tasm": "0.0.53" }`。安装后提交消费项目的 `package.json` 和 `package-lock.json`。
 
 npm 只发布 `packages/daisu-ui` 构建的 UI 库：`dist/`、类型声明、样式、README、更新日志与许可证。不发布根 workspace、Demo、文档站、CLI/MCP、测试或 TSX 源码。
 

@@ -22,7 +22,7 @@ async function mount() {
     browserMedia: true, page: navigation.initialPage, navigation: navigation.initialState,
     theme: query.get('theme') || (scheme.matches ? 'dark' : 'light'), viewportWidth: innerWidth,
   };
-  const entry = [...document.scripts].find(script => /\/static\/js\/index\.[^/]+\.js$/.test(new URL(script.src, location.href).pathname));
+  const entry = [...document.scripts].find(script => /\/static\/js\/index(?:\.[^/]+)?\.js$/.test(new URL(script.src, location.href).pathname));
   if (!entry) throw new Error('Demo entry script was not found');
   const base = new URL('../../', entry.src);
   view.nativeModulesMap = { DemoBridge: new URL('native-modules/demo-bridge.js', base).href };

@@ -1,7 +1,10 @@
 .ui-dialog { width: 280px; background-color: transparent; }
 .ui-dialog-container { width: 100%; border-radius: 8px; overflow: hidden; background-color: var(--cso-ui-surface); }
-.ui-dialog-body { padding: 20px 20px 0; }
-.ui-dialog-title { width: 100%; color: var(--cso-ui-text); font-size: 16px; font-weight: 600; line-height: 24px; text-align: center; }
+.ui-dialog-body { padding: 16px 16px 0; }
+.ui-dialog-heading { width: 100%; min-height: 40px; display: flex; flex-direction: column; justify-content: center; }
+.ui-dialog-heading-closable { padding-right: 56px; }
+.ui-dialog-title { width: 100%; color: var(--cso-ui-text); font-size: 20px; font-weight: 600; line-height: 28px; text-align: left; }
+.ui-dialog-body-close-only { padding-top: 72px; }
 .ui-dialog-message { color: var(--cso-ui-text-muted); font-size: 14px; line-height: 20px; text-align: center; }
 .ui-dialog-message-titled { margin-top: 8px; }
 .ui-dialog-actions { padding: 20px; display: flex; gap: 12px; }

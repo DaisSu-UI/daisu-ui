@@ -11,8 +11,10 @@
   <a href="https://www.npmjs.com/package/@daisu-ui/ui"><img src="https://img.shields.io/npm/v/@daisu-ui/ui/beta?style=flat-square&amp;logo=npm&amp;color=FF6A00" alt="npm beta version" /></a>
   <a href="https://www.npmjs.com/package/@daisu-ui/ui"><img src="https://img.shields.io/npm/dm/@daisu-ui/ui?style=flat-square&amp;logo=npm&amp;color=FF6A00" alt="npm downloads" /></a>
   <a href="https://opensource.org/license/mit"><img src="https://img.shields.io/badge/license-MIT-FF6A00?style=flat-square" alt="MIT license" /></a>
-  <a href="https://lynxjs.org/"><img src="https://img.shields.io/badge/Lynx-%E2%89%A5%204.2-FF6A00?style=flat-square" alt="Lynx 4.2 or later" /></a>
+  <a href="https://lynxjs.org/"><img src="https://img.shields.io/badge/Lynx-%E2%89%A5%204.0-FF6A00?style=flat-square" alt="Lynx 4.0 or later" /></a>
 </p>
+
+文档与交互示例：[Daisu UI 首页](https://daissu-ui.github.io/)。
 
 ## ✨ 特性
 
@@ -42,7 +44,7 @@ yarn add @daisu-ui/ui@beta
 需要锁定版本时：
 
 ```bash
-npm install @daisu-ui/ui@0.1.0-beta.5
+npm install @daisu-ui/ui@0.1.0-beta.6
 ```
 
 本包包含 UI 库的 ESM、保留 JSX 的组件、类型声明、CSS 和许可证。Demo、文档应用和 CLI 不随组件包发布。
@@ -80,14 +82,14 @@ root.render(<App />);
 
 | 依赖 | 版本 |
 | --- | --- |
-| Lynx 原生引擎 | 4.2 或更高 |
+| Lynx 原生引擎 | 4.0 编译目标；原生能力待设备验收 |
 | `@lynx-js/react` | `^0.126.2` |
-| `@lynx-js/types` | `^4.2.1` |
+| `@lynx-js/types` | `^4.0.0`；开发固定为 `4.0.0` |
 | `@types/react` | `^18.3.0` |
 
-使用 Rspeedy 的 `pluginReactLynx({ engineVersion: '4.2' })` 构建。组件包保留 JSX，由消费项目的 ReactLynx 编译器完成转换。
+使用 Rspeedy 的 `pluginReactLynx({ engineVersion: '4.0' })` 构建。组件包保留 JSX，由消费项目的 ReactLynx 编译器完成转换。
 
-如果构建插件仍内置 `@lynx-js/tasm@0.0.49`，需要在项目根 `package.json` 配置支持 Lynx 4.2 的编译器并重新安装依赖：
+本仓库使用以下编译器 override，消费项目可保持相同工具链并重新安装依赖：
 
 ```json
 {
@@ -97,7 +99,7 @@ root.render(<App />);
 }
 ```
 
-编译目标不会升级宿主引擎；宿主集成方须同步满足引擎版本要求。
+编译目标不会升级宿主引擎。此前的 4.2 Bundle 须重新构建、替换远端文件并更新 Manifest 哈希，不能继续向 4.0 宿主下发旧产物。
 
 ## 🧩 组件一览
 
@@ -167,7 +169,7 @@ import { RouterView, createRouter } from '@daisu-ui/ui/router';
 
 ## 📱 平台与宿主
 
-Daisu UI 的原生引擎目标为 Lynx 4.2，浏览器使用 Lynx Web。布局、手势、性能和原生能力需要在目标设备验收，当前 beta 尚未完成 Android / iOS 全部组件的完整真机回归。
+Daisu UI 的原生引擎编译目标为 Lynx 4.0，浏览器使用 Lynx Web。布局、手势、性能和原生能力需要在目标设备验收，当前 beta 尚未完成 Android / iOS 全部组件的完整真机回归。
 
 上传通过 `UploadAdapter` 接入选图、上传和预览；路由通过 `RouterHistoryAdapter` 接入页面历史。网络请求、鉴权与业务会话由使用方应用负责。
 

@@ -100,12 +100,13 @@ export function Dialog({ requestKey = 0, show = false, onChange, onResult, title
   const buttons = actions ?? [showCancelButton ? normalize(cancelButtonProps, { text: cancelButtonText, action: 'cancel', tone: 'info', variant: 'plain' }) : null, normalize(confirmButtonProps, { text: confirmButtonText, action: 'confirm', tone: 'primary' })].filter((item): item is DialogAction => item !== null);
   const iconNames: Record<string, string> = { success: 'check-circle-fill', danger: 'close-circle-fill', warning: 'exclamation-circle-fill', info: 'info-circle-fill' };
   const iconName = iconNames[icon ?? ''] ?? icon;
+  const closeInBody = showClose && !header && !headerImage;
   return <Popup show={show} onClose={reason => finish(reason)} position="center" transition="zoom-in" duration={200} modal zIndex={zIndex} lazyRender={lazyRender} rootPortal={rootPortal} closable={showClose} closeOnClickModal={closeOnClickModal} className={`ui-dialog ${className}`} style={{ backgroundColor: 'transparent', ...style }}>
     <view className={`ui-dialog-container ui-dialog-theme-${theme}`}>
       {header ?? (headerImage ? <image className="ui-dialog-header-image" src={headerImage} mode="aspectFill" /> : null)}
-      {title || msg || type === 'prompt' || children || icon ? <view className="ui-dialog-body">
+      {title || msg || type === 'prompt' || children || icon ? <view className={`ui-dialog-body ${closeInBody && !title && !iconName ? 'ui-dialog-body-close-only' : ''}`}>
         {iconName ? <view className="ui-dialog-icon"><Icon name={iconName} size={40} color={iconColor} /></view> : null}
-        {title ? typeof title === 'string' || typeof title === 'number' ? <text className="ui-dialog-title">{title}</text> : title : null}
+        {title ? <view className={`ui-dialog-heading ${closeInBody && !iconName ? 'ui-dialog-heading-closable' : ''}`}>{typeof title === 'string' || typeof title === 'number' ? <text className="ui-dialog-title">{title}</text> : title}</view> : null}
         {children ?? <>{msg ? <text className={`ui-dialog-message ${title ? 'ui-dialog-message-titled' : ''}`}>{msg}</text> : null}{type === 'prompt' ? <view className={`ui-dialog-input-wrap ${error ? 'ui-dialog-input-error' : ''}`}><PromptInput key={generation} {...inputProps} value={value} onInput={v => { setValue(v); setError(''); }} /></view> : null}</>}
         {error ? <text className="ui-dialog-error">{error}</text> : null}
       </view> : null}

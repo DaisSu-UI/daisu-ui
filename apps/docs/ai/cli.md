@@ -187,7 +187,7 @@ daisu info Button --cwd /absolute/path/to/project
 
 UI 包和 CLI 的 npm 版本分别发布，网站或 Git 中的新快照不会自动进入已经安装的 CLI。先执行 daisu data list；若目标版本不存在，更新到收录它的 CLI 后再次核对。
 
-例如，npm 的 @daisu-ui/cli@0.1.0-beta.3 随包数据截止 UI 0.1.0-beta.3，而 CLI Git 仓库已收录 UI 0.1.0-beta.4。使用 UI beta.4 时需要包含 beta.4 快照的后续 CLI，或从 Git 源码构建。--version latest 只选择已有快照，不能让旧包获得新 API。
+项目升级 UI 后，需安装收录该精确版本快照的 CLI，或从包含该快照的 Git 源码构建。--version latest 只选择当前 CLI 已有的快照，不能让旧包获得新 API。Bundle 引擎目标与类型依赖也按所选 UI 版本的说明核对，不从工具自身版本推断。
 
 从 Git 构建后，在消费项目用构建入口查询或重新配置客户端：
 
@@ -234,4 +234,4 @@ daisu docs export --ui-dir /absolute/path/to/daisu-ui --check
 
 --check 严格只读。版本数据提交到 CLI，接入页面和摘要清单提交到 UI，不手工修改生成页。开发文档、CLI npm 发布、组件 npm 发布与业务 Bundle 分别执行。
 
-本文由 `@daisu-ui/cli@0.1.0-beta.6` 生成。内容在 CLI 仓库维护；更新方式见 [CLI 工具](#/ai-cli)。
+本文由 `@daisu-ui/cli@0.1.0-beta.7` 生成。内容在 CLI 仓库维护；更新方式见 [CLI 工具](#/ai-cli)。

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from '@lynx-js/react';
-import { Button, Icon, Loading, RootPortal, Tabbar } from '@daisu-ui/ui';
+import { Button, Popup, Icon, Loading, RootPortal, Tabbar } from '@daisu-ui/ui';
 import type { TabbarItem, TabbarValue } from '@daisu-ui/ui';
 import panda from '../../../assets/demo-panda.jpg';
 import { DemoGroup, ExampleBlock } from './shared.js';
@@ -48,7 +48,7 @@ export function TabbarExample({ theme }: { theme: 'light' | 'dark' }) {
     <RootPortal>
       {notice ? <view className="ui-demo-page demo-cell-toast" user-interaction-enabled={false}><text>{notice}</text></view> : null}
       {loading ? <view className="ui-demo-page demo-tabbar-loading" user-interaction-enabled={false}><Loading /><text>Loading...</text></view> : null}
-      {dialog ? <view className="ui-demo-page demo-root-portal-modal" catchtap={() => { 'background only'; }}><view className="demo-tabbar-dialog"><image className="demo-tabbar-dialog-image" src={panda} mode="aspectFill" /><view className="demo-tabbar-dialog-body"><text className="demo-root-portal-modal-title">发布动态</text><text className="demo-root-portal-modal-text">选择你要发布的内容类型</text><Button label="确定" round block onTap={() => { 'background only'; setDialog(false); }} /></view></view></view> : null}
+      <Popup show={dialog} onChange={setDialog} title="发布动态" closable round className="ui-demo-page demo-tabbar-dialog"><image className="demo-tabbar-dialog-image" src={panda} mode="aspectFill" /><view className="demo-tabbar-dialog-body"><text className="demo-root-portal-modal-text">选择你要发布的内容类型</text><Button label="确定" round block onTap={() => { 'background only'; setDialog(false); }} /></view></Popup>
     </RootPortal>
   </view>;
 }

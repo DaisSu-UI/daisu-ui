@@ -179,4 +179,4 @@ guide 支持 llms、llms-full、component-ai-notes；历史快照未收录时会
 
 - [CLI 工具](#/ai-cli) · [AI Skills](#/ai-skills) · [AI 总览](#/ai-guide)
 
-本文由 `@daisu-ui/cli@0.1.0-beta.6` 生成。内容在 CLI 仓库维护；更新方式见 [CLI 工具](#/ai-cli)。
+本文由 `@daisu-ui/cli@0.1.0-beta.7` 生成。内容在 CLI 仓库维护；更新方式见 [CLI 工具](#/ai-cli)。

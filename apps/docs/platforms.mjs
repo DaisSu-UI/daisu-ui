@@ -77,7 +77,7 @@ export function compatibilityRows(sources, catalog) {
     const [web, native, requirement] = special[id] || [
       entry.demo ? "有浏览器示例" : "组合示例与类型检查",
       "源码实现，待目标设备验收",
-      "Lynx 4.2+；实际宿主元素及渲染后端需匹配",
+      "Lynx 4.0 编译目标；实际宿主元素及渲染后端需匹配",
     ];
     return {
       id,
@@ -100,7 +100,7 @@ export function renderCompatibility(version, rows) {
 
 - “有浏览器示例”表示提供了实现和入口，不表示所有交互都已逐项自动化验收；浏览器回归的具体场景见 CI 报告。
 - Android / iOS 默认标记“待目标设备验收”。类型检查、网页预览和插件依赖声明均不能代替真机验证，不将源码实现直接标为原生已支持。
-- 当前组件 Bundle 编译目标为 Lynx 4.2，开发类型为 @lynx-js/types@4.2.1。lynx_view 的 Dart 插件版本不能单独证明实际内置引擎及 XElement 注册已匹配。
+- 当前组件 Bundle 编译目标为 Lynx 4.0，开发类型固定为 @lynx-js/types@4.0.0，组件 peerDependency 接受 ^4.0.0。lynx_view 的 Dart 插件版本不能单独证明实际内置引擎及 XElement 注册已匹配。
 - 本轮未完成 Android / iOS 真机验收，所以没有填写虚构的设备型号、系统版本或测试日期。
 
 ## 组件与公开 API

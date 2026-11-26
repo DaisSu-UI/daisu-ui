@@ -26,7 +26,6 @@
 
 .ui-popup.ui-picker{border-radius:8px 8px 0 0;}
 
-.ui-select-picker-header .ui-action-sheet-title{font-size:18px;line-height:26px;font-weight:600;}
 .ui-select-picker-content{position:relative;}
 .ui-select-picker-loading{position:absolute;top:0;bottom:0;left:0;right:0;display:flex;align-items:center;justify-content:center;}
 .ui-select-picker-is-loading .ui-choice-group{opacity:.4;}
@@ -36,7 +35,5 @@
 .ui-select-picker-label{font-size:14px;line-height:20px;color:var(--cso-ui-text);}
 .ui-select-picker-choice-label .ui-select-picker-text-active{color:var(--cso-ui-primary);}
 
-.ui-select-picker-close-light{display:var(--cso-ui-light-display,flex);}
-.ui-select-picker-close-dark{display:var(--cso-ui-dark-display,none);}
 
 .ui-datetime-picker-view .ui-picker-option text{font-family:"San Francisco",Roboto,Arial,"PingFang SC","Microsoft YaHei",sans-serif;}

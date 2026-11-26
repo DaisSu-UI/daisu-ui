@@ -5,7 +5,6 @@ import { Radio, RadioGroup } from './Radio.js';
 import { Checkbox, CheckboxGroup } from './Checkbox.js';
 import { Search } from './Search.js';
 import { Button } from './Button.js';
-import { Icon } from './Icon.js';
 import { Loading } from './Loading.js';
 import { FormFieldContext } from './formContext.js';
 import type { ChoiceValue } from './choice.js';
@@ -72,7 +71,7 @@ export const SelectPicker = forwardRef<SelectPickerRef, SelectPickerProps>(funct
     if (index < 0 || top >= offset.current && top + row <= offset.current + 375) return;
     scroll.current?.invoke({ method: 'scrollTo', params: { offset: Math.max(0, top - 375 / 2), smooth: true } }).exec();
   };
-  return <ActionSheet show={show} onClose={cancel} onAfterEnter={reveal} title={title} titleClassName="ui-select-picker-header" renderClose={() => <view className="ui-select-picker-close"><Icon name="close" size={24} color="#4e5369" className="ui-select-picker-close-light" /><Icon name="close" size={24} color="#6b7085" className="ui-select-picker-close-dark" /></view>} closeOnClickModal={closeOnClickModal} rootPortal={rootPortal} zIndex={zIndex} safeAreaInsetBottom={safeAreaInsetBottom} safeAreaBottom={safeAreaBottom} className={`ui-select-picker ${className}`} style={style}>
+  return <ActionSheet show={show} onClose={cancel} onAfterEnter={reveal} title={title} titleClassName="ui-select-picker-header" closeOnClickModal={closeOnClickModal} rootPortal={rootPortal} zIndex={zIndex} safeAreaInsetBottom={safeAreaInsetBottom} safeAreaBottom={safeAreaBottom} className={`ui-select-picker ${className}`} style={style}>
     {filterable ? <Search value={query} onChange={({ value }) => { 'background only'; setQuery(value); offset.current = 0; scroll.current?.invoke({ method: 'scrollTo', params: { offset: 0, smooth: false } }).exec(); }} placeholder={filterPlaceholder} hideCancel placeholderLeft disabled={loading || busy} /> : null}
     <view className="ui-select-picker-content"><scroll-view ref={scroll} className={`ui-select-picker-scroll ${loading ? 'ui-select-picker-is-loading' : ''} ${contentClassName}`} scroll-orientation="vertical" enable-scroll={!loading} scroll-bar-enable={false} bindscroll={event => { 'background only'; offset.current = event.detail.scrollTop; }}>
       {type === 'checkbox' ? <CheckboxGroup value={Array.isArray(draft) ? draft : []} min={min} max={max} disabled={disabled || busy} readonly={loading} onChange={({ value }) => update(value)} placement="right" type="square" size={selectSize} checkedColor={checkedColor}>{items.map(item => <Checkbox key={`${typeof item.value}:${item.value}`} name={item.value} disabled={item.disabled} className="ui-select-picker-option" labelClassName="ui-select-picker-choice-label">{label(item)}</Checkbox>)}</CheckboxGroup> : <RadioGroup<ChoiceValue> value={Array.isArray(draft) ? null : draft} disabled={disabled || busy} readonly={loading} placement="right" size={selectSize} checkedColor={checkedColor} onChange={value => { 'background only'; if (value !== null) update(value); }}>{items.map(item => <Radio key={`${typeof item.value}:${item.value}`} value={item.value} disabled={item.disabled} className="ui-select-picker-option" labelClassName="ui-select-picker-choice-label">{label(item)}</Radio>)}</RadioGroup>}
