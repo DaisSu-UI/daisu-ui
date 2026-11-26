@@ -171,9 +171,15 @@ Daisu UI 的原生引擎目标为 Lynx 4.2，浏览器使用 Lynx Web。布局�
 
 上传通过 `UploadAdapter` 接入选图、上传和预览；路由通过 `RouterHistoryAdapter` 接入页面历史。网络请求、鉴权与业务会话由使用方应用负责。
 
+## AI 与 CLI
+
+独立的 [CLI 仓库](https://git.zilueit.com/daisu-ui/cli) 提供离线组件查询、MCP 和消费端 Skill，通过 npm install -g @daisu-ui/cli@beta 安装，也支持 Git 源码和 tarball。先核对实际组件版本，再用 daisu info/doc/demo/token 查询；客户端一键接入使用 daisu agent init，仅 MCP 使用 daisu mcp init。
+
+在 UI 仓库运行 npm run ui:docs:dev，可从 AI 菜单访问总览、LLMs.txt、CLI、MCP 与 Skills。CLI 快照不会因文档站或源码更新自动刷新；项目编译与原生能力仍需独立验证。
+
 ## 🤝 参与开发
 
-源码维护在 [Daisu UI GitLab 仓库](https://git.zilueit.com/daisu-ui/daisu-ui)，需要仓库访问权限。开发约定、发布操作与变更记录在仓库维护，组件版本变化也可查看安装包内的 `CHANGELOG.md`。
+源码见 [Daisu UI GitHub 仓库](https://github.com/DaisSu-UI/daisu-ui)。本地开发、验证命令与版本发布流程见 [开发与发布指南](https://github.com/DaisSu-UI/daisu-ui/blob/developer/docs/DEVELOPMENT.md)，组件版本变化可查看安装包内的 `CHANGELOG.md`。
 
 ## 📄 开源协议
 

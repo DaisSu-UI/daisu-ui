@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { checkReleaseSource } from './check-release-source.mjs';
+import { assertPublishEnvironment, releaseTag } from './release-environment.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const args = process.argv.slice(2);
@@ -23,12 +24,12 @@ assert.equal(release.sourceCommit, sourceCommit, '产物源码已过期，请重
 assert.equal(release.version, metadata.version);
 assert.equal(metadata.scripts, undefined, 'Git 安装包不能保留开发构建脚本');
 assert(existsSync(join(directory, 'dist/index.js')), '缺少编译产物');
-if (process.env.CI_COMMIT_TAG) assert.equal(process.env.CI_COMMIT_TAG, `v${metadata.version}`);
-if (process.env.CI) {
-  assert.equal(process.env.CI_COMMIT_TAG, `v${metadata.version}`, 'CI 只允许从组件版本对应的源码 Tag 发布');
-  assert(process.env.GIT_RELEASE_SSH_KEY, '请在 GitLab CI 变量中配置有仓库写权限的 GIT_RELEASE_SSH_KEY');
+if (releaseTag()) assert.equal(releaseTag(), `v${metadata.version}`);
+assertPublishEnvironment(metadata.version, sourceCommit);
+if (process.env.CI || process.env.GITHUB_ACTIONS === 'true') {
+  assert(process.env.GIT_RELEASE_SSH_KEY, '请配置有仓库写权限的 GIT_RELEASE_SSH_KEY');
 }
-checkReleaseSource({ root });
+const { remote: sourceRemote } = checkReleaseSource({ root });
 
 const temporary = mkdtempSync(join(tmpdir(), 'daisu-git-release-'));
 const repository = join(temporary, 'repository');
@@ -42,7 +43,7 @@ try {
     writeFileSync(knownHosts, env.GIT_RELEASE_KNOWN_HOSTS.trim() + '\n', { mode: 0o600 });
     env.GIT_SSH_COMMAND = `ssh -i '${key}' -o IdentitiesOnly=yes -o UserKnownHostsFile='${knownHosts}' -o StrictHostKeyChecking=yes`;
   }
-  const remote = env.GIT_RELEASE_REMOTE || (env.CI_PROJECT_URL ? `${env.CI_PROJECT_URL.replace(/^https?:\/\//, 'git@').replace('/', ':')}.git` : git(['remote', 'get-url', 'origin']));
+  const remote = env.GIT_RELEASE_REMOTE || (env.GITHUB_ACTIONS === 'true' ? `git@github.com:${env.GITHUB_REPOSITORY}.git` : git(['remote', 'get-url', sourceRemote]));
   const branch = 'npm-dist';
   const tag = `npm-v${metadata.version}`;
   git(['init', repository], root, env);

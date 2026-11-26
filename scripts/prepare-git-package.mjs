@@ -4,14 +4,16 @@ import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } fr
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { checkReleaseSource } from './check-release-source.mjs';
+import { releaseTag } from './release-environment.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const library = join(root, 'packages/daisu-ui');
 const metadata = JSON.parse(readFileSync(join(library, 'package.json'), 'utf8'));
 assert.equal(metadata.name, '@daisu-ui/ui');
 assert.match(metadata.version, /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/);
-if (process.env.CI_COMMIT_TAG) {
-  assert.equal(process.env.CI_COMMIT_TAG, `v${metadata.version}`, '源码 Tag 必须与组件包版本一致');
+const sourceTag = releaseTag();
+if (sourceTag) {
+  assert.equal(sourceTag, `v${metadata.version}`, '源码 Tag 必须与组件包版本一致');
   checkReleaseSource({ root });
 }
 assert(existsSync(join(library, 'dist/index.js')), '请先运行 npm run ui:build');
@@ -45,7 +47,7 @@ writeFileSync(join(destination, 'release.json'), JSON.stringify({
   name: metadata.name,
   version: metadata.version,
   sourceCommit,
-  sourceTag: process.env.CI_COMMIT_TAG || null,
+  sourceTag: sourceTag || null,
   engineVersion: '4.2',
 }, null, 2) + '\n');
 // 发布分支不执行源码流水线，也不落入实例的 Auto DevOps 默认配置。
