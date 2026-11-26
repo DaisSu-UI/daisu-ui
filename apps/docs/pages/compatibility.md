@@ -1,6 +1,6 @@
 # 平台兼容性总表
 
-本表对应 @daisu-ui/ui@0.1.0-beta.6，由公开 API 文档清单生成。新增组件自动进入表格，特殊能力在 apps/docs/platforms.mjs 维护。可按名称、平台状态或宿主要求筛选。
+本表对应 @daisu-ui/ui@0.1.0-beta.7，由公开 API 文档清单生成。新增组件自动进入表格，特殊能力在 apps/docs/platforms.mjs 维护。可按名称、平台状态或宿主要求筛选。
 
 ## 如何理解状态
 

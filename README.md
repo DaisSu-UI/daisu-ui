@@ -44,7 +44,7 @@ yarn add @daisu-ui/ui@beta
 需要锁定版本时：
 
 ```bash
-npm install @daisu-ui/ui@0.1.0-beta.6
+npm install @daisu-ui/ui@0.1.0-beta.7
 ```
 
 本包包含 UI 库的 ESM、保留 JSX 的组件、类型声明、CSS 和许可证。Demo、文档应用和 CLI 不随组件包发布。
