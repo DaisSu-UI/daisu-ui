@@ -69,7 +69,7 @@ GitHub Actions 为 UI 的自动验证和 npm 发布入口；GitLab 自动发布�
 
 ## AI 与 MCP
 
-AI 工具由独立的 `@daisu-ui/cli` 提供（[CLI 源码](https://git.zilueit.com/daisu-ui/cli)，SSH：`git@git.zilueit.com:daisu-ui/cli.git`），支持离线查询、全文搜索、项目检查、MCP 和消费端 Skill。使用方式见 [AI 总览](../apps/docs/ai/overview.md)、[CLI 工具](../apps/docs/ai/cli.md)、[MCP 接入](../apps/docs/ai/mcp.md) 与 [AI Skills](../apps/docs/ai/skills.md)。
+AI 工具由独立的 `@daisu-ui/cli` 提供（[CLI 源码](https://github.com/DaisSu-UI/cli)，SSH：`git@github.com:DaisSu-UI/cli.git`），支持离线查询、全文搜索、项目检查、MCP 和消费端 Skill。使用方式见 [AI 总览](../apps/docs/ai/overview.md)、[CLI 工具](../apps/docs/ai/cli.md)、[MCP 接入](../apps/docs/ai/mcp.md) 与 [AI Skills](../apps/docs/ai/skills.md)。
 
 这些接入页面由 CLI 生成并提交到本仓库。两端按 `DaiSu-UI/{daisu-ui,cli}` 同级维护且开发依赖已安装时，正常构建自动同步，文档开发服务持续监听并更新，刷新浏览器查看；无需再单独运行同步命令。单独检出 UI 时使用已保存资料构建并验证摘要，CI 只读校验。组件文档、LLM 约束、维护者 AGENTS 与 Lynx 技能仍由本仓库维护。同步与检查流程见 [独立仓库开发](ui/WORKSPACE.md)。
 

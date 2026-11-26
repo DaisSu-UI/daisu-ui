@@ -28,7 +28,7 @@ CLI、MCP、客户端与消费端 Skill 由独立的 `@daisu-ui/cli` 仓库维�
 
 ## 目录与 AI 文档维护
 
-本机当前目录为 /media/youzi/Project/workProject/DaiSu-UI/daisu-ui；CLI 为同级 cli。源码地址分别是 git@git.zilueit.com:daisu-ui/daisu-ui.git 与 git@git.zilueit.com:daisu-ui/cli.git。这些路径仅用于本机定位，构建和查询不依赖固定目录。
+本机当前目录为 /media/youzi/Project/workProject/DaiSu-UI/daisu-ui；CLI 为同级 cli。源码地址分别是 git@github.com:DaisSu-UI/daisu-ui.git 与 git@github.com:DaisSu-UI/cli.git。这些路径仅用于本机定位，构建和查询不依赖固定目录。
 
 修改接入说明时，在 CLI 的 src/site-docs.ts 维护总览、安装、MCP 和 Skills，由正常构建自动导出到 UI；LLM 页面 apps/docs/ai/llm.md 及 docs/ui 中的约束由 UI 维护。客户端配置片段从真实适配器生成，验证时使用临时项目，不修改真实编辑器配置。文档中明确区分工具版本、组件数据版本与实际会话验收。
 

@@ -42,7 +42,7 @@ export const documentationGroups = [
   { id: 'composition', label: '组合与工具', section: 'guide', pages: supportingPages },
   { id: 'community', label: '社区', section: 'guide', pages: [
     { id: 'contributing', label: '贡献指南', source: 'apps/docs/pages/contributing.md' },
-    { label: '源码仓库', href: 'https://git.zilueit.com/daisu-ui/daisu-ui', external: true },
+    { label: '源码仓库', href: 'https://github.com/DaisSu-UI/daisu-ui', external: true },
   ] },
 ];
 export const guideGroups = documentationGroups.filter(group => group.section === 'guide');

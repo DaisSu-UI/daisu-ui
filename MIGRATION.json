@@ -1,6 +1,6 @@
 {
   "targetDirectory": "/media/youzi/Project/workProject/DaiSu-UI/daisu-ui",
-  "remote": "git@git.zilueit.com:daisu-ui/daisu-ui.git",
+  "remote": "git@github.com:DaisSu-UI/daisu-ui.git",
   "status": "extracted",
   "applicationIntegrationTestsKeptInMainProject": [
     "packages/daisu-ui/src/router/RouterView.test.tsx",

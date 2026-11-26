@@ -138,7 +138,7 @@ CLI 为 @daisu-ui/cli，可用 npm install -g @daisu-ui/cli@beta 安装；查询
 
 ## 源码与维护
 
-- [UI 源码](https://git.zilueit.com/daisu-ui/daisu-ui)
-- [CLI 源码](https://git.zilueit.com/daisu-ui/cli)
+- [UI 源码](https://github.com/DaisSu-UI/daisu-ui)
+- [CLI 源码](https://github.com/DaisSu-UI/cli)
 - 组件源码：packages/daisu-ui/src；示例：apps/demo/src/features/ui-demo；API 文档：docs/ui/components。
 - 维护者先读取 AGENTS.md；UI 文档生成、CLI 快照与接入说明在开发构建时同步，CI 与 --check 只读验证。
