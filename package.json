@@ -34,7 +34,7 @@
     "ui:npm:release": "node scripts/check-release-source.mjs --require-main && npm test && npm run test:git-release && npm run test:npm-release && npm run test:types && npm run build && npm run ui:check && npm run ui:pack && node scripts/prepare-npm-package.mjs && node scripts/publish-npm-package.mjs",
     "test:ai-docs": "node --test apps/docs/check-ai-docs.test.mjs apps/docs/documentation.test.mjs apps/docs/starter-archive.test.mjs scripts/cli-sync.test.mjs",
     "test:docs:browser": "playwright test",
-    "test:docs:release": "node --test scripts/docs-release.test.mjs",
+    "test:docs:release": "node --test scripts/docs-release.test.mjs scripts/root-pages.test.mjs",
     "docs:pack": "node scripts/docs-release.mjs pack"
   },
   "devDependencies": {
