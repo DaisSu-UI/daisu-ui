@@ -7,7 +7,8 @@
 | 内容 | 唯一维护位置 |
 | --- | --- |
 | 组件、样式、公开类型与测试 | `packages/daisu-ui/src/` |
-| Demo、示例和本地媒体源 | `apps/demo/src/`、`apps/demo/web/`、`apps/demo/assets-source/` |
+| Demo 与示例 | `apps/demo/src/`、`apps/demo/web/`；生成媒体见下表 |
+| 演示媒体生成规则 | `scripts/generate-demo-assets.mjs` |
 | 组件文档说明与示例模板 | `apps/docs/guides/`；Button 定板为 `docs/ui/components/button.md` |
 | 文档页面、导航与平台范围 | `apps/docs/pages/`、`apps/docs/public/`、`apps/docs/platforms.mjs`；自动生成项见下表 |
 | 完整 LLM 约束与逐组件补充 | `docs/ui/llms-full.txt`、`docs/ui/COMPONENT_AI_NOTES.md` |
@@ -25,7 +26,7 @@
 | `docs/ui/components/*.md`（Button 定板除外）、`component-sources.json`、`llms.txt`、`apps/docs/pages/compatibility.md` | 公开类型、Demo、`apps/docs/guides/`、导航和平台清单；`node apps/docs/generate.mjs` |
 | `apps/docs/ai/{overview,cli,mcp,skills}.md`、`cli-manifest.json` | CLI 的 `src/site-docs.ts` 与命令/客户端注册；在 CLI 构建后运行 `node dist/index.js docs export --ui-dir <UI仓库>` |
 | `packages/daisu-ui/src/icons/paths.ts`、`LICENSE.tabler` | `icons/catalog.json` 与锁定版本的 Tabler Icons；`npm run icons:generate` |
-| `apps/demo/src/assets/` 中的演示图片、音视频 | 本地媒体生成脚本；按 `apps/demo/assets-source/README.md` 使用 `node scripts/generate-demo-assets.mjs` |
+| `apps/demo/assets-source/`、`apps/demo/src/assets/` 中的演示图片与音视频 | `scripts/generate-demo-assets.mjs` 中的场景与生成规则；按生成的 `assets-source/README.md` 使用 `node scripts/generate-demo-assets.mjs` |
 
 `npm run build` 会生成 UI 文档；同级 CLI 开发依赖就绪时，也会同步 CLI 接入页及组件知识快照。`DAISU_UI_AUTO_SYNC=0` 关闭跨仓库协作。CI 与 `--check` 只读校验，生成内容需要在本地更新并提交。
 
