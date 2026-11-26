@@ -110,40 +110,6 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-  root-pages:
-    name: Publish organization homepage
-    if: >-
-      vars.DOCS_ROOT_PAGES_ENABLED == 'true' &&
-      github.ref == 'refs/heads/main' &&
-      (github.event_name == 'push' ||
-      (github.event_name == 'workflow_dispatch' && inputs.channel == 'pages'))
-    needs: [site, flutter-template]
-    runs-on: ubuntu-24.04
-    environment:
-      name: github-pages-root
-      url: https://daissu-ui.github.io/
-    concurrency:
-      group: github-pages-root
-      cancel-in-progress: false
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "24"
-      - uses: actions/download-artifact@v4
-        with:
-          name: docs-site-${{ github.sha }}
-          path: artifacts/docs-site/
-      - name: Check out the organization site
-        uses: actions/checkout@v4
-        with:
-          repository: DaisSu-UI/daissu-ui.github.io
-          ref: main
-          path: organization-site
-          ssh-key: ${{ secrets.DOCS_ROOT_DEPLOY_KEY }}
-      - name: Publish the verified documentation
-        run: bash ops/publish-root-pages.sh artifacts/docs-site organization-site
-
   deploy:
     if: >-
       github.event_name == 'workflow_dispatch' &&

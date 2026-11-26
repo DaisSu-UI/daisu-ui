@@ -3,6 +3,7 @@ import type { CSSProperties } from '@lynx-js/types';
 import { Popup } from './Popup.js';
 import type { PopupProps } from './Popup.js';
 import { Icon } from './Icon.js';
+import { LayerCloseButton } from './LayerCloseButton.js';
 import type { IconName } from './icons/paths.js';
 import { Loading } from './Loading.js';
 
@@ -36,7 +37,7 @@ export function ActionSheet({ actions = [], panels = [], title, cancelText, clos
   const multiple = panels.length > 0 && Array.isArray(panels[0]);
   const rows = (multiple ? panels : [panels]) as readonly (readonly ActionSheetPanel[])[];
   return <Popup {...popup} show={show} duration={duration} position="bottom" round lockScroll={false} onChange={close} safeAreaInsetBottom={safeAreaInsetBottom} className={`ui-action-sheet ${className}`} style={style}>
-    {title ? <view className={`ui-action-sheet-header ${titleClassName}`}><text className="ui-action-sheet-title">{title}</text><view className="ui-action-sheet-close" catchtap={close} accessibility-element accessibility-traits="button" accessibility-label="关闭动作面板">{renderClose ? renderClose(close) : <Icon name="close" size={24} />}</view></view> : null}
+    {title ? <view className={`ui-action-sheet-header ${titleClassName}`}><text className="ui-action-sheet-title">{title}</text><LayerCloseButton show={show} className="ui-action-sheet-close" label="关闭动作面板" onClose={close}>{renderClose?.(close)}</LayerCloseButton></view> : null}
     {children ?? (panels.length ? <view className="ui-action-sheet-panels">{rows.map((row, rowIndex) => <scroll-view key={rowIndex} className="ui-action-sheet-panel-scroll" scroll-orientation="horizontal" scroll-x><view className="ui-action-sheet-panel-row">{row.map((item, colIndex) => <view key={colIndex} className={`ui-action-sheet-panel ${item.disabled ? 'ui-action-sheet-disabled' : ''}`} bindtap={() => select(multiple ? { item, rowIndex, colIndex } : { item, index: colIndex })} accessibility-element accessibility-traits="button" accessibility-label={item.title}>
       <view className="ui-action-sheet-panel-icon">{item.image ? <image src={item.image} mode="aspectFit" className="ui-action-sheet-panel-image" /> : typeof item.icon === 'string' ? <Icon name={item.icon as IconName} size={24} color={item.color} /> : item.icon}</view><text className="ui-action-sheet-panel-title">{item.title}</text>
     </view>)}</view></scroll-view>)}</view> : <view>{actions.map((item, index) => <view key={index} className={`ui-action-sheet-action ${item.disabled ? 'ui-action-sheet-disabled' : ''}`} bindtap={() => select({ item, index })} accessibility-element accessibility-traits="button" accessibility-label={item.name ?? '加载中'}>

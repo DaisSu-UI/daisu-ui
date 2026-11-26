@@ -81,3 +81,5 @@ VideoPreview / useVideoPreview 与 ImgCropper 已提供浏览器后端：宿主�
 ## 补充封装与工具
 
 公开辅助 API 也必须关联使用文档，见 components/form-rows.md、synced-input.md、paged-list.md、compact-controls.md、utilities.md、web-registration.md 与 router.md。Form 行不自动注册 Form 校验；FormInputRow 的 disabled 仅为外观，不能生成完整禁用示例。新页面优先使用标准 Input / FormItem / InputNumber / Empty。Synced 输入的 onInput 是字符串回调，外部 value 由 setValue 同步。PagedList 必须有明确高度、唯一 listId 和 FeedListRef，调用方管理 refreshing 与加载防重，不替换滚动后端。路由 Hook 在正确 Provider / 场景内使用，路由实例保持稳定；usePressState 的 start/end 是后台事件函数。浏览器注册仅在宿主入口运行，不能放进 Lynx Bundle。Hook / 工具函数使用真实调用签名，不把首参展开成组件 Props。
+
+弹层标题与关闭：Popup 的 title 为可选左对齐标题栏；Popup、Dialog、ActionSheet、ImagePreview、VideoPreview 和 Curtain 复用 40px 圆形关闭按钮（24px图标、上/侧边距16px）；标题左边距16px，单行标题栏高72px，长标题为按钮预留空间。VideoPreview 默认右上角，显式位置参数保持可用。关闭走原有受控回调，背景采用主题变量，原生交互仍需设备验证。

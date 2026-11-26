@@ -4,7 +4,6 @@ set -euo pipefail
 source_repo=DaisSu-UI/daisu-ui
 target_repo=DaisSu-UI/daissu-ui.github.io
 description='Daisu UI documentation (managed by DaisSu-UI/daisu-ui)'
-key_title='Daisu UI documentation publisher'
 if [[ -n "${DAISU_GH_BIN:-}" ]]; then
   gh_cli=$DAISU_GH_BIN
 elif command -v gh >/dev/null 2>&1; then
@@ -40,34 +39,27 @@ if [[ "$default_branch" != main ]]; then
   "$gh_cli" api --method PATCH "repos/$target_repo" -f default_branch=main >/dev/null
 fi
 
-existing_key=$("$gh_cli" api "repos/$target_repo/keys" --jq '.[] | select(.title == "Daisu UI documentation publisher") | .id')
-existing_secret=$("$gh_cli" secret list --repo "$source_repo" --json name --jq '.[] | select(.name == "DOCS_ROOT_DEPLOY_KEY") | .name')
-if [[ -z "$existing_key" || -z "$existing_secret" ]]; then
-  # This credential can write only the dedicated publication repository. It is
-  # generated locally, encrypted as an Actions secret, and never printed.
-  ssh-keygen -q -t ed25519 -N '' -C "$key_title" -f "$temporary/deploy-key"
-  python3 - "$temporary" "$key_title" <<'PY'
-import json, pathlib, sys
-directory = pathlib.Path(sys.argv[1])
-body = {'title': sys.argv[2], 'key': (directory / 'deploy-key.pub').read_text().strip(), 'read_only': False}
-(directory / 'deploy-key.json').write_text(json.dumps(body))
-PY
-  "$gh_cli" api --method POST "repos/$target_repo/keys" --input "$temporary/deploy-key.json" >/dev/null
-  "$gh_cli" secret set DOCS_ROOT_DEPLOY_KEY --repo "$source_repo" < "$temporary/deploy-key"
+# The organization may disable deploy keys. The root repository deploys with
+# its own GITHUB_TOKEN and reads only verified public project artifacts.
+git_url=${DAISU_ROOT_GIT_URL:-git@github.com:DaisSu-UI/daissu-ui.github.io.git}
+git clone --quiet --branch main "$git_url" "$temporary/site"
+mkdir -p "$temporary/site/.github/workflows"
+cp ops/root-pages.yml "$temporary/site/.github/workflows/publish.yml"
+git -C "$temporary/site" add .github/workflows/publish.yml
+if ! git -C "$temporary/site" diff --cached --quiet; then
+  git -C "$temporary/site" -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'ci: publish verified Daisu UI documentation at the organization root'
+  git -C "$temporary/site" push origin HEAD:main
 fi
 
 cat > "$temporary/pages.json" <<'JSON'
-{"build_type":"legacy","source":{"branch":"main","path":"/"}}
+{"build_type":"workflow"}
 JSON
 if [[ "$("$gh_cli" api "repos/$target_repo" --jq .has_pages)" == true ]]; then
   "$gh_cli" api --method PUT "repos/$target_repo/pages" --input "$temporary/pages.json" >/dev/null
 else
   "$gh_cli" api --method POST "repos/$target_repo/pages" --input "$temporary/pages.json" >/dev/null
 fi
-"$gh_cli" variable set DOCS_ROOT_PAGES_ENABLED --repo "$source_repo" --body true
 
-# Run this after the workflow change reaches main. Future main pushes publish
-# both the project site and this root site without any manual synchronization.
-"$gh_cli" workflow run documentation.yml --repo "$source_repo" --ref main -f channel=pages
-printf '\n根站已配置，首次部署正在执行：https://github.com/%s/actions/workflows/documentation.yml\n' "$source_repo"
-printf '检查通过后访问：https://daissu-ui.github.io/\n'
+"$gh_cli" workflow run publish.yml --repo "$target_repo" --ref main
+printf '\n根站已配置：https://github.com/%s/actions/workflows/publish.yml\n' "$target_repo"
+printf '根站每10分钟检查并同步已验证的项目站产物；检查通过后访问：https://daissu-ui.github.io/\n'

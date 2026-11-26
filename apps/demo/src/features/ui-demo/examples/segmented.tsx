@@ -1,5 +1,5 @@
 import { useState } from '@lynx-js/react';
-import { Button, Icon, RootPortal, Segmented, Transition } from '@daisu-ui/ui';
+import { Button, Popup, Segmented } from '@daisu-ui/ui';
 import type { SegmentedOption } from '@daisu-ui/ui';
 import redpanda from '../../../assets/demo-red-panda.jpg';
 import capybara from '../../../assets/demo-capybara.jpg';
@@ -30,12 +30,10 @@ export function SegmentedExample() {
       <ExampleBlock title="选项切换（暂不支持振动）"><Segmented options={options} defaultValue="打赏" /></ExampleBlock>
       <ExampleBlock title="在弹出框中使用"><view className="demo-segmented-trigger"><Button label="打开弹窗" onTap={() => { 'background only'; setPopup(true); }} /></view></ExampleBlock>
     </DemoGroup>
-    <RootPortal>
-      <Transition show={popup} lazyRender name="fade" className="ui-demo-page demo-segmented-backdrop" onTap={close} />
-      <Transition show={popup} lazyRender name="slide-up" className="ui-demo-page demo-segmented-popup">
-        <view className="demo-segmented-popup-title"><text>在弹出框中使用</text><view className="demo-segmented-popup-close" accessibility-element accessibility-traits="button" accessibility-label="关闭弹窗" bindtap={close}><Icon name="close" size={20} /></view></view>
+    <Popup show={popup} onClose={close} rootPortal position="bottom" round closable title="在弹出框中使用" className="ui-demo-page">
+      <view className="demo-segmented-popup-content">
         <Segmented options={options} value={popupValue} onChange={option => { 'background only'; setPopupValue(option.value); }} />
-      </Transition>
-    </RootPortal>
+      </view>
+    </Popup>
   </view>;
 }

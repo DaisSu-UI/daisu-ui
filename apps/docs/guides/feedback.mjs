@@ -138,17 +138,17 @@ export default {
     ),
   ),
   popup: g(
-    "弹出层用于展示临时操作或内容，支持多个弹出方向、遮罩、圆角和关闭按钮。",
+    "弹出层用于展示临时操作或内容，支持多个弹出方向、遮罩、圆角、左侧标题和右上角圆形关闭按钮。",
     "Popup",
     e(
       "组件类型",
       "基础弹层",
-      "const [show, setShow] = useState(false); return <><Button label=\"打开弹层\" onTap={() => { 'background only'; setShow(true); }} /><Popup show={show} onChange={setShow} closable><text>弹层内容</text></Popup></>;",
+      "const [show, setShow] = useState(false); return <><Button label=\"打开弹层\" onTap={() => { 'background only'; setShow(true); }} /><Popup show={show} onChange={setShow} title=\"等级权益\" closable><text>弹层内容</text></Popup></>;",
     ),
     e(
       "布局能力",
       "底部弹出",
-      'return <Popup show={false} position="bottom" round safeAreaInsetBottom><text>底部内容</text></Popup>;',
+      'return <Popup show={false} title="等级权益" position="bottom" round closable safeAreaInsetBottom><text>底部内容</text></Popup>;',
     ),
   ),
   overlay: g(

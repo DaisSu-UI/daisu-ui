@@ -42,6 +42,6 @@ Lynx API、CSS 兼容性和双线程规则以 [官方文档入口](https://lynxj
 
 ## 发布与运维
 
-GitHub Actions 负责 UI 验证、npm 发布与文档部署；GitHub → GitLab 工作流负责 main / developer 分支同步。GitLab 的验证配置和本地 Runner 工具仍属于现用的仓库运维文件。认证材料放在 CI Secrets 或本机受管配置中。
+GitHub Actions 负责 UI 验证、npm 发布与项目站部署；组织站使用 ops/root-pages.yml 和 scripts/pull-project-site.mjs 定期同步经 SHA-256 校验的项目站产物；GitHub → GitLab 工作流负责 main / developer 分支同步。GitLab 的验证配置和本地 Runner 工具仍属于现用的仓库运维文件。认证材料放在 CI Secrets 或本机受管配置中。
 
 npm 仅发布 `packages/daisu-ui` 的编译产物、包配置、README、更新记录和许可证；Demo、文档站、开发技能和测试工程不随 npm 包发布。

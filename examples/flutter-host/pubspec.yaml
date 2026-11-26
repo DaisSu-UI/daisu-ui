@@ -1,5 +1,5 @@
 name: daisu_flutter_host
-description: Daisu UI remote Bundle host template; requires a Lynx 4.2 compatible native host.
+description: Daisu UI remote Bundle host template; bundles target Lynx 4.0 and require matching native elements.
 publish_to: none
 version: 0.0.0
 environment:

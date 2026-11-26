@@ -2,7 +2,7 @@
 
 UI 仓库维护组件的公开 API、浏览器适配器和接入示例。消费项目维护原生宿主的元素注册、媒体后端、系统权限、资源生命周期和设备验收；具体 Flutter 插件和业务桥接协议由消费方选择。
 
-组件 Bundle 目标为 Lynx 4.2。宿主需核对实际内置引擎与所需元素的注册情况；Dart 插件版本、TypeScript 类型或 Bundle 编译成功都不能单独证明原生能力可用。各组件的支持范围以 [兼容性表](../../apps/docs/pages/compatibility.md) 和同版本组件文档为准。
+组件 Bundle 编译目标为 Lynx 4.0。宿主需核对实际内置引擎与所需元素的注册情况；Dart 插件版本、TypeScript 类型或 Bundle 编译成功都不能单独证明原生能力可用。各组件的支持范围以 [兼容性表](../../apps/docs/pages/compatibility.md) 和同版本组件文档为准。
 
 ## 浏览器接入
 

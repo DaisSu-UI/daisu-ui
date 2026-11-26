@@ -4,14 +4,14 @@
 
 ## 先核对引擎版本
 
-当前 UI 的编译目标是 Lynx 4.2。2026-11-26 核对 pub.dev 发布归档：lynx_view 1.13.4 的依赖范围包含 lynx_view_android 1.12.4 与 lynx_view_ios 1.11.0；这两份平台包中的 Gradle / podspec 仍声明 Lynx 4.0.0。因此不能声称直接安装这些版本即可运行本库的 4.2 Bundle。
+当前 UI 的 Bundle 编译目标和开发类型均为 Lynx 4.0。2026-11-26 核对 pub.dev 发布归档：lynx_view 1.13.4 的依赖范围包含 lynx_view_android 1.12.4 与 lynx_view_ios 1.11.0；这两份平台包中的 Gradle / podspec 声明 Lynx 4.0.0。此前的 4.2 Bundle 必须按 4.0 重新构建，替换远端文件并更新 Manifest 哈希。
 
 | 核对项 | 本次结果 | 接入前要求 |
 | --- | --- | --- |
-| ReactLynx 编译目标 | 4.2 | 与宿主原生引擎匹配 |
+| ReactLynx 编译目标 | 4.0；开发类型固定 @lynx-js/types@4.0.0 | 与宿主原生引擎匹配 |
 | lynx_view Dart API | 已核对 1.13.4 的公开控制器接口 | 锁定实际安装版本 |
-| Android 平台归档 | 1.12.4，声明 Lynx 4.0.0 | 升级/适配同一套 4.2 引擎及 XElement 后重新编译 |
-| iOS 平台归档 | 1.11.0，声明 Lynx 4.0.0 | 升级/适配 4.2 Pods 并核对元素注册 |
+| Android 平台归档 | 1.12.4，声明 Lynx 4.0.0 | 核对实际 Gradle 依赖及 XElement 注册 |
+| iOS 平台归档 | 1.11.0，声明 Lynx 4.0.0 | 核对实际 Pods 及元素注册 |
 | 原生设备验收 | 本轮未执行 | 分 Android / iOS 记录设备与结果 |
 
 平台依赖有范围约束，实际解析结果以 pubspec.lock、Podfile.lock 和 Gradle 依赖树为准；表中记录的是明确核对过的归档，不推断未来版本。只改 Dart 版本、类型包、engineVersion 或一个 Gradle 强制版本都不代表整套宿主已兼容。使用已适配的插件分支时，应锁定真实提交，并保留许可证；不要在本库中伪造已通过的兼容声明。
@@ -24,13 +24,13 @@
 flutter create --platforms android,ios daisu_host
 cd daisu_host
 # 将下载包中的 lib/ 与 pubspec.yaml 复制到工程。
-# 在 pubspec 中选用已经完成 Lynx 4.2 适配的 lynx_view 来源。
+# 核对并锁定 lynx_view 的 4.0 引擎依赖及所需元素注册。
 flutter pub get
 flutter analyze
 flutter run --dart-define=LYNX_MANIFEST_URL=https://your-domain.example/ui/manifest.json
 ```
 
-模板保留 lynx_view 1.13.4 的真实 Dart API 作为核对基线；默认平台包的 4.0 引擎差异仍需解决。模板不包含账号、Token、原生 SDK 或 Bundle。Android 配置网络权限；开发 HTTP 例外只用于调试，线上使用 HTTPS。iOS 真机也应使用可访问的 HTTPS 地址。
+模板保留 lynx_view 1.13.4 的真实 Dart API 作为核对基线，搭配 4.0 目标 Bundle。模板不包含账号、Token、原生 SDK 或 Bundle。Android 配置网络权限；开发 HTTP 例外只用于调试，线上使用 HTTPS。iOS 真机也应使用可访问的 HTTPS 地址。
 
 ## 构建并发布 Bundle
 

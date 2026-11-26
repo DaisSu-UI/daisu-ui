@@ -1,7 +1,6 @@
-.ui-action-sheet.ui-popup-round { border-radius: 8px 8px 0 0; background-color: var(--cso-ui-surface); }
-.ui-action-sheet-header { height: 56px; padding: 0 40px; display: flex; align-items: center; justify-content: center; position: relative; }
-.ui-action-sheet-title { font-size: 16px; line-height: 24px; font-weight: 500; text-align: center; color: var(--cso-ui-text); }
-.ui-action-sheet-close { position: absolute; top: 16px; right: 16px; width: 24px; height: 24px; }
+.ui-action-sheet.ui-popup-round { background-color: var(--cso-ui-surface); }
+.ui-action-sheet-header { min-height: 72px; padding: 16px; display: flex; flex-direction: row; align-items: center; gap: 16px; }
+.ui-action-sheet-title { flex: 1; min-width: 0; font-size: 20px; line-height: 28px; font-weight: 600; text-align: left; color: var(--cso-ui-text); }
 .ui-action-sheet-action { flex-direction: column; position: relative; min-height: 58px; padding: 16px 12px; display: flex; align-items: center; justify-content: center; background-color: var(--cso-ui-surface); }
 .ui-action-sheet-line { position: absolute; top: 0; left: 0; right: 0; height: 0; border-top: .5px solid var(--cso-ui-line); }
 .ui-action-sheet-name { font-size: 18px; line-height: 26px; text-align: center; color: var(--cso-ui-text); }

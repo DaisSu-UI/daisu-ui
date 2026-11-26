@@ -5,7 +5,7 @@ import type { LayerLifecycle } from './Overlay.js';
 import { Transition } from './Transition.js';
 import type { TransitionName } from './Transition.js';
 import { RootPortal } from './RootPortal.js';
-import { Icon } from './Icon.js';
+import { LayerCloseButton } from './LayerCloseButton.js';
 
 export type PopupPosition = 'center' | 'top' | 'right' | 'bottom' | 'left';
 export type PopupCloseReason = 'modal' | 'close';
@@ -18,6 +18,8 @@ export type PopupProps = LayerLifecycle & {
   transition?: TransitionName | readonly TransitionName[];
   duration?: number | boolean;
   closable?: boolean;
+  /** Optional heading, aligned left with space reserved for the close control. */
+  title?: ReactNode;
   closeOnClickModal?: boolean;
   modal?: boolean;
   modalStyle?: CSSProperties;
@@ -35,7 +37,7 @@ export type PopupProps = LayerLifecycle & {
 
 const motions = { center: ['fade', 'zoom-in'], top: 'slide-down', right: 'slide-right', bottom: 'slide-up', left: 'slide-left' } as const;
 
-export function Popup({ show = false, onChange, onClose, onClickModal, position = 'center', transition, duration = 300, closable = false, closeOnClickModal = true, modal = true, modalStyle, zIndex = 10, lazyRender = true, lockScroll = true, rootPortal = false, round = false, safeAreaInsetBottom = false, safeAreaBottom = 0, className = '', style, children, ...lifecycle }: PopupProps) {
+export function Popup({ show = false, onChange, onClose, onClickModal, position = 'center', transition, duration = 300, closable = false, title, closeOnClickModal = true, modal = true, modalStyle, zIndex = 10, lazyRender = true, lockScroll = true, rootPortal = false, round = false, safeAreaInsetBottom = false, safeAreaBottom = 0, className = '', style, children, ...lifecycle }: PopupProps) {
   const close = (reason: PopupCloseReason) => {
     'background only';
     if (!show) return;
@@ -47,9 +49,12 @@ export function Popup({ show = false, onChange, onClose, onClickModal, position 
     <view className={`ui-popup-anchor ui-popup-anchor-${position}`} style={{ zIndex: zIndex + 1 }}>
       <Transition {...lifecycle} show={show} name={transition ?? motions[position]} duration={duration} lazyRender={lazyRender} destroy={false} interactiveDuringLeave className={`ui-popup ui-popup-${position} ${round ? 'ui-popup-round' : ''} ${className}`} style={style}>
         <view className="ui-popup-body" event-through={false} consume-slide-event={lockScroll ? [[-180, 180]] : undefined} catchtouchmove={lockScroll ? () => {} : undefined} catchtap={() => {}}>
+          {title != null && title !== false ? <view className={`ui-popup-header ${closable ? 'ui-popup-header-closable' : ''}`}>
+            {typeof title === 'string' || typeof title === 'number' ? <text className="ui-popup-title">{title}</text> : title}
+          </view> : null}
           {children}
           {safeAreaInsetBottom && position === 'bottom' ? <view className="ui-popup-safe-area" style={{ height: `${Math.max(0, Number.isFinite(safeAreaBottom) ? safeAreaBottom : 0)}px` }} /> : null}
-          {closable ? <view className="ui-popup-close" catchtap={() => close('close')} accessibility-element accessibility-traits="button" accessibility-label="关闭弹出层"><Icon name="close" size={24} /></view> : null}
+          {closable ? <LayerCloseButton show={show} className="ui-popup-close" label="关闭弹出层" onClose={() => { 'background only'; close('close'); }} /> : null}
         </view>
       </Transition>
     </view>

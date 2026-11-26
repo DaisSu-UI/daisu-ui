@@ -2,6 +2,7 @@ import { useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import type { BaseEvent, CSSProperties, ImageErrorEvent, ImageLoadEvent } from '@lynx-js/types';
 import { Icon } from './Icon.js';
+import { LayerCloseButton } from './LayerCloseButton.js';
 import { Popup } from './Popup.js';
 import type { LayerLifecycle } from './Overlay.js';
 export type CurtainClosePosition = 'inset'|'top'|'bottom'|'top-left'|'top-right'|'bottom-left'|'bottom-right';
@@ -20,7 +21,7 @@ function CurtainSource({value,onChange,src,width,closePosition='inset',closeOnCl
  return <Popup {...lifecycle} show={value&&!failed} onChange={()=>{ 'background only';close('modal'); }} onClickModal={onClickModal} onAfterLeave={()=>{ 'background only';onAfterLeave?.();onClosed?.(); }} rootPortal={rootPortal} zIndex={zIndex} transition="zoom-in" closeOnClickModal={closeOnClickModal} className={`ui-curtain ${className}`} style={{width:`${actualWidth}px`,...style}}>
   <view className="ui-curtain-content">
    <image className="ui-curtain-image" src={src} mode="scaleToFill" style={{width:`${actualWidth}px`,height:`${actualWidth*natural.height/natural.width}px`}} bindload={event=>{ 'background only';const {width:w,height:h}=event.detail;if(w>0&&h>0)setNatural({width:w,height:h});setFailed(false);onLoad?.(event); }} binderror={event=>{ 'background only';setFailed(true);onError?.(event); }} bindtap={()=>{ 'background only';if(!value||failed)return;if(to)onNavigate?.(to);onClick?.();if(closeOnClick)close('image'); }}/>
-   {renderClose?renderClose(()=>{ 'background only';close('close'); }):<view className={`ui-curtain-close ui-curtain-close-${closePosition} ${customCloseClass}`} style={customCloseStyle} catchtap={()=>close('close')} accessibility-element accessibility-traits="button" accessibility-label="关闭幕帘"><Icon name="close-circle" size={32} color={typeof customCloseStyle?.color==='string'?customCloseStyle.color:'#fff'}/></view>}
+   {renderClose?renderClose(()=>{ 'background only';close('close'); }):<LayerCloseButton show={value&&!failed} className={`ui-curtain-close ui-curtain-close-${closePosition} ${customCloseClass}`} style={customCloseStyle} onClose={()=>{ 'background only';close('close'); }} label="关闭幕帘"><Icon name="close" size={24} color={typeof customCloseStyle?.color==='string'?customCloseStyle.color:undefined}/></LayerCloseButton>}
   </view>
  </Popup>;
 }

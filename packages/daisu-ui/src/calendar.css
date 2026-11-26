@@ -32,10 +32,6 @@
 .ui-calendar-time-label text{font-size:16px;line-height:24px;color:var(--cso-ui-text);}
 .ui-calendar-time-picker{flex:3;min-width:0;}
 .theme-dark .ui-calendar-view{--cso-ui-calendar-range-bg:#202127;}
-.ui-calendar-close{padding:12px;}
-.ui-calendar-header .ui-action-sheet-title{font-size:18px;line-height:26px;font-weight:600;}
-.ui-calendar-close-light{display:var(--cso-ui-light-display,flex);}
-.ui-calendar-close-dark{display:var(--cso-ui-dark-display,none);}
 .ui-calendar-tabs{padding:0 16px;}
 .ui-calendar-shortcuts{padding:6px 12px;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:16px;}
 .ui-calendar-range{display:flex;flex-direction:row;align-items:center;justify-content:center;padding:0 12px 16px;}
@@ -53,4 +49,3 @@
 .ui-calendar-range-item text{font-family:"San Francisco",Rotobo,Arial,"PingFang SC","Noto SansCJK","Microsoft YaHei",sans-serif;}
 
 .ui-calendar-confirm .ui-button{flex-shrink:1;}
-.ui-calendar .ui-action-sheet-close{right:12px;}

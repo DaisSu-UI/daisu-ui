@@ -86,7 +86,7 @@ CLI 源码：git@github.com:DaisSu-UI/cli.git
 
 - `Overlay`：show=false、duration=300(ms/{enter,leave}/boolean)、lockScroll=true、zIndex=10、rootPortal=false、children/className/style、onTap及六个进入离开事件。黑色55%遮罩，退出完成前阻挡点击，受控关闭；内容catchtap隔离。原生consume-slide-event/catchtouchmove，无DOM滚动锁；内部scroll-view需显式enable-scroll同步，Flutter外部滚动不由组件控制。rootPortal需RootPortalHost，局部主题由内容类提供。详情overlay.md，示例/ui-demo/overlay。
 
-- `Popup`：show/onChange(false)、onClose(reason:modal/close)、position=center/top/right/bottom/left、transition(名称或数组)、duration=300、closable=false、closeOnClickModal=true、modal=true、modalStyle、zIndex=10、lazyRender=true、lockScroll=true、rootPortal=false、round=false、safeAreaInsetBottom=false、safeAreaBottom=0、className/style/children、onClickModal及六阶段生命周期。复用Overlay/Transition，居中定位与动画分层，退出保留遮挡、关闭后保留内容状态；内部点击不触发背景。rootPortal需根Host；锁定触摸链而非Flutter外部滚动，安全区须宿主数值。未暴露hideWhenClose，固定隐藏并保留节点。参数见popup.md，独立示例/ui-demo/popup。
+- `Popup`：title可选文字/节点（左对齐标题栏，为关闭按钮预留空间）、show/onChange(false)、onClose(reason:modal/close)、position=center/top/right/bottom/left、transition(名称或数组)、duration=300、closable=false（右上角40px圆形浅灰底关闭按钮，适配深色）、closeOnClickModal=true、modal=true、modalStyle、zIndex=10、lazyRender=true、lockScroll=true、rootPortal=false、round=false、safeAreaInsetBottom=false、safeAreaBottom=0、className/style/children、onClickModal及六阶段生命周期。复用Overlay/Transition，居中定位与动画分层，退出保留遮挡、关闭后保留内容状态；内部点击不触发背景。rootPortal需根Host；锁定触摸链而非Flutter外部滚动，安全区须宿主数值。未暴露hideWhenClose，固定隐藏并保留节点。参数见popup.md，独立示例/ui-demo/popup。
 
 - `ActionSheet`：show/onChange、actions{name?,description?,color?,disabled?,loading?}[]、panels为Panel[]或Panel[][]（优先actions）；Panel{title,icon?,image?,color?,disabled?}。title/cancelText、closeOnClickAction=true、closeOnClickModal=true、duration=200、zIndex=10、lazyRender=true、safeAreaInsetBottom=true、safeAreaBottom=0、rootPortal=false、children、renderClose(close)、titleClassName/className/style。onSelect单行/动作返回{item,index}，二维返回{item,rowIndex,colIndex}；禁用/加载不选。onCancel先于关闭；onChange(false)/onClose、onClickModal、四个动画事件。Popup/Icon/Loading复用，8px圆角，面板横向滚动；不承诺锁定宿主外部滚动。详情action-sheet.md，示例/ui-demo/action-sheet。
 
@@ -1470,7 +1470,7 @@ const preview = useVideoPreview();
 | url / poster / title | 无 | 视频、封面与标题；支持HTTP(S)和相对地址，不执行脚本/data/file地址 |
 | show / onShowChange | 非受控 | 可选受控显示；hook提供同一组合 |
 | fullScreen | false | 播放区域填满预览层；默认区域高度248px；HTML5控件仍可进入浏览器原生全屏 |
-| closePosition | left-top | left-top / right-top，距边16px |
+| closePosition | right-top | left-top / right-top，40px圆形按钮，距顶部与侧边16px |
 | zIndex | 1000 | 公共Overlay层级 |
 | onOpen / onClose | 无 | 层实际打开和关闭时各触发一次；重复关闭不重复回调 |
 | onError | 无 | {src,message}，实际资源加载/播放失败及不支持的调用 |
@@ -1541,4 +1541,4 @@ Ref：`open(src?):boolean`、`close()`、`chooseImage():boolean`、`confirm():bo
 
 平台兼容性总表由 apps/docs/platforms.mjs 与真实公开 API 清单生成，原生状态默认待设备验收。浏览器可预览、TypeScript 通过、Flutter Dart 分析通过都不代表原生引擎/元素/手势已验收。独立工程见 examples/quickstart 与 examples/flutter-host，文档站提供 ZIP 下载、浏览器完整接入和 Flutter Manifest 接入指南。
 
-本次核对 lynx_view 1.13.4，其已解析的 lynx_view_android 1.12.4 与 lynx_view_ios 1.11.0 仍声明 Lynx 4.0.0；本库编译目标为 4.2，不能推荐仅安装这组插件就宣称兼容。原生宿主需完成 4.2 引擎与 XElement 适配，按实际锁文件和设备结果记录。不要降低组件编译目标来伪造验收。
+本次核对 lynx_view 1.13.4，其已解析的 lynx_view_android 1.12.4 与 lynx_view_ios 1.11.0 声明 Lynx 4.0.0；本库 Bundle 编译目标与开发类型均降为 4.0，开发固定 @lynx-js/types@4.0.0，组件 peerDependency 接受 ^4.0.0。旧 4.2 Bundle 必须重新构建、替换并更新 Manifest 哈希。原生元素、输入和手势仍需设备验收；类型通过与编译成功不代表真机兼容性已通过。

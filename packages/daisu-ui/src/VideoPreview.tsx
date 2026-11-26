@@ -3,7 +3,7 @@ import type { CSSProperties, NodesRef } from '@lynx-js/types';
 import type { RichTextMediaConfig, RichTextMediaSignal } from './richTextMedia.js';
 import { richTextUrl } from './richTextModel.js';
 import { Overlay } from './Overlay.js';
-import { Icon } from './Icon.js';
+import { LayerCloseButton } from './LayerCloseButton.js';
 import type {} from './RichText.js';
 
 export type PreviewVideo = { url: string; poster?: string; title?: string };
@@ -38,6 +38,6 @@ export const VideoPreview = forwardRef<VideoPreviewRef, VideoPreviewProps>(funct
     {active?<view className="ui-video-preview-stage"><daisu-rich-media key={`${requestKey}:${revision}`} ref={player} className={`ui-video-preview-video ${settings.fullScreen?'ui-video-preview-fullscreen':''}`} media-config={JSON.stringify(config)} catchtap={()=>{}} bindmediaevent={({detail:event}:{detail:RichTextMediaSignal})=>{
       'background only';if(!state.current.visible)return;if(event.kind==='close')close();else if(event.kind==='error')state.current.onError?.({src:event.src,message:event.message||'视频加载失败'});
     }}/></view>:null}
-    <view className={`ui-video-preview-close ui-video-preview-close-${settings.closePosition??'left-top'}`} catchtap={close} accessibility-element accessibility-label="关闭视频预览" accessibility-traits="button"><Icon name="close" size={24} color="#fff"/></view>
+    <LayerCloseButton show={active} className={`ui-video-preview-close ui-video-preview-close-${settings.closePosition??'right-top'}`} onClose={close} label="关闭视频预览"/>
   </Overlay>;
 });

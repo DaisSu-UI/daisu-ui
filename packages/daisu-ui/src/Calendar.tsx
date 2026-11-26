@@ -2,7 +2,6 @@ import { forwardRef, useContext, useEffect, useImperativeHandle, useMemo, useRef
 import type { ReactNode } from '@lynx-js/react';
 import { ActionSheet } from './ActionSheet.js';
 import { Button } from './Button.js';
-import { Icon } from './Icon.js';
 import { Tabs } from './Tabs.js';
 import { Tag } from './Tag.js';
 import { FormFieldContext } from './formContext.js';
@@ -75,7 +74,7 @@ export const Calendar = forwardRef<CalendarRef, CalendarProps>(function Calendar
     finally { if (ticket === generation.current) { pending.current = false; setBusy(false); } }
   };
   const endpoints = Array.isArray(draft) ? draft : [], range = calendarRange(activeType), types: CalendarType[] = calendarRange(type) ? ['daterange', 'weekrange', 'monthrange'] : ['date', 'week', 'month'];
-  return <ActionSheet show={show} onClose={() => close(true)} title={title} titleClassName="ui-calendar-header" className={`ui-calendar ${className}`} style={style} duration={duration} closeOnClickModal={closeOnClickModal} rootPortal={rootPortal} safeAreaInsetBottom={safeAreaInsetBottom} safeAreaBottom={safeAreaBottom} zIndex={zIndex} renderClose={() => <><Icon name="close" size={24} color="#4e5369" className="ui-calendar-close-light" /><Icon name="close" size={24} color="#e5e6eb" className="ui-calendar-close-dark" /></>}>
+  return <ActionSheet show={show} onClose={() => close(true)} title={title} titleClassName="ui-calendar-header" className={`ui-calendar ${className}`} style={style} duration={duration} closeOnClickModal={closeOnClickModal} rootPortal={rootPortal} safeAreaInsetBottom={safeAreaInsetBottom} safeAreaBottom={safeAreaBottom} zIndex={zIndex}>
     {showTypeSwitch ? <Tabs className="ui-calendar-tabs" items={types.map((name, index) => ({ name, title: ['日', '周', '月'][index]! }))} value={activeType} onChange={next => { 'background only'; if (!opened.current || disabled || busy) return; selectedType.current = next as CalendarType; setActiveType(next as CalendarType); setShortcut(-1); }} /> : null}
     {shortcuts.length ? <view className="ui-calendar-shortcuts">{shortcuts.map((item, index) => <Tag key={index} type={shortcut === index ? 'primary' : 'default'} variant={shortcut === index ? 'dark' : 'light'} label={item.text} onTap={() => { 'background only'; void chooseShortcut(item, index); }} />)}</view> : null}
     {range ? <view className="ui-calendar-range">{(['start', 'end'] as const).map((endpoint, index) => <view key={endpoint} className={`ui-calendar-range-item ${endpoints[index] == null ? 'ui-calendar-range-placeholder' : ''}`}><text className={ellipsis ? 'ui-calendar-range-ellipsis' : ''}>{innerDisplayFormat(endpoints[index] ?? null, endpoint, activeType)}</text><view className="ui-calendar-range-line" /></view>).flatMap((item, index) => index ? [<view key="separator" className="ui-calendar-range-separator" />, item] : [item])}</view> : null}

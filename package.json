@@ -1,7 +1,7 @@
 {
   "name": "daisu-ui-workspace",
   "private": true,
-  "version": "0.1.0-beta.5",
+  "version": "0.1.0-beta.6",
   "type": "module",
   "workspaces": [
     "packages/*",
@@ -41,7 +41,7 @@
     "@lynx-js/react": "^0.126.2",
     "@lynx-js/react-rsbuild-plugin": "^0.20.3",
     "@lynx-js/rspeedy": "^0.18.0",
-    "@lynx-js/types": "^4.2.1",
+    "@lynx-js/types": "4.0.0",
     "@playwright/test": "1.58.2",
     "@rsbuild/core": "^2.2.9",
     "@rstest/core": "^0.12.1",

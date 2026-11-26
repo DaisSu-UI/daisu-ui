@@ -470,6 +470,7 @@
   "picker": {},
   "popover": {},
   "popup": {
+    "title": "左侧标题，支持文字或自定义节点；为关闭按钮预留空间",
     "show": "受控值 / 请求更新；关闭时回调 false",
     "onChange": "受控值 / 请求更新；关闭时回调 false",
     "position": "center/top/right/bottom/left",
@@ -771,7 +772,7 @@
     "show": "可选受控显示；hook提供同一组合",
     "onShowChange": "可选受控显示；hook提供同一组合",
     "fullScreen": "播放区域填满预览层；默认区域高度248px；HTML5控件仍可进入浏览器原生全屏",
-    "closePosition": "left-top / right-top，距边16px",
+    "closePosition": "left-top / right-top；默认 right-top，按钮40px，距顶部及对应侧边16px",
     "zIndex": "公共Overlay层级",
     "onOpen": "层实际打开和关闭时各触发一次；重复关闭不重复回调",
     "onClose": "层实际打开和关闭时各触发一次；重复关闭不重复回调",

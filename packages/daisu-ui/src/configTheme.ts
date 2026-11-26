@@ -11,6 +11,7 @@ export function configThemeTokens(theme: ConfigProviderTheme): Record<string, st
 export function configThemeAppearance(theme: ConfigProviderTheme): Record<string,string> {
   return {
     '--cso-ui-light-display':theme==='light'?'flex':'none', '--cso-ui-dark-display':theme==='dark'?'flex':'none',
+    '--cso-ui-layer-close-bg':theme==='dark'?'#303640':'#e8ecef',
     '--cso-ui-disabled-text':theme==='dark'?'#58585b':'#c9cbd4',
     '--cso-ui-avatar-bg':theme==='dark'?'var(--cso-ui-surface-muted)':'var(--cso-ui-line)',
     '--cso-ui-avatar-text':theme==='dark'?'var(--cso-ui-text)':'var(--cso-ui-text-auxiliary,var(--cso-ui-text-muted))',
