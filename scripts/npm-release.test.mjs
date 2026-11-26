@@ -67,7 +67,10 @@ test('npm 只打包 UI 库，拒绝额外工程文件、未合并提交和被修
       GITHUB_REF: `refs/tags/v${metadata.version}`, GITHUB_SHA: git('rev-parse', 'HEAD'), NPM_TOKEN: 'fixture-token',
     };
     assert.match(run(process.execPath, publish, source, github), /dist-tag=beta/);
-    assert.throws(() => run(process.execPath, publish, source, { ...github, GITHUB_REF: 'refs/heads/main' }), /对应的源码 Tag/);
+    const main = { ...github, GITHUB_REF: 'refs/heads/main', GITHUB_EVENT_NAME: 'workflow_dispatch' };
+    assert.match(run(process.execPath, publish, source, main), /预演.*dist-tag=beta/);
+    assert.throws(() => run(process.execPath, publish.slice(0, 1), source, main), /版本标签推送/);
+    assert.throws(() => run(process.execPath, publish, source, { ...github, GITHUB_REF: 'refs/heads/developer' }), /对应的源码 Tag/);
     assert.throws(() => run(process.execPath, publish, source, { ...github, GITHUB_SHA: '0'.repeat(40) }), /提交与发布源码不一致/);
     git('switch', '-c', 'feature/unmerged');
     git('commit', '--allow-empty', '-m', 'unmerged');

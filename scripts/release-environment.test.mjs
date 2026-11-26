@@ -33,3 +33,15 @@ test('publishing requires the original repository, tag push and exact source com
   assert.throws(() => assertPublishEnvironment(version, commit, { ...github, GITHUB_SHA: 'b'.repeat(40) }), /提交与发布源码不一致/);
   assert.doesNotThrow(() => assertPublishEnvironment(version, commit, {}));
 });
+
+test('main can preview publishing, but cannot publish a real version without a matching tag', () => {
+  const main = { ...github, GITHUB_REF: 'refs/heads/main' };
+  for (const event of ['push', 'workflow_dispatch']) {
+    const preview = { ...main, GITHUB_EVENT_NAME: event };
+    assert.doesNotThrow(() => assertPublishEnvironment(version, commit, preview, { dryRun: true }));
+    assert.throws(() => assertPublishEnvironment(version, commit, preview), /版本标签推送|对应的源码 Tag/);
+  }
+  assert.throws(() => assertPublishEnvironment(version, commit, { ...main, GITHUB_EVENT_NAME: 'pull_request' }, { dryRun: true }), /版本标签推送/);
+  assert.throws(() => assertPublishEnvironment(version, commit, { ...main, GITHUB_REF: 'refs/heads/developer' }, { dryRun: true }), /对应的源码 Tag/);
+  assert.throws(() => assertPublishEnvironment(version, commit, { ...main, GITHUB_SHA: 'b'.repeat(40) }, { dryRun: true }), /提交与发布源码不一致/);
+});
