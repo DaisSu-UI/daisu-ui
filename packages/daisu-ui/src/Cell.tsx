@@ -36,7 +36,7 @@ export function Cell({ title, description, value, placeholder, icon, clickable =
   return <view className={`ui-cell ui-cell-${size} ${interactive ? 'ui-cell-clickable' : ''} ${press.pressed ? 'ui-cell-pressed' : ''} ${last ? 'ui-cell-last' : ''} ${center ? 'ui-cell-center' : ''} ${vertical ? 'ui-cell-vertical' : ''} ${className}`} bindtap={handleTap} {...press.events} bindtouchmove={press.end}>
     <view className={`ui-cell-border ${border === true ? 'ui-cell-border-enabled' : border === undefined ? 'ui-cell-border-inherit' : ''}`} />
     <view className="ui-cell-wrapper">
-      <view className="ui-cell-main" style={titleWidth ? { width: titleWidth, flex: 'none' } : undefined}>
+      <view className="ui-cell-main" style={!vertical && titleWidth ? { width: titleWidth, flex: 'none' } : undefined}>
         {icon ? <view className="ui-cell-icon">{typeof icon === 'string' ? <text>{icon}</text> : icon}</view> : null}
         <view className="ui-cell-copy">
           <view className="ui-cell-title-row">

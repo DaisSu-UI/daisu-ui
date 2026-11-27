@@ -440,7 +440,7 @@ const verify = useRef<SlideVerifyRef>(null);
 
 ## 布局与禁用
 
-Form/FormItem共用 `disabled`、`border`、`center`、`size(medium/large)`、`titleWidth`（数值px/长度字符串，默认98）、`layout(horizontal/vertical)`、`valueAlign(left/center/right)`、`asteriskPosition(start/end)`、`hideAsterisk`、`ellipsis`。FormItem显式参数覆盖表单，必填以 `required` 或schema.isRequired为准。FormItem复用公共Cell，children为右侧控件；也支持title/value/placeholder/prefixIcon/icon/iconSize/label/isLink/clickable/onTap/className/style。value支持数值0。标题、描述与上下布局的字段内容使用Cell内容左边缘；起始星号绝对定位在已有左侧内边距中，不额外缩进文字。可选、必填、隐藏星号和末尾星号的文字保持同一横向起点，标记沿用对应Cell字号与行高。旧FormFieldRow系列保留独立标记列。
+Form/FormItem共用 `disabled`、`border`、`center`、`size(medium/large)`、`titleWidth`（数值px/长度字符串，默认98）、`layout(horizontal/vertical)`、`valueAlign(left/center/right)`、`asteriskPosition(start/end)`、`hideAsterisk`、`ellipsis`。FormItem显式参数覆盖表单，必填以 `required` 或schema.isRequired为准。FormItem复用公共Cell，children为右侧控件；也支持title/value/placeholder/prefixIcon/icon/iconSize/label/isLink/clickable/onTap/className/style。value支持数值0。标题、描述与上下布局的字段内容使用Cell内容左边缘；上下布局的标题区域占满整行，titleWidth只约束左右布局，避免center时标题缩为窄列再水平居中；起始星号绝对定位在已有左侧内边距中，不额外缩进文字。可选、必填、隐藏星号和末尾星号的文字保持同一横向起点，标记沿用对应Cell字号与行高。旧FormFieldRow系列保留独立标记列。
 
 Input/Textarea、Switch、Rate、InputNumber、Slider及本批关联控件读取字段上下文，无Form时保留原有行为。禁用FormItem拦截入口点击，单项 `disabled={false}` 可以显式恢复；这不是业务权限控制。
 

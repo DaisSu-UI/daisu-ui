@@ -39,12 +39,14 @@ test('vertical Form labels and fields share the same content edge', async ({ pag
   const layout = form.locator('.ui-form-item').filter({ has: page.locator('.ui-cell-title', { hasText: /^表单项布局$/ }) });
   await layout.locator('.ui-switch').click();
   await expect(page.getByText('上下布局', { exact: true })).toBeVisible();
-  await expect.poll(() => form.locator('.ui-form-item').evaluateAll(items => items.every(item => {
+  await expect.poll(() => form.locator('.ui-form-item').evaluateAll(items => items.flatMap(item => {
     const title = item.querySelector('.ui-cell-title');
-    if (!title) return true;
+    if (!title) return [];
     const content = item.querySelector('.ui-form-item-content');
-    return item.querySelector('.ui-cell-vertical') && Math.abs(title.getBoundingClientRect().x - content.getBoundingClientRect().x) < 1;
-  }))).toBe(true);
+    const titleLeft = title.getBoundingClientRect().x, contentLeft = content.getBoundingClientRect().x;
+    return item.querySelector('.ui-cell-vertical') && Math.abs(titleLeft - contentLeft) < 1
+      ? [] : [{ title: title.textContent, titleLeft, contentLeft }];
+  }))).toEqual([]);
   const coupon = form.locator('.ui-form-item').filter({ has: page.locator('.ui-cell-title', { hasText: /^优惠券名称$/ }) });
   const title = await coupon.locator('.ui-cell-title').boundingBox();
   const input = await coupon.locator('.ui-textfield-native input').boundingBox();
