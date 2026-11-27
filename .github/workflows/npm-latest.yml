@@ -49,6 +49,14 @@ jobs:
           UI_VERSION: ${{ steps.target.outputs.version }}
         run: |
           npm dist-tag add "@daisu-ui/ui@$UI_VERSION" latest --registry=https://registry.npmjs.org/
-          latest=$(npm view @daisu-ui/ui@latest version --registry=https://registry.npmjs.org/ --prefer-online)
-          test "$latest" = "$UI_VERSION"
-          npm view @daisu-ui/ui dist-tags --json --registry=https://registry.npmjs.org/ --prefer-online
+          for attempt in $(seq 1 30); do
+            latest=$(npm view @daisu-ui/ui@latest version --registry=https://registry.npmjs.org/ --prefer-online)
+            if [ "$latest" = "$UI_VERSION" ]; then
+              npm view @daisu-ui/ui dist-tags --json --registry=https://registry.npmjs.org/ --prefer-online
+              exit 0
+            fi
+            echo "Waiting for npm latest to propagate ($attempt/30)."
+            sleep 10
+          done
+          echo "npm latest did not reach $UI_VERSION within five minutes." >&2
+          exit 1
