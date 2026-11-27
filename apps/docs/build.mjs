@@ -1,4 +1,5 @@
 import { starterArchive } from './starter-archive.mjs';
+import { prepareDemoEntryRecovery } from './demo-entry-recovery.mjs';
 import { createDocumentationAliases, exportMarkdown } from './public/documentation-links.js';
 import { buildSearchIndex, checkDocumentationLinks } from './documentation.mjs';
 import { cp, mkdir, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises';
@@ -108,6 +109,7 @@ const versions = changelogVersions(changelog, packageInfo.version);
 await writeFile(resolve(output, 'content.json'), JSON.stringify({ version: packageInfo.version, versions, groups: docsGroups, pages, aliases: aliasesByName }));
 for (const [source, name] of [['llms.txt', 'llms.txt'], ['llms-full.txt', 'llms-full.txt'], ['COMPONENT_AI_NOTES.md', 'component-ai-notes.txt']]) await cp(resolve(root, 'docs/ui', source), resolve(output, name));
 await cp(resolve(root, 'apps/demo/h5-dist'), resolve(output, 'demo'), { recursive: true });
+await prepareDemoEntryRecovery(resolve(output, 'demo'));
 await mkdir(resolve(output, 'downloads'), { recursive: true });
 for (const [directory, filename] of [['examples/quickstart', 'daisu-ui-quickstart.zip'], ['examples/flutter-host', 'daisu-ui-flutter-host.zip']]) await writeFile(resolve(output, 'downloads', filename), await starterArchive(resolve(root, directory)));
 await checkDocumentationLinks(markdown, markdownSources, aliasesByName, async href => {
