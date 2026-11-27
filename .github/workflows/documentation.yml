@@ -41,7 +41,15 @@ jobs:
           npm ci --prefix examples/quickstart --no-audit --no-fund
           npm run typecheck --prefix examples/quickstart
           npm run build --prefix examples/quickstart
-      - run: npx playwright install --with-deps chromium
+      - name: Use the runner's Chrome for browser checks
+        run: |
+          chrome_path=$(command -v google-chrome || command -v chromium || true)
+          if [ -z "$chrome_path" ]; then
+            echo 'The documentation runner must provide Chrome or Chromium.' >&2
+            exit 1
+          fi
+          "$chrome_path" --version
+          echo "DAISU_DOCS_CHROME_EXECUTABLE=$chrome_path" >> "$GITHUB_ENV"
       - run: npm run test:docs:browser
       - name: Check the GitHub Pages subdirectory
         run: npm run test:docs:browser
