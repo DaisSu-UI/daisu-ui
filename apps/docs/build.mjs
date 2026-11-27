@@ -1,7 +1,8 @@
 import { starterArchive } from './starter-archive.mjs';
 import { createDocumentationAliases, exportMarkdown } from './public/documentation-links.js';
 import { buildSearchIndex, checkDocumentationLinks } from './documentation.mjs';
-import { cp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { cp, mkdir, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { basename, dirname, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import MarkdownIt from 'markdown-it';
@@ -55,6 +56,17 @@ const packageInfo = JSON.parse(await readFile(resolve(root, 'packages/daisu-ui/p
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
 await cp(resolve(here, 'public'), output, { recursive: true });
+// Keep the HTML, module graph and styles in the same revision on Pages/CDN caches.
+const staticAssets = await Promise.all((await readdir(resolve(here, 'public'))).sort()
+  .filter(name => /\.(?:html|js|css)$/.test(name))
+  .map(async name => [name, await readFile(resolve(here, 'public', name), 'utf8')]));
+const assetVersion = createHash('sha256');
+for (const [name, source] of staticAssets) assetVersion.update(name).update('\0').update(source).update('\0');
+const assetRevision = assetVersion.digest('hex').slice(0, 16);
+for (const [name, source] of staticAssets) {
+  await writeFile(resolve(output, name), source.replace(/(['"])(\.\/[^'"?#]+\.(?:js|css))\1/g,
+    (_, quote, path) => `${quote}${path}?v=${assetRevision}${quote}`));
+}
 await mkdir(resolve(output, 'sources'), { recursive: true });
 async function emitSource(path, key) {
   const code = await readFile(path, 'utf8');

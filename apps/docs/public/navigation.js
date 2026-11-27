@@ -30,7 +30,7 @@ export const documentationGroups = [
     { id: 'style-overrides', label: '样式覆盖', source: 'apps/docs/pages/styles.md' },
   ] },
   { id: 'ai', label: 'AI', section: 'ai', pages: aiPages },
-  { id: 'practice', label: '工程实践', section: 'guide', pages: [
+  { id: 'practice', label: '工程实践', section: 'practice', pages: [
     { id: 'integration', label: '组件库集成', source: 'apps/docs/pages/integration.md' },
     { id: 'platforms', label: '平台适配', source: 'apps/docs/pages/platforms.md' },
     { id: 'compatibility', label: '平台兼容性总表', source: 'apps/docs/pages/compatibility.md' },
@@ -40,7 +40,7 @@ export const documentationGroups = [
     { id: 'publishing', label: '版本发布', source: 'docs/ci/git-release.md' },
     { id: 'changelog', label: '更新日志', source: 'packages/daisu-ui/CHANGELOG.md' },
   ] },
-  { id: 'composition', label: '组合与工具', section: 'guide', pages: supportingPages },
+  { id: 'composition', label: '组合与工具', section: 'composition', pages: supportingPages },
   { id: 'community', label: '社区', section: 'guide', pages: [
     { id: 'contributing', label: '贡献指南', source: 'apps/docs/pages/contributing.md' },
     { label: '源码仓库', href: 'https://github.com/DaisSu-UI/daisu-ui', external: true },
@@ -52,7 +52,7 @@ export function pageSection(id) {
   if (id === 'home') return 'home';
   if (id === 'changelog') return 'versions';
   if (relatedAiPages.some(page => page.id === id)) return 'ai';
-  if (relatedGuidePages.some(page => page.id === id)) return 'guide';
+  if (relatedGuidePages.some(page => page.id === id)) return 'practice';
   return documentationGroups.find(group => group.pages.some(page => page.id && page.id === id))?.section || 'components';
 }
 export function headingId(page, label) {

@@ -211,6 +211,9 @@ function renderDocumentationNavigation() {
   for (const group of guideGroups) guide.append(navigationGroup(group));
   const design = documentationGroups.find(group => group.id === 'design');
   document.querySelector('#design-pages').replaceChildren(navigationGroup(design, false));
+  for (const section of ['practice', 'composition']) {
+    document.querySelector(`#${section}-pages`).replaceChildren(navigationGroup(documentationGroups.find(group => group.id === section), false));
+  }
   document.querySelector('#ai-pages').replaceChildren(navigationGroup({ pages: aiPages }, false));
 }
 function versionLink(release) {
@@ -236,14 +239,16 @@ function updateNavigation(params) {
   navigationMenus.closeAll();
   document.querySelector('.workspace').classList.toggle('guide-page', section !== 'components');
   document.querySelector('.preview').hidden = section !== 'components';
-  document.querySelector('#guide-trigger').classList.toggle('active', section === 'guide' || section === 'versions');
+  document.querySelector('#guide-trigger').classList.toggle('active', section === 'guide');
+  document.querySelector('#practice-trigger').classList.toggle('active', section === 'practice' || section === 'versions');
+  document.querySelector('#composition-trigger').classList.toggle('active', section === 'composition');
   document.querySelector('#design-trigger').classList.toggle('active', section === 'design');
   componentTrigger.classList.toggle('active', section === 'components');
   document.querySelector('#ai-trigger').classList.toggle('active', section === 'ai');
   document.querySelector('#version').classList.toggle('active', section === 'versions');
   document.querySelector('#catalog-label').textContent = section === 'components' ? '组件目录' : '文档目录';
   document.querySelector('#guide-catalog').hidden = section === 'components';
-  for (const link of document.querySelectorAll('#guide-catalog a, #guide-pages a, #design-pages a, #ai-pages a, #version-pages a')) {
+  for (const link of document.querySelectorAll('#guide-catalog a, [data-menu-panel] a')) {
     const selected = link.dataset.section ? current === 'changelog' && params.get('section') === link.dataset.section : link.hash === `#/${current}` && (!link.closest('#version-pages') || !params.get('section'));
     link.classList.toggle('active', selected || (current === 'ai-mcp' && link.hash === '#/ai-cli') || (current === 'local-runner' && link.hash === '#/publishing'));
     if (selected) link.setAttribute('aria-current', link.dataset.section ? 'location' : 'page'); else link.removeAttribute('aria-current');
@@ -382,14 +387,14 @@ document.addEventListener('keydown', event => {
 document.querySelector('#theme').setAttribute('aria-checked', String(theme === 'dark'));
 window.addEventListener('hashchange', () => { if (content) render(); });
 try {
-  const response = await fetch('./content.json');
+  const response = await fetch('./content.json', { cache: 'no-cache' });
   if (!response.ok) throw new Error(String(response.status));
   content = await response.json();
   const componentCount = content.groups.reduce((total, group) => total + group.items.length, 0);
   for (const counter of home.querySelectorAll('[data-home-component-count]')) counter.textContent = String(componentCount);
   home.querySelector('[data-home-version]').textContent = `v${content.version}`;
   documentSearch.setDocuments([...relatedAiPages.map(page => ({ ...page, group: 'AI' })), ...relatedGuidePages.map(page => ({ ...page, group: '工程实践' })), ...documentationGroups.flatMap(group => group.pages.filter(page => page.id).map(page => ({ ...page, group: group.label }))), ...content.groups.flatMap(group => group.items.map(page => ({ ...page, group: group.label })))]);
-  documentSearch.setLoader(async () => { const response = await fetch('./search-index.json'); if (!response.ok) throw Error('Search index unavailable'); const records = await response.json(); if (!Array.isArray(records)) throw Error('Invalid search index'); return records; });
+  documentSearch.setLoader(async () => { const response = await fetch('./search-index.json', { cache: 'no-cache' }); if (!response.ok) throw Error('Search index unavailable'); const records = await response.json(); if (!Array.isArray(records)) throw Error('Invalid search index'); return records; });
   document.querySelector('#document-search-trigger').disabled = false;
   renderCategories(); renderDocumentationNavigation(); renderVersionNavigation();
   render();

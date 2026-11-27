@@ -7,10 +7,13 @@ test('optional and required Form labels align and combined validation shows one 
   const positions = await form.locator('.ui-cell-title').evaluateAll(labels => labels.map(label => {
     const rect = label.getBoundingClientRect();
     const star = label.parentElement.querySelector('.ui-cell-required-before')?.getBoundingClientRect();
-    return { x: rect.x, markerTopDifference: star ? Math.abs(star.y - rect.y) : null };
+    const cell = label.closest('.ui-cell'), box = cell.getBoundingClientRect();
+    const contentLeft = box.x + parseFloat(getComputedStyle(cell).paddingLeft);
+    return { x: rect.x, contentLeft, markerInGutter: !star || star.x >= box.x && star.right <= rect.x, markerTopDifference: star ? Math.abs(star.y - rect.y) : null };
   }));
   expect(Math.max(...positions.map(item => item.x)) - Math.min(...positions.map(item => item.x))).toBeLessThan(1);
   expect(positions.filter(item => item.markerTopDifference !== null).every(item => item.markerTopDifference < 1)).toBe(true);
+  expect(positions.every(item => Math.abs(item.x - item.contentLeft) < 1 && item.markerInGutter)).toBe(true);
   await page.getByText('message+toast', { exact: true }).click();
   const submit = page.locator('.demo-form-footer .ui-button');
   await submit.click();
@@ -28,4 +31,23 @@ test('optional and required Form labels align and combined validation shows one 
   await expect(page.locator('.ui-toast:visible')).toHaveCount(1);
   await expect(form.locator('.ui-form-item-error')).toHaveCount(0);
   await page.screenshot({ path: testInfo.outputPath('form-alignment-message-toast.png') });
+});
+
+test('vertical Form labels and fields share the same content edge', async ({ page }, testInfo) => {
+  await page.goto('demo/#/ui-demo/form-complex');
+  const form = page.locator('.demo-form-complex .ui-form');
+  const layout = form.locator('.ui-form-item').filter({ has: page.locator('.ui-cell-title', { hasText: /^表单项布局$/ }) });
+  await layout.locator('.ui-switch').click();
+  await expect(page.getByText('上下布局', { exact: true })).toBeVisible();
+  await expect.poll(() => form.locator('.ui-form-item').evaluateAll(items => items.every(item => {
+    const title = item.querySelector('.ui-cell-title');
+    if (!title) return true;
+    const content = item.querySelector('.ui-form-item-content');
+    return item.querySelector('.ui-cell-vertical') && Math.abs(title.getBoundingClientRect().x - content.getBoundingClientRect().x) < 1;
+  }))).toBe(true);
+  const coupon = form.locator('.ui-form-item').filter({ has: page.locator('.ui-cell-title', { hasText: /^优惠券名称$/ }) });
+  const title = await coupon.locator('.ui-cell-title').boundingBox();
+  const input = await coupon.locator('.ui-textfield-native input').boundingBox();
+  expect(Math.abs(title.x - input.x)).toBeLessThan(1);
+  await page.screenshot({ path: testInfo.outputPath('form-vertical-label-alignment.png') });
 });

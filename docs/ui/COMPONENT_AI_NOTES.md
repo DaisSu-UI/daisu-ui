@@ -99,4 +99,4 @@ useFrameTask 合并后台渲染工作并在卸载时取消，Slider 释放时提
 
 Swiper 卡片动画：邻卡高度必须通过独立裁剪窗口表现；保持原生 SwiperItem、ui-swiper-item 与图片自身高度固定，不对整张图片使用 scaleY。首帧内联样式和主线程更新使用同一 swiperCardFrame 曲线，视口圆角保留，文字标题位于裁剪窗口内且不随图片居中偏移。窗口的主线程 ref 按物理 realIndex 注册及清理，覆盖首尾循环复制项；不要通过重建图片或背景线程逐帧 setState 恢复动画。
 
-Form 对齐与校验展示：FormItem标题统一预留12px标记列，before星号绝对定位且复用Cell字号/行高；可选、必填、hideAsterisk、asteriskPosition=end均保持标题文字起点，旧FormFieldRow同样处理。errorType可传readonly('message'|'toast')[]，组合模式展示全部字段message，但仅本次校验第一条错误toast；一个Form只保留一个toast实例，替换、不排队。校验通过/reset/切换到无toast模式立即移除错误toast，避免与成功提示重叠；异步过期结果仍不得更新提示。Demo form-errors新增message+toast选项。
+Form 对齐与校验展示：FormItem标题与描述使用Cell内容左边缘，上下布局的输入与展示内容沿用同一左边缘；before星号绝对定位在Cell已有左侧内边距中，不额外缩进文字，且复用Cell字号/行高。可选、必填、hideAsterisk、asteriskPosition=end均保持标题文字起点；旧FormFieldRow继续保留独立标记列。errorType可传readonly('message'|'toast')[]，组合模式展示全部字段message，但仅本次校验第一条错误toast；一个Form只保留一个toast实例，替换、不排队。校验通过/reset/切换到无toast模式立即移除错误toast，避免与成功提示重叠；异步过期结果仍不得更新提示。Demo form-errors新增message+toast选项。

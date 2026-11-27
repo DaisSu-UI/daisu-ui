@@ -193,6 +193,38 @@ header{justify-content:flex-start}.brand-lockup{width:272px;flex-shrink:0}.main-
 
 @media(min-width:681px) and (max-width:1000px){header{padding:0 16px;gap:12px}.main-nav{gap:10px}}
 
+/* Keep the split documentation menus within the header at each viewport. */
+.brand-lockup{width:auto}
+.main-nav{gap:14px}
+.nav-dropdown{flex-shrink:0}
+@media(max-width:1400px){
+ .document-search-trigger{width:32px;padding:0;justify-content:center;background:transparent}
+ .document-search-trigger span,.document-search-trigger kbd{display:none}
+}
+@media(min-width:1101px) and (max-width:1240px){
+ header{padding:0 16px;gap:12px}.main-nav{gap:10px}.brand small{display:none}
+}
+@media(min-width:681px) and (max-width:1100px){
+ :root{--header-height:112px}
+ header{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:56px 56px;padding:0 16px;gap:0 12px}
+ .brand-lockup{grid-column:1;grid-row:1}
+ .document-search-trigger{grid-column:2;grid-row:1;justify-self:end}
+ .main-nav{grid-column:1/-1;grid-row:2;margin-left:0;gap:8px;width:100%;min-width:0}
+ .nav-dropdown{padding:14px 0}
+ .guide-menu .nav-menu,.design-menu .nav-menu,.practice-menu .nav-menu,.composition-menu .nav-menu,.ai-menu .nav-menu{left:0;right:auto}
+ .nav-trigger,#component-trigger{font-size:13px}
+ .version-menu{margin-left:auto}.version.nav-trigger{font-size:11px;padding:0 8px}
+}
+@media(max-width:680px){
+ .main-nav{flex-wrap:wrap;align-content:center;column-gap:16px;row-gap:0;min-width:0}
+}
+@media(max-width:500px){
+ :root{--header-height:152px}
+ header{grid-template-rows:56px 96px}
+ .main-nav{align-content:space-evenly}
+ .document-search-trigger{align-self:start;margin-top:8px}
+}
+
 /* Full-text search and example navigation. */
 [data-search-results] .search-result-body{display:flex;flex:1;min-width:0;flex-direction:column;gap:4px}[data-search-results] .search-snippet{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;font-weight:400}[data-search-results] button>small{flex-shrink:0;max-width:90px}
 .demo-example-select{display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:12px;color:var(--muted);border-bottom:1px solid var(--line)}.demo-example-select select{flex:1;min-width:0;width:0;padding:5px 7px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--text);font-size:12px}#demo-status{margin:0;padding:6px 14px;min-height:28px;font-size:11px;line-height:16px;color:var(--muted)}#demo-status[data-state=error]{color:var(--accent);background:var(--active)}.view-demo{margin-left:10px;padding:3px 7px;font-size:11px;vertical-align:middle;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--accent);cursor:pointer}.view-demo:hover{border-color:var(--accent)}

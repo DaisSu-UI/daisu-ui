@@ -1,5 +1,5 @@
 import {afterEach,expect,test} from '@rstest/core';
-import {aiPages,articlePages,documentationGroups,changelogVersions,createNavigationMenus,headingId,pageSection} from './public/navigation.js';
+import {aiPages,articlePages,documentationGroups,guideGroups,changelogVersions,createNavigationMenus,headingId,pageSection} from './public/navigation.js';
 let navigation:ReturnType<typeof createNavigationMenus>|undefined;
 afterEach(()=>{navigation?.destroy();document.body.replaceChildren();});
 function mount(){
@@ -19,6 +19,10 @@ test('AI pages are article pages and version targets are backed by actual change
  expect(articlePages.some(page=>page.id==='ai-mcp')).toBe(true);
  expect(pageSection('dark-mode')).toBe('design');
  expect(pageSection('faq')).toBe('guide');
+ expect(guideGroups.map(group=>group.id)).toEqual(['quickstart','community']);
+ expect(pageSection('web-quickstart')).toBe('practice');
+ expect(pageSection('local-runner')).toBe('practice');
+ expect(pageSection('utilities')).toBe('composition');
  expect(pageSection('button')).toBe('components');expect(pageSection('changelog')).toBe('versions');
  const versions=changelogVersions('# Log\n## 1.2.0-beta.1\n## Unreleased\n## v1.1.0\n## 1.1.0\n','1.2.0-beta.1');
  expect(versions).toEqual([{version:'1.2.0-beta.1',section:'changelog-1-2-0-beta-1',current:true},{version:'1.1.0',section:'changelog-v1-1-0',current:false}]);
