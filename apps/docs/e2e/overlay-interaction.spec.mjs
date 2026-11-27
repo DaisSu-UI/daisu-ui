@@ -29,7 +29,15 @@ test('Notify component example never suppresses later hook notifications', async
     await expect(banner).toBeInViewport();
     await expect.poll(() => banner.evaluate(node => {
       const rect = node.getBoundingClientRect();
-      return node.contains(document.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2));
+      const root = node.getRootNode();
+      let hit = root.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2);
+      // Native Web elements may introduce another open shadow root. Walk the
+      // composed ancestry so a text element's inner box still hits its banner.
+      while (hit) {
+        if (node.contains(hit)) return true;
+        hit = hit.getRootNode().host;
+      }
+      return false;
     })).toBe(true);
   }
   await page.screenshot({ path: testInfo.outputPath('notify-after-component.png') });
@@ -84,12 +92,13 @@ test('a smaller second Popup dims and blocks the first Popup without a manual la
   await expect(child).toBeVisible();
   await expect.poll(() => page.locator('.ui-overlay:visible').evaluateAll(nodes => {
     const masks = nodes.map(node => Number(getComputedStyle(node).zIndex));
-    const anchors = [...document.querySelectorAll('.ui-popup-anchor')].filter(node => node.querySelector('.ui-popup') && getComputedStyle(node.querySelector('.ui-popup')).display !== 'none');
+    const root = nodes[0]?.getRootNode();
+    const anchors = [...(root?.querySelectorAll('.ui-popup-anchor') ?? [])].filter(node => node.querySelector('.ui-popup') && getComputedStyle(node.querySelector('.ui-popup')).display !== 'none');
     const layers = anchors.map(node => Number(getComputedStyle(node).zIndex));
     return masks.length === 2 && Math.max(...masks) > Math.min(...layers) && Math.max(...masks) < Math.max(...layers);
   })).toBe(true);
   const coversParent = await parent.evaluate(node => {
-    const rect = node.getBoundingClientRect(), hit = document.elementFromPoint(rect.x + 8, rect.y + 8);
+    const rect = node.getBoundingClientRect(), hit = node.getRootNode().elementFromPoint(rect.x + 8, rect.y + 8);
     return !!hit?.closest('.ui-overlay');
   });
   expect(coversParent).toBe(true);

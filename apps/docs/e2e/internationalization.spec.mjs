@@ -39,7 +39,8 @@ test('Slider value tooltip exists only during a gesture', async ({ page }, testI
   await page.mouse.down();
   await expect(slider.locator('.ui-slider-tooltip')).toBeVisible();
   await page.mouse.move(rect.x + rect.width * .6, rect.y + rect.height / 2, { steps: 20 });
-  await expect(slider.locator('.ui-slider-tooltip text')).toBeVisible();
+  await expect(slider.locator('.ui-slider-tooltip x-text').first()).toBeVisible();
+  await expect(slider.locator('.ui-slider-tooltip')).toHaveText(/^\d+$/);
   await page.screenshot({ path: testInfo.outputPath('slider-active-value.png') });
   await page.mouse.up();
   await expect(page.locator('.ui-slider-tooltip')).toHaveCount(0);
@@ -57,7 +58,7 @@ test('About is reachable from home, saves language and updates detail and browse
   await expect(page.getByText('https://github.com/DaisSu-UI/daisu-ui', { exact: true })).toBeVisible();
   await page.reload();
   await expect(page).toHaveTitle('About · Daisu UI');
-  await page.locator('.ui-demo-tabbar').getByText('Demo', { exact: true }).click();
+  await page.locator('.ui-demo-tabbar:visible [accessibility-label="Demo"]').click();
   await expect(page).toHaveTitle('Component examples · Daisu UI');
   await page.getByText('Basics', { exact: true }).click();
   await page.getByText('Button', { exact: true }).click();

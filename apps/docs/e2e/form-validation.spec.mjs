@@ -19,7 +19,8 @@ test('optional and required Form labels align and combined validation shows one 
   await expect(page.locator('.ui-toast-msg:visible')).toHaveText('请输入歪比巴卜');
   await submit.click();
   await expect(page.locator('.ui-toast:visible')).toHaveCount(1);
-  const inputs = form.locator('.ui-textfield-native');
+  // x-input uses display:contents; its editable input lives in an open shadow root.
+  const inputs = form.locator('.ui-textfield-native input');
   await inputs.nth(0).fill('first');
   await inputs.nth(1).fill('second');
   await submit.click();
