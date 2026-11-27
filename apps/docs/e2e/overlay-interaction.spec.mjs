@@ -95,7 +95,7 @@ test('a smaller second Popup dims and blocks the first Popup without a manual la
     node.style.minHeight = '240px';
   });
   await parent.getByText('打开传送子弹窗', { exact: true }).click();
-  const child = page.locator('.ui-popup:visible').filter({ hasText: '子弹窗' }).last();
+  const child = page.locator('.ui-popup:visible').filter({ has: page.locator('.ui-popup-title', { hasText: /^子弹窗$/ }) });
   await expect(child).toBeVisible();
   const parentBounds = await parent.boundingBox(), childBounds = await child.boundingBox();
   expect(parentBounds.width).toBeGreaterThan(childBounds.width);
