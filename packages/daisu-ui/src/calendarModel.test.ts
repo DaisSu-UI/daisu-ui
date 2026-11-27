@@ -1,7 +1,27 @@
 import { expect, test } from '@rstest/core';
-import { calendarBounds, calendarComplete, calendarPanels, calendarPick, calendarScrollTarget, calendarState, calendarWeekNumber } from './calendarModel.js';
+import { calendarBounds, calendarComplete, calendarPanelDates, calendarPanels, calendarPick, calendarScrollTarget, calendarState, calendarWeekNumber } from './calendarModel.js';
 const day = (n: number, month = 10, year = 2026) => new Date(year, month, n).getTime();
 const bounds = { minDate: day(1), maxDate: day(30) };
+test('native calendar rows preserve weekday alignment and every date, including leap February', () => {
+  const sunday = calendarPanels(bounds, false, day(20))[0]!;
+  const rows = calendarPanelDates(sunday);
+  expect(rows[0]).toEqual(Array.from({ length: 7 }, (_, index) => day(index + 1)));
+  expect(rows[4]).toEqual([day(29), day(30), null, null, null, null, null]);
+  const monday = calendarPanels({ ...bounds, firstDayOfWeek: 1 }, false, day(20))[0]!;
+  expect(calendarPanelDates(monday, 'date', 1)[0]).toEqual([null, null, null, null, null, null, day(1)]);
+  const leap = calendarPanels({ minDate: day(1, 1, 2028), maxDate: day(29, 1, 2028) }, false, day(29, 1, 2028))[0]!;
+  const dates = calendarPanelDates(leap).flat().filter(value => value !== null);
+  expect(dates).toHaveLength(29);
+  expect(new Set(dates).size).toBe(29);
+  expect(dates[28]).toBe(day(29, 1, 2028));
+});
+test('native month selection renders twelve months as three four-cell rows', () => {
+  const panel = calendarPanels({ ...bounds, type: 'month' }, false, day(20))[0]!;
+  const rows = calendarPanelDates(panel, 'month');
+  expect(rows).toHaveLength(3);
+  expect(rows.every(row => row.length === 4)).toBe(true);
+  expect(rows.flat().map(value => new Date(value!).getMonth())).toEqual(Array.from({ length: 12 }, (_, index) => index));
+});
 test('calendar ranges retain an incomplete endpoint and truncate inclusive maximum ranges', () => {
   const props = { ...bounds, type: 'daterange' as const, maxRange: 3 };
   expect(calendarPick(props, null, day(2))?.value).toEqual([day(2), null]);

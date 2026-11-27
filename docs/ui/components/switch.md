@@ -77,7 +77,7 @@ const [value, setValue] = useState(true);
 | beforeChange | 变化前校验；返回 false 或拒绝 Promise 可阻止变化 | `(value: SwitchValue) => boolean \| Promise<boolean>` | — |
 | className | 根节点自定义类名 | `string` | `''` |
 | style | 根节点样式 | `CSSProperties` | — |
-| accessibilityLabel | 读屏工具使用的操作说明 | `string` | `'开关'` |
+| accessibilityLabel | 读屏工具使用的操作说明 | `string` | — |
 
 ## Events 事件
 

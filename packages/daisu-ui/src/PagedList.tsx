@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { FeedList, type FeedListRef } from '@lynx-js/lynx-ui';
 import { useEffect, useMemo, useRef } from '@lynx-js/react';
 import type { ReactElement, ReactNode, RefObject } from '@lynx-js/react';
@@ -15,11 +16,13 @@ export function PagedList({ listId, listRef, refreshing, onRefresh, onLoadMore, 
   footer: ReactElement | null;
   children: ReactNode;
 }) {
+  const { t: localeText } = useLocale();
+
   const pending = useRef(false);
   const refreshHeader = useMemo(() => <view className="native-refresh-header">
     <image className="native-refresh-spinner" src={REFRESH_SPINNER_URL} mode="aspectFit" />
-    <text className="native-refresh-label">正在刷新</text>
-  </view>, []);
+    <text className="native-refresh-label">{localeText('list.refreshing')}</text>
+  </view>, [localeText]);
   useEffect(() => {
     // Initial data loading is not a refresh gesture. Only finish a refresh
     // after onStartRefresh has actually fired, matching the official demo.
@@ -37,7 +40,7 @@ export function PagedList({ listId, listRef, refreshing, onRefresh, onLoadMore, 
       scrollOrientation="vertical"
       useRefactorList={true}
       bounces={true}
-      style={{ width: '100%', height: '100%' }}
+      style={{ zIndex: 0, width: '100%', height: '100%' }}
       refreshOptions={{
         enableRefresh: true,
         mode: 'native',

@@ -64,7 +64,7 @@ const [value, setValue] = useState<SliderValue>(30);
 | showValue | 拖动时显示值，默认 true | `boolean` | `true` |
 | marks | 数字数组或数字到文字的映射 | `readonly number[] \| Readonly<Record<number, string>>` | — |
 | className | 根节点样式类 / 无障碍名称 | `string` | `''` |
-| accessibilityLabel | 根节点样式类 / 无障碍名称 | `string` | `'滑块'` |
+| accessibilityLabel | 根节点样式类 / 无障碍名称 | `string` | — |
 
 ## Events 事件
 

@@ -1,3 +1,4 @@
+import { useDemoLocale } from '../demoLocale.js';
 import { useState } from '@lynx-js/react';
 import { ActionSheet, Button } from '@daisu-ui/ui';
 import type { ActionSheetAction, ActionSheetPanel, ActionSheetSelection } from '@daisu-ui/ui';
@@ -9,6 +10,7 @@ const multiple: ActionSheetPanel[][] = [[...panels.slice(0, 4), { icon: 'user-ad
 const statuses: ActionSheetAction[] = [{ name: '颜色', color: '#0083ff' }, { name: '禁用', disabled: true }, { loading: true }];
 
 export function ActionSheetExample() {
+  const { text: demoText, copy: demoCopy } = useDemoLocale();
   const [variant, setVariant] = useState(0);
   const [show, setShow] = useState(false);
   const [notice, setNotice] = useState('');
@@ -18,14 +20,14 @@ export function ActionSheetExample() {
     const name = 'name' in event.item ? event.item.name : 'title' in event.item ? event.item.title : '';
     setNotice('rowIndex' in event ? `当前选中项: ${name}, 行下标: ${event.rowIndex}, 列下标: ${event.colIndex}` : `当前选中项: ${name}, 下标: ${event.index}`);
   };
-  const block = (title: string, index: number) => <ExampleBlock title={title}><view className="demo-layer-trigger"><Button label="弹出菜单" onTap={() => open(index)} /></view></ExampleBlock>;
+  const block = (title: string, index: number) => <ExampleBlock title={title}><view className="demo-layer-trigger"><Button label={demoText("弹出菜单")} onTap={() => open(index)} /></view></ExampleBlock>;
   return <view>
     <DemoGroup title="组件类型">{block('基本用法', 0)}{block('自定义面板单行', 1)}{block('自定义面板多行', 2)}</DemoGroup>
     <DemoGroup title="组件状态">{block('选项状态', 3)}</DemoGroup>
     <DemoGroup title="组件变体">{block('取消按钮', 4)}{block('标题', 5)}</DemoGroup>
-    <ActionSheet show={show} onChange={setShow} rootPortal className="ui-demo-page" actions={variant === 3 ? statuses : actions} panels={variant === 1 ? panels : variant === 2 ? multiple : []} cancelText={[1, 2, 4].includes(variant) ? '取消' : undefined} title={variant === 5 ? '标题' : undefined} onSelect={selected}>
-      {variant === 5 ? <view className="demo-action-sheet-custom"><text>内容</text></view> : undefined}
+    <ActionSheet show={show} onChange={setShow} rootPortal className="ui-demo-page" actions={demoCopy(variant === 3 ? statuses : actions)} panels={demoCopy(variant === 1 ? panels : variant === 2 ? multiple : [])} cancelText={demoText([1, 2, 4].includes(variant) ? '取消' : undefined)} title={demoText(variant === 5 ? '标题' : undefined)} onSelect={selected}>
+      {variant === 5 ? <view className="demo-action-sheet-custom"><text>{demoText("内容")}</text></view> : undefined}
     </ActionSheet>
-    {notice ? <view className="demo-action-sheet-notice" bindtap={() => setNotice('')}><text>{notice}</text></view> : null}
+    {notice ? <view className="demo-action-sheet-notice" bindtap={() => setNotice('')}><text>{demoText(notice)}</text></view> : null}
   </view>;
 }

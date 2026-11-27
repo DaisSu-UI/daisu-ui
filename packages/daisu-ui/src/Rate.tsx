@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { useThemeColor } from './themeColor.js';
 import { FormFieldContext } from './formContext.js';
 import { useContext, useState } from '@lynx-js/react';
@@ -29,6 +30,7 @@ export type RateProps = {
 };
 
 export function Rate({ value, defaultValue = 0, onChange, num = 5, readonly = false, disabled: disabledProp, size = 24, space = 6, color, activeColor = '#faad14', disabledColor, icon = 'star-fill', activeIcon = 'star-fill', allowHalf = false, clearable = false, block = false, className = '', style }: RateProps) {
+  const { t: localeText } = useLocale();
   const field = useContext(FormFieldContext), disabled = disabledProp ?? field?.disabled ?? false;
   const [inner, setInner] = useState(defaultValue);
   const count = rateCount(num); const score = rateScore(value === undefined ? inner : value, count);
@@ -46,8 +48,8 @@ export function Rate({ value, defaultValue = 0, onChange, num = 5, readonly = fa
         {color ? <svg className="ui-rate-glyph" content={idle} /> : <><svg className="ui-rate-glyph ui-rate-default-light" content={idle} /><svg className="ui-rate-glyph ui-rate-default-dark" content={idle} /></>}
       </view> : null}
       {fraction > 0 ? <view className="ui-rate-fill" style={{ width: `${fraction * 100}%` }}><svg className="ui-rate-glyph" content={filled} /></view> : null}
-      {allowHalf ? <view className="ui-rate-hit ui-rate-hit-half" bindtap={() => select(index + .5)} accessibility-element accessibility-traits="button" accessibility-label={`${index + .5}分`} /> : null}
-      <view className={`ui-rate-hit ${allowHalf ? 'ui-rate-hit-full' : ''}`} bindtap={() => select(index + 1)} accessibility-element accessibility-traits="button" accessibility-label={`${index + 1}分`} />
+      {allowHalf ? <view className="ui-rate-hit ui-rate-hit-half" bindtap={() => select(index + .5)} accessibility-element accessibility-traits="button" accessibility-label={localeText('rate.label', { value: index + .5 })} /> : null}
+      <view className={`ui-rate-hit ${allowHalf ? 'ui-rate-hit-full' : ''}`} bindtap={() => select(index + 1)} accessibility-element accessibility-traits="button" accessibility-label={localeText('rate.label', { value: index + 1 })} />
     </view>;
     })}
   </view>;

@@ -33,7 +33,7 @@ const Column = forwardRef<ColumnRef, {
     if (next >= 0) { scrollTo(next, smooth); if (selected.current !== next) { selected.current = next; onSelect(next); } }
     end();
   };
-  return <scroll-view ref={node} className="ui-picker-column" scroll-orientation="vertical" scroll-bar-enable={false} enable-scroll={!disabled} bounces={false} enable-nested-scroll force-can-scroll initial-scroll-offset={Math.max(0, index) * row}
+  return <scroll-view style={{ zIndex: 0 }} ref={node} className="ui-picker-column" scroll-orientation="vertical" scroll-bar-enable={false} enable-scroll={!disabled} bounces={false} enable-nested-scroll force-can-scroll initial-scroll-offset={Math.max(0, index) * row}
     bindtouchstart={() => { 'background only'; if (disabled) return; clearTimeout(timer.current); target.current = null; dragging.current = true; }}
     bindtouchend={() => { 'background only'; dragging.current = false; if (immediate) settle(false); else timer.current = setTimeout(() => settle(), 160); }}
     bindtouchcancel={() => { 'background only'; dragging.current = false; settle(false); }}

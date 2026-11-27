@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { FormFieldContext } from './formContext.js';
 import { useContext, useEffect, useRef, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
@@ -33,7 +34,10 @@ export type SwitchProps = {
   accessibilityLabel?: string;
 };
 
-export function Switch({ value, defaultValue = false, onChange, activeValue = true, inactiveValue = false, activeColor, inactiveColor, size = 26, shape = 'round', disabled: disabledProp, loading = false, loadingProps, activeText = '', inactiveText = '', activeIcon, inactiveIcon, activeActionIcon, inactiveActionIcon, beforeChange, className = '', style, accessibilityLabel = '开关' }: SwitchProps) {
+export function Switch({ value, defaultValue = false, onChange, activeValue = true, inactiveValue = false, activeColor, inactiveColor, size = 26, shape = 'round', disabled: disabledProp, loading = false, loadingProps, activeText = '', inactiveText = '', activeIcon, inactiveIcon, activeActionIcon, inactiveActionIcon, beforeChange, className = '', style, accessibilityLabel }: SwitchProps) {
+  const { t: localeText } = useLocale();
+  accessibilityLabel ??= localeText('switch.label');
+
   const field = useContext(FormFieldContext), disabled = disabledProp ?? field?.disabled ?? false;
   const [inner, setInner] = useState(defaultValue);
   const [pending, setPending] = useState(false);
@@ -56,7 +60,7 @@ export function Switch({ value, defaultValue = false, onChange, activeValue = tr
     finally { if (sequence.current === token) { busy.current = false; setPending(false); } }
   };
   const controlStyle = { '--ui-switch-size': loadingDimension(size), backgroundColor: active ? activeColor : inactiveColor, ...style };
-  return <view className={`ui-switch ui-switch-${shape} ${active ? 'ui-switch-active' : ''} ${disabled ? 'ui-switch-disabled' : ''} ${className}`} style={controlStyle} bindtap={() => { void toggle(); }} accessibility-element accessibility-traits="button" accessibility-label={`${accessibilityLabel}，${active ? '开启' : '关闭'}`}>
+  return <view className={`ui-switch ui-switch-${shape} ${active ? 'ui-switch-active' : ''} ${disabled ? 'ui-switch-disabled' : ''} ${className}`} style={controlStyle} bindtap={() => { void toggle(); }} accessibility-element accessibility-traits="button" accessibility-label={`${accessibilityLabel}，${active ? localeText('switch.on') : localeText('switch.off')}`}>
     <view className="ui-switch-label">{icon ? typeof icon === 'string' ? <Icon name={icon} size={13} color="#fff" /> : icon : <text>{active ? activeText : inactiveText}</text>}</view>
     <view className="ui-switch-action">{loading || pending ? <Loading size={14} color={activeColor ?? '#1c64fd'} {...loadingProps} /> : actionIcon ? typeof actionIcon === 'string' ? <Icon name={actionIcon} size={16} color={active ? activeColor ?? '#1c64fd' : 'var(--cso-ui-text-placeholder)'} /> : actionIcon : null}</view>
   </view>;

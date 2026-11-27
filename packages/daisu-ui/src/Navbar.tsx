@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import type { ReactNode } from '@lynx-js/react';
 import { Icon } from './Icon.js';
 import { useConfigProvider } from './configContext.js';
@@ -32,6 +33,8 @@ export type NavbarProps = {
 
 /** Existing callers retain the original business appearance and callbacks. */
 export function Navbar({ title = '', variant = 'business', onBack, rightLabel, onRight, rightDisabled = false, rightContent, statusBarHeight = 0, leftText = '', rightText, leftArrow, backButtonEffect = 'default', bordered = false, fixed = false, placeholder = false, zIndex = 10, safeAreaInsetTop, leftDisabled = false, left, right, capsule, className = '', onLeftTap, onRightTap }: NavbarProps) {
+  const { t: localeText } = useLocale();
+
   const standard = variant === 'standard';
   const { theme } = useConfigProvider();
   const topInset = (safeAreaInsetTop ?? !standard) && Number.isFinite(statusBarHeight) ? Math.max(0, statusBarHeight) : 0;
@@ -42,15 +45,15 @@ export function Navbar({ title = '', variant = 'business', onBack, rightLabel, o
   const handleRight = () => { 'background only'; if (!rightDisabled) (onRightTap ?? onRight)?.(); };
   return <>
     {fixed && placeholder ? <view className="ui-navbar-placeholder" style={{ height: `${height}px` }} /> : null}
-    <view className={`${standard ? 'ui-navbar' : 'navbar'} ${bordered ? 'ui-navbar-bordered' : ''} ${className}`} flatten={false} style={{ height: `${height}px`, ...(standard ? { paddingTop: `${topInset}px`, zIndex } : {}), ...(fixed ? { position: 'fixed', top: '0px', left: '0px', width: '100%', zIndex } : {}) }}>
+    <view className={`${standard ? 'ui-navbar' : 'navbar'} ${bordered ? 'ui-navbar-bordered' : ''} ${className}`} flatten={false} style={{ height: `${height}px`, position: fixed ? 'fixed' : 'relative', top: fixed ? '0px' : 'auto', left: fixed ? '0px' : 'auto', width: '100%', paddingTop: standard ? `${topInset}px` : '0px', zIndex: fixed ? zIndex : 0 }}>
       <view className={standard ? 'ui-navbar-content' : 'navbar-content'} style={standard ? undefined : { top: `${topInset}px` }}>
         <view className={standard ? 'ui-navbar-title' : 'nav-center'}>{typeof title === 'string' || typeof title === 'number' ? <text className={standard ? '' : 'nav-title'} text-maxline="1" text-overflow="ellipsis">{title}</text> : title}</view>
-        {capsule != null ? <view className={standard ? 'ui-navbar-capsule-slot' : 'nav-action nav-left'}>{capsule}</view> : <view className={`${standard ? 'ui-navbar-action ui-navbar-left' : 'nav-action nav-left'} ${leftDisabled ? 'ui-navbar-disabled' : ''}`} bindtap={handleLeft} accessibility-element accessibility-traits="button" accessibility-label={leftText || '返回'}>
+        {capsule != null ? <view className={standard ? 'ui-navbar-capsule-slot' : 'nav-action nav-left'}>{capsule}</view> : <view className={`${standard ? 'ui-navbar-action ui-navbar-left' : 'nav-action nav-left'} ${leftDisabled ? 'ui-navbar-disabled' : ''}`} bindtap={handleLeft} accessibility-element accessibility-traits="button" accessibility-label={leftText || localeText('navbar.back')}>
           {left ?? <>{(leftArrow ?? !standard) ? standard ? <Icon name="left" size={24} /> : <view className="nav-back-circle nav-circle-button">
             {backButtonEffect === 'glass' ? <blur-view className="ui-navbar-back-glass" blur-radius="16px" blur-effect="glass" glass-style="regular" glass-interactive={!leftDisabled} ios-user-interface-style={theme}><Icon name="left" size={24} /></blur-view> : <Icon name="left" size={24} />}
           </view> : null}{leftText ? <text>{leftText}</text> : null}</>}
         </view>}
-        {standard ? rightNode != null || label ? <view className={`ui-navbar-action ui-navbar-right ${rightDisabled ? 'ui-navbar-disabled' : ''}`} bindtap={handleRight} accessibility-element accessibility-traits="button" accessibility-label={label || '右侧操作'}>{rightNode ?? <text>{label}</text>}</view> : null : <view className="nav-action nav-right">
+        {standard ? rightNode != null || label ? <view className={`ui-navbar-action ui-navbar-right ${rightDisabled ? 'ui-navbar-disabled' : ''}`} bindtap={handleRight} accessibility-element accessibility-traits="button" accessibility-label={label || localeText('navbar.action')}>{rightNode ?? <text>{label}</text>}</view> : null : <view className="nav-action nav-right">
           {rightNode ?? (label ? <view className={`nav-right-button ${rightDisabled ? 'nav-right-button-disabled' : ''}`} bindtap={handleRight}><text className={`nav-right-button-label ${rightDisabled ? 'nav-right-button-label-disabled' : ''}`}>{label}</text></view> : null)}
         </view>}
       </view>
@@ -60,9 +63,11 @@ export function Navbar({ title = '', variant = 'business', onBack, rightLabel, o
 
 export type NavbarCapsuleProps = { onBack?: () => void; onBackHome?: () => void; disabled?: boolean; className?: string };
 export function NavbarCapsule({ onBack, onBackHome, disabled = false, className = '' }: NavbarCapsuleProps) {
+  const { t: localeText } = useLocale();
+
   return <view className={`ui-navbar-capsule ${disabled ? 'ui-navbar-disabled' : ''} ${className}`} catchtap={() => { 'background only'; }}>
-    <view className="ui-navbar-capsule-button" accessibility-element accessibility-traits="button" accessibility-label="返回上级" bindtap={() => { 'background only'; if (!disabled) onBack?.(); }}><Icon name="left" size={18} /></view>
+    <view className="ui-navbar-capsule-button" accessibility-element accessibility-traits="button" accessibility-label={localeText('navbar.up')} bindtap={() => { 'background only'; if (!disabled) onBack?.(); }}><Icon name="left" size={18} /></view>
     <view className="ui-navbar-capsule-divider" />
-    <view className="ui-navbar-capsule-button" accessibility-element accessibility-traits="button" accessibility-label="返回首页" bindtap={() => { 'background only'; if (!disabled) onBackHome?.(); }}><Icon name="home" size={18} /></view>
+    <view className="ui-navbar-capsule-button" accessibility-element accessibility-traits="button" accessibility-label={localeText('navbar.home')} bindtap={() => { 'background only'; if (!disabled) onBackHome?.(); }}><Icon name="home" size={18} /></view>
   </view>;
 }

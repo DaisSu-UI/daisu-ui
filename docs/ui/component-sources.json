@@ -112,6 +112,10 @@
       {
         "name": "ConfigProvider",
         "path": "packages/daisu-ui/src/ConfigProvider.tsx"
+      },
+      {
+        "name": "useLocale",
+        "path": "packages/daisu-ui/src/useLocale.ts"
       }
     ],
     "demo": "apps/demo/src/features/ui-demo/examples/config-provider.tsx",

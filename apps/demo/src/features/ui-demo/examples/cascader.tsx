@@ -1,3 +1,4 @@
+import { useDemoLocale } from '../demoLocale.js';
 import { useEffect, useRef, useState } from '@lynx-js/react';
 import { Cascader, Cell, CellGroup, Toast, useToast } from '@daisu-ui/ui';
 import type { CascaderOption, CascaderValue, CascaderLazyLoad } from '@daisu-ui/ui';
@@ -14,6 +15,7 @@ const jobs: Record<string, [string, string][]> = {
 const initial: Record<string, CascaderValue> = { basic: '', initial: '150121', custom: 1, disabled: '', tip: '', validate: '', format: '130204', title: '', lazy: ['130000', '130200', '130204'], jobs: '', strict: '' };
 const defaultLabels = { initial: '内蒙古自治区/呼和浩特市/土默特左旗', custom: '选项一/选项一-一', format: '唐山市-古冶区', lazy: '河北省/唐山市/古冶区' };
 export function CascaderExample() {
+  const { text: demoText, copy: demoCopy } = useDemoLocale();
   const [opened, setOpened] = useState(''), [values, setValues] = useState(initial), [labels, setLabels] = useState<Record<string, string>>(defaultLabels), [areas, setAreas] = useState<readonly CascaderOption[]>([]), [disabledAreas, setDisabledAreas] = useState<readonly CascaderOption[]>([]), [tipAreas, setTipAreas] = useState<readonly CascaderOption[]>([]);
   const toast = useToast(), timers = useRef(new Set<ReturnType<typeof setTimeout>>());
   useEffect(() => () => { timers.current.forEach(clearTimeout); }, []);
@@ -30,13 +32,13 @@ export function CascaderExample() {
       if (key === 'tip') setTipAreas(all.map(item => item.value === '140000' ? { ...item, disabled: true, tip: '该地区无货，暂时无法选择' } : item.value === '150000' ? { ...item, tip: '该地区配送时间可能较长' } : item));
     } setOpened(key);
   };
-  const row = (key: string, title: string) => <Cell key={key} title={title} value={labels[key] ?? ''} arrow onTap={() => open(key)} />;
+  const row = (key: string, title: string) => <Cell key={key} title={demoText(title)} value={labels[key] ?? ''} arrow onTap={() => open(key)} />;
   return <view className="demo-cascader-page">
     <DemoGroup title="组件类型"><CellGroup border>{row('basic', '基本用法')}{row('initial', '初始选项')}{row('custom', '自定义字段')}</CellGroup></DemoGroup>
     <DemoGroup title="组件状态"><CellGroup border>{row('disabled', '禁用选项')}{row('tip', '选项提示信息')}{row('validate', 'before-confirm')}</CellGroup></DemoGroup>
     <DemoGroup title="组件样式"><CellGroup border>{row('format', '展示格式化')}{row('title', '标题')}</CellGroup></DemoGroup>
     <DemoGroup title="特殊样式"><CellGroup border>{row('lazy', '异步加载')}{row('jobs', '异步加载（无初始值）')}{row('strict', '任意级可选')}</CellGroup></DemoGroup>
-    {Object.keys(initial).map(key => <Cascader key={key} visible={opened === key} onVisibleChange={show => { 'background only'; if (!show) setOpened(''); }} value={values[key]} options={key === 'custom' ? custom : key === 'lazy' || key === 'jobs' ? undefined : key === 'disabled' ? disabledAreas : key === 'tip' ? tipAreas : areas} valueKey={key === 'custom' ? 'id' : undefined} textKey={key === 'custom' ? 'name' : undefined} childrenKey={key === 'custom' ? 'items' : undefined} lazyLoad={key === 'lazy' || key === 'jobs' ? loaders.current[key] : undefined} title={key === 'title' ? '选择地址' : '请选择'} checkStrictly={key === 'strict'} beforeConfirm={key === 'validate' ? value => { 'background only'; if (Number(value) > 120000) { toast.error({ msg: '该地区库存不足', zIndex: 110 }); return false; } return true; } : undefined} onConfirm={({ value, selectedOptions }) => { 'background only'; setValues(previous => ({ ...previous, [key]: value })); setLabels(previous => ({ ...previous, [key]: (key === 'format' ? selectedOptions.slice(-2) : selectedOptions).map(item => item.text).join(key === 'format' ? '-' : key === 'jobs' ? ' / ' : '/') })); }} />)}
-    <Toast {...toast.props} />
+    {Object.keys(initial).map(key => <Cascader key={key} visible={opened === key} onVisibleChange={show => { 'background only'; if (!show) setOpened(''); }} value={values[key]} options={demoCopy(key === 'custom' ? custom : key === 'lazy' || key === 'jobs' ? undefined : key === 'disabled' ? disabledAreas : key === 'tip' ? tipAreas : areas)} valueKey={key === 'custom' ? 'id' : undefined} textKey={key === 'custom' ? 'name' : undefined} childrenKey={key === 'custom' ? 'items' : undefined} lazyLoad={key === 'lazy' || key === 'jobs' ? loaders.current[key] : undefined} title={demoText(key === 'title' ? '选择地址' : '请选择')} checkStrictly={key === 'strict'} beforeConfirm={key === 'validate' ? value => { 'background only'; if (Number(value) > 120000) { toast.error({ msg: '该地区库存不足', zIndex: 110 }); return false; } return true; } : undefined} onConfirm={({ value, selectedOptions }) => { 'background only'; setValues(previous => ({ ...previous, [key]: value })); setLabels(previous => ({ ...previous, [key]: (key === 'format' ? selectedOptions.slice(-2) : selectedOptions).map(item => item.text).join(key === 'format' ? '-' : key === 'jobs' ? ' / ' : '/') })); }} />)}
+    <Toast {...demoCopy(toast.props)} />
   </view>;
 }

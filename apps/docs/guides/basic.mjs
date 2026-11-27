@@ -177,8 +177,8 @@ export default {
     ),
   ),
   "config-provider": g(
-    "全局配置用于统一组件的明暗主题、颜色变量和默认属性，也可以在局部嵌套覆盖。",
-    "ConfigProvider",
+    "全局配置用于统一组件的主题、语言、颜色变量和默认属性，也可以在局部嵌套覆盖。",
+    "ConfigProvider useLocale",
     e(
       "主题模式",
       "明暗切换",
@@ -188,6 +188,12 @@ export default {
       "组件样式",
       "颜色与组件默认值",
       'return <ConfigProvider themeVars={{ primary: "#7c3aed", buttonRadius: 8 }} button={{ round: true, size: "large" }}><Button label="主题按钮" /></ConfigProvider>;',
+    ),
+    e(
+      "国际化",
+      "语言配置",
+      'return <ConfigProvider locale="en-US"><Search /><Loadmore state="finished" /></ConfigProvider>;',
+      "locale 支持 zh-CN、en-US、zh-TW 或语言包对象，默认简体中文。useLocale() 返回当前语言与类型安全的 t(key, params)；Provider 动态切换会更新默认文案，显式传入的业务内容优先。",
     ),
   ),
   "root-portal": g(

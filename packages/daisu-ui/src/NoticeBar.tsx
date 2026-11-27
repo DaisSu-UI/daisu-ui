@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import type { CSSProperties } from '@lynx-js/types';
@@ -15,6 +16,8 @@ export type NoticeBarProps = {
 };
 const colors = { warning: ['#f57f00','#ffa94d'], danger: ['#f14646','#ff6b6b'], info: ['#1c64fd','#5b90ff'] };
 export const NoticeBar = forwardRef<NoticeBarRef, NoticeBarProps>(function NoticeBar({ text = '', type = 'warning', scrollable = true, delay = 1, speed = 50, closable = false, wrapable = false, direction = 'horizontal', prefix, suffix, color, backgroundColor, children, onClose, onNext, onClick, className = '', style }, ref) {
+  const { t: localeText } = useLocale();
+
   const [closed, setClosed] = useState(false), [revision, setRevision] = useState(0), closedRef = useRef(false);
   const config = useConfigProvider(), foreground = color ?? colors[type][config.theme === 'dark' ? 1 : 0]!;
   useImperativeHandle(ref, () => ({ reset() { 'background only'; setRevision(value => value + 1); } }), []);
@@ -26,7 +29,7 @@ export const NoticeBar = forwardRef<NoticeBarRef, NoticeBarProps>(function Notic
   return <view className={`ui-notice-bar ui-notice-bar-${type} ${multiLine ? 'ui-notice-bar-wrap' : ''} ${className}`} style={{ color: foreground, backgroundColor, ...style }}>
     {prefix !== undefined && prefix !== null && prefix !== false ? <view className="ui-notice-bar-prefix">{typeof prefix === 'string' ? <Icon name={prefix} size={20} color={foreground}/> : prefix}</view> : null}
     <NoticeContent key={JSON.stringify([items,scrollable,direction,multiLine,durationSpeed,wait,revision])} items={items} scrollable={scrollable} multiLine={multiLine} direction={direction} speed={durationSpeed} delay={wait} onNext={onNext} onClick={onClick}>{children}</NoticeContent>
-    {suffix !== undefined && suffix !== null ? <view className="ui-notice-bar-suffix">{typeof suffix === 'string' || typeof suffix === 'number' ? <text>{suffix}</text> : suffix}</view> : closable ? <view className="ui-notice-bar-suffix ui-notice-bar-close" catchtap={close} accessibility-element accessibility-traits="button" accessibility-label="关闭通知栏"><Icon name="close" size={20} color={foreground}/></view> : null}
+    {suffix !== undefined && suffix !== null ? <view className="ui-notice-bar-suffix">{typeof suffix === 'string' || typeof suffix === 'number' ? <text>{suffix}</text> : suffix}</view> : closable ? <view className="ui-notice-bar-suffix ui-notice-bar-close" catchtap={close} accessibility-element accessibility-traits="button" accessibility-label={localeText('close.noticeBar')}><Icon name="close" size={20} color={foreground}/></view> : null}
   </view>;
 });
 

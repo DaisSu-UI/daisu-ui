@@ -111,4 +111,4 @@ daisu agent doctor --client cursor
 - [平台适配](#/platforms) · [定制主题](#/theme-customization)
 - [UI 源码仓库](https://github.com/DaisSu-UI/daisu-ui) · [CLI 源码仓库](https://github.com/DaisSu-UI/cli)
 
-本文由 `@daisu-ui/cli@0.1.0-beta.7` 生成。内容在 CLI 仓库维护；更新方式见 [CLI 工具](#/ai-cli)。
+本文由 `@daisu-ui/cli@0.1.0-beta.8` 生成。内容在 CLI 仓库维护；更新方式见 [CLI 工具](#/ai-cli)。

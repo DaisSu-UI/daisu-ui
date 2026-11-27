@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { forwardRef, useContext, useEffect, useImperativeHandle, useMemo, useRef, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import { Popup } from './Popup.js';
@@ -18,7 +19,11 @@ export type PickerProps = PickerViewProps & {
   closeOnClickModal?: boolean; safeAreaInsetBottom?: boolean; viewClassName?: string; zIndex?: number; rootPortal?: boolean; safeAreaBottom?: number;
 };
 export type PickerRef = { open: () => void; close: () => void };
-export const Picker = forwardRef<PickerRef, PickerProps>(function Picker({ visible, onVisibleChange, title = '', confirmButtonText = '完成', cancelButtonText = '取消', beforeConfirm, onConfirm, onCancel, onClose, onOpen, closeOnClickModal = true, safeAreaInsetBottom = true, viewClassName, zIndex = 100, rootPortal = false, safeAreaBottom = 0, ...props }, ref) {
+export const Picker = forwardRef<PickerRef, PickerProps>(function Picker({ visible, onVisibleChange, title = '', confirmButtonText, cancelButtonText, beforeConfirm, onConfirm, onCancel, onClose, onOpen, closeOnClickModal = true, safeAreaInsetBottom = true, viewClassName, zIndex = 100, rootPortal = false, safeAreaBottom = 0, ...props }, ref) {
+  const { t: localeText } = useLocale();
+  confirmButtonText ??= localeText('common.done');
+  cancelButtonText ??= localeText('common.cancel');
+
   const field = useContext(FormFieldContext), disabled = props.disabled ?? field?.disabled ?? false;
   const [innerVisible, setInnerVisible] = useState(false), show = visible ?? innerVisible;
   const [draft, setDraft] = useState<PickerValue[]>([]), [busy, setBusy] = useState(false);

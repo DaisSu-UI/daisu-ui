@@ -74,8 +74,8 @@ const [visible, setVisible] = useState(false);
 | style | 根节点样式 | `CSSProperties` | — |
 | visible | 是否显示选择面板 | `boolean` | — |
 | title | 标题内容 | `ReactNode` | `''` |
-| confirmButtonText | 确认按钮文案 | `string` | `'完成'` |
-| cancelButtonText | 取消按钮文案 | `string` | `'取消'` |
+| confirmButtonText | 确认按钮文案 | `string` | — |
+| cancelButtonText | 取消按钮文案 | `string` | — |
 | beforeConfirm | 确认前校验 | `(value: PickerValue[]) => boolean \| Promise<boolean>` | — |
 | closeOnClickModal | 点击遮罩是否关闭 | `boolean` | `true` |
 | safeAreaInsetBottom | 是否预留底部安全区 | `boolean` | `true` |

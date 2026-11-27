@@ -1,3 +1,4 @@
+import { useDemoLocale } from '../demoLocale.js';
 import { Button, Empty, Icon, Toast, useToast } from '@daisu-ui/ui';
 import cat from '../../../assets/demo-cat.png';
 import { DemoGroup, ExampleBlock } from './shared.js';
@@ -11,15 +12,16 @@ const cases = [
   {title:'已订阅全部消息',icon:'no-message',tip:'已订阅全部消息'},
 ];
 export function EmptyExample() {
+  const { text: demoText, copy: demoCopy } = useDemoLocale();
   const toast=useToast();
   return <view className="demo-empty-page">
-    <DemoGroup title="内容形态">{cases.map(item=><ExampleBlock key={item.icon} title={item.title}><Empty icon={item.icon} tip={item.tip}/></ExampleBlock>)}</DemoGroup>
-    <DemoGroup title="组件样式"><ExampleBlock title="自定义大小"><Empty icon="no-result" iconSize={140} tip="当前搜索无结果"/></ExampleBlock></DemoGroup>
+    <DemoGroup title="内容形态">{cases.map(item=><ExampleBlock key={item.icon} title={item.title}><Empty icon={item.icon} tip={demoText(item.tip)}/></ExampleBlock>)}</DemoGroup>
+    <DemoGroup title="组件样式"><ExampleBlock title="自定义大小"><Empty icon="no-result" iconSize={140} tip={demoText("当前搜索无结果")}/></ExampleBlock></DemoGroup>
     <DemoGroup title="特殊样式">
-      <ExampleBlock title="自定义图片"><Empty icon={cat} tip="查看我的头像"/></ExampleBlock>
-      <ExampleBlock title="插槽自定义图片内容"><Empty image={<Icon name="sun-fill" size={100}/>} tip="插槽自定义图片内容"/></ExampleBlock>
-      <ExampleBlock title="底部插槽"><Empty icon="no-content" tip="当前搜索无结果" bottom={<view className="demo-empty-bottom"><Button tone="info" label="重新加载" onTap={()=>{ 'background only'; toast.info('已发起重新加载'); }}/></view>}/></ExampleBlock>
+      <ExampleBlock title="自定义图片"><Empty icon={cat} tip={demoText("查看我的头像")}/></ExampleBlock>
+      <ExampleBlock title="插槽自定义图片内容"><Empty image={<Icon name="sun-fill" size={100}/>} tip={demoText("插槽自定义图片内容")}/></ExampleBlock>
+      <ExampleBlock title="底部插槽"><Empty icon="no-content" tip={demoText("当前搜索无结果")} bottom={<view className="demo-empty-bottom"><Button tone="info" label={demoText("重新加载")} onTap={()=>{ 'background only'; toast.info('已发起重新加载'); }}/></view>}/></ExampleBlock>
     </DemoGroup>
-    <Toast {...toast.props}/>
+    <Toast {...demoCopy(toast.props)}/>
   </view>;
 }

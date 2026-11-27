@@ -31,3 +31,16 @@ test('Textarea auto-height uses native text measurement for wrapping, supports b
     await waitFor(() => expect(screen.container.querySelector('textarea')?.getAttribute('style')).toContain('height: 40px'));
   } finally { cleanup(); mock.mockRestore(); }
 });
+
+test('Textarea default unlimited length leaves native input capacity instead of blocking typing', () => {
+  const mock = nativeMethods(), changes: string[] = [];
+  try {
+    const screen = render(<Textarea onChange={value => changes.push(value)} />);
+    const editor = screen.container.querySelector('textarea')!;
+    const limit = Number(editor.getAttribute('maxlength'));
+    expect(limit).toBeGreaterThan(0);
+    const typed = '第一行\n第二行';
+    emit('input', { value: typed.slice(0, Math.max(0, limit)) });
+    expect(changes).toEqual([typed]);
+  } finally { cleanup(); mock.mockRestore(); }
+});

@@ -44,3 +44,16 @@ test('Tabs controlled changes wait for owner and horizontal swipes skip disabled
     await waitFor(() => expect(screen.container.querySelector('.ui-tabs-nav-active')?.textContent).toBe('C'));
   } finally { cleanup(); }
 });
+
+test('Tabs restores a scrolling header after sticky mode is disabled', () => {
+  try {
+    const items = [{ title: '标签' }];
+    const screen = render(<Tabs items={items} sticky offsetTop={44} />);
+    const header = screen.container.querySelector('.ui-tabs-standard-header')!;
+    expect(header.getAttribute('style')).toContain('position: sticky');
+    screen.rerender(<Tabs items={items} sticky={false} />);
+    expect(header.getAttribute('style')).toContain('position: relative');
+    expect(header.getAttribute('style')).toContain('top: auto');
+    expect(header.getAttribute('style')).toContain('z-index: 2');
+  } finally { cleanup(); }
+});

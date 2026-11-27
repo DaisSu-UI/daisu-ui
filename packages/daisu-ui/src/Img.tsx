@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { useEffect, useRef, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import type { BaseEvent, CSSProperties, ImageErrorEvent, ImageLoadEvent } from '@lynx-js/types';
@@ -21,6 +22,8 @@ export function Img(props: ImgProps) { return <ImgSource key={props.src || ''} {
 function ImgSource({ src = '', previewSrc, width, height, mode = 'scaleToFill', round = false, radius,
   showLoading = true, showError = true, loading, error, enablePreview = false, onPreview,
   onPreviewError, onClick, onLoad, onError, alt = '', customImage = '', className = '', style }: ImgProps) {
+  const { t: localeText } = useLocale();
+
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [natural, setNatural] = useState<ImgSize | null>(null), [box, setBox] = useState<ImgSize>({ width: 0, height: 0 });
   const active = useRef(true), state = useRef(status), previewing = useRef(false);
@@ -48,7 +51,7 @@ function ImgSource({ src = '', previewSrc, width, height, mode = 'scaleToFill', 
       if (nativeMode) return;
       const { width: w, height: h } = event.detail;
       if (Number.isFinite(w) && Number.isFinite(h) && w >= 0 && h >= 0) setBox(previous => previous.width === w && previous.height === h ? previous : { width: w, height: h });
-    }} bindtap={tap} accessibility-element={!!alt || enablePreview} accessibility-label={alt || '图片'} accessibility-traits={enablePreview ? 'button' : 'image'}>
+    }} bindtap={tap} accessibility-element={!!alt || enablePreview} accessibility-label={alt || localeText('image.label')} accessibility-traits={enablePreview ? 'button' : 'image'}>
     {src && status !== 'error' ? <image className={`ui-img-image ${customImage}`} src={src} mode={frame?.mode || (mode === 'aspectFit' || mode === 'aspectFill' ? mode : 'scaleToFill')}
       style={frame ? { width: `${frame.width}px`, height: `${frame.height}px`, left: `${frame.left}px`, top: `${frame.top}px` } : {width:'100%',height:'100%',left:0,top:0}}
       bindload={event => {

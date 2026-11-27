@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from '@lynx-js/react';
 import type { CSSProperties, NodesRef, StandardProps } from '@lynx-js/types';
 import { qrCodeLayout, qrCodeMatrix } from './qrCodeModel.js';
@@ -9,6 +10,8 @@ type ExportElementProps=StandardProps&{ref?:{current:NodesRef|null};bindqrexport
 declare module '@lynx-js/types' {interface IntrinsicElements {'daisu-qr-export':ExportElementProps}}
 declare global {namespace JSX {interface IntrinsicElements {'daisu-qr-export':ExportElementProps}}}
 export const QrCode=forwardRef<QrCodeRef,QrCodeProps>(function QrCode({exportMode='svg',className='',style,onClick,onError,...options},ref){
+  const { t: localeText } = useLocale();
+
   const exporter=useRef<NodesRef|null>(null),sequence=useRef(0),pending=useRef(new Map<number,{resolve:(url:string)=>void;reject:(error:Error)=>void;timer:ReturnType<typeof setTimeout>}>());
   const {text='',correctLevel='H'}=options;
   const encoded=useMemo(()=>{try{return{matrix:qrCodeMatrix(text,correctLevel)};}catch(error){return{matrix:[],error:error instanceof Error?error:new Error(String(error))};}},[text,correctLevel]);
@@ -26,7 +29,7 @@ export const QrCode=forwardRef<QrCodeRef,QrCodeProps>(function QrCode({exportMod
     return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(result.layout!.svg)}`;
   }}),[result,text,exportMode]);
   const layout=result.error?undefined:result.layout,o=layout?.options,logo=layout?.logo;
-  return <view className={`ui-qr-code ${className}`} style={{width:`${o?.size??200}px`,height:`${o?.size??200}px`,backgroundColor:o?.colorLight??'#fff',...style}} bindtap={onClick} accessibility-element accessibility-label={text||'二维码'}>
+  return <view className={`ui-qr-code ${className}`} style={{width:`${o?.size??200}px`,height:`${o?.size??200}px`,backgroundColor:o?.colorLight??'#fff',...style}} bindtap={onClick} accessibility-element accessibility-label={text||localeText('qrcode.label')}>
     {exportMode==='browser'?<daisu-qr-export ref={exporter} className="ui-qr-code-export" bindqrexport={({detail:event}:{detail:ExportSignal})=>{'background only';const request=pending.current.get(event.id);if(!request)return;clearTimeout(request.timer);pending.current.delete(event.id);if(event.url)request.resolve(event.url);else request.reject(new Error(event.error||'二维码导出失败'));}}/>:null}
     {o?.backgroundImage&&text?<image className="ui-qr-code-surface" src={o.backgroundImage} mode="scaleToFill" binderror={()=>{'background only';onError?.(new Error('QR background image failed'));}}/>:null}
     {layout?<svg className="ui-qr-code-surface" content={layout.codeSvg}/>:null}

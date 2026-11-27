@@ -52,7 +52,7 @@ Skeleton 骨架屏：四预设、真实行列配置、原生扫光/闪烁、load
 
 Steps 步骤条：横向/竖向、点状、显式状态和自定义内容；十组独立详情，见 components/steps.md。
 
-Sticky 粘性布局：原生观察/测量、顶部偏移、容器末尾约束、动态插入与五组详情，见 components/sticky.md。
+Sticky 粘性布局：原生观察/测量、可接入 scrollTop 校正遗漏回调、顶部偏移、容器末尾约束、动态插入与五组详情，见 components/sticky.md。
 
 Curtain 幕帘：原生等比图片、七关闭位置、公共缩放过渡与九入口详情，见 components/curtain.md。
 
@@ -83,3 +83,20 @@ VideoPreview / useVideoPreview 与 ImgCropper 已提供浏览器后端：宿主�
 公开辅助 API 也必须关联使用文档，见 components/form-rows.md、synced-input.md、paged-list.md、compact-controls.md、utilities.md、web-registration.md 与 router.md。Form 行不自动注册 Form 校验；FormInputRow 的 disabled 仅为外观，不能生成完整禁用示例。新页面优先使用标准 Input / FormItem / InputNumber / Empty。Synced 输入的 onInput 是字符串回调，外部 value 由 setValue 同步。PagedList 必须有明确高度、唯一 listId 和 FeedListRef，调用方管理 refreshing 与加载防重，不替换滚动后端。路由 Hook 在正确 Provider / 场景内使用，路由实例保持稳定；usePressState 的 start/end 是后台事件函数。浏览器注册仅在宿主入口运行，不能放进 Lynx Bundle。Hook / 工具函数使用真实调用签名，不把首参展开成组件 Props。
 
 弹层标题与关闭：Popup 的 title 为可选左对齐标题栏；Popup、Dialog、ActionSheet、ImagePreview、VideoPreview 和 Curtain 复用 40px 圆形关闭按钮（24px图标、上/侧边距16px）；标题左边距16px，单行标题栏高72px，长标题为按钮预留空间。VideoPreview 默认右上角，显式位置参数保持可用。关闭走原有受控回调，背景采用主题变量，原生交互仍需设备验证。
+
+
+## 国际化
+
+ConfigProvider.locale 接受 zh-CN / en-US / zh-TW、内置 zhCN / enUS / zhTW 对象或 {name?, messages?} 局部覆盖；默认简体中文。组件内用 useLocale().t 读取默认文案，无全局可变语言实例，无 Intl 依赖。调用方显式文案（包括空字符串）、业务选项和 formatter 优先，不自动翻译业务内容。嵌套主题配置保留上层语言，Portal 转发来源 Context；语言切换不得重置输入、日期草稿、通知或媒体播放。新默认文案必须补齐三份 resources 与测试。
+
+
+## 交互状态与 ReactLynx Use
+
+@lynx-js/react-use 0.2.2 为直接依赖。库内 useDragEvents 通过 useTouchEmulation 统一拖动开始、移动、释放/取消，按手势期间启用全局鼠标监听，原生 touch 使用原目标，不为每个实例常驻全局 touchmove；保留 bind/catch 语义与兼容鼠标去重。Slider、Signature、Fab、SlideVerify、SwipeAction、FloatingPanel、IndexBar 复用此内部 Hook，不在 Demo 重复绑定全局移动事件。
+useFrameTask 合并后台渲染工作并在卸载时取消，Slider 释放时提交精确末值；Signature 保留全部采样点，仅合并重绘。Button、Cell、Grid、LayerCloseButton 和 Icon Demo 使用已有 usePressState，回调稳定，只有按下期间启用必要的释放监听。InputNumber 长按只为当前方向启用鼠标释放监听。业务值、日期草稿、滚动锚点与异步确认状态仍由组件负责，不能改为全局状态。
+
+原生日历/Sticky/Slider/Popup回归：CalendarView Demo 不得无限依赖可视回调，缺失时延迟逐个补齐九个示例；保留首屏单面板及每64ms一项的队列。Sticky 仅使用1px观察节点，单个测量请求与16ms合并，内容/容器独立探针，固定宽度和亚像素容差，禁止用百万像素观察区域或后代布局通知触发容器重测。Slider 使用视口触摸坐标，手柄显式索引与抓取偏移，禁止以局部x/y与视口矩形比较。Popup共享Host内按打开顺序提升层级，zIndex为最低值；嵌套遮罩必须高于父面板且低于子面板，离场完成再释放层级，保留主题和语言Context。
+
+Swiper 卡片动画：邻卡高度必须通过独立裁剪窗口表现；保持原生 SwiperItem、ui-swiper-item 与图片自身高度固定，不对整张图片使用 scaleY。首帧内联样式和主线程更新使用同一 swiperCardFrame 曲线，视口圆角保留，文字标题位于裁剪窗口内且不随图片居中偏移。窗口的主线程 ref 按物理 realIndex 注册及清理，覆盖首尾循环复制项；不要通过重建图片或背景线程逐帧 setState 恢复动画。
+
+Form 对齐与校验展示：FormItem标题统一预留12px标记列，before星号绝对定位且复用Cell字号/行高；可选、必填、hideAsterisk、asteriskPosition=end均保持标题文字起点，旧FormFieldRow同样处理。errorType可传readonly('message'|'toast')[]，组合模式展示全部字段message，但仅本次校验第一条错误toast；一个Form只保留一个toast实例，替换、不排队。校验通过/reset/切换到无toast模式立即移除错误toast，避免与成功提示重叠；异步过期结果仍不得更新提示。Demo form-errors新增message+toast选项。

@@ -1,3 +1,5 @@
+import { labelForDemoPage as labelFor } from './demoPageTitle.js';
+import { DemoAboutPage } from './DemoAboutPage.js';
 import {VideoPreviewExample} from './examples/video-preview.js';
 import {ImgCropperExample} from './examples/img-cropper.js';
 import { RichTextExample } from './examples/rich-text.js';
@@ -95,21 +97,6 @@ import { RouterExample } from './examples/router.js';
 import { NavigationExample } from './examples/navigation.js';
 import { AiGuideExample } from './examples/ai-guide.js';
 
-function labelFor(page: UiDemoPageName) {
-  if (page === 'signature-landscape') return '横屏签名';
-  if (page === 'stepper') return 'InputNumber 计数器';
-  if (page === 'overview') return '组件示例';
-  const formPage = formExamplePages.find(item => item.id === page);
-  if (formPage) return formPage.label;
-  const sidebarPage = sidebarExamplePages.find(item => item.id === page);
-  if (sidebarPage) return sidebarPage.label;
-  for (const group of componentGroups) {
-    if (group.id === page) return group.label;
-    const item = group.items.find(candidate => candidate.id === page);
-    if (item) return item.label;
-  }
-  return '组件示例';
-}
 
 function CurrentExample({ component, onOpen, onBack, theme, host }: { host?: HostClient | null; component: UiDemoComponent; onOpen: (page: Exclude<UiDemoPageName, 'overview'>) => void; onBack: () => void; theme: 'light' | 'dark' }) {
   if (component === 'video-preview') return <VideoPreviewExample />;
@@ -201,10 +188,12 @@ function CurrentExample({ component, onOpen, onBack, theme, host }: { host?: Hos
   return <AiGuideExample />;
 }
 
-export function UiDemoPage({ page, onOpen, onBack, statusBarHeight = 0, theme = 'light', host, onThemeChange = () => {} }: { host?: HostClient | null; page: UiDemoPageName; onOpen: (page: Exclude<UiDemoPageName, 'overview'>) => void; onBack: () => void; statusBarHeight?: number; theme?: 'light' | 'dark'; onThemeChange?: (theme: 'light' | 'dark') => void }) {
+export function UiDemoPage({ page, onOpen, onBack, statusBarHeight = 0, theme = 'light', host, onThemeChange = () => {}, onHome = onBack }: { onHome?: () => void; host?: HostClient | null; page: UiDemoPageName; onOpen: (page: Exclude<UiDemoPageName, 'overview'>) => void; onBack: () => void; statusBarHeight?: number; theme?: 'light' | 'dark'; onThemeChange?: (theme: 'light' | 'dark') => void }) {
+  if (page === 'about') return <DemoAboutPage onBack={onBack} onHome={onHome} statusBarHeight={statusBarHeight} theme={theme} onThemeChange={onThemeChange} />;
   if (page === 'overview') return <view className="page ui-demo-page"><DemoHomePage onOpen={onOpen} statusBarHeight={statusBarHeight} /></view>;
   if (isUiDemoCategory(page)) return <view className="page ui-demo-page"><DemoNavbar title={labelFor(page)} onBack={onBack} statusBarHeight={statusBarHeight} /><DemoCategoryPage category={page as UiDemoCategory} onOpen={onOpen} /></view>;
   if (page === 'rich-text') return <view className="page ui-demo-page"><DemoNavbar title={labelFor(page)} onBack={onBack} statusBarHeight={statusBarHeight} /><RichTextExample /></view>;
+  if (page === 'sticky') return <view className="page ui-demo-page"><DemoNavbar title={labelFor(page)} onBack={onBack} statusBarHeight={statusBarHeight} /><StickyExample /></view>;
   if (page === 'tour') return <view className="page ui-demo-page"><DemoNavbar title={labelFor(page)} onBack={onBack} statusBarHeight={statusBarHeight} /><TourExample /></view>;
   if (page === 'loadmore') return <view className="page ui-demo-page"><DemoNavbar title={labelFor(page)} onBack={onBack} statusBarHeight={statusBarHeight} /><LoadmoreExample /></view>;
   if (page === 'backtop') return <view className="page ui-demo-page"><DemoNavbar title={labelFor(page)} onBack={onBack} statusBarHeight={statusBarHeight} /><BacktopExample /></view>;
@@ -213,6 +202,6 @@ export function UiDemoPage({ page, onOpen, onBack, statusBarHeight = 0, theme = 
   return <view className="page ui-demo-page">
     <DemoNavbar title={labelFor(page)} onBack={onBack} statusBarHeight={statusBarHeight} />
     {page === 'root-portal' || page === 'config-provider' ? <DemoThemeToolbar theme={theme} onChange={onThemeChange} /> : null}
-    {page === 'signature-landscape' ? <SignatureLandscapeExample /> : page === 'icon' ? <IconExample /> : <scroll-view className="ui-demo-component-scroll" scroll-orientation="vertical" scroll-y={true}><view className={`ui-demo-component-content ${page === 'cell' ? 'ui-demo-cell-content' : ''} ${page === 'grid' || page === 'signature' || page === 'notify' || page === 'select-picker' || page === 'picker' || page === 'password-input' || page === 'keyboard' || page.startsWith('form-') || page === 'textarea' || page === 'input' || page === 'tabs' || page === 'swipe-action' || page === 'floating-panel' || page === 'popover' || page === 'toast' || page === 'tooltip' || page === 'drop-menu' || page === 'sort-button' || page === 'rate' || page === 'switch' || page === 'dialog' || page === 'action-sheet' || page === 'popup' || page === 'overlay' || page === 'transition' || page === 'root-portal' || page === 'navbar' || page === 'tabbar' ? 'ui-demo-transparent-content' : ''}`}><CurrentExample component={page} onOpen={onOpen} onBack={onBack} theme={theme} host={host} /><view className="ui-demo-bottom-space" /></view></scroll-view>}
+    {page === 'signature-landscape' ? <SignatureLandscapeExample /> : page === 'icon' ? <IconExample /> : <scroll-view style={{ zIndex: 0 }} className="ui-demo-component-scroll" scroll-orientation="vertical" scroll-y={true}><view className={`ui-demo-component-content ${page === 'cell' ? 'ui-demo-cell-content' : ''} ${page === 'grid' || page === 'signature' || page === 'notify' || page === 'select-picker' || page === 'picker' || page === 'password-input' || page === 'keyboard' || page.startsWith('form-') || page === 'textarea' || page === 'input' || page === 'tabs' || page === 'swipe-action' || page === 'floating-panel' || page === 'popover' || page === 'toast' || page === 'tooltip' || page === 'drop-menu' || page === 'sort-button' || page === 'rate' || page === 'switch' || page === 'dialog' || page === 'action-sheet' || page === 'popup' || page === 'overlay' || page === 'transition' || page === 'root-portal' || page === 'navbar' || page === 'tabbar' ? 'ui-demo-transparent-content' : ''}`}><CurrentExample component={page} onOpen={onOpen} onBack={onBack} theme={theme} host={host} /><view className="ui-demo-bottom-space" /></view></scroll-view>}
   </view>;
 }

@@ -1,0 +1,30 @@
+import { afterEach, expect, rstest, test } from '@rstest/core';
+import { cleanup, fireEvent, render } from '@lynx-js/react/testing-library';
+import { RootPortalHost } from '@daisu-ui/ui';
+import { NotifyExample } from './notify.js';
+afterEach(() => { cleanup(); rstest.useRealTimers(); });
+
+test('Notify component content can switch to other examples immediately and after automatic close', async () => {
+  rstest.useFakeTimers();
+  const screen = render(<RootPortalHost><NotifyExample /></RootPortalHost>);
+  const tap = (title: string) => fireEvent.tap([...screen.container.querySelectorAll('.ui-cell')].find(node => node.textContent === title)!);
+  tap('使用 Notify 组件');
+  await rstest.advanceTimersByTimeAsync(400);
+  expect(screen.container.querySelector('.demo-notify-custom-content')).toBeTruthy();
+  tap('基础用法');
+  expect(screen.container.querySelectorAll('.ui-notify-anchor')).toHaveLength(1);
+  expect(screen.container.querySelector('.demo-notify-custom-content')).toBeNull();
+  expect(screen.container.querySelector('.ui-notify-message')?.textContent).toBe('测试');
+  tap('使用 Notify 组件');
+  await rstest.advanceTimersByTimeAsync(2400);
+  expect(screen.container.querySelector('.ui-notify-anchor')).toBeNull();
+  tap('显示关闭按钮');
+  await rstest.advanceTimersByTimeAsync(400);
+  expect(screen.container.querySelector('.ui-notify-close')).toBeTruthy();
+  fireEvent.tap(screen.container.querySelector('.ui-notify-close')!, { eventType: 'catchEvent' });
+  await rstest.advanceTimersByTimeAsync(400);
+  expect(screen.container.querySelector('.ui-notify-anchor')).toBeNull();
+  tap('成功通知');
+  await rstest.advanceTimersByTimeAsync(400);
+  expect(screen.container.querySelector('.ui-notify-success')).toBeTruthy();
+});

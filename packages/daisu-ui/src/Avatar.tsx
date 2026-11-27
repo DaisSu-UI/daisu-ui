@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import type { BaseEvent, CSSProperties, ImageErrorEvent } from '@lynx-js/types';
@@ -28,11 +29,13 @@ function AvatarImage({ src, mode, fallback, onError }: { src: string; mode: Avat
 }
 
 export function Avatar({ src = '', text = '', icon = '', size = 'normal', shape = 'round', bgColor, color, alt = '', mode = 'aspectFill', onTap, onError, children, className = '', style }: AvatarProps) {
+  const { t: localeText } = useLocale();
+
   const metrics = avatarMetrics(size);
   const foreground = color || (bgColor ? '#fff' : undefined);
   const fallback = alt || text ? <text className="ui-avatar-text" style={{ fontSize: metrics.font, lineHeight: metrics.line, color: foreground }} text-maxline="1" text-overflow="ellipsis">{alt || text}</text> : icon ? <view className="ui-avatar-icon" style={{ width: metrics.font, height: metrics.font }}>{foreground ? <Icon name={icon} color={foreground} /> : <><Icon name={icon} color="var(--cso-ui-text-muted)" className="ui-avatar-icon-light" /><Icon name={icon} color="var(--cso-ui-text-muted)" className="ui-avatar-icon-dark" /></>}</view> : null;
   const content = text ? <text className="ui-avatar-text" style={{ fontSize: metrics.font, lineHeight: metrics.line, color: foreground }} text-maxline="1" text-overflow="ellipsis">{text}</text> : fallback;
-  return <view className={`ui-avatar ui-avatar-${shape} ${className}`} style={{ width: metrics.dimension, height: metrics.dimension, backgroundColor: bgColor, ...style }} bindtap={onTap} accessibility-element={!!onTap || !!alt} accessibility-traits={onTap ? 'button' : 'image'} accessibility-label={alt || text || '头像'}>
+  return <view className={`ui-avatar ui-avatar-${shape} ${className}`} style={{ width: metrics.dimension, height: metrics.dimension, backgroundColor: bgColor, ...style }} bindtap={onTap} accessibility-element={!!onTap || !!alt} accessibility-traits={onTap ? 'button' : 'image'} accessibility-label={alt || text || localeText('avatar.label')}>
     {children !== undefined && children !== null && children !== false ? typeof children === 'string' || typeof children === 'number' ? <text className="ui-avatar-text" style={{ fontSize: metrics.font, lineHeight: metrics.line, color: foreground }}>{children}</text> : children : src ? <AvatarImage key={src} src={src} mode={mode} fallback={fallback} onError={onError} /> : content}
   </view>;
 }

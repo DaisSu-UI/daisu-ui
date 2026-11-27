@@ -1,6 +1,8 @@
+import { useLocale } from './useLocale.js';
 import { useEffect, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import type { LayoutChangeEvent } from '@lynx-js/types';
+import { Icon } from './Icon.js';
 
 export type CollapseItemData = {
   name: string;
@@ -37,7 +39,7 @@ export function CollapseItem({ title, content, icon, expanded, disabled = false,
     <view className="ui-collapse-header" bindtap={toggle}>
       {icon ? typeof icon === 'string' ? <text className="ui-collapse-icon">{icon}</text> : <view className="ui-collapse-icon">{icon}</view> : null}
       <text className="ui-collapse-title">{title}</text>
-      <text className="ui-collapse-chevron">⌄</text>
+      <view className="ui-collapse-chevron"><Icon name="down" size={24} color="var(--cso-ui-text-muted)" /></view>
     </view>
     <view className="ui-collapse-region" style={{ height: expanded ? contentHeight === undefined ? 'auto' : `${contentHeight}px` : '0px' }} user-interaction-enabled={expanded}>
       <view className="ui-collapse-body" bindlayoutchange={measureContent}>{content}</view>
@@ -62,6 +64,8 @@ export function Collapse({ items, value, defaultValue = [], accordion = false, c
 }
 
 export function CollapseViewMore({ text, value, defaultValue = false, lineCount = 2, onChange }: { text: string; value?: boolean; defaultValue?: boolean; lineCount?: number; onChange?: (value: boolean) => void }) {
+  const { t: localeText } = useLocale();
+
   const [innerValue, setInnerValue] = useState(defaultValue);
   const expanded = value ?? innerValue;
   useEffect(() => { if (value !== undefined) setInnerValue(value); }, [value]);
@@ -71,5 +75,5 @@ export function CollapseViewMore({ text, value, defaultValue = false, lineCount 
     if (value === undefined) setInnerValue(next);
     onChange?.(next);
   };
-  return <view className="ui-collapse-view-more"><text className="ui-collapse-view-more-text" text-maxline={expanded ? undefined : String(lineCount)} text-overflow={expanded ? undefined : 'ellipsis'}>{text}</text><view className="ui-collapse-view-more-action" bindtap={toggle}><text>{expanded ? '收起' : '查看更多'} {expanded ? '⌃' : '⌄'}</text></view></view>;
+  return <view className="ui-collapse-view-more"><text className="ui-collapse-view-more-text" text-maxline={expanded ? undefined : String(lineCount)} text-overflow={expanded ? undefined : 'ellipsis'}>{text}</text><view className="ui-collapse-view-more-action" bindtap={toggle}><text>{expanded ? localeText('collapse.collapse') : localeText('collapse.more')} {expanded ? '⌃' : '⌄'}</text></view></view>;
 }

@@ -1,6 +1,8 @@
+import type { UiLocaleOverride } from './locale.js';
 /** Shared protocol; browser DOM code is only loaded by daisu-ui/web. */
 export type RichTextMediaType = 'audio' | 'video';
 export type RichTextMediaConfig = {
+  locale?: UiLocaleOverride;
   id: string;
   type: RichTextMediaType;
   sources: string[];

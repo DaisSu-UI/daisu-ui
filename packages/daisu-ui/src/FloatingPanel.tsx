@@ -1,3 +1,5 @@
+import { useDragEvents } from './useDragEvents.js';
+import { useLocale } from './useLocale.js';
 import { useEffect, useRef, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import type { CSSProperties, NodesRef } from '@lynx-js/types';
@@ -30,6 +32,7 @@ function point(event: Pointer) {
 }
 
 export function FloatingPanel({ height, defaultHeight = 0, anchors: anchorProps, duration = 300, contentDraggable = true, safeAreaInsetBottom = false, safeAreaBottom = 0, showScrollbar = true, zIndex = 10, rootPortal = false, onHeightChange, className = '', style, children }: FloatingPanelProps) {
+  const { t: localeText } = useLocale();
   const viewport = useRef<NodesRef>(null);
   const scroll = useRef<NodesRef>(null);
   const scrollTop = useRef(0);
@@ -82,13 +85,15 @@ export function FloatingPanel({ height, defaultHeight = 0, anchors: anchorProps,
     if (height === undefined) setInner(next);
     if (next !== current) onHeightChange?.({ height: next });
   };
+  const headerEvents = useDragEvents({ onStart: event => { 'background only'; start(event, 'header'); return !!drag.current; }, onMove: move, onEnd: () => { 'background only'; finish(); }, onCancel: () => { 'background only'; finish(true); } });
+  const contentEvents = useDragEvents({ disabled: !contentDraggable, mode: 'bind', onStart: event => { 'background only'; start(event, 'content'); return !!drag.current; }, onMove: move, onEnd: () => { 'background only'; finish(); }, onCancel: () => { 'background only'; finish(true); } });
   const inset = safeAreaInsetBottom && Number.isFinite(safeAreaBottom) ? Math.max(0, safeAreaBottom) : 0;
   const layer = <>
     <view ref={viewport} flatten={false} className="ui-floating-panel-viewport" bindlayoutchange={event => measured(event.detail.height)} />
     <view className={`ui-floating-panel ${className}`} style={{ ...style, height: `${max}px`, transform: `translateY(${max - shownHeight}px)`, transitionDuration: `${dragging ? 0 : Math.max(0, Number.isFinite(duration) ? duration : 300)}ms`, paddingBottom: `${inset}px`, zIndex }}>
-      <view className="ui-floating-panel-header" consume-slide-event={[[-180, 180]]} catchtouchstart={event => start(event, 'header')} catchtouchmove={move} catchtouchend={() => finish()} catchtouchcancel={() => finish(true)} catchmousedown={event => start(event, 'header')} global-bindmousemove={move} global-bindmouseup={() => finish()} global-bindtouchmove={move} global-bindtouchend={() => finish()} global-bindtouchcancel={() => finish(true)} accessibility-element accessibility-traits="adjustable" accessibility-label={`浮动面板，高度${Math.round(shownHeight)}`}><view className="ui-floating-panel-bar" /></view>
-      <scroll-view ref={scroll} className="ui-floating-panel-scroll" scroll-orientation="vertical" scroll-bar-enable={showScrollbar} enable-scroll={!contentDraggable || atMax && !dragging} bounces={false} bindscroll={event => { 'background only'; scrollTop.current = Math.max(0, event.detail.scrollTop); }}>
-        <view className="ui-floating-panel-content" consume-slide-event={contentDraggable && !atMax ? [[-180, 180]] : undefined} bindtouchstart={event => start(event, 'content')} bindtouchmove={move} bindtouchend={() => finish()} bindtouchcancel={() => finish(true)} bindmousedown={event => start(event, 'content')}>{children}</view>
+      <view className="ui-floating-panel-header" consume-slide-event={[[-180, 180]]} {...headerEvents} accessibility-element accessibility-traits="adjustable" accessibility-label={localeText('floatingPanel.label', { height: Math.round(shownHeight) })}><view className="ui-floating-panel-bar" /></view>
+      <scroll-view style={{ zIndex: 0 }} ref={scroll} className="ui-floating-panel-scroll" scroll-orientation="vertical" scroll-bar-enable={showScrollbar} enable-scroll={!contentDraggable || atMax && !dragging} bounces={false} bindscroll={event => { 'background only'; scrollTop.current = Math.max(0, event.detail.scrollTop); }}>
+        <view className="ui-floating-panel-content" consume-slide-event={contentDraggable && !atMax ? [[-180, 180]] : undefined} {...contentEvents}>{children}</view>
       </scroll-view>
     </view>
   </>;

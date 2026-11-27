@@ -1,6 +1,8 @@
+import type { UiLocaleOverride } from './locale.js';
 export type CropperSize = { width: number; height: number };
 export type CropperTransform = { rotation: number; zoom: number; offsetX: number; offsetY: number };
 export type ImgCropperConfig = {
+  locale?: UiLocaleOverride;
   show: boolean; imgSrc: string; aspectRatio: string; imgWidth?: number | string; imgHeight?: number | string;
   disabledRotate: boolean; exportScale: number; maxScale: number; quality: number; fileType: 'png' | 'jpg';
   cancelButtonText: string; confirmButtonText: string;

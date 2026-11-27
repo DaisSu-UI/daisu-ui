@@ -1,3 +1,4 @@
+import { useDragEvents } from './useDragEvents.js';
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import type { CSSProperties, NodesRef } from '@lynx-js/types';
@@ -140,8 +141,9 @@ export const SwipeAction = forwardRef<SwipeActionRef, SwipeActionProps>(function
     if (suppressTap.current || disabled || live.current.status === 'close') return;
     void requestRef.current('close', 'click', position);
   };
+  const gestures = useDragEvents({ disabled, mode: 'bind', onStart: event => { 'background only'; start(event); return !!drag.current; }, onMove: move, onEnd: () => { 'background only'; finish(); }, onCancel: () => { 'background only'; finish(true); } });
   return <view className={`ui-swipe-action ${disabled ? 'ui-swipe-action-disabled' : ''} ${pending ? 'ui-swipe-action-pending' : ''} ${className}`} style={style}>
-    <view className="ui-swipe-track" style={{ transform: `translateX(${offset ?? base}px)`, transitionDuration: `${dragging ? 0 : Number.isFinite(duration) ? Math.max(0, duration) : 600}ms` }} consume-slide-event={disabled ? undefined : [[-45, 45], [135, 180], [-180, -135]]} bindtouchstart={start} bindtouchmove={move} bindtouchend={() => finish()} bindtouchcancel={() => finish(true)} bindmousedown={start} global-bindmousemove={move} global-bindmouseup={() => finish()} global-bindtouchmove={move} global-bindtouchend={() => finish()} global-bindtouchcancel={() => finish(true)}>
+    <view className="ui-swipe-track" style={{ transform: `translateX(${offset ?? base}px)`, transitionDuration: `${dragging ? 0 : Number.isFinite(duration) ? Math.max(0, duration) : 600}ms` }} consume-slide-event={disabled ? undefined : [[-45, 45], [135, 180], [-180, -135]]} {...gestures}>
       {left ? <view ref={leftRef} flatten={false} className="ui-swipe-side ui-swipe-left" style={{ visibility: sidesVisible ? 'visible' : 'hidden' }} bindlayoutchange={event => updateWidth('left', event.detail.width)} catchtap={() => click('left')}>{left}</view> : null}
       <view className="ui-swipe-body" catchtap={() => click('inside')}>{children}</view>
       {right ? <view ref={rightRef} flatten={false} className="ui-swipe-side ui-swipe-right" style={{ visibility: sidesVisible ? 'visible' : 'hidden' }} bindlayoutchange={event => updateWidth('right', event.detail.width)} catchtap={() => click('right')}>{right}</view> : null}

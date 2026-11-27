@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { useEffect, useRef, useState } from '@lynx-js/react';
 import type { CSSProperties } from '@lynx-js/types';
 import { Icon } from './Icon.js';
@@ -6,6 +7,7 @@ import type { ProgressColor } from './progressModel.js';
 export type PercentPosition = { type?: 'inner' | 'outer'; align?: 'left' | 'center' | 'right' };
 export type ProgressProps = { percentage?: number; hideText?: boolean; color?: ProgressColor; status?: 'success' | 'danger' | 'warning'; duration?: number; percentPosition?: PercentPosition; className?: string; style?: CSSProperties };
 export function Progress({ percentage = 0, hideText = false, color, status, duration = 30, percentPosition, className = '', style }: ProgressProps) {
+  const { t: localeText } = useLocale();
   const target = progressPercentage(percentage), milliseconds = Number.isFinite(duration) ? Math.max(0, duration) : 30;
   const [bar, setBar] = useState<{ value: number; duration: number; color?: string }>({ value: 0, duration: 0 });
   const [labelWidth, setLabelWidth] = useState(36);
@@ -36,7 +38,7 @@ export function Progress({ percentage = 0, hideText = false, color, status, dura
   // SVG glyphs use separate theme variants rather than SVG CSS-variable fills.
   const iconColors = status === 'success' ? ['#12b886', '#20c997'] : status === 'warning' ? ['#f57f00', '#ffa94d'] : ['#f14646', '#ff6b6b'];
   const label = hideText ? status ? <view className={`ui-progress-icon ${inner ? 'ui-progress-icon-inner' : ''}`}><Icon name={icon} size={18} color={inner ? '#fff' : typeof color === 'string' ? color : iconColors[0]} className="ui-progress-light-icon" /><Icon name={icon} size={18} color={inner ? '#fff' : typeof color === 'string' ? color : iconColors[1]} className="ui-progress-dark-icon" /></view> : null : <text className="ui-progress-label" bindlayoutchange={event => { if (inner && Number.isFinite(event.detail.width) && event.detail.width > 0) setLabelWidth(event.detail.width); }}>{`${target}%`}</text>;
-  return <view className={`ui-progress ${inner ? 'ui-progress-inner' : ''} ${target === 0 ? 'ui-progress-zero' : ''} ${className}`} style={style} accessibility-element accessibility-label={`进度 ${target}%${status ? ` ${status}` : ''}`}>
+  return <view className={`ui-progress ${inner ? 'ui-progress-inner' : ''} ${target === 0 ? 'ui-progress-zero' : ''} ${className}`} style={style} accessibility-element accessibility-label={`${localeText('progress.label', { value: target })}${status ? ` ${status}` : ''}`}>
     <view className="ui-progress-track"><view className={`ui-progress-fill ui-progress-align-${align}`} style={{ width: `${bar.value}%`, transitionDuration: `${bar.duration}ms`, backgroundColor: inner && target === 0 ? undefined : bar.color ?? statusColor, minWidth: inner && label ? hideText ? '34px' : `${labelWidth}px` : undefined }}>{inner ? label : null}</view></view>
     {!inner ? label : null}
   </view>;

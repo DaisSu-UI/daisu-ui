@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import type { JSX } from '@lynx-js/react';
 import { NumberStepper } from './NumberStepper.js';
 import { RadioGroup } from './legacy/RadioGroup.js';
@@ -78,7 +79,10 @@ function ClearButton({ onClear }: { onClear: () => void }) {
   return <view className="form-field-clear" bindtap={onClear}><text>×</text></view>;
 }
 
-export function FormInputRow({ label, value, onInput, onBlur, error, required = false, disabled = false, last = false, maxlength, placeholder = '请输入', clearable = true }: FormInputRowProps) {
+export function FormInputRow({ label, value, onInput, onBlur, error, required = false, disabled = false, last = false, maxlength, placeholder, clearable = true }: FormInputRowProps) {
+  const { t: localeText } = useLocale();
+  placeholder ??= localeText('common.input');
+
   return <FormFieldRow label={label} required={required} disabled={disabled} last={last} error={error}>
     <view className="form-field-control">
       <SyncedInput className="form-field-input" value={value} maxlength={maxlength} placeholder={placeholder} onInput={onInput} onBlur={onBlur} />
@@ -111,7 +115,10 @@ export function FormNumberRow({ label, value, onChange, onBlur, min, max, step, 
   </FormFieldRow>;
 }
 
-export function FormTextareaRow({ label, value, onInput, onBlur, error, required = false, disabled = false, last = false, maxlength = 2000, maxlines = 6, placeholder = '请输入', showWordLimit = true }: FormTextareaRowProps) {
+export function FormTextareaRow({ label, value, onInput, onBlur, error, required = false, disabled = false, last = false, maxlength = 2000, maxlines = 6, placeholder, showWordLimit = true }: FormTextareaRowProps) {
+  const { t: localeText } = useLocale();
+  placeholder ??= localeText('common.input');
+
   return <view className={`form-textarea-row ${last ? 'form-field-row-last' : ''} ${disabled ? 'form-field-disabled' : ''} ${error ? 'form-field-row-error' : ''}`}>
     <FieldLabel label={label} required={required} />
     <view className="form-textarea-box">

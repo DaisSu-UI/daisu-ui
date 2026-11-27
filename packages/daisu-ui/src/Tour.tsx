@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import type { CSSProperties, NodesRef } from '@lynx-js/types';
@@ -32,7 +33,13 @@ export type TourProps = {
 };
 const validRect = (r: BubbleRect | null) => r && [r.left, r.top, r.width, r.height].every(Number.isFinite) && r.width > 0 && r.height > 0;
 const positive = (n: number) => Number.isFinite(n) ? Math.max(0, n) : 0;
-export const Tour = forwardRef<TourRef, TourProps>(function Tour({ show = false, onShowChange, steps, current, defaultCurrent = 0, onCurrentChange, onChange, mask = true, maskColor = 'rgba(0,0,0,.55)', offset = 20, duration = 300, borderRadius = 4, padding = 8, prevText = '上一步', nextText = '下一步', skipText = '跳过', finishText = '完成', highlightStyle, clickMaskNext = false, zIndex = 999, showTourButtons = true, rootPortal = false, missingStrategy = 'stop', scrollToTarget, getTargetRect, onPrev, onNext, onFinish, onSkip, onError, renderContent, renderHighlight, renderPrev, renderNext, renderSkip, renderFinish, className = '', style }, ref) {
+export const Tour = forwardRef<TourRef, TourProps>(function Tour({ show = false, onShowChange, steps, current, defaultCurrent = 0, onCurrentChange, onChange, mask = true, maskColor = 'rgba(0,0,0,.55)', offset = 20, duration = 300, borderRadius = 4, padding = 8, prevText, nextText, skipText, finishText, highlightStyle, clickMaskNext = false, zIndex = 999, showTourButtons = true, rootPortal = false, missingStrategy = 'stop', scrollToTarget, getTargetRect, onPrev, onNext, onFinish, onSkip, onError, renderContent, renderHighlight, renderPrev, renderNext, renderSkip, renderFinish, className = '', style }, ref) {
+  const { t: localeText } = useLocale();
+  prevText ??= localeText('tour.prev');
+  nextText ??= localeText('tour.next');
+  skipText ??= localeText('tour.skip');
+  finishText ??= localeText('common.done');
+
   const [inner, setInner] = useState(defaultCurrent), [revision, setRevision] = useState(0);
   const [geometry, setGeometry] = useState<{ index: number; target: BubbleRect; viewport: BubbleRect } | null>(null);
   const [panelSize, setPanelSize] = useState({ width: 224, height: 100 });
@@ -61,7 +68,7 @@ export const Tour = forwardRef<TourRef, TourProps>(function Tour({ show = false,
         const [target, bounds] = await Promise.all([callbacks.current.getTargetRect ? callbacks.current.getTargetRect(step, selected) : read(lynx.createSelectorQuery().select(step.element)), read(viewport.current)]);
         if (cancelled || token !== generation.current) return;
         if (!validRect(target) || !validRect(bounds)) {
-          setGeometry(null); callbacks.current.onError?.({ message: `无法定位引导元素：${step.element}`, element: step.element });
+          setGeometry(null); callbacks.current.onError?.({ message: localeText('tour.missing', { element: step.element }), element: step.element });
           if (missingStrategy === 'skip' && selected < steps.length - 1) { if (current === undefined) setInner(selected + 1); callbacks.current.onCurrentChange?.(selected + 1); callbacks.current.onChange?.({ current: selected + 1 }); }
           else if (missingStrategy === 'hide' || missingStrategy === 'skip') { ended.current = true; callbacks.current.onShowChange?.(false); }
           return;
@@ -71,7 +78,7 @@ export const Tour = forwardRef<TourRef, TourProps>(function Tour({ show = false,
     };
     const frame = setTimeout(() => { void measure(); }, 32);
     return () => { cancelled = true; generation.current++; clearTimeout(frame); };
-  }, [show, selected, identity, revision, missingStrategy]);
+  }, [show, selected, identity, revision, missingStrategy, localeText]);
   const ready = show && !!step && !!geometry ;
   const target = geometry?.target ?? { left: 0, top: 0, width: 0, height: 0 };
   const bounds = geometry?.viewport ?? { left: 0, top: 0, width: 0, height: 0 };

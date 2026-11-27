@@ -1,6 +1,31 @@
 import { test, expect } from "@playwright/test";
 import MarkdownIt from "markdown-it";
 
+test("default calendar panels and popups paint date numbers in the first viewport", async ({ page }, testInfo) => {
+  const check = async (calendar) => {
+    const scroll = calendar.locator('.ui-calendar-scroll');
+    const selected = calendar.locator('.ui-calendar-day-selected').first();
+    await expect(selected).toBeVisible();
+    await expect.poll(async () => {
+      const day = await selected.boundingBox(), viewport = await scroll.boundingBox();
+      return !!day && !!viewport && day.width > 10 && day.height > 10 && day.y + day.height > viewport.y && day.y < viewport.y + viewport.height;
+    }).toBe(true);
+    const firstRow = calendar.locator('.ui-calendar-row').first();
+    await expect(firstRow.locator('.ui-calendar-cell')).toHaveCount(7);
+    const widths = await firstRow.locator('.ui-calendar-cell').evaluateAll(cells => cells.map(cell => cell.getBoundingClientRect().width));
+    expect(widths.every(width => width > 10)).toBe(true);
+  };
+  await page.goto('demo/#/ui-demo/calendar-view');
+  await check(page.locator('.ui-calendar-view').first());
+  await page.screenshot({ path: testInfo.outputPath('calendar-default-panel.png') });
+  await page.goto('demo/#/ui-demo/calendar');
+  await page.locator('.ui-cell').first().click();
+  const popup = page.locator('.ui-calendar:visible');
+  await expect(popup).toBeVisible();
+  await check(popup.locator('.ui-calendar-view'));
+  await page.screenshot({ path: testInfo.outputPath('calendar-default-popup.png') });
+});
+
 test("home is the default entry and documentation links return to it", async ({
   page,
   request,

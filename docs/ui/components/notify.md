@@ -10,7 +10,7 @@ import { Notify } from '@daisu-ui/ui';
 
 ### 绑定通知实例
 
-将 `useNotify()` 返回的 `props` 绑定到 `Notify`，通过 `showNotify()` 显示通知。
+将 `useNotify()` 返回的 `props` 绑定到 `Notify`，通过 `showNotify()` 显示通知。退出动画结束后移除原生浮层；Demo 的普通文案与自定义内容复用同一实例。
 
 ```tsx
 import { useNotify, Button } from '@daisu-ui/ui';

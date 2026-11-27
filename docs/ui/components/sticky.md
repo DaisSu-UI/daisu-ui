@@ -10,7 +10,7 @@ import { Sticky, StickyBox } from '@daisu-ui/ui';
 
 ### 吸顶内容
 
-使用 `StickyBox` 包裹内容区域，`Sticky` 中放置需要吸顶的内容。
+使用 `StickyBox` 包裹内容区域，`Sticky` 中放置需要吸顶的内容。容器默认占满父级宽度；空内容可随后动态插入，滚回后恢复自然布局。将所属滚动容器的 `scrollTop` 传入，可校正原生观察回调遗漏造成的位置残留。测量按帧合并，容器使用独立尺寸探针，吸顶时锁定内容宽度，避免后代布局和底部边界引起反复更新。
 
 ```tsx
 <StickyBox>
@@ -45,6 +45,7 @@ import { Sticky, StickyBox } from '@daisu-ui/ui';
 | --- | --- | --- | --- |
 | offsetTop | 顶部偏移距离 | `number` | `0` |
 | zIndex | 浮层层级 | `number` | `1` |
+| scrollTop | scrollTop 配置 | `number` | — |
 | children | 自定义内容 | `ReactNode` | — |
 | className | 根节点自定义类名 | `string` | `''` |
 | style | 根节点样式 | `CSSProperties` | — |

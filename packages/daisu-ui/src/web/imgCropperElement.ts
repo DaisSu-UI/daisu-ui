@@ -1,8 +1,10 @@
+import { resolveLocale, translate, zhCN } from '../locale.js';
+import type { UiMessageKey } from '../locale.js';
 import { cropperExportSize, cropperFrame, cropperGeometry, cropperInitialZoom, initialCropperTransform } from '../imgCropperModel.js';
 import type { CropperSize, CropperTransform, ImgCropperConfig, ImgCropperSignal } from '../imgCropperModel.js';
 const tag='daisu-img-cropper';
 const styles=`:host{display:block;position:relative;width:100%;height:100%;overflow:hidden;background:#000;color:#fff;font:16px Arial,sans-serif}*{box-sizing:border-box}.viewport{position:absolute;left:0;width:100%;height:85%;touch-action:none;overflow:hidden;user-select:none;cursor:grab}.viewport:active{cursor:grabbing}.picture{position:absolute;left:50%;top:50%;max-width:none;max-height:none;transform-origin:center;pointer-events:none;user-select:none}.frame{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border:1px solid #fff;box-shadow:0 0 0 9999px rgba(0,0,0,.85);pointer-events:none}.grid{position:absolute;inset:0;background:linear-gradient(to right,transparent 33.2%,rgba(255,255,255,.4) 33.2%,rgba(255,255,255,.4) 33.5%,transparent 33.5%,transparent 66.5%,rgba(255,255,255,.4) 66.5%,rgba(255,255,255,.4) 66.8%,transparent 66.8%),linear-gradient(to bottom,transparent 33.2%,rgba(255,255,255,.4) 33.2%,rgba(255,255,255,.4) 33.5%,transparent 33.5%,transparent 66.5%,rgba(255,255,255,.4) 66.5%,rgba(255,255,255,.4) 66.8%,transparent 66.8%)}.corner{position:absolute;width:20px;height:20px;border:2px solid #fff}.lt{left:-2px;top:-2px;border-right:0;border-bottom:0}.rt{right:-2px;top:-2px;border-left:0;border-bottom:0}.lb{left:-2px;bottom:-2px;border-right:0;border-top:0}.rb{right:-2px;bottom:-2px;border-left:0;border-top:0}.footer{position:absolute;bottom:0;left:0;width:100%;padding:16px;text-align:center;background:#000}.row{display:flex;align-items:center;justify-content:space-between;margin-top:32px}button{font:inherit;cursor:pointer;touch-action:manipulation;border:0;color:#fff;background:transparent;padding:0 20px;height:44px;border-radius:4px}button:disabled{opacity:.45;cursor:default}.confirm{min-width:72px;background:var(--cso-ui-img-cropper-confirm-bg,var(--cso-ui-primary,#1c64fd))}.rotate{display:block;margin:auto;padding:0;width:36px;height:36px}.rotate svg{width:36px;height:36px}.status{position:absolute;left:20px;right:20px;top:45%;text-align:center;font-size:14px;line-height:24px}.choose{background:#333;margin-top:12px}.error{color:#ffb5b5}.file{display:none}[hidden]{display:none!important}`;
-const template=`<style>${styles}</style><div class="viewport"><img class="picture" alt="待裁剪图片" draggable="false" hidden><div class="frame" hidden><div class="grid"></div><i class="corner lt"></i><i class="corner rt"></i><i class="corner lb"></i><i class="corner rb"></i></div></div><div class="status" role="status"><span class="message">请选择图片</span><br><button class="choose" type="button">选择图片</button></div><input class="file" type="file" accept="image/png,image/jpeg,image/webp,image/gif"><div class="footer"><button type="button" class="rotate" aria-label="旋转90度"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 3v6h-6M20 9a9 9 0 1 0 1 7"/></svg></button><div class="row"><button type="button" class="cancel">取消</button><button type="button" class="confirm" disabled>完成</button></div></div>`;
+const template=`<style>${styles}</style><div class="viewport"><img class="picture" alt="" draggable="false" hidden><div class="frame" hidden><div class="grid"></div><i class="corner lt"></i><i class="corner rt"></i><i class="corner lb"></i><i class="corner rb"></i></div></div><div class="status" role="status"><span class="message"></span><br><button class="choose" type="button"></button></div><input class="file" type="file" accept="image/png,image/jpeg,image/webp,image/gif"><div class="footer"><button type="button" class="rotate" aria-label=""><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 3v6h-6M20 9a9 9 0 1 0 1 7"/></svg></button><div class="row"><button type="button" class="cancel"></button><button type="button" class="confirm" disabled></button></div></div>`;
 
 /** A browser canvas editor, registered only by the browser host. */
 export function registerImgCropper(){
@@ -18,6 +20,8 @@ export function registerImgCropper(){
   private observer?:ResizeObserver;private cleanup?:AbortController;private sourceUrl?:string;
   private results=new Map<string,'png'|'jpg'>();private pointers=new Map<number,{x:number;y:number}>();
   constructor(){super();this.attachShadow({mode:'open'});this.shadowRoot!.innerHTML=template;}
+  private locale = zhCN as import('../locale.js').UiLocale;
+  private text(key: UiMessageKey) { return translate(this.locale, key); }
   private get picture(){return this.shadowRoot!.querySelector<HTMLImageElement>('.picture')!;}
   private get stage(){return this.shadowRoot!.querySelector<HTMLDivElement>('.viewport')!;}
   private get confirmButton(){return this.shadowRoot!.querySelector<HTMLButtonElement>('.confirm')!;}
@@ -35,7 +39,7 @@ export function registerImgCropper(){
    this.bindAction('.confirm',()=>this.confirm(),options);
    this.bindAction('.choose',()=>this.chooseImage(),options);
    const input=this.shadowRoot!.querySelector<HTMLInputElement>('.file')!;
-   input.addEventListener('change',()=>{const file=input.files?.[0];if(!file)return;if(!/^image\/(png|jpeg|webp|gif)$/.test(file.type)||file.size>20971520){this.error('请选择20MB以内的PNG、JPEG、WebP或GIF图片');return;}this.releaseSource();this.sourceUrl=URL.createObjectURL(file);this.load(this.sourceUrl);input.value='';},options);
+   input.addEventListener('change',()=>{const file=input.files?.[0];if(!file)return;if(!/^image\/(png|jpeg|webp|gif)$/.test(file.type)||file.size>20971520){this.error(this.text('cropper.fileLimit'));return;}this.releaseSource();this.sourceUrl=URL.createObjectURL(file);this.load(this.sourceUrl);input.value='';},options);
    this.ownerDocument.addEventListener('keydown',e=>{if(this.config?.show&&e.key==='Escape'){e.stopImmediatePropagation();this.cancel();}},options);
    this.configure();
   }
@@ -60,7 +64,14 @@ export function registerImgCropper(){
   private configure(){
    let config:ImgCropperConfig&{topInset?:number;autoChoose?:boolean};try{config=JSON.parse(this.getAttribute('cropper-config')||'');}catch{return;}
    const previous=this.config;this.config=config;
-   this.shadowRoot!.querySelector('.cancel')!.textContent=config.cancelButtonText||'取消';this.confirmButton.textContent=config.confirmButtonText||'完成';
+   const oldLocale=this.locale;this.locale=resolveLocale(config.locale && typeof config.locale==='object'?config.locale:undefined);
+   const message=this.shadowRoot!.querySelector('.message')!;
+   const previousKey=Object.keys(oldLocale.messages).find(key=>key.startsWith('cropper.')&&oldLocale.messages[key as UiMessageKey]===message.textContent) as UiMessageKey|undefined;
+   if(previousKey)message.textContent=this.text(previousKey);
+   this.picture.alt=this.text('cropper.image');
+   this.shadowRoot!.querySelector('.choose')!.textContent=this.text('cropper.choose');
+   this.shadowRoot!.querySelector('.rotate')!.setAttribute('aria-label',this.text('cropper.rotate'));
+   this.shadowRoot!.querySelector('.cancel')!.textContent=config.cancelButtonText??this.text('common.cancel');this.confirmButton.textContent=config.confirmButtonText??this.text('common.done');
    (this.shadowRoot!.querySelector('.rotate') as HTMLElement).style.visibility=config.disabledRotate?'hidden':'visible';
    this.stage.style.top=`-${Math.max(0,config.topInset||0)}px`;
    if(!config.show){this.generation++;this.busy=false;this.pointers.clear();this.picture.onload=null;this.picture.onerror=null;this.picture.removeAttribute('src');this.decoded=false;this.sourceKey='';this.releaseSource();return;}
@@ -77,11 +88,11 @@ export function registerImgCropper(){
   private load(src:string){
    const generation=++this.generation;this.decoded=false;this.busy=false;this.confirmButton.disabled=true;this.sourceKey=src;
    this.transform={...initialCropperTransform};this.picture.onload=null;this.picture.onerror=null;this.picture.removeAttribute('src');
-   if(!src){this.status('请选择图片');return;}
-   const url=this.safeSource(src);if(!url){this.error('图片地址不可用');return;}
-   this.status('图片加载中…');const image=this.picture;image.crossOrigin='anonymous';
-   image.onload=()=>{if(generation!==this.generation||!this.config?.show||!this.isConnected)return;this.source={width:image.naturalWidth,height:image.naturalHeight};if(!this.source.width||!this.source.height){this.error('图片尺寸无效');return;}this.decoded=true;this.resize();const geometry=cropperGeometry(this.source,this.frame,this.transform,this.config.maxScale);this.transform.zoom=cropperInitialZoom(this.source,this.viewport,geometry.coverScale,this.config.imgWidth,this.config.imgHeight);this.apply(false);this.status('');this.confirmButton.disabled=false;this.emit({kind:'loaded',...this.source});};
-   image.onerror=()=>{if(generation===this.generation&&this.config?.show)this.error('图片加载失败，请选择本地图片或允许跨域读取的图片。');};image.src=url;
+   if(!src){this.status(this.text('cropper.select'));return;}
+   const url=this.safeSource(src);if(!url){this.error(this.text('cropper.invalidSource'));return;}
+   this.status(this.text('cropper.loading'));const image=this.picture;image.crossOrigin='anonymous';
+   image.onload=()=>{if(generation!==this.generation||!this.config?.show||!this.isConnected)return;this.source={width:image.naturalWidth,height:image.naturalHeight};if(!this.source.width||!this.source.height){this.error(this.text('cropper.invalidSize'));return;}this.decoded=true;this.resize();const geometry=cropperGeometry(this.source,this.frame,this.transform,this.config.maxScale);this.transform.zoom=cropperInitialZoom(this.source,this.viewport,geometry.coverScale,this.config.imgWidth,this.config.imgHeight);this.apply(false);this.status('');this.confirmButton.disabled=false;this.emit({kind:'loaded',...this.source});};
+   image.onerror=()=>{if(generation===this.generation&&this.config?.show)this.error(this.text('cropper.loadFailed'));};image.src=url;
   }
   private resize(){
    if(!this.config?.show)return;const rect=this.getBoundingClientRect();if(rect.width<=0||rect.height<=0)return;this.viewport={width:rect.width,height:rect.height};
@@ -112,16 +123,16 @@ export function registerImgCropper(){
    if(!this.decoded||!this.config?.show||this.busy)return false;
    let size:CropperSize;try{size=cropperExportSize(this.frame,this.config.exportScale);}catch(reason){this.error(String(reason),'export');return false;}
    const generation=this.generation,config=this.config,geometry=cropperGeometry(this.source,this.frame,this.transform,config.maxScale);
-   const canvas=this.ownerDocument.createElement('canvas');canvas.width=size.width;canvas.height=size.height;const context=canvas.getContext('2d');if(!context){this.error('当前浏览器不支持图片导出','export');return false;}
-   this.busy=true;this.confirmButton.disabled=true;this.confirmButton.textContent='处理中…';
+   const canvas=this.ownerDocument.createElement('canvas');canvas.width=size.width;canvas.height=size.height;const context=canvas.getContext('2d');if(!context){this.error(this.text('cropper.exportUnsupported'),'export');return false;}
+   this.busy=true;this.confirmButton.disabled=true;this.confirmButton.textContent=this.text('cropper.processing');
    try{
     if(config.fileType==='jpg'){context.fillStyle='#fff';context.fillRect(0,0,size.width,size.height);}
     const sx=size.width/this.frame.width,sy=size.height/this.frame.height;
     context.scale(sx,sy);context.translate(this.frame.width/2+geometry.offsetX,this.frame.height/2+geometry.offsetY);context.rotate(geometry.rotation*Math.PI/180);context.scale(geometry.scale,geometry.scale);context.drawImage(this.picture,-this.source.width/2,-this.source.height/2);
     canvas.toBlob(blob=>{canvas.width=0;canvas.height=0;if(generation!==this.generation||!this.config?.show||!this.isConnected)return;this.busy=false;this.confirmButton.disabled=false;this.confirmButton.textContent=config.confirmButtonText;
-     if(!blob){this.error('图片导出失败','export');return;}const url=URL.createObjectURL(blob);this.results.set(url,config.fileType);this.emit({kind:'confirm',result:{tempFilePath:url,...size,fileType:config.fileType}});
+     if(!blob){this.error(this.text('cropper.exportFailed'),'export');return;}const url=URL.createObjectURL(blob);this.results.set(url,config.fileType);this.emit({kind:'confirm',result:{tempFilePath:url,...size,fileType:config.fileType}});
     },config.fileType==='jpg'?'image/jpeg':'image/png',config.quality);
-   }catch(reason){canvas.width=0;canvas.height=0;this.error(`图片导出失败：${String(reason)}`,'export');this.confirmButton.textContent=config.confirmButtonText;return false;}
+   }catch(reason){canvas.width=0;canvas.height=0;this.error(translate(this.locale,'cropper.exportError',{error:String(reason)}),'export');this.confirmButton.textContent=config.confirmButtonText;return false;}
    return true;
   }
   revokeResult({url}:{url:string}){if(this.results.delete(url))URL.revokeObjectURL(url);}

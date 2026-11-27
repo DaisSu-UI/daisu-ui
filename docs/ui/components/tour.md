@@ -65,10 +65,10 @@ const [show, setShow] = useState(false);
 | duration | 动画或显示时长，单位 ms | `number` | `300` |
 | borderRadius | 圆角半径 | `number` | `4` |
 | padding | 内边距或高亮区域留白 | `number` | `8` |
-| prevText | 上一步按钮文案 | `string` | `'上一步'` |
-| nextText | 下一步按钮文案 | `string` | `'下一步'` |
-| skipText | 跳过按钮文案 | `string` | `'跳过'` |
-| finishText | 完成按钮文案 | `string` | `'完成'` |
+| prevText | 上一步按钮文案 | `string` | — |
+| nextText | 下一步按钮文案 | `string` | — |
+| skipText | 跳过按钮文案 | `string` | — |
+| finishText | 完成按钮文案 | `string` | — |
 | highlightStyle | 高亮区域样式 | `CSSProperties` | — |
 | clickMaskNext | 点击遮罩时是否前进到下一步 | `boolean` | `false` |
 | zIndex | 浮层层级 | `number` | `999` |

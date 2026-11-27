@@ -2,6 +2,7 @@ import { createContext, createPortal, useCallback, useContext, useState } from '
 import type { ReactNode } from '@lynx-js/react';
 import { ConfigContext } from './configContext.js';
 import type { NodesRef } from '@lynx-js/types';
+import { PopupStackProvider } from './popupLayer.js';
 
 const PortalTarget = createContext<NodesRef | null | undefined>(undefined);
 
@@ -12,8 +13,10 @@ export type RootPortalProps = { children?: ReactNode };
 export function RootPortalHost({ children }: RootPortalHostProps) {
   const [target, setTarget] = useState<NodesRef | null>(null);
   const attach = useCallback((node: NodesRef | null) => { 'background only'; setTarget(node); }, []);
-  return <PortalTarget.Provider value={target}>{children}<view className="ui-root-portal-target" flatten={false} ref={attach} /></PortalTarget.Provider>;
+  return <PopupStackProvider><PortalTarget.Provider value={target}>{children}<view className="ui-root-portal-target" flatten={false} ref={attach} /></PortalTarget.Provider></PopupStackProvider>;
 }
+
+export function useHasRootPortal() { return useContext(PortalTarget) !== undefined; }
 
 /** Uses ReactLynx's native portal; no DOM or fixed-position fallback. */
 export function RootPortal({ children }: RootPortalProps) {

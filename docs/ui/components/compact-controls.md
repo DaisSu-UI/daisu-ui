@@ -51,7 +51,7 @@ const [value, setValue] = useState('1');
 
 | 参数 | 说明 | 类型 / 可选值 | 默认值 |
 | --- | --- | --- | --- |
-| title | 标题内容 | `string` | `'暂无数据'` |
+| title | 标题内容 | `string` | — |
 | description | 补充描述 | `string` | — |
 | actionLabel | 空状态操作按钮文案，非空时显示按钮 | `string` | — |
 

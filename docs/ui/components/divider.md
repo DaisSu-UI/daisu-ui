@@ -10,7 +10,7 @@ import { Divider } from '@daisu-ui/ui';
 
 ### 基础分割线
 
-默认展示水平分割线，设置 `dashed` 使用虚线，子节点用于展示分隔文字。
+默认展示 0.5px 水平细线，设置 `dashed` 使用虚线，子节点用于展示分隔文字；文字或图标与两侧线条各保留 16px 间距。设置 `hairline={false}` 使用 1px 线条。
 
 ```tsx
 <Divider />

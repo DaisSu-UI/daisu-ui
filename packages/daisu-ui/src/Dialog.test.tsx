@@ -4,6 +4,24 @@ import { Dialog } from './Dialog.js';
 import type { DialogResult } from './Dialog.js';
 import { useDialog } from './useDialog.js';
 
+for (const multiline of [false, true]) {
+  test(`Dialog ${multiline ? 'textarea' : 'input'} uses a valid native length limit without replaying typed values`, async () => {
+    const results: DialogResult[] = [];
+    try {
+      const screen = render(<Dialog show type="prompt" inputProps={{ multiline }} onResult={result => results.push(result)} />);
+      await waitFor(() => expect(screen.container.querySelector('.ui-dialog-input')).toBeTruthy());
+      const editor = screen.container.querySelector('.ui-dialog-input')!;
+      expect(Number(editor.getAttribute('maxlength'))).toBeGreaterThan(0);
+      expect(editor.getAttribute('avoid-keyboard')).toBe('true');
+      const target = lynx.createSelectorQuery().select('.ui-dialog-input') as unknown as Element;
+      fireEvent(target, Object.assign(new Event('bindEvent:input'), { eventName: 'input', eventType: 'bindEvent', detail: { value: '原生输入' } }));
+      expect(editor.getAttribute('default-value')).toBe('');
+      fireEvent.tap(screen.container.querySelectorAll('.ui-dialog-action .ui-button')[1]!);
+      await waitFor(() => expect(results[0]?.value).toBe('原生输入'));
+    } finally { cleanup(); }
+  });
+}
+
 test('Dialog prompt rejects invalid input and confirms valid values without global-regexp state leaking', async () => {
   const results: DialogResult[] = [];
   const pattern = /^\d+$/g;

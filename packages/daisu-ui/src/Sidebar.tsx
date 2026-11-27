@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { useEffect, useRef, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import type { CSSProperties } from '@lynx-js/types';
@@ -32,6 +33,8 @@ export type SidebarProps = {
 };
 
 export function Sidebar({ items, value, defaultValue = 0, beforeChange, onChange, className = '', style }: SidebarProps) {
+  const { t: localeText } = useLocale();
+
   const [inner, setInner] = useState(defaultValue);
   const selected = value ?? inner;
   const activeIndex = items.findIndex(item => item.value === selected);
@@ -54,7 +57,7 @@ export function Sidebar({ items, value, defaultValue = 0, beforeChange, onChange
       const active = index === activeIndex;
       const disabled = !!item.disabled;
       const badge = sidebarBadge(item.badge, item.badgeProps?.max ?? item.max);
-      return <view key={`${typeof item.value}:${item.value}`} className={`ui-sidebar-item ${active ? 'ui-sidebar-active' : ''} ${disabled ? 'ui-sidebar-disabled' : ''} ${activeIndex >= 0 && index === activeIndex - 1 ? 'ui-sidebar-prefix' : ''} ${activeIndex >= 0 && index === activeIndex + 1 ? 'ui-sidebar-suffix' : ''} ${item.className ?? ''}`} style={item.style} accessibility-element accessibility-traits={disabled ? 'disabled' : 'button'} accessibility-label={`${item.label}${active ? '，已选中' : ''}${disabled ? '，已禁用' : ''}`} bindtap={() => { 'background only'; change(item); }}>
+      return <view key={`${typeof item.value}:${item.value}`} className={`ui-sidebar-item ${active ? 'ui-sidebar-active' : ''} ${disabled ? 'ui-sidebar-disabled' : ''} ${activeIndex >= 0 && index === activeIndex - 1 ? 'ui-sidebar-prefix' : ''} ${activeIndex >= 0 && index === activeIndex + 1 ? 'ui-sidebar-suffix' : ''} ${item.className ?? ''}`} style={item.style} accessibility-element accessibility-traits={disabled ? 'disabled' : 'button'} accessibility-label={`${item.label}${active ? localeText('common.selected') : ''}${disabled ? localeText('common.isDisabled') : ''}`} bindtap={() => { 'background only'; change(item); }}>
         {active ? <view className="ui-sidebar-indicator" /> : null}
         {item.renderIcon || item.icon ? <view className="ui-sidebar-icon">{item.renderIcon ? item.renderIcon({ active, disabled }) : <><Icon className="ui-sidebar-icon-light" name={item.icon!} size={18} color={disabled ? 'var(--cso-ui-disabled-text)' : active ? 'var(--cso-ui-primary)' : 'var(--cso-ui-text-regular)'} /><Icon className="ui-sidebar-icon-dark" name={item.icon!} size={18} color={disabled ? 'var(--cso-ui-disabled-text)' : active ? 'var(--cso-ui-primary)' : 'var(--cso-ui-text-regular)'} /></>}</view> : null}
         <Badge value={badge} max={item.max ?? 99} isDot={item.isDot} showZero {...item.badgeProps} className={`ui-sidebar-label-wrap ${item.badgeProps?.className ?? ''}`}><text className="ui-sidebar-label">{item.label}</text></Badge>

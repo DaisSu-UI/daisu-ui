@@ -28,13 +28,13 @@ export function connectDocsPreview(
     ]
       .map((element) => {
         const title = element.textContent?.trim() || "";
-        const group = element.classList.contains("demo-group-title")
-          ? ""
-          : element
-              .closest(".demo-group")
-              ?.querySelector(".demo-group-title")
-              ?.textContent?.trim() || "";
-        const name = `${group}/${title}`;
+        const groupElement = element.classList.contains("demo-group-title")
+          ? null : element.closest(".demo-group")?.querySelector(".demo-group-title");
+        const group = groupElement?.textContent?.trim() || "";
+        // Links use the authored identity even when the displayed copy changes language.
+        const sourceTitle = element.getAttribute('data-demotitle') || title;
+        const sourceGroup = groupElement?.getAttribute('data-demotitle') || group;
+        const name = `${sourceGroup}/${sourceTitle}`;
         const count = (counts.get(name) || 0) + 1;
         counts.set(name, count);
         const id = encodeURIComponent(name) + "-" + count;

@@ -10,7 +10,7 @@ import { Collapse, CollapseViewMore } from '@daisu-ui/ui';
 
 ### 多项展开
 
-通过 `items` 配置面板，每项的 `name` 标识面板，`title` 设置标题，`content` 设置内容。
+通过 `items` 配置面板，每项的 `name` 标识面板，`title` 设置标题，`content` 设置内容。面板分隔线为 0.5px，右侧使用 24px 箭头图标，展开时旋转。
 
 ```tsx
 <Collapse

@@ -1,5 +1,5 @@
 import { expect, rstest, test } from '@rstest/core';
-import { createRef } from '@lynx-js/react';
+import { createRef, useState } from '@lynx-js/react';
 import { cleanup, fireEvent, render, waitFor } from '@lynx-js/react/testing-library';
 import type { NodesRef } from '@lynx-js/types';
 import { Input } from './Input.js';
@@ -15,13 +15,35 @@ test('Input buffers composition, synchronizes externally controlled values and r
   const { calls, mock } = nativeMethods(), changes: string[] = [];
   try {
     const screen = render(<Input value="初始" onChange={v => changes.push(v)} />);
-    await waitFor(() => expect(calls).toContainEqual(['setValue', { value: '初始' }]));
+    expect(screen.container.querySelector('input')?.getAttribute('default-value')).toBe('初始');
+    expect(calls).not.toContainEqual(['setValue', { value: '初始' }]);
     emit('input', { value: '拼', isComposing: true }); expect(changes).toEqual([]);
     emit('input', { value: '拼音', isComposing: false }); expect(changes).toEqual(['拼音']);
     await waitFor(() => expect(calls).toContainEqual(['setValue', { value: '初始' }]));
     screen.rerender(<Input value="外部重置" onChange={v => changes.push(v)} />);
     await waitFor(() => expect(calls).toContainEqual(['setValue', { value: '外部重置' }]));
     expect(changes).toEqual(['拼音']);
+  } finally { cleanup(); mock.mockRestore(); }
+});
+
+test('Input uses a native-compatible unlimited length and never echoes accepted typing back through setValue', async () => {
+  const { calls, mock } = nativeMethods();
+  function Controlled() {
+    const [value, setValue] = useState('');
+    return <view><Input value={value} onChange={setValue} showWordLimit /><text className="accepted-input">{value}</text></view>;
+  }
+  try {
+    const screen = render(<Controlled />);
+    const editor = screen.container.querySelector('input')!;
+    const limit = Number(editor.getAttribute('maxlength'));
+    expect(limit).toBeGreaterThan(0);
+    // Model Android LengthFilter: a negative maximum leaves no capacity.
+    const typed = '真机输入';
+    emit('input', { value: typed.slice(0, Math.max(0, limit)) });
+    await waitFor(() => expect(screen.container.querySelector('.accepted-input')?.textContent).toBe(typed));
+    expect(editor.getAttribute('default-value')).toBe('');
+    expect(calls.filter(call => (call as unknown[])[0] === 'setValue')).toEqual([]);
+    expect(screen.container.querySelector('.ui-textfield-count')).toBeNull();
   } finally { cleanup(); mock.mockRestore(); }
 });
 test('Input clear emits input/change/clear once, password toggle retains editor and readonly is inert', async () => {

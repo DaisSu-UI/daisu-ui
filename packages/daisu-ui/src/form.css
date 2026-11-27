@@ -4,6 +4,11 @@
 .ui-form-item-value{font-size:14px;line-height:20px;color:var(--cso-ui-text);}
 .ui-form-item-placeholder{font-size:14px;line-height:20px;color:var(--cso-ui-text-placeholder,var(--cso-ui-text-muted));}
 .ui-form-item-disabled .ui-cell-title,.ui-form-item-disabled .ui-form-item-value,.ui-form-item-disabled .ui-form-item-placeholder{color:var(--cso-ui-text-disabled,var(--cso-ui-disabled-text));}
+/* Reserve the same marker column for every label, including optional/hidden markers. */
+.ui-form-item .ui-cell-title-row{position:relative;padding-left:12px;}
+.ui-form-item .ui-cell-description{padding-left:12px;}
+.ui-form-item .ui-cell-required{font-size:var(--ui-cell-font-size);line-height:var(--ui-cell-line-height);}
+.ui-form-item .ui-cell-required-before{position:absolute;left:0;top:0;margin:0;}
 
 .ui-form>.ui-form-item:first-child .ui-cell-border{display:none;}
 

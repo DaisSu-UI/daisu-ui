@@ -20,11 +20,11 @@ export const componentGroups = [
 ] as const;
 
 export type UiDemoCategory = typeof componentGroups[number]['id'];
-export type UiDemoComponent = typeof componentGroups[number]['items'][number]['id'] | typeof formExamplePages[number]['id'] | typeof sidebarExamplePages[number]['id'] | 'stepper' | 'signature-landscape';
+export type UiDemoComponent = typeof componentGroups[number]['items'][number]['id'] | typeof formExamplePages[number]['id'] | typeof sidebarExamplePages[number]['id'] | 'stepper' | 'signature-landscape' | 'about';
 export type UiDemoPage = 'overview' | UiDemoCategory | UiDemoComponent;
 
 const categoryIds = componentGroups.map(group => group.id);
-const componentIds = [...componentGroups.flatMap(group => group.items.map(item => item.id)), ...sidebarExamplePages.map(item => item.id), ...formExamplePages.map(item => item.id), 'stepper', 'signature-landscape'];
+const componentIds = [...componentGroups.flatMap(group => group.items.map(item => item.id)), ...sidebarExamplePages.map(item => item.id), ...formExamplePages.map(item => item.id), 'stepper', 'signature-landscape', 'about'];
 
 export function isUiDemoCategory(value: string): value is UiDemoCategory {
   return (categoryIds as readonly string[]).includes(value);
@@ -35,6 +35,7 @@ export function isUiDemoComponent(value: string): value is UiDemoComponent {
 }
 
 export function categoryForComponent(component: UiDemoComponent): UiDemoCategory {
+  if (component === 'about') return 'basic';
   if (formExamplePages.some(item => item.id === component)) return 'form';
   if (component === 'signature-landscape') return 'form';
   if (component === 'stepper') return 'form';

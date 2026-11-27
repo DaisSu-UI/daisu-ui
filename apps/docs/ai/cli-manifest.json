@@ -2,12 +2,12 @@
   "schemaVersion": 1,
   "generator": {
     "package": "@daisu-ui/cli",
-    "version": "0.1.0-beta.7"
+    "version": "0.1.0-beta.8"
   },
   "files": {
-    "overview.md": "0a9e109cfabf897a47fbd861b1f859cb8c3a8826d2fab2bde71b4b8cebcd91a1",
-    "cli.md": "a3f01e59ec99320210d10c2ebbaf3b79b1ce13aac0be65e2a1e370bd4b566bf6",
-    "mcp.md": "168befc7b34adaee7663c352c78b350a9fcd4d251e0ca2ee98718774cece7558",
-    "skills.md": "ca8fd6c7507b5717ce6b0a413f88bcf31bc07a102658a8f9bca9a27ce9ab2bc6"
+    "overview.md": "ee8c44d84f386957a14c016f2ee92708596e2eda1d6338c65465e2478652648b",
+    "cli.md": "b269ac64fee2ab48806935115aef6efc87575b02bc013f9600968b6b2e9dd9bc",
+    "mcp.md": "c57496d2ad4dc91e2eead4bb93b348d7e1fe8b923341bebff27fce1da60c281d",
+    "skills.md": "98922883590074a78d9bde1e1cb8df67b26a5aeec6598f688c2e830781c14d1e"
   }
 }

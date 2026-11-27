@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { useState } from '@lynx-js/react';
 import type { CSSProperties } from '@lynx-js/types';
 
@@ -15,6 +16,8 @@ export type SortButtonProps = {
 };
 
 export function SortButton({ value, defaultValue = 0, title = '', allowReset = false, descFirst = false, line = false, onChange, className = '', style }: SortButtonProps) {
+  const { t: localeText } = useLocale();
+
   const [inner, setInner] = useState<SortButtonValue>(defaultValue);
   const current = value ?? inner;
   const toggle = () => {
@@ -25,7 +28,7 @@ export function SortButton({ value, defaultValue = 0, title = '', allowReset = f
     onChange?.({ value: next });
   };
   const arrow = (name: string, active: boolean) => <view className={`ui-sort-button-arrow ${active ? 'ui-sort-button-arrow-active' : ''}`}><view className={`ui-sort-button-caret ui-sort-button-${name}`} /></view>;
-  return <view className={`ui-sort-button ${current ? 'ui-sort-button-active' : ''} ${line ? 'ui-sort-button-line' : ''} ${className}`} style={style} bindtap={toggle} accessibility-element accessibility-traits="button" accessibility-label={`${title}，${current === 1 ? '升序' : current === -1 ? '降序' : '未排序'}`}>
+  return <view className={`ui-sort-button ${current ? 'ui-sort-button-active' : ''} ${line ? 'ui-sort-button-line' : ''} ${className}`} style={style} bindtap={toggle} accessibility-element accessibility-traits="button" accessibility-label={`${title}，${current === 1 ? localeText('sort.asc') : current === -1 ? localeText('sort.desc') : localeText('sort.none')}`}>
     <text className="ui-sort-button-title">{title}</text>
     <view className="ui-sort-button-arrows">{arrow('caret-up', current === 1)}{arrow('caret-down', current === -1)}</view>
     {line && current ? <view className="ui-sort-button-indicator" /> : null}

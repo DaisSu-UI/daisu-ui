@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { useEffect, useRef, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import { Icon } from './Icon.js';
@@ -37,6 +38,8 @@ export type TabbarProps = {
 };
 
 export function Tabbar({ items, value, defaultValue = 0, onChange, beforeChange, fixed = false, placeholder = false, bordered = false, safeAreaInsetBottom = false, bottomSafeAreaHeight = 0, shape = 'default', activeColor, inactiveColor, zIndex = 10, className = '' }: TabbarProps) {
+  const { t: localeText } = useLocale();
+
   const [inner, setInner] = useState(defaultValue);
   const selected = value ?? inner;
   const guard = useRef(createTabbarGuard());
@@ -53,13 +56,13 @@ export function Tabbar({ items, value, defaultValue = 0, onChange, beforeChange,
     });
   };
   const safe = safeAreaInsetBottom && Number.isFinite(bottomSafeAreaHeight) ? Math.max(0, bottomSafeAreaHeight) : 0;
-  const bar = <view className={`ui-tabbar ${shape === 'round' ? 'ui-tabbar-round' : bordered ? 'ui-tabbar-bordered' : ''} ${fixed ? 'ui-tabbar-fixed' : ''} ${className}`} style={{ height: `${50 + (fixed && shape === 'default' ? safe : 0)}px`, paddingBottom: `${fixed && shape === 'default' ? safe : 0}px`, ...(fixed ? { bottom: `${shape === 'round' ? safe : 0}px`, zIndex } : {}) }}>
+  const bar = <view className={`ui-tabbar ${shape === 'round' ? 'ui-tabbar-round' : bordered ? 'ui-tabbar-bordered' : ''} ${fixed ? 'ui-tabbar-fixed' : ''} ${className}`} style={{ height: `${50 + (fixed && shape === 'default' ? safe : 0)}px`, paddingBottom: `${fixed && shape === 'default' ? safe : 0}px`, position: fixed ? 'fixed' : 'relative', top: 'auto', left: fixed ? '0px' : 'auto', right: fixed ? '0px' : 'auto', bottom: fixed ? `${shape === 'round' ? safe : 0}px` : 'auto', zIndex: fixed ? zIndex : 0 }}>
     {items.map((item, index) => {
       const name = item.name ?? index;
       const active = name === selected;
       const color = active ? activeColor : inactiveColor;
       const badge = tabbarBadge(item.value, item.badgeProps?.max ?? item.max);
-      return <view key={`${typeof name}:${name}`} className={`ui-tabbar-item ${active ? 'ui-tabbar-item-active' : ''} ${item.className ?? ''}`} accessibility-element accessibility-traits="button" accessibility-label={`${item.title ?? '标签'}${active ? '，已选中' : ''}`} bindtap={() => { 'background only'; change(name); }}>
+      return <view key={`${typeof name}:${name}`} className={`ui-tabbar-item ${active ? 'ui-tabbar-item-active' : ''} ${item.className ?? ''}`} accessibility-element accessibility-traits="button" accessibility-label={`${item.title ?? localeText('tabbar.label')}${active ? localeText('common.selected') : ''}`} bindtap={() => { 'background only'; change(name); }}>
         {item.children ?? <view className="ui-tabbar-item-body">
           <Badge value={badge} max={item.max ?? 99} isDot={item.isDot} showZero {...item.badgeProps} className={`ui-tabbar-item-icon ${item.badgeProps?.className ?? ''}`}>
             {item.renderIcon ? item.renderIcon({ active }) : item.icon ? color ? <Icon name={item.icon} size={24} color={color} /> : active ? <><Icon className="ui-tabbar-icon-light" name={item.icon} size={24} color="#f86100" /><Icon className="ui-tabbar-icon-dark" name={item.icon} size={24} color="#ff812e" /></> : <Icon name={item.icon} size={24} /> : null}

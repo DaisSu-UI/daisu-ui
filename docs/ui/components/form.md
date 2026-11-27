@@ -10,7 +10,7 @@ import { Form, FormItem, zodAdapter } from '@daisu-ui/ui';
 
 ### 受控表单
 
-通过 `model` 绑定表单数据，`FormItem.prop` 对应字段路径，输入控件通过 `onChange` 更新数据。
+通过 `model` 绑定表单数据，`FormItem.prop` 对应字段路径，输入控件通过 `onChange` 更新数据。标题统一预留必填标记列，有无星号保持文字对齐。
 
 ```tsx
 import { useState } from '@lynx-js/react';
@@ -75,6 +75,38 @@ const schema: FormSchema = {
 />
 ```
 
+### message 与 toast 同时展示
+
+所有错误字段显示各自 message；一次校验只展示第一条错误 toast，后续校验替换当前 toast，不按字段排队。
+
+```tsx
+const form = useRef<FormRef>(null);
+
+const schema: FormSchema = {
+  validate: () => [
+    { path: 'name', message: '请输入姓名' },
+    { path: 'phone', message: '请输入手机号' },
+  ],
+};
+
+<Form
+  ref={form}
+  model={{ name: '', phone: '' }}
+  schema={schema}
+  errorType={['message', 'toast']}
+>
+  <FormItem title="姓名" prop="name" required />
+  <FormItem title="手机号" prop="phone" required />
+</Form>
+<Button
+  label="校验"
+  onTap={() => {
+    'background only';
+    void form.current?.validate();
+  }}
+/>
+```
+
 ## 组件状态
 
 ### 整体禁用
@@ -109,7 +141,7 @@ const schema: FormSchema = {
 | schema | 表单校验适配器 | `FormSchema` | — |
 | validateTrigger | 触发校验的时机 | `FormValidateTrigger \| readonly FormValidateTrigger[]` | — |
 | resetOnChange | 数据变化时是否清除对应校验结果 | `boolean` | — |
-| errorType | 校验错误展示方式 | `'message' \| 'toast' \| 'none'` | — |
+| errorType | 校验错误展示方式 | `'message' \| 'toast' \| 'none' \| readonly ('message' \| 'toast')[]` | — |
 | className | 根节点自定义类名 | `string` | — |
 | style | 根节点样式 | `CSSProperties` | — |
 | children | 自定义内容 | `ReactNode` | — |

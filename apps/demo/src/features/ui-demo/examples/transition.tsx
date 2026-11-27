@@ -1,9 +1,11 @@
+import { useDemoLocale } from '../demoLocale.js';
 import { useEffect, useRef, useState } from '@lynx-js/react';
 import { Button, Transition } from '@daisu-ui/ui';
 import type { TransitionName } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 
 export function TransitionExample() {
+  const { text: demoText } = useDemoLocale();
   const [show, setShow] = useState(false);
   const [name, setName] = useState<TransitionName>('fade');
   const [customShow, setCustomShow] = useState(false);
@@ -12,7 +14,7 @@ export function TransitionExample() {
   useEffect(() => () => { clearTimeout(timer.current); clearTimeout(customTimer.current); }, []);
   const run = (next: TransitionName) => { 'background only'; clearTimeout(timer.current); setName(next); setShow(true); timer.current = setTimeout(() => setShow(false), 500); };
   const runCustom = () => { 'background only'; clearTimeout(customTimer.current); setCustomShow(true); customTimer.current = setTimeout(() => setCustomShow(false), 1200); };
-  const buttons = (names: TransitionName[]) => <view className="demo-transition-buttons">{names.map(item => <Button key={item} className="demo-transition-trigger" label={item} onTap={() => { 'background only'; run(item); }} />)}</view>;
+  const buttons = (names: TransitionName[]) => <view className="demo-transition-buttons">{names.map(item => <Button key={item} className="demo-transition-trigger" label={demoText(item)} onTap={() => { 'background only'; run(item); }} />)}</view>;
   return <view className="demo-transition-page">
     <DemoGroup title="组件类型">
       <ExampleBlock title="Fade 动画">{buttons(['fade', 'fade-up', 'fade-down', 'fade-left', 'fade-right'])}</ExampleBlock>

@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { forwardRef, useContext, useEffect, useImperativeHandle, useMemo, useRef, useState } from '@lynx-js/react';
 import type { ReactNode, Ref } from '@lynx-js/react';
 import { Popup } from './Popup.js';
@@ -32,7 +33,11 @@ export function datetimeDraft(value: DatetimePickerModelValue | undefined, props
   const second = datetimeModel({ ...props, value: last }).value;
   return [first, first !== '' && second !== '' && boundary(first, props.type) > boundary(second, props.type) ? first : second];
 }
-const DatetimePickerImpl = forwardRef<DatetimePickerRef, DatetimePickerProps<DatetimePickerModelValue>>(function DatetimePicker({ value, visible, onVisibleChange, title = '', cancelButtonText = '取消', confirmButtonText = '完成', beforeConfirm, onConfirm, onChange, onPickChange, onToggle, onCancel, onClose, onOpen, displayFormatTabLabel, closeOnClickModal = true, rootPortal = false, safeAreaInsetBottom = true, safeAreaBottom = 0, zIndex = 100, viewClassName = '', className = '', style, disabled: disabledProp, ...props }, ref) {
+const DatetimePickerImpl = forwardRef<DatetimePickerRef, DatetimePickerProps<DatetimePickerModelValue>>(function DatetimePicker({ value, visible, onVisibleChange, title = '', cancelButtonText, confirmButtonText, beforeConfirm, onConfirm, onChange, onPickChange, onToggle, onCancel, onClose, onOpen, displayFormatTabLabel, closeOnClickModal = true, rootPortal = false, safeAreaInsetBottom = true, safeAreaBottom = 0, zIndex = 100, viewClassName = '', className = '', style, disabled: disabledProp, ...props }, ref) {
+  const { t: localeText } = useLocale();
+  cancelButtonText ??= localeText('common.cancel');
+  confirmButtonText ??= localeText('common.done');
+
   const field = useContext(FormFieldContext), disabled = disabledProp ?? field?.disabled ?? false;
   const [innerVisible, setInnerVisible] = useState(false), [innerValue, setInnerValue] = useState<DatetimePickerModelValue>(), show = visible ?? innerVisible;
   const sourceValue = value ?? innerValue;

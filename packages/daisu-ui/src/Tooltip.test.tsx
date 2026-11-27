@@ -24,6 +24,8 @@ test('Tooltip measures native geometry, opens from its trigger, and closes from 
     fireEvent.tap(screen.container.querySelector('.ui-tooltip-target')!, { eventType: 'catchEvent' });
     await waitFor(() => expect(screen.container.querySelector('.ui-bubble-anchor')?.getAttribute('style')).toContain('visibility: visible'));
     expect(screen.container.querySelector('.ui-bubble-anchor')?.getAttribute('style')).toContain('top: 54px');
+    expect(screen.container.querySelector('.ui-bubble-panel')?.getAttribute('style')).toContain('height: 44px');
+    expect(screen.container.querySelector('.ui-bubble-panel')?.getAttribute('style')).toContain('width: 122px');
     fireEvent.tap(screen.container.querySelector('.ui-bubble-close')!, { eventType: 'catchEvent' });
     await waitFor(() => expect(events).toEqual([{ show: true }, 'open', { show: false }, 'close']));
     expect(screen.getByText('提示文字')).toBeTruthy();

@@ -1,9 +1,9 @@
 # ConfigProvider 全局配置
 
-全局配置用于统一组件的明暗主题、颜色变量和默认属性，也可以在局部嵌套覆盖。
+全局配置用于统一组件的主题、语言、颜色变量和默认属性，也可以在局部嵌套覆盖。
 
 ```tsx
-import { ConfigProvider } from '@daisu-ui/ui';
+import { ConfigProvider, useLocale } from '@daisu-ui/ui';
 ```
 
 ## 主题模式
@@ -34,7 +34,7 @@ const [dark, setDark] = useState(false);
 
 ### 颜色与组件默认值
 
-通过 `themeVars` 覆盖主题变量，通过 `button` 设置按钮的默认属性。
+通过 `themeVars` 覆盖主题变量，通过 `button` 设置按钮默认属性；`locale` 支持 zh-CN、en-US、zh-TW 或自定义语言包，嵌套配置与 Portal 继承当前语言。
 
 ```tsx
 <ConfigProvider
@@ -45,10 +45,28 @@ const [dark, setDark] = useState(false);
 </ConfigProvider>
 ```
 
+## 国际化
+
+### 语言配置
+
+locale 支持 zh-CN、en-US、zh-TW 或语言包对象，默认简体中文。useLocale() 返回当前语言与类型安全的 t(key, params)；Provider 动态切换会更新默认文案，显式传入的业务内容优先。
+
+```tsx
+import { Search, Loadmore } from '@daisu-ui/ui';
+
+<ConfigProvider locale="en-US">
+  <Search />
+  <Loadmore state="finished" />
+</ConfigProvider>
+```
+
 ## Attributes 属性
+
+### ConfigProvider
 
 | 参数 | 说明 | 类型 / 可选值 | 默认值 |
 | --- | --- | --- | --- |
+| locale | locale 配置 | `UiLocaleInput` | — |
 | theme | 外观主题 | `ConfigProviderTheme` | — |
 | themeVars | 主题变量覆盖值 | `ConfigProviderThemeVars` | — |
 | button | 按钮默认属性 | `ConfigButtonDefaults` | — |
@@ -57,15 +75,23 @@ const [dark, setDark] = useState(false);
 | className | 根节点自定义类名 | `string` | `''` |
 | style | 根节点样式 | `CSSProperties` | — |
 
+### useLocale
+
+```ts
+useLocale(): { locale: import("./locale.js").UiLocale; t: UiTranslate; }
+```
+
 ## 内容插槽
 
 | 名称 | 说明 | 类型 |
 | --- | --- | --- |
-| children | 自定义内容 | ReactNode |
+| ConfigProvider.children | 自定义内容 | ReactNode |
 
 ## 数据类型
 
 ```tsx
+export type UiLocaleInput = UiLocaleName | UiLocaleOverride;
+
 export type ConfigProviderTheme = 'light' | 'dark';
 
 export type ConfigProviderThemeVars = Partial<
@@ -100,6 +126,16 @@ export type ConfigButtonDefaults = Pick<
 > & { variant?: ButtonProps['variant'] | 'base'; type?: ButtonProps['tone'] };
 
 export type ConfigTagDefaults = Pick<TagProps, 'size' | 'variant' | 'round'>;
+
+export type UiLocale = {
+  readonly name: string;
+  readonly messages: UiLocaleMessages;
+};
+
+export type UiTranslate = (
+  key: UiMessageKey,
+  params?: UiLocaleParams,
+) => string;
 ```
 
 ## 主题定制
@@ -148,4 +184,4 @@ import { ConfigProvider } from '@daisu-ui/ui';
 
 ## 源代码
 
-[ConfigProvider 组件源码](./sources/config-provider/ConfigProvider.tsx.txt) · [示例源码](./sources/config-provider/demo.tsx.txt) · [文档源码](./sources/config-provider/docs.md.txt)
+[ConfigProvider 组件源码](./sources/config-provider/ConfigProvider.tsx.txt) · [useLocale 组件源码](./sources/config-provider/useLocale.ts.txt) · [示例源码](./sources/config-provider/demo.tsx.txt) · [文档源码](./sources/config-provider/docs.md.txt)

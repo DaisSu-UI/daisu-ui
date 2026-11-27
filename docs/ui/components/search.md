@@ -54,8 +54,8 @@ const [value, setValue] = useState('');
 | value | 当前值；传入后由调用方更新 | `string` | — |
 | defaultValue | 非受控模式的初始值 | `string` | `''` |
 | type | 类型 | `InputProps['type']` | `'text'` |
-| placeholder | 占位内容或输入提示 | `string` | `'搜索'` |
-| cancelTxt | 取消文案 | `string` | `'取消'` |
+| placeholder | 占位内容或输入提示 | `string` | — |
+| cancelTxt | 取消文案 | `string` | — |
 | variant | 外观变体 | `'plain' \| 'filled' \| 'light'` | `'plain'` |
 | hideCancel | 是否隐藏取消按钮 | `boolean` | `false` |
 | disabled | 是否禁用 | `boolean` | `false` |

@@ -1,6 +1,6 @@
 # 平台兼容性总表
 
-本表对应 @daisu-ui/ui@0.1.0-beta.8，由公开 API 文档清单生成。新增组件自动进入表格，特殊能力在 apps/docs/platforms.mjs 维护。可按名称、平台状态或宿主要求筛选。
+本表对应 @daisu-ui/ui@0.1.0-beta.9，由公开 API 文档清单生成。新增组件自动进入表格，特殊能力在 apps/docs/platforms.mjs 维护。可按名称、平台状态或宿主要求筛选。
 
 ## 如何理解状态
 
@@ -23,7 +23,7 @@
 | [Fab 悬浮按钮](./fab.md) · Fab | 有浏览器示例 | 源码实现，待目标设备验收 | 源码实现，待目标设备验收 | Lynx 4.0 编译目标；实际宿主元素及渲染后端需匹配 |
 | [Transition 动画](./transition.md) · Transition | 有浏览器示例 | 源码实现，待目标设备验收 | 源码实现，待目标设备验收 | Lynx 4.0 编译目标；实际宿主元素及渲染后端需匹配 |
 | [Resize 监听元素尺寸变化](./resize.md) · Resize | 有浏览器示例 | 源码实现，待目标设备验收 | 源码实现，待目标设备验收 | Lynx 4.0 编译目标；实际宿主元素及渲染后端需匹配 |
-| [ConfigProvider 全局配置](./config-provider.md) · ConfigProvider | 有浏览器示例 | 源码实现，待目标设备验收 | 源码实现，待目标设备验收 | Lynx 4.0 编译目标；实际宿主元素及渲染后端需匹配 |
+| [ConfigProvider 全局配置](./config-provider.md) · ConfigProvider、useLocale | 有浏览器示例 | 源码实现，待目标设备验收 | 源码实现，待目标设备验收 | Lynx 4.0 编译目标；实际宿主元素及渲染后端需匹配 |
 | [Root Portal 根节点传送门](./root-portal.md) · RootPortal、RootPortalHost | 有浏览器示例 | 源码实现，待目标设备验收 | 源码实现，待目标设备验收 | Lynx 4.0 编译目标；实际宿主元素及渲染后端需匹配 |
 | [Router 路由](./router.md) · RouterView、RouterProvider、RouteScreen、useRouter、useRoute、useRouterSnapshot、useRouteMatch、createRouter、connectRouterHistory、parseRoutePath、routePath、parseRouterHistoryState、shouldFinishBack | 有浏览器示例 | 源码实现，待目标设备验收 | 源码实现，待目标设备验收 | Lynx 4.0 编译目标；实际宿主元素及渲染后端需匹配 |
 | [Navbar 导航栏](./navbar.md) · Navbar、NavbarCapsule | 有浏览器示例 | 源码实现，待目标设备验收 | 源码实现，待目标设备验收 | Lynx 4.0 编译目标；实际宿主元素及渲染后端需匹配 |

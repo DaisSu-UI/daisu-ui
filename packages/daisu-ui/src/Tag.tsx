@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { useEffect, useRef, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import type { CSSProperties, NodesRef } from '@lynx-js/types';
@@ -36,6 +37,8 @@ const palette = { default: '#4e5369', primary: '#1c64fd', danger: '#f14646', war
 
 /** Editor mounts afresh for each addition; native focus and confirm work in Flutter. */
 function TagEditor({ finish }: { finish: (value?: string) => void }) {
+  const { t: localeText } = useLocale();
+
   const input = useRef<NodesRef>(null);
   const completed = useRef(false);
   useEffect(() => { input.current?.invoke({ method: 'focus' }).exec(); }, []);
@@ -45,10 +48,12 @@ function TagEditor({ finish }: { finish: (value?: string) => void }) {
     completed.current = true;
     finish(value);
   };
-  return <input ref={input} className="ui-tag-input" type="text" default-value="" placeholder="请输入标签" maxlength={-1} confirm-type="done" avoid-keyboard avoid-keyboard-spacing="12px" bindconfirm={event => { 'background only'; complete(event.detail.value); }} bindblur={() => { 'background only'; complete(); }} />;
+  return <input ref={input} className="ui-tag-input" type="text" default-value="" placeholder={localeText('tag.input')} maxlength={-1} confirm-type="done" avoid-keyboard avoid-keyboard-spacing="12px" bindconfirm={event => { 'background only'; complete(event.detail.value); }} bindblur={() => { 'background only'; complete(); }} />;
 }
 
 export function Tag({ type, tone, size: sizeProp, variant, plain, label = '', children, icon = '', iconSlot, add, color, bgColor, round: roundProp, mark = false, closable = false, dynamic = false, onTap, onClose, onConfirm, className = '', style }: TagProps) {
+  const { t: localeText } = useLocale();
+
   const config = useConfigProvider().tag;
   const size = sizeProp ?? config.size ?? 'default', round = roundProp ?? config.round ?? false;
   const [editing, setEditing] = useState(false);
@@ -71,12 +76,12 @@ export function Tag({ type, tone, size: sizeProp, variant, plain, label = '', ch
     setEditing(false);
     if (value !== undefined) onConfirm?.({ value });
   };
-  return <view className={`ui-tag ui-tag-${effectiveType} ui-tag-${effectiveVariant} ui-tag-size-${size} ${round ? 'ui-tag-round' : ''} ${mark ? 'ui-tag-mark' : ''} ${dynamic ? 'ui-tag-dynamic' : ''} ${editing && dynamic ? 'ui-tag-editing' : ''} ${!color && effectiveType === 'default' && effectiveVariant !== 'dark' ? 'ui-tag-auto-glyph' : ''} ${className}`} style={rootStyle} bindtap={tap} accessibility-element={dynamic || !!onTap} accessibility-traits={dynamic || onTap ? 'button' : 'text'} accessibility-label={dynamic ? '新增标签' : typeof content === 'string' ? content : undefined}>
+  return <view className={`ui-tag ui-tag-${effectiveType} ui-tag-${effectiveVariant} ui-tag-size-${size} ${round ? 'ui-tag-round' : ''} ${mark ? 'ui-tag-mark' : ''} ${dynamic ? 'ui-tag-dynamic' : ''} ${editing && dynamic ? 'ui-tag-editing' : ''} ${!color && effectiveType === 'default' && effectiveVariant !== 'dark' ? 'ui-tag-auto-glyph' : ''} ${className}`} style={rootStyle} bindtap={tap} accessibility-element={dynamic || !!onTap} accessibility-traits={dynamic || onTap ? 'button' : 'text'} accessibility-label={dynamic ? localeText('tag.add') : typeof content === 'string' ? content : undefined}>
     {outlined ? <view className="ui-tag-border" style={{ borderColor: bgColor }} /> : null}
-    {dynamic ? editing ? <TagEditor finish={finish} /> : add !== undefined ? <view className="ui-tag-content" style={foreground}>{add}</view> : <view className="ui-tag-content" style={foreground}>{glyph('plus')}<text className="ui-tag-label" style={foreground}>新增标签</text></view> : <>
+    {dynamic ? editing ? <TagEditor finish={finish} /> : add !== undefined ? <view className="ui-tag-content" style={foreground}>{add}</view> : <view className="ui-tag-content" style={foreground}>{glyph('plus')}<text className="ui-tag-label" style={foreground}>{localeText('tag.add')}</text></view> : <>
       {iconSlot !== undefined ? <view className="ui-tag-icon" style={foreground}>{iconSlot}</view> : icon ? glyph(icon) : null}
       {typeof content === 'string' || typeof content === 'number' ? <text className="ui-tag-label" style={foreground}>{content}</text> : <view className="ui-tag-content" style={foreground}>{content}</view>}
-      {closable ? <view className="ui-tag-close" accessibility-element accessibility-traits="button" accessibility-label="关闭标签" catchtap={() => { 'background only'; onClose?.(); }}>{glyph('close')}</view> : null}
+      {closable ? <view className="ui-tag-close" accessibility-element accessibility-traits="button" accessibility-label={localeText('tag.close')} catchtap={() => { 'background only'; onClose?.(); }}>{glyph('close')}</view> : null}
     </>}
   </view>;
 }

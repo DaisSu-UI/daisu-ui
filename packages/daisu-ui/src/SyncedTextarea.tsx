@@ -1,5 +1,6 @@
 import { useEffect, useRef } from '@lynx-js/react';
 import type { NodesRef } from '@lynx-js/types';
+import { nativeTextMaxLength } from './nativeTextInput.js';
 
 type InputEvent = { detail: { value: string } };
 
@@ -15,7 +16,8 @@ type SyncedTextareaProps = {
 
 export function SyncedTextarea({ className, value, placeholder, maxlength, maxlines, onInput, onBlur }: SyncedTextareaProps) {
   const textareaRef = useRef<NodesRef | null>(null);
-  const nativeValue = useRef<string | null>(null);
+  const initial = useRef(value);
+  const nativeValue = useRef(value);
 
   useEffect(() => {
     if (nativeValue.current === value) return;
@@ -29,9 +31,9 @@ export function SyncedTextarea({ className, value, placeholder, maxlength, maxli
   return <textarea
     ref={textareaRef}
     className={className}
-    default-value={value}
+    default-value={initial.current}
     placeholder={placeholder}
-    maxlength={maxlength}
+    maxlength={nativeTextMaxLength(maxlength)}
     maxlines={maxlines}
     set-soft-input-mode="nothing"
     avoid-keyboard={false}

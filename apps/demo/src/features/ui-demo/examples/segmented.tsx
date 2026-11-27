@@ -1,3 +1,4 @@
+import { useDemoLocale } from '../demoLocale.js';
 import { useState } from '@lynx-js/react';
 import { Button, Popup, Segmented } from '@daisu-ui/ui';
 import type { SegmentedOption } from '@daisu-ui/ui';
@@ -16,23 +17,24 @@ const people: readonly SegmentedOption<{ avatar: string }>[] = [
 ];
 
 export function SegmentedExample() {
+  const { text: demoText, copy: demoCopy } = useDemoLocale();
   const [outline, setOutline] = useState<string | number>('评论');
   const [person, setPerson] = useState<string | number>('韩梅梅');
   const [popup, setPopup] = useState(false);
   const [popupValue, setPopupValue] = useState<string | number>('点赞');
   const close = () => { 'background only'; setPopup(false); };
   return <view className="demo-segmented-page">
-    <DemoGroup title="组件类型"><ExampleBlock title="基础用法"><Segmented options={options} defaultValue="详情" /></ExampleBlock></DemoGroup>
-    <DemoGroup title="组件状态"><ExampleBlock title="禁用分段器"><Segmented options={options} value="评论" disabled /></ExampleBlock></DemoGroup>
-    <DemoGroup title="组件变体"><ExampleBlock title="轮廓主题"><Segmented options={options} value={outline} onChange={option => { 'background only'; setOutline(option.value); }} theme="outline" /></ExampleBlock></DemoGroup>
-    <DemoGroup title="组件样式"><ExampleBlock title="自定义渲染分段器标签"><Segmented options={people} value={person} onChange={option => { 'background only'; setPerson(option.value); }} renderLabel={({ option, active }) => <view className={`demo-segmented-person ${active ? 'demo-segmented-person-active' : ''}`}><image className="demo-segmented-avatar" src={option.payload!.avatar} mode="scaleToFill" /><text className="demo-segmented-name">{option.value}</text></view>} /></ExampleBlock></DemoGroup>
+    <DemoGroup title="组件类型"><ExampleBlock title="基础用法"><Segmented options={demoCopy(options)} defaultValue="详情" /></ExampleBlock></DemoGroup>
+    <DemoGroup title="组件状态"><ExampleBlock title="禁用分段器"><Segmented options={demoCopy(options)} value="评论" disabled /></ExampleBlock></DemoGroup>
+    <DemoGroup title="组件变体"><ExampleBlock title="轮廓主题"><Segmented options={demoCopy(options)} value={outline} onChange={option => { 'background only'; setOutline(option.value); }} theme="outline" /></ExampleBlock></DemoGroup>
+    <DemoGroup title="组件样式"><ExampleBlock title="自定义渲染分段器标签"><Segmented options={demoCopy(people)} value={person} onChange={option => { 'background only'; setPerson(option.value); }} renderLabel={({ option, active }) => <view className={`demo-segmented-person ${active ? 'demo-segmented-person-active' : ''}`}><image className="demo-segmented-avatar" src={option.payload!.avatar} mode="scaleToFill" /><text className="demo-segmented-name">{demoText(option.value)}</text></view>} /></ExampleBlock></DemoGroup>
     <DemoGroup title="特殊样式">
-      <ExampleBlock title="选项切换（暂不支持振动）"><Segmented options={options} defaultValue="打赏" /></ExampleBlock>
-      <ExampleBlock title="在弹出框中使用"><view className="demo-segmented-trigger"><Button label="打开弹窗" onTap={() => { 'background only'; setPopup(true); }} /></view></ExampleBlock>
+      <ExampleBlock title="选项切换（暂不支持振动）"><Segmented options={demoCopy(options)} defaultValue="打赏" /></ExampleBlock>
+      <ExampleBlock title="在弹出框中使用"><view className="demo-segmented-trigger"><Button label={demoText("打开弹窗")} onTap={() => { 'background only'; setPopup(true); }} /></view></ExampleBlock>
     </DemoGroup>
-    <Popup show={popup} onClose={close} rootPortal position="bottom" round closable title="在弹出框中使用" className="ui-demo-page">
+    <Popup show={popup} onClose={close} rootPortal position="bottom" round closable title={demoText("在弹出框中使用")} className="ui-demo-page">
       <view className="demo-segmented-popup-content">
-        <Segmented options={options} value={popupValue} onChange={option => { 'background only'; setPopupValue(option.value); }} />
+        <Segmented options={demoCopy(options)} value={popupValue} onChange={option => { 'background only'; setPopupValue(option.value); }} />
       </view>
     </Popup>
   </view>;

@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { forwardRef, useContext, useEffect, useImperativeHandle, useMemo, useRef, useState } from '@lynx-js/react';
 import type { CSSProperties, NodesRef } from '@lynx-js/types';
 import { ActionSheet } from './ActionSheet.js';
@@ -23,7 +24,12 @@ export type SelectPickerProps = {
   className?: string; style?: CSSProperties; contentClassName?: string;
 };
 export type SelectPickerRef = { open: () => void; close: () => void };
-export const SelectPicker = forwardRef<SelectPickerRef, SelectPickerProps>(function SelectPicker({ value, visible, onVisibleChange, columns, type = 'checkbox', title = '选择器', min = 0, max = 0, disabled: disabledProp, loading = false, filterable = false, filterPlaceholder = '搜索', confirmButtonText = '确认', showConfirm = true, valueKey = 'value', labelKey = 'label', checkedColor, selectSize, loadingColor = '#4D80F0', beforeConfirm, onChange, onConfirm, onCancel, onClose, onOpen, closeOnClickModal = true, scrollIntoView = true, rootPortal = false, zIndex = 100, safeAreaInsetBottom = true, safeAreaBottom = 0, className = '', style, contentClassName = '' }, ref) {
+export const SelectPicker = forwardRef<SelectPickerRef, SelectPickerProps>(function SelectPicker({ value, visible, onVisibleChange, columns, type = 'checkbox', title, min = 0, max = 0, disabled: disabledProp, loading = false, filterable = false, filterPlaceholder, confirmButtonText, showConfirm = true, valueKey = 'value', labelKey = 'label', checkedColor, selectSize, loadingColor = '#4D80F0', beforeConfirm, onChange, onConfirm, onCancel, onClose, onOpen, closeOnClickModal = true, scrollIntoView = true, rootPortal = false, zIndex = 100, safeAreaInsetBottom = true, safeAreaBottom = 0, className = '', style, contentClassName = '' }, ref) {
+  const { t: localeText } = useLocale();
+  title ??= localeText('picker.title');
+  filterPlaceholder ??= localeText('common.search');
+  confirmButtonText ??= localeText('common.confirmAction');
+
   const field = useContext(FormFieldContext), disabled = disabledProp ?? field?.disabled ?? false;
   const [innerVisible, setInnerVisible] = useState(false), show = visible ?? innerVisible;
   const [draft, setDraft] = useState<ChoiceValue | ChoiceValue[]>([]), [query, setQuery] = useState(''), [busy, setBusy] = useState(false);
@@ -73,9 +79,9 @@ export const SelectPicker = forwardRef<SelectPickerRef, SelectPickerProps>(funct
   };
   return <ActionSheet show={show} onClose={cancel} onAfterEnter={reveal} title={title} titleClassName="ui-select-picker-header" closeOnClickModal={closeOnClickModal} rootPortal={rootPortal} zIndex={zIndex} safeAreaInsetBottom={safeAreaInsetBottom} safeAreaBottom={safeAreaBottom} className={`ui-select-picker ${className}`} style={style}>
     {filterable ? <Search value={query} onChange={({ value }) => { 'background only'; setQuery(value); offset.current = 0; scroll.current?.invoke({ method: 'scrollTo', params: { offset: 0, smooth: false } }).exec(); }} placeholder={filterPlaceholder} hideCancel placeholderLeft disabled={loading || busy} /> : null}
-    <view className="ui-select-picker-content"><scroll-view ref={scroll} className={`ui-select-picker-scroll ${loading ? 'ui-select-picker-is-loading' : ''} ${contentClassName}`} scroll-orientation="vertical" enable-scroll={!loading} scroll-bar-enable={false} bindscroll={event => { 'background only'; offset.current = event.detail.scrollTop; }}>
+    <view className="ui-select-picker-content"><scroll-view style={{ zIndex: 0 }} ref={scroll} className={`ui-select-picker-scroll ${loading ? 'ui-select-picker-is-loading' : ''} ${contentClassName}`} scroll-orientation="vertical" enable-scroll={!loading} scroll-bar-enable={false} bindscroll={event => { 'background only'; offset.current = event.detail.scrollTop; }}>
       {type === 'checkbox' ? <CheckboxGroup value={Array.isArray(draft) ? draft : []} min={min} max={max} disabled={disabled || busy} readonly={loading} onChange={({ value }) => update(value)} placement="right" type="square" size={selectSize} checkedColor={checkedColor}>{items.map(item => <Checkbox key={`${typeof item.value}:${item.value}`} name={item.value} disabled={item.disabled} className="ui-select-picker-option" labelClassName="ui-select-picker-choice-label">{label(item)}</Checkbox>)}</CheckboxGroup> : <RadioGroup<ChoiceValue> value={Array.isArray(draft) ? null : draft} disabled={disabled || busy} readonly={loading} placement="right" size={selectSize} checkedColor={checkedColor} onChange={value => { 'background only'; if (value !== null) update(value); }}>{items.map(item => <Radio key={`${typeof item.value}:${item.value}`} value={item.value} disabled={item.disabled} className="ui-select-picker-option" labelClassName="ui-select-picker-choice-label">{label(item)}</Radio>)}</RadioGroup>}
-      {!items.length ? <text className="ui-picker-empty">暂无数据</text> : null}
+      {!items.length ? <text className="ui-picker-empty">{localeText('common.empty')}</text> : null}
     </scroll-view>{loading ? <view className="ui-select-picker-loading"><Loading size={48} color={loadingColor} /></view> : null}</view>
     {type === 'checkbox' || showConfirm ? <view className="ui-select-picker-footer"><view className="ui-select-picker-footer-line" /><Button block size="large" label={confirmButtonText} loading={busy} disabled={disabled || loading || busy} onTap={() => void confirm()} /></view> : null}
   </ActionSheet>;

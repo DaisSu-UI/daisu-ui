@@ -39,9 +39,9 @@ import { Loadmore } from '@daisu-ui/ui';
 | 参数 | 说明 | 类型 / 可选值 | 默认值 |
 | --- | --- | --- | --- |
 | state | 加载中、完成、错误；未设置时保留容器并不显示状态内容 | `LoadmoreState` | — |
-| loadingText | 加载中默认文字 | `string` | `'正在努力加载中...'` |
-| finishedText | 完成文字，默认复用公共Divider | `string` | `'已加载完毕'` |
-| errorText | 错误文字；独立“点击重试”提示不包含在此参数中 | `string` | `'加载失败'` |
+| loadingText | 加载中默认文字 | `string` | — |
+| finishedText | 完成文字，默认复用公共Divider | `string` | — |
+| errorText | 错误文字；独立“点击重试”提示不包含在此参数中 | `string` | — |
 | loadingProps | 传递给公共Loading；自动保留ui-loadmore-loading类名并追加调用方className；默认28px圆环 | `LoadingProps` | — |
 | loading | 各状态插槽；参数存在时替换该状态全部默认内容，支持0/空字符串等值；原始文字自动包裹text | `ReactNode` | — |
 | finished | 各状态插槽；参数存在时替换该状态全部默认内容，支持0/空字符串等值；原始文字自动包裹text | `ReactNode` | — |

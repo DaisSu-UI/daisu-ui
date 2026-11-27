@@ -66,8 +66,8 @@ const [show, setShow] = useState(false);
 | maxScale | 相对当前角度最小覆盖比例的最大缩放，1–20 | `number` | `3` |
 | quality | 0–1，JPEG压缩质量；PNG由浏览器无损编码 | `number` | `1` |
 | fileType | png / jpg / jpeg；jpeg归一为jpg | `'png'\|'jpg'\|'jpeg'` | `'png'` |
-| cancelButtonText | 底部操作文案 | `string` | `'取消'` |
-| confirmButtonText | 底部操作文案 | `string` | `'完成'` |
+| cancelButtonText | 底部操作文案 | `string` | — |
+| confirmButtonText | 底部操作文案 | `string` | — |
 | autoChoose | 打开且imgSrc为空时尝试打开文件选择；浏览器限制时仍可点击编辑器中的「选择图片」 | `boolean` | `false` |
 | mode | browser启用已注册的浏览器编辑器；Flutter暂无裁剪后端 | `'browser'\|'none'` | `'none'` |
 | rootPortal | 根部已有RootPortalHost时可启用 | `boolean` | `false` |

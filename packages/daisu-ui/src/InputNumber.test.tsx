@@ -14,7 +14,8 @@ function setupNative() {
     return result;
   });
   const emit = (event: string, next: string) => { value = next; fireEvent(lynx.createSelectorQuery().select('.ui-textfield-native') as unknown as Element, Object.assign(new Event(`bindEvent:${event}`), { eventName: event, eventType: 'bindEvent', detail: { value: next } })); };
-  return { mock, emit, value: () => value };
+  const mount = (container: ParentNode) => { value = container.querySelector('.ui-textfield-native')?.getAttribute('default-value') ?? ''; };
+  return { mock, emit, mount, value: () => value };
 }
 const tap = (container: HTMLElement, direction: 'plus' | 'minus') => fireEvent.tap(container.querySelector(`.ui-input-number-${direction}`)!, { eventType: 'catchEvent' });
 test('InputNumber decimal and strict stepping respect legal bounds without floating-point drift', () => {
@@ -41,6 +42,7 @@ test('InputNumber controlled buttons and edits restore rejected values and honor
   const native = setupNative(), changes: InputNumberValue[] = [];
   try {
     const screen = render(<InputNumber value={2} onChange={event => changes.push(event.value)} />);
+    native.mount(screen.container);
     await waitFor(() => expect(native.value()).toBe('2'));
     for (let i = 0; i < 2; i++) { tap(screen.container, 'plus'); await waitFor(() => expect(native.value()).toBe('2')); }
     expect(changes).toEqual([3, 3]);

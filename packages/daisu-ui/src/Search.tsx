@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import type { CSSProperties } from '@lynx-js/types';
@@ -23,7 +24,11 @@ function Glyph({ clear = false }: { clear?: boolean }) {
     <Icon name={name} size={clear ? 20 : 18} color={clear ? 'var(--cso-ui-disabled-text)' : 'var(--cso-ui-text-regular)'} className="ui-search-glyph-dark" />
   </view>;
 }
-export const Search = forwardRef<SearchRef, SearchProps>(function Search({ value, defaultValue = '', onChange, type = 'text', placeholder = '搜索', cancelTxt = '取消', variant = 'plain', hideCancel = false, disabled = false, maxlength = -1, placeholderLeft = false, focus, focusWhenClear = false, placeholderColor, prefix, inputSuffix, suffix, onSearch, onCancel, onClear, onFocus, onBlur, onTap, inputClassName = '', className = '', style }, ref) {
+export const Search = forwardRef<SearchRef, SearchProps>(function Search({ value, defaultValue = '', onChange, type = 'text', placeholder, cancelTxt, variant = 'plain', hideCancel = false, disabled = false, maxlength = -1, placeholderLeft = false, focus, focusWhenClear = false, placeholderColor, prefix, inputSuffix, suffix, onSearch, onCancel, onClear, onFocus, onBlur, onTap, inputClassName = '', className = '', style }, ref) {
+  const { t: localeText } = useLocale();
+  placeholder ??= localeText('common.search');
+  cancelTxt ??= localeText('common.cancel');
+
   const [inner, setInner] = useState(defaultValue), [active, setActive] = useState(!!focus && !disabled);
   const text = value === undefined ? inner : value;
   const input = useRef<InputRef>(null), blurTimer = useRef<ReturnType<typeof setTimeout>>();
@@ -46,7 +51,7 @@ export const Search = forwardRef<SearchRef, SearchProps>(function Search({ value
           <Input ref={input} compact type={type} value={text} onChange={update} placeholder={cover ? '' : placeholder} placeholderColor={placeholderColor} maxlength={Number.isFinite(limit) ? limit : -1} disabled={disabled} confirmType="search" className="ui-search-editor" inputClassName={inputClassName} onFocus={event => { 'background only'; clearTimeout(blurTimer.current); setActive(true); onFocus?.(event); }} onBlur={event => { 'background only'; clearTimeout(blurTimer.current); blurTimer.current = setTimeout(() => { setActive(false); onBlur?.(event); }, 150); }} onConfirm={event => { 'background only'; if (!disabled) onSearch?.({ value: event.value }); }} />
           {cover ? <view className="ui-search-cover" bindtap={requestFocus} accessibility-element accessibility-traits="button" accessibility-label={placeholder}><Glyph /><text className="ui-search-placeholder" style={placeholderColor ? { color: placeholderColor } : undefined}>{placeholder}</text></view> : null}
         </view>
-        {text && !disabled ? <view className="ui-search-clear" catchtap={clear} accessibility-element accessibility-traits="button" accessibility-label="清空搜索"><Glyph clear /></view> : null}
+        {text && !disabled ? <view className="ui-search-clear" catchtap={clear} accessibility-element accessibility-traits="button" accessibility-label={localeText('search.clear')}><Glyph clear /></view> : null}
         {inputSuffix !== undefined ? <view className="ui-search-input-suffix">{content(inputSuffix)}</view> : null}
       </view>
     </view>

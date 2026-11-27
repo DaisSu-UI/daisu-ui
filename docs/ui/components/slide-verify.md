@@ -39,8 +39,8 @@ import { SlideVerify } from '@daisu-ui/ui';
 | width | 宽度 | `number \| string` | `'100%'` |
 | height | 高度 | `number \| string` | `40` |
 | tolerance | 滑动确认的允许误差 | `number` | `10` |
-| text | 显示文字 | `ReactNode` | `'向右滑动验证'` |
-| successText | successText 配置 | `ReactNode` | `'验证通过'` |
+| text | 显示文字 | `ReactNode` | — |
+| successText | successText 配置 | `ReactNode` | — |
 | disabled | 是否禁用 | `boolean` | — |
 | backgroundColor | 背景颜色 | `string` | — |
 | activeBackgroundColor | 激活状态背景色 | `string` | — |

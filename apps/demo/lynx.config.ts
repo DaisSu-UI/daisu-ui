@@ -13,7 +13,11 @@ export default defineConfig({
       'react/jsx-dev-runtime$': require.resolve('@lynx-js/react/jsx-dev-runtime'),
     },
   },
-  environments: { lynx: {}, web: { output: { distPath: { root: 'dist-web' }, assetPrefix: './' } } },
+  environments: {
+    // Native hosts may serve only the Bundle, without a static resource server.
+    lynx: { output: { dataUriLimit: { image: Number.MAX_SAFE_INTEGER } } },
+    web: { output: { distPath: { root: 'dist-web' }, assetPrefix: './' } },
+  },
   plugins: [
     pluginReactLynx({ engineVersion: '4.0', enableCSSInheritance: true, customCSSInheritanceList: ['color', 'font-size', 'font-weight', 'font-family', 'font-style', 'line-height', 'text-align', 'text-indent'] }),
     pluginLynxConfig({ enableCSSInlineVariables: true }),

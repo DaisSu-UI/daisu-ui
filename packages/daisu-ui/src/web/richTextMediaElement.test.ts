@@ -52,3 +52,13 @@ test('a seek discarded while metadata is arriving is retried when the player bec
  canSeek=true;media.dispatchEvent(new Event('canplay'));expect(time).toBe(5);
  media.dispatchEvent(new Event('seeked'));expect(events).toContainEqual(expect.objectContaining({kind:'timeupdate',currentTime:5}));expect(played).toHaveLength(0);
 });
+
+test('browser media changes language without replacing or restarting the player', () => {
+  const { node, media } = mount({ title: '', locale: { name: 'en-US' } });
+  expect(node.shadowRoot!.querySelector('button')!.textContent).toContain('Play audio');
+  media.currentTime = 12;
+  node.setAttribute('media-config', JSON.stringify({ id: 'clip', type: 'audio', sources: ['https://example.com/sound.mp3'], title: '', loop: false, muted: false, locale: { name: 'zh-TW' } }));
+  expect(node.shadowRoot!.querySelector('audio')).toBe(media);
+  expect(media.currentTime).toBe(12);
+  expect(node.shadowRoot!.querySelector('button')!.textContent).toContain('播放音訊');
+});

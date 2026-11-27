@@ -14,6 +14,12 @@ export default {
       'const form = useRef<FormRef>(null); const [model, setModel] = useState({ name: "" }); const schema: FormSchema = { validate: data => data.name ? [] : [{ path: "name", message: "请输入姓名" }] }; return <><Form ref={form} model={model} schema={schema}><FormItem title="姓名" prop="name"><Input value={model.name} onChange={name => { \'background only\'; setModel({ name }); }} /></FormItem></Form><Button label="提交" onTap={async () => { \'background only\'; const result = await form.current?.validate(); if (result?.valid) console.log(model); }} /></>;',
     ),
     e(
+      "校验用法",
+      "message 与 toast 同时展示",
+      'const form = useRef<FormRef>(null); const schema: FormSchema = { validate: () => [{ path: "name", message: "请输入姓名" }, { path: "phone", message: "请输入手机号" }] }; return <><Form ref={form} model={{ name: "", phone: "" }} schema={schema} errorType={["message", "toast"]}><FormItem title="姓名" prop="name" required /><FormItem title="手机号" prop="phone" required /></Form><Button label="校验" onTap={() => { \'background only\'; void form.current?.validate(); }} /></>;',
+      "所有错误字段显示各自 message；一次校验只展示第一条错误 toast，后续校验替换当前 toast，不按字段排队。",
+    ),
+    e(
       "组件状态",
       "整体禁用",
       'return <Form model={{ name: "张三" }} disabled><FormItem title="姓名" prop="name"><Input value="张三" /></FormItem></Form>;',

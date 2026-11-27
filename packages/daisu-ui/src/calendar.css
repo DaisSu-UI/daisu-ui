@@ -1,11 +1,15 @@
-.ui-calendar-view{background-color:var(--cso-ui-surface);}
+.ui-calendar-view{width:100%;display:flex;flex-direction:column;flex-shrink:0;background-color:var(--cso-ui-surface);}
+.ui-calendar-scroll-content{position:relative;width:100%;flex-shrink:0;}
+.ui-calendar-month{position:absolute;left:0;width:100%;display:flex;flex-direction:column;flex-shrink:0;}
 .ui-calendar-weekdays{display:flex;flex-direction:row;padding:8px 12px;}
 .ui-calendar-weekdays text{flex:1;text-align:center;font-size:14px;line-height:20px;color:var(--cso-ui-text-secondary,var(--cso-ui-text-muted));}
-.ui-calendar-scroll{width:100%;}
-.ui-calendar-panel-title{height:40px;padding:10px 12px;font-size:14px;line-height:20px;font-weight:600;color:var(--cso-ui-text);}
-.ui-calendar-days{padding:0 12px;display:flex;flex-direction:row;flex-wrap:wrap;}
-.ui-calendar-day{position:relative;flex-shrink:0;width:14.285714%;height:60px;}
-.ui-calendar-day-inner{position:relative;z-index:2;height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.ui-calendar-scroll-viewport{width:100%;flex-shrink:0;}
+.ui-calendar-scroll{z-index:0;width:100%;flex-shrink:0;}
+.ui-calendar-panel-title{height:40px;padding:10px 12px;box-sizing:border-box;flex-shrink:0;font-size:14px;line-height:20px;font-weight:600;color:var(--cso-ui-text);}
+.ui-calendar-days{width:100%;padding:0 12px;display:flex;flex-direction:column;flex-shrink:0;}
+.ui-calendar-row{width:100%;height:60px;display:flex;flex-direction:row;flex-shrink:0;}
+.ui-calendar-cell{position:relative;flex:1;min-width:0;height:60px;}
+.ui-calendar-day-inner{position:relative;z-index:2;width:100%;height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .ui-calendar-day-label{font-family:"San Francisco",Roboto,Arial,"PingFang SC","Microsoft YaHei",sans-serif;font-size:16px;line-height:24px;font-weight:600;color:var(--cso-ui-text);}
 .ui-calendar-day-top,.ui-calendar-day-bottom{position:absolute;left:0;right:0;text-align:center;font-size:10px;line-height:16px;color:var(--cso-ui-text);}
 .ui-calendar-day-top{top:6px;}.ui-calendar-day-bottom{bottom:6px;}
@@ -20,7 +24,7 @@
 .ui-calendar-day-selected text,.ui-calendar-day-multiple-selected text,.ui-calendar-day-multiple-middle text,.ui-calendar-day-same text,.ui-calendar-day-start text,.ui-calendar-day-end text{color:var(--cso-ui-on-primary,#fff);}
 .ui-calendar-day-current .ui-calendar-day-label{color:var(--cso-ui-primary);}
 .ui-calendar-day-disabled .ui-calendar-day-label{color:var(--cso-ui-disabled-text,#c9cbd4);}
-.ui-calendar-day-month{width:25%;display:flex;justify-content:center;}
+.ui-calendar-day-month{display:flex;justify-content:center;}
 .ui-calendar-day-month .ui-calendar-day-inner{width:60px;align-self:center;}
 .ui-calendar-controls{height:44px;padding:12px;display:flex;flex-direction:row;align-items:center;justify-content:space-between;}
 .ui-calendar-controls text{font-size:14px;line-height:20px;font-weight:600;color:var(--cso-ui-text);}

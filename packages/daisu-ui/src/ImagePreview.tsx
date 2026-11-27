@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import type { CSSProperties } from '@lynx-js/types';
@@ -21,6 +22,8 @@ export type ImagePreviewProps=ImagePreviewOptions&{
 export type ImagePreviewRef={open:(input?:readonly string[]|ImagePreviewOptions)=>void;close:()=>void;setActive:(index:number)=>void};
 /** Native image fitting, main-thread paging and the shared scroll-locking overlay. */
 export const ImagePreview=forwardRef<ImagePreviewRef,ImagePreviewProps>(function ImagePreview({show,onShowChange,options,requestKey=0,rootPortal=false,duration=300,renderClose,renderIndicator,renderContent,className='',style,...defaults},ref){
+  const { t: localeText } = useLocale();
+
  const [innerShow,setInnerShow]=useState(false),[imperative,setImperative]=useState<ImagePreviewOptions>({}),[revision,setRevision]=useState(0);
  const settings={...defaults,...options,...imperative},visible=show??innerShow;
  const [active,setActive]=useState(visible);
@@ -48,7 +51,7 @@ export const ImagePreview=forwardRef<ImagePreviewRef,ImagePreviewProps>(function
  return <Overlay show={visible} duration={duration} rootPortal={rootPortal} zIndex={zIndex} lockScroll className={`ui-image-preview ${className}`} style={style} onAfterLeave={()=>{ 'background only';closing.current=false;setActive(false); }}>
   {active?<Swiper key={`${requestKey}:${revision}`} list={images} height="100%" current={index} autoplay={false} loop={loop} indicator={false} className="ui-image-preview-swiper" onChange={next=>{ 'background only';if(!state.current.visible||closing.current)return;setCurrent(next);state.current.settings.onChange?.(next); }} onClick={clicked=>{ 'background only';if(!state.current.visible||closing.current)return;state.current.settings.onClick?.(clicked);if(closeOnClick)close(); }} renderItem={({item,index:itemIndex})=><view className="ui-image-preview-item" bindlongpress={()=>{ 'background only';if(state.current.visible&&!closing.current)state.current.settings.onLongPress?.(itemIndex); }}><Img src={String(item)} width="100%" height="100%" mode="aspectFit" showLoading={false} showError={false}/></view>}/>:null}
   {renderIndicator?<view className="ui-image-preview-custom-indicator" event-through>{slot(renderIndicator({current:index,total:images.length}))}</view>:showIndex&&images.length>1?<text className="ui-image-preview-index">{`${index+1} / ${images.length}`}</text>:null}
-  {renderClose?<view className="ui-image-preview-custom-close" catchtap={()=>{}}>{slot(renderClose(close))}</view>:closeable?<LayerCloseButton show={visible} className={`ui-image-preview-close ui-image-preview-close-${closeIconPosition}`} onClose={close} label="关闭图片预览"><Icon name={closeIcon} size={24}/></LayerCloseButton>:null}
+  {renderClose?<view className="ui-image-preview-custom-close" catchtap={()=>{}}>{slot(renderClose(close))}</view>:closeable?<LayerCloseButton show={visible} className={`ui-image-preview-close ui-image-preview-close-${closeIconPosition}`} onClose={close} label={localeText('close.imagePreview')}><Icon name={closeIcon} size={24}/></LayerCloseButton>:null}
   {renderContent?<view className="ui-image-preview-content" event-through>{slot(renderContent({current:index,total:images.length,images,close}))}</view>:null}
  </Overlay>;
 });

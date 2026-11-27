@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from '@lynx-js/react';
 import type { ReactNode, Ref } from '@lynx-js/react';
 import type { CSSProperties, NodesRef } from '@lynx-js/types';
@@ -41,6 +42,8 @@ export function Tabs(props: TabsProps): ReactNode {
 }
 
 const StandardTabs = forwardRef<TabsRef, StandardTabsProps>(function StandardTabs({ items, value, defaultValue = 0, onChange, onClick, onDisabled, slidable = 'auto', slidableNum = 6, mapNum = 10, mapTitle = '', showScrollbar = false, sticky = false, offsetTop = 0, swipeable = false, animated = false, duration = 300, lineTheme = 'normal', lineWidth, lineHeight, color, inactiveColor, className = '', style }, ref) {
+  const { t: localeText } = useLocale();
+
   const [inner, setInner] = useState(defaultValue), [map, setMap] = useState(false);
   const [widths, setWidths] = useState<Record<number, number>>({}), [labels, setLabels] = useState<Record<number, number>>({});
   const [heights, setHeights] = useState<Record<number, number>>({}), [viewport, setViewport] = useState(0), [drag, setDrag] = useState(0);
@@ -76,16 +79,16 @@ const StandardTabs = forwardRef<TabsRef, StandardTabsProps>(function StandardTab
   const lineW = lineWidth ?? (lineTheme === 'text' ? labels[selected] ?? 24 : lineTheme === 'underline' ? activeWidth : lineTheme === 'dot' ? 6 : 24);
   const lineH = lineHeight ?? (lineTheme === 'underline' ? 2 : lineTheme === 'dot' ? 6 : 4);
   const milliseconds = Number.isFinite(duration) ? Math.max(0, duration) : 300;
-  const header = <view className={`ui-tabs-standard-header ${sticky ? 'ui-tabs-sticky' : ''}`} style={{ top: sticky ? `${offsetTop}px` : undefined }}>
-    <scroll-view ref={scroll} className="ui-tabs-nav-scroll" scroll-orientation="horizontal" scroll-x={scrolling} enable-scroll={scrolling} scroll-bar-enable={showScrollbar} style={{ marginRight: withMap ? '44px' : undefined }}>
+  const header = <view className={`ui-tabs-standard-header ${sticky ? 'ui-tabs-sticky' : ''}`} style={{ position: sticky ? 'sticky' : 'relative', top: sticky ? `${offsetTop}px` : 'auto', zIndex: sticky ? 3 : 2 }}>
+    <scroll-view ref={scroll} className="ui-tabs-nav-scroll" scroll-orientation="horizontal" scroll-x={scrolling} enable-scroll={scrolling} scroll-bar-enable={showScrollbar} style={{ zIndex: 0, marginRight: withMap ? '44px' : undefined }}>
       <view className={`ui-tabs-nav-track ${scrolling ? 'ui-tabs-nav-slidable' : ''}`}>
-        {items.map((item, index) => <view key={`${typeof item.name}:${item.name ?? index}`} className={`ui-tabs-nav-item ${selected === index ? 'ui-tabs-nav-active' : ''} ${item.disabled ? 'ui-tabs-nav-disabled' : ''}`} style={{ color: item.disabled ? undefined : selected === index ? color : inactiveColor }} flatten={false} bindlayoutchange={e => size(setWidths, index, e.detail.width)} bindtap={() => select(index, true)} accessibility-element accessibility-traits="button" accessibility-label={`${item.title}${selected === index ? '，已选中' : ''}${item.disabled ? '，禁用' : ''}`}>
+        {items.map((item, index) => <view key={`${typeof item.name}:${item.name ?? index}`} className={`ui-tabs-nav-item ${selected === index ? 'ui-tabs-nav-active' : ''} ${item.disabled ? 'ui-tabs-nav-disabled' : ''}`} style={{ color: item.disabled ? undefined : selected === index ? color : inactiveColor }} flatten={false} bindlayoutchange={e => size(setWidths, index, e.detail.width)} bindtap={() => select(index, true)} accessibility-element accessibility-traits="button" accessibility-label={`${item.title}${selected === index ? localeText('common.selected') : ''}${item.disabled ? localeText('common.disabled') : ''}`}>
           <Badge {...item.badgeProps}><text className="ui-tabs-nav-label" style={{ color: item.disabled ? undefined : selected === index ? color : inactiveColor }} bindlayoutchange={e => size(setLabels, index, e.detail.width)}>{item.title}</text></Badge>
         </view>)}
         {selected >= 0 ? <view className={`ui-tabs-line ui-tabs-line-${lineTheme}`} user-interaction-enabled={false} style={{ left: `${left + activeWidth / 2}px`, width: unit(lineW), height: unit(lineH), backgroundColor: color, transitionDuration: `${milliseconds}ms` }} /> : null}
       </view>
     </scroll-view>
-    {withMap ? <view className="ui-tabs-map-toggle" bindtap={() => { 'background only'; setMap(!map); }} accessibility-element accessibility-traits="button" accessibility-label="切换导航地图"><view style={{ transform: map ? 'rotate(180deg)' : undefined }}><Icon name="down" size={16} /></view></view> : null}
+    {withMap ? <view className="ui-tabs-map-toggle" bindtap={() => { 'background only'; setMap(!map); }} accessibility-element accessibility-traits="button" accessibility-label={localeText('tabs.map')}><view style={{ transform: map ? 'rotate(180deg)' : undefined }}><Icon name="down" size={16} /></view></view> : null}
     <Transition show={map} name="fade-down" duration={milliseconds} lazyRender className="ui-tabs-map">
       {mapTitle ? <text className="ui-tabs-map-title">{mapTitle}</text> : null}
       <view className="ui-tabs-map-items">{items.map((item, i) => <view key={i} className={`ui-tabs-map-item ${i === selected ? 'ui-tabs-map-active' : ''} ${item.disabled ? 'ui-tabs-map-disabled' : ''}`} bindtap={() => select(i, true)}><text>{item.title}</text></view>)}</view>

@@ -77,8 +77,8 @@ const [visible, setVisible] = useState(false);
 | value | 当前值；传入后由调用方更新 | `V` | — |
 | visible | 是否显示选择面板 | `boolean` | — |
 | title | 标题内容 | `string` | `''` |
-| cancelButtonText | 取消按钮文案 | `string` | `'取消'` |
-| confirmButtonText | 确认按钮文案 | `string` | `'完成'` |
+| cancelButtonText | 取消按钮文案 | `string` | — |
+| confirmButtonText | 确认按钮文案 | `string` | — |
 | beforeConfirm | 确认前校验 | `(value: Result<V>) => boolean \| Promise<boolean>` | — |
 | displayFormatTabLabel | 级联选项页签的显示格式 | `(items: PickerOption[]) => string` | — |
 | closeOnClickModal | 点击遮罩是否关闭 | `boolean` | `true` |

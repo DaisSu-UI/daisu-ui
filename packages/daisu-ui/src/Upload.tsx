@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import type { CSSProperties } from '@lynx-js/types';
 import { useContext, useEffect, useRef, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
@@ -33,6 +34,8 @@ export type UploadProps = {
 const emptyFiles: readonly UploadFile[] = [];
 const errorOf = (reason: unknown, fallback: string) => reason instanceof Error ? reason : new Error(fallback);
 export function Upload({ fileList = emptyFiles, onChange, adapter, disabled: disabledProp, readonly = false, limit = 0, size = 88, deletable = true, showLimitNum = true, reupload = false, previewFullImage = true, imageMode = 'aspectFill', uploadIcon = 'camera-fill', uploadText, loadingType = 'circular', loadingSize = 24, loadingColor = '#fff', beforeChoose, beforePreview, beforeRemove, onSuccess, onFail, onProgress, onPreview, onRemove, renderPreviewCover, className = '', evokeClassName = '', previewClassName = '', style, children }: UploadProps) {
+  const { t: localeText } = useLocale();
+
   const field = useContext(FormFieldContext), disabled = disabledProp ?? field?.disabled ?? false;
   const [uploading, setUploading] = useState(false), [progress, setProgress] = useState(0);
   const generation = useRef(0), choosing = useRef(false), removing = useRef(false), previewing = useRef(false);
@@ -67,7 +70,7 @@ export function Upload({ fileList = emptyFiles, onChange, adapter, disabled: dis
       if (target) { const location = next.indexOf(target); if (location < 0) return; next[location] = uploaded; }
       else { if (current.limit > 0 && next.length >= current.limit) return; next.push(uploaded); }
       current.onChange?.({ fileList: next }); current.onSuccess?.(uploaded);
-    } catch (reason) { if (ticket === generation.current) latest.current.onFail?.(errorOf(reason, '上传失败')); }
+    } catch (reason) { if (ticket === generation.current) latest.current.onFail?.(errorOf(reason, localeText('upload.uploadFailed'))); }
     finally { acceptingProgress = false; if (ticket === generation.current) { choosing.current = false; setUploading(false); } }
   };
   const remove = async (file: UploadFile, index: number) => {
@@ -78,7 +81,7 @@ export function Upload({ fileList = emptyFiles, onChange, adapter, disabled: dis
       if (!await (beforeRemove?.(file, index) ?? true) || ticket !== generation.current) return;
       const current = latest.current, location = current.fileList.indexOf(file);
       if (location >= 0) { current.onChange?.({ fileList: current.fileList.filter((_, i) => i !== location) }); current.onRemove?.({ file, index: location }); }
-    } catch (reason) { if (ticket === generation.current) latest.current.onFail?.(errorOf(reason, '删除失败')); }
+    } catch (reason) { if (ticket === generation.current) latest.current.onFail?.(errorOf(reason, localeText('upload.deleteFailed'))); }
     finally { if (ticket === generation.current) removing.current = false; }
   };
   const preview = async (file: UploadFile, index: number) => {
@@ -96,21 +99,21 @@ export function Upload({ fileList = emptyFiles, onChange, adapter, disabled: dis
         if (current.adapter?.preview) await current.adapter.preview(current.fileList, location);
         else if (!current.onPreview) throw new Error('未接入图片预览能力');
       }
-    } catch (reason) { if (ticket === generation.current) latest.current.onFail?.(errorOf(reason, '预览失败')); }
+    } catch (reason) { if (ticket === generation.current) latest.current.onFail?.(errorOf(reason, localeText('upload.previewFailed'))); }
     finally { if (ticket === generation.current) previewing.current = false; }
   };
   const dimension = Number.isFinite(size) ? Math.max(0, size) : 88;
   return <view className={`ui-upload ${disabled ? 'ui-upload-disabled' : ''} ${className}`} style={{ '--ui-upload-size': `${dimension}px`, ...style } as CSSProperties}>
     {fileList.map((file, index) => <view className={`ui-upload-preview ${previewClassName}`} key={`${file.path ?? file.url}-${index}`}>
-      <view className="ui-upload-picture" bindtap={() => { 'background only'; void preview(file, index); }} accessibility-element accessibility-traits="button" accessibility-label={`${reupload && !readonly ? '重新上传' : '预览'}${file.name ?? `图片${index + 1}`}`}>
+      <view className="ui-upload-picture" bindtap={() => { 'background only'; void preview(file, index); }} accessibility-element accessibility-traits="button" accessibility-label={`${reupload && !readonly ? localeText('upload.retry') : localeText('upload.preview')}${file.name ?? localeText('upload.imageName', { index: index + 1 })}`}>
         <image src={file.url} mode={imageMode} className="ui-upload-image" />
       </view>
       <view className="ui-upload-border" />
-      {file.status === 'loading' || file.status === 'fail' ? <view className="ui-upload-status">{file.status === 'loading' ? <Loading type={loadingType} size={loadingSize} color={loadingColor} /> : <Icon name="close-circle" color="#fff" size={24} />}<text>{file.message ?? (file.status === 'fail' ? '上传失败' : file.percent === undefined ? '上传中' : `${Math.round(file.percent)}%`)}</text></view> : null}
-      {deletable && !readonly && !disabled && file.status !== 'loading' ? <view className="ui-upload-remove" catchtap={() => { 'background only'; void remove(file, index); }} accessibility-element accessibility-traits="button" accessibility-label={`删除${file.name ?? `图片${index + 1}`}`}><Icon name="close" size={16} color="#fff" /></view> : null}
+      {file.status === 'loading' || file.status === 'fail' ? <view className="ui-upload-status">{file.status === 'loading' ? <Loading type={loadingType} size={loadingSize} color={loadingColor} /> : <Icon name="close-circle" color="#fff" size={24} />}<text>{file.message ?? (file.status === 'fail' ? localeText('upload.uploadFailed') : file.percent === undefined ? localeText('upload.loading') : `${Math.round(file.percent)}%`)}</text></view> : null}
+      {deletable && !readonly && !disabled && file.status !== 'loading' ? <view className="ui-upload-remove" catchtap={() => { 'background only'; void remove(file, index); }} accessibility-element accessibility-traits="button" accessibility-label={localeText('upload.deleteLabel', { name: file.name ?? localeText('upload.imageName', { index: index + 1 }) })}><Icon name="close" size={16} color="#fff" /></view> : null}
       {renderPreviewCover?.({ file, index })}
     </view>)}
-    {!readonly && withinLimit ? <view className={`${children ? 'ui-upload-evoke-slot' : 'ui-upload-add'} ${evokeClassName}`} bindtap={() => { 'background only'; void choose(); }} accessibility-element accessibility-traits="button" accessibility-label={disabled ? '上传已禁用' : uploading ? `上传中${Math.round(progress)}%` : uploadText ?? '上传图片'}>
+    {!readonly && withinLimit ? <view className={`${children ? 'ui-upload-evoke-slot' : 'ui-upload-add'} ${evokeClassName}`} bindtap={() => { 'background only'; void choose(); }} accessibility-element accessibility-traits="button" accessibility-label={disabled ? localeText('upload.disabled') : uploading ? localeText('upload.progress', { value: Math.round(progress) }) : uploadText ?? localeText('upload.add')}>
       {uploading ? <><Loading type={loadingType} size={loadingSize} /><text>{Math.round(progress)}%</text></> : children ?? <><Icon name={uploadIcon} size={32} color={disabled ? 'var(--cso-ui-disabled-text)' : 'var(--cso-ui-text-muted)'} />{uploadText ? <text>{uploadText}</text> : null}{limit > 0 && showLimitNum ? <text className="ui-upload-count">（{fileList.length}/{limit}）</text> : null}</>}
     </view> : null}
   </view>;

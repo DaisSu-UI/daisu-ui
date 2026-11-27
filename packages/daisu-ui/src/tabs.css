@@ -1,4 +1,4 @@
-.ui-tabs-standard{position:relative;display:flex;flex-direction:column;width:100%;background-color:var(--cso-ui-surface);}
+.ui-tabs-standard{z-index:0;position:relative;display:flex;flex-direction:column;width:100%;background-color:var(--cso-ui-surface);}
 .ui-tabs-standard-header{position:relative;display:flex;flex-direction:column;width:100%;height:44px;background-color:var(--cso-ui-surface);z-index:2;}
 .ui-tabs-sticky{position:sticky;z-index:3;}
 .ui-tabs-nav-scroll{height:44px;width:auto;}

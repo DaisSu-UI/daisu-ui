@@ -69,6 +69,16 @@ export function calendarState(date: number, value: CalendarValue, props: Calenda
   return key === calendarPeriod(Date.now(), type, props.firstDayOfWeek) ? 'current' : '';
 }
 export type CalendarPanel = { date: number; offset: number; height: number; rows: number; title: boolean };
+/** Explicit rows avoid native wrap sizing and percentage rounding in scroll content. */
+export function calendarPanelDates(panel: CalendarPanel, type: CalendarType = 'date', firstDayOfWeek = 0): (number | null)[][] {
+  const date = new Date(panel.date), year = date.getFullYear(), month = date.getMonth(), monthly = calendarMonth(type);
+  const columns = monthly ? 4 : 7, count = monthly ? 12 : new Date(year, month + 1, 0).getDate();
+  const empty = monthly ? 0 : (date.getDay() - firstDayOfWeek + 7) % 7;
+  return Array.from({ length: panel.rows }, (_, row) => Array.from({ length: columns }, (_, column) => {
+    const index = row * columns + column - empty;
+    return index < 0 || index >= count ? null : new Date(year, monthly ? index : month, monthly ? 1 : index + 1).getTime();
+  }));
+}
 export function calendarPanels(props: CalendarModelProps, switching: boolean, display: number): CalendarPanel[] {
   const { min, max } = calendarBounds(props), monthly = calendarMonth(props.type), first = new Date(min), last = new Date(max), count = monthly ? last.getFullYear() - first.getFullYear() + 1 : (last.getFullYear() - first.getFullYear()) * 12 + last.getMonth() - first.getMonth() + 1;
   if (!switching && count > 240) throw new Error('Calendar flat mode is limited to 240 panels; use switchMode="month" or "year-month"');

@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import type { CSSProperties, NodesRef } from '@lynx-js/types';
@@ -47,11 +48,13 @@ function measure(node: NodesRef | null): Promise<BubbleRect | undefined> {
 
 /** Shared geometry and interaction for the public Tooltip and Popover. */
 export const AnchoredBubble = forwardRef<BubbleRef, AnchoredBubbleProps>(function AnchoredBubble({ show, defaultShow = false, onShowChange, onChange, onOpen, onClose, placement = 'bottom', offset = 0, visibleArrow = true, disabled = false, showClose = false, duration = 200, zIndex = 20, rootPortal = false, className = '', style, arrowClassName = '', popClassName = '', popStyle, children, contentNode, kind }, ref) {
+  const { t: localeText } = useLocale();
+
   const [inner, setInner] = useState(defaultShow);
   const requested = (show ?? inner) && !disabled;
   const [position, setPosition] = useState<BubblePosition>();
   const [targetRect, setTargetRect] = useState<BubbleRect>();
-  const [contentWidth, setContentWidth] = useState(0);
+  const [contentSize, setContentSize] = useState({ width: 0, height: 0 });
   const repositionTimer = useRef<ReturnType<typeof setTimeout>>();
   const target = useRef<NodesRef | null>(null);
   const content = useRef<NodesRef | null>(null);
@@ -71,7 +74,7 @@ export const AnchoredBubble = forwardRef<BubbleRef, AnchoredBubbleProps>(functio
       'background only';
       if (token !== sequence.current || !live.current.requested || !trigger || !box || !bounds || box.width <= 0 || box.height <= 0 || bounds.width <= 0 || bounds.height <= 0) return;
       const state = live.current;
-      setTargetRect(trigger); setContentWidth(box.width);
+      setTargetRect(trigger); setContentSize(previous => previous.width === box.width && previous.height === box.height ? previous : { width: box.width, height: box.height });
       setPosition(bubblePosition(trigger, box, bounds, state.placement, state.offset, state.visibleArrow));
     });
   };
@@ -80,6 +83,7 @@ export const AnchoredBubble = forwardRef<BubbleRef, AnchoredBubbleProps>(functio
     'background only';
     if (!live.current.requested) return;
     setPosition(undefined);
+    setContentSize(previous => previous.width || previous.height ? { width: 0, height: 0 } : previous);
     clearTimeout(repositionTimer.current);
     repositionTimer.current = setTimeout(() => calculateRef.current(), 32);
   };
@@ -87,6 +91,7 @@ export const AnchoredBubble = forwardRef<BubbleRef, AnchoredBubbleProps>(functio
   useEffect(() => {
     if (requested) {
       setPosition(undefined);
+      setContentSize(previous => previous.width || previous.height ? { width: 0, height: 0 } : previous);
       const timer = setTimeout(() => calculateRef.current(), 40);
       if (!previous.current) callbacks.current.onOpen?.();
       previous.current = true;
@@ -106,8 +111,8 @@ export const AnchoredBubble = forwardRef<BubbleRef, AnchoredBubbleProps>(functio
     onShowChange?.(next); onChange?.({ show: next });
   };
   useImperativeHandle(ref, () => ({ open: () => { 'background only'; request(true); }, close: () => { 'background only'; request(false); }, updatePosition }), [show, requested, disabled, onShowChange, onChange]);
-  const layer = <view className={`ui-bubble-anchor ui-${kind}-anchor`} style={{ position: rootPortal || !position ? 'fixed' : 'absolute', width: position ? `${contentWidth}px` : undefined, left: `${position ? position.x - (rootPortal ? 0 : targetRect?.left ?? 0) : 0}px`, top: `${position ? position.y - (rootPortal ? 0 : targetRect?.top ?? 0) : 0}px`, zIndex, visibility: position ? 'visible' : 'hidden' }}>
-    <Transition show={requested} name="fade" duration={duration} destroy={false} interactiveDuringLeave className={`ui-bubble-panel ui-${kind}-panel ${popClassName}`} style={popStyle}>
+  const layer = <view className={`ui-bubble-anchor ui-${kind}-anchor`} flatten={false} style={{ position: rootPortal || !position ? 'fixed' : 'absolute', width: position ? `${contentSize.width}px` : 'auto', height: position ? `${contentSize.height}px` : 'auto', left: `${position ? position.x - (rootPortal ? 0 : targetRect?.left ?? 0) : 0}px`, top: `${position ? position.y - (rootPortal ? 0 : targetRect?.top ?? 0) : 0}px`, zIndex, visibility: position ? 'visible' : 'hidden' }}>
+    <Transition show={requested} name="fade" duration={duration} destroy={false} interactiveDuringLeave className={`ui-bubble-panel ui-${kind}-panel ${popClassName}`} style={{ width: contentSize.width > 0 ? `${contentSize.width}px` : 'auto', height: contentSize.height > 0 ? `${contentSize.height}px` : 'auto', ...popStyle }}>
       <view ref={content} className={`ui-bubble-body ${showClose ? 'ui-bubble-closable' : ''}`} flatten={false} catchtap={() => {}} bindlayoutchange={event => {
         'background only';
         const { width, height } = event.detail;
@@ -116,7 +121,7 @@ export const AnchoredBubble = forwardRef<BubbleRef, AnchoredBubbleProps>(functio
       }}>
         {visibleArrow && position ? <view className={`ui-bubble-arrow ui-bubble-arrow-${position.side} ${arrowClassName}`} style={position.side === 'top' || position.side === 'bottom' ? { left: `${position.arrow - 8}px` } : { top: `${position.arrow - 8}px` }} /> : null}
         {contentNode}
-        {showClose ? <view className="ui-bubble-close" catchtap={() => request(false)} accessibility-element accessibility-traits="button" accessibility-label="关闭提示"><Icon name="close" size={12} /></view> : null}
+        {showClose ? <view className="ui-bubble-close" catchtap={() => request(false)} accessibility-element accessibility-traits="button" accessibility-label={localeText('close.bubble')}><Icon name="close" size={12} /></view> : null}
       </view>
     </Transition>
   </view>;

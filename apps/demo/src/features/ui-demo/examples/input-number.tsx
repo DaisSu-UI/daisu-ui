@@ -1,13 +1,16 @@
+import { useDemoLocale } from '../demoLocale.js';
 import { useEffect, useRef, useState } from '@lynx-js/react';
 import { InputNumber, Toast, useToast } from '@daisu-ui/ui';
 import type { InputNumberProps, InputNumberValue } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
 const themes = ['default', 'primary', 'outline-split', 'outline'] as const;
 function Sample({ defaultValue = 1, ...props }: InputNumberProps) {
+  const { copy: demoCopy } = useDemoLocale();
   const [value, setValue] = useState<InputNumberValue>(defaultValue);
-  return <InputNumber {...props} value={value} onChange={event => { 'background only'; setValue(event.value); }} />;
+  return <InputNumber {...demoCopy(props)} value={value} onChange={event => { 'background only'; setValue(event.value); }} />;
 }
 export function InputNumberExample() {
+  const { text: demoText, copy: demoCopy } = useDemoLocale();
   const [bounds, setBounds] = useState<InputNumberValue>(4), [quantity, setQuantity] = useState<InputNumberValue>(1), [temporary, setTemporary] = useState<InputNumberValue>(1);
   const [immediate, setImmediate] = useState<InputNumberValue>(1), [deferred, setDeferred] = useState<InputNumberValue>(1);
   const [corrected, setCorrected] = useState<InputNumberValue>(1), [unchanged, setUnchanged] = useState<InputNumberValue>(1);
@@ -31,19 +34,19 @@ export function InputNumberExample() {
       <ExampleBlock title="限制最大最小值"><Sample min={3} max={10} /></ExampleBlock>
       <ExampleBlock title="设置小数精度"><Sample defaultValue="1.2" precision={1} step={0.1} /></ExampleBlock>
       <ExampleBlock title="输入严格为步数的倍数"><Sample stepStrictly step={2} /></ExampleBlock>
-      <ExampleBlock title="严格步进+边界限制"><text className="demo-input-number-label">值：{bounds}（步进值 2，最小值 3，最大值 15）</text><InputNumber value={bounds} onChange={event => { 'background only'; setBounds(event.value); }} stepStrictly step={2} min={3} max={15} /><view className="demo-input-number-tip demo-input-number-bounds-tip"><text>输入 1 → 4（≥3 的最小 2 的倍数）</text><text>输入 5 → 6（最接近的 2 的倍数）</text><text>输入 17 → 14（≤15 的最大 2 的倍数）</text></view></ExampleBlock>
+      <ExampleBlock title="严格步进+边界限制"><text className="demo-input-number-label">{demoText("值：")}{demoText(bounds)}{demoText("（步进值 2，最小值 3，最大值 15）")}</text><InputNumber value={bounds} onChange={event => { 'background only'; setBounds(event.value); }} stepStrictly step={2} min={3} max={15} /><view className="demo-input-number-tip demo-input-number-bounds-tip"><text>{demoText("输入 1 → 4（≥3 的最小 2 的倍数）")}</text><text>{demoText("输入 5 → 6（最接近的 2 的倍数）")}</text><text>{demoText("输入 17 → 14（≤15 的最大 2 的倍数）")}</text></view></ExampleBlock>
       <ExampleBlock title="修改输入框宽度"><Sample defaultValue={2} inputWidth="70px" /></ExampleBlock>
     </DemoGroup>
     <DemoGroup title="特殊用法">
-      <ExampleBlock title="无输入框"><view className="demo-input-number-row"><text>数量：{quantity}</text><InputNumber withoutInput value={quantity} onChange={event => { 'background only'; setQuantity(event.value); }} /></view></ExampleBlock>
-      <ExampleBlock title="允许空值，并设置 placeholder"><Sample defaultValue="" allowNull placeholder="不限" inputWidth="70px" /></ExampleBlock>
-      <ExampleBlock title="非允许空值但可临时删除"><text className="demo-input-number-label">值：{temporary}（失焦时会自动修正为最小值）</text><InputNumber value={temporary} onChange={event => { 'background only'; setTemporary(event.value); }} /><text className="demo-input-number-tip demo-input-number-empty-tip">尝试删除输入框中的所有内容，然后点击其他地方失焦</text></ExampleBlock>
+      <ExampleBlock title="无输入框"><view className="demo-input-number-row"><text>{demoText("数量：")}{demoText(quantity)}</text><InputNumber withoutInput value={quantity} onChange={event => { 'background only'; setQuantity(event.value); }} /></view></ExampleBlock>
+      <ExampleBlock title="允许空值，并设置 placeholder"><Sample defaultValue="" allowNull placeholder={demoText("不限")} inputWidth="70px" /></ExampleBlock>
+      <ExampleBlock title="非允许空值但可临时删除"><text className="demo-input-number-label">{demoText("值：")}{demoText(temporary)}{demoText("（失焦时会自动修正为最小值）")}</text><InputNumber value={temporary} onChange={event => { 'background only'; setTemporary(event.value); }} /><text className="demo-input-number-tip demo-input-number-empty-tip">{demoText("尝试删除输入框中的所有内容，然后点击其他地方失焦")}</text></ExampleBlock>
       <ExampleBlock title="键盘弹起不上推页面"><Sample avoidKeyboard={false} /></ExampleBlock>
-      <ExampleBlock title="非立即更新模式"><text className="demo-input-number-label">立即更新模式（默认）- 值：{immediate}</text><InputNumber value={immediate} onChange={event => { 'background only'; setImmediate(event.value); }} /><text className="demo-input-number-label demo-input-number-label-next">非立即更新模式 - 值：{deferred}</text><InputNumber immediateChange={false} value={deferred} onChange={event => { 'background only'; setDeferred(event.value); }} /></ExampleBlock>
-      <ExampleBlock title="初始化时自动修正"><text className="demo-input-number-label">自动修正初始值 - 值：{corrected}</text><InputNumber min={3} max={15} step={2} stepStrictly value={corrected} onChange={event => { 'background only'; setCorrected(event.value); }} /><text className="demo-input-number-label demo-input-number-label-next">不修正初始值 - 值：{unchanged}</text><InputNumber updateOnInit={false} min={3} max={15} step={2} stepStrictly value={unchanged} onChange={event => { 'background only'; setUnchanged(event.value); }} /><text className="demo-input-number-tip demo-input-number-init-tip">上方组件会在初始化时自动将值 1 修正为 4（≥3 的最小 2 的倍数）</text></ExampleBlock>
+      <ExampleBlock title="非立即更新模式"><text className="demo-input-number-label">{demoText("立即更新模式（默认）- 值：")}{demoText(immediate)}</text><InputNumber value={immediate} onChange={event => { 'background only'; setImmediate(event.value); }} /><text className="demo-input-number-label demo-input-number-label-next">{demoText("非立即更新模式 - 值：")}{demoText(deferred)}</text><InputNumber immediateChange={false} value={deferred} onChange={event => { 'background only'; setDeferred(event.value); }} /></ExampleBlock>
+      <ExampleBlock title="初始化时自动修正"><text className="demo-input-number-label">{demoText("自动修正初始值 - 值：")}{demoText(corrected)}</text><InputNumber min={3} max={15} step={2} stepStrictly value={corrected} onChange={event => { 'background only'; setCorrected(event.value); }} /><text className="demo-input-number-label demo-input-number-label-next">{demoText("不修正初始值 - 值：")}{demoText(unchanged)}</text><InputNumber updateOnInit={false} min={3} max={15} step={2} stepStrictly value={unchanged} onChange={event => { 'background only'; setUnchanged(event.value); }} /><text className="demo-input-number-tip demo-input-number-init-tip">{demoText("上方组件会在初始化时自动将值 1 修正为 4（≥3 的最小 2 的倍数）")}</text></ExampleBlock>
       <ExampleBlock title="异步变更"><Sample beforeChange={beforeChange} /></ExampleBlock>
       <ExampleBlock title="长按加减"><Sample longPress /></ExampleBlock>
     </DemoGroup>
-    <Toast {...toast.props} rootPortal />
+    <Toast {...demoCopy(toast.props)} rootPortal />
   </view>;
 }

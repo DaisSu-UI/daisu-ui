@@ -1,3 +1,5 @@
+import { localeScope } from './locale.js';
+import { useLocale } from './useLocale.js';
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import type { CSSProperties, NodesRef, StandardProps } from '@lynx-js/types';
@@ -71,6 +73,8 @@ function RichImage(props:ImgProps){
 
 /** HTML is parsed into native views, nested text, images and the public Table. */
 export const RichText=forwardRef<RichTextRef,RichTextProps>(function RichText({content='',mediaMode='none',onMediaPlay,onMediaPause,onMediaEnded,onMediaTimeUpdate,baseUrl,allowDataImage=false,enableAnchor=false,selectable=false,tagStyle,classStyles,previewImage=true,loadingImage,errorImage,children,onLoad,onError,onLinkClick,onImageClick,onImageLoad,onScrollToAnchor,className='',style},ref){
+  const { locale, t: localeText } = useLocale();
+
   const parsed=useMemo(()=>{try{return{...parseRichText(content,{enableMedia:mediaMode==='browser',baseUrl,allowDataImage,enableAnchor,tagStyle,classStyles}),error:undefined};}catch(reason){const error=reason as Error&{code?:string};return{nodes:[],images:[],media:[] as RichTextNode[],headings:[],text:'',error:{source:'parse' as const,message:error.message,code:error.code}};}},[content,mediaMode,baseUrl,allowDataImage,enableAnchor,JSON.stringify(tagStyle),JSON.stringify(classStyles)]);
   const fallback=typeof children==='string'||typeof children==='number'?<text className="ui-rich-text-line">{children}</text>:children;
   const [previewMounted,setPreviewMounted]=useState(false);
@@ -104,7 +108,7 @@ export const RichText=forwardRef<RichTextRef,RichTextProps>(function RichText({c
   const image=(node:RichTextNode,parent:CSSProperties,href?:string)=>{
     const src=node.src||'',index=node.imageIndex!,fixedHeight=node.style.height??node.attrs.height;
     const dimension=(v:string|number|undefined)=>v===undefined?undefined:/^\d+(\.\d+)?$/.test(String(v))?Number(v):v;
-    return <view key={node.key} {...anchor(node)}><RichImage key={src} src={src} width={dimension(node.style.width??node.attrs.width)??'100%'} height={dimension(fixedHeight)} mode={fixedHeight?'aspectFill':'widthFix'} alt={node.attrs.alt} loading={<Placeholder key={loadingImage} src={loadingImage} text="加载中"/>} error={<Placeholder key={errorImage} src={errorImage} text={node.attrs.alt||'×'}/>} style={{minHeight:fixedHeight?undefined:'48px',...parent,...node.style}} onError={()=>{'background only';if(current.current===parsed&&alive.current)callbacks.current.onError?.({source:'image',src,index});}} onLoad={event=>{'background only';if(current.current===parsed&&alive.current)callbacks.current.onImageLoad?.({src,index,width:event.detail.width,height:event.detail.height});}} onClick={()=>{
+    return <view key={node.key} {...anchor(node)}><RichImage key={src} src={src} width={dimension(node.style.width??node.attrs.width)??'100%'} height={dimension(fixedHeight)} mode={fixedHeight?'aspectFill':'widthFix'} alt={node.attrs.alt} loading={<Placeholder key={loadingImage} src={loadingImage} text={localeText('common.loading')}/>} error={<Placeholder key={errorImage} src={errorImage} text={node.attrs.alt||'×'}/>} style={{minHeight:fixedHeight?undefined:'48px',...parent,...node.style}} onError={()=>{'background only';if(current.current===parsed&&alive.current)callbacks.current.onError?.({source:'image',src,index});}} onLoad={event=>{'background only';if(current.current===parsed&&alive.current)callbacks.current.onImageLoad?.({src,index,width:event.detail.width,height:event.detail.height});}} onClick={()=>{
       'background only';if(!alive.current||current.current!==parsed)return;
       if(href){callbacks.current.onLinkClick?.({href});return;}
       callbacks.current.onImageClick?.({src,index});
@@ -136,7 +140,7 @@ export const RichText=forwardRef<RichTextRef,RichTextProps>(function RichText({c
       else if(event.kind==='ended')callbacks.current.onMediaEnded?.(value);
       else if(event.kind==='timeupdate')callbacks.current.onMediaTimeUpdate?.({...value,currentTime:event.currentTime,duration:event.duration});
     };
-    return <view key={node.key} {...anchor(node)} className="ui-rich-text-media"><daisu-rich-media className={`ui-rich-text-${config.type}`} style={{...node.style,width:node.style.width??node.attrs.width??'100%',height:node.style.height??(node.attrs.height?`${parseFloat(node.attrs.height)}px`:undefined)}} media-config={JSON.stringify(config)} ref={ref=>{'background only';if(ref)mediaRefs.current.set(node,{node:ref,failed:failedMedia.current.has(node)});else mediaRefs.current.delete(node);}} bindmediaevent={receive}/></view>;
+    return <view key={node.key} {...anchor(node)} className="ui-rich-text-media"><daisu-rich-media className={`ui-rich-text-${config.type}`} style={{...node.style,width:node.style.width??node.attrs.width??'100%',height:node.style.height??(node.attrs.height?`${parseFloat(node.attrs.height)}px`:undefined)}} media-config={JSON.stringify({ ...config, locale: localeScope(locale, 'media.') })} ref={ref=>{'background only';if(ref)mediaRefs.current.set(node,{node:ref,failed:failedMedia.current.has(node)});else mediaRefs.current.delete(node);}} bindmediaevent={receive}/></view>;
   };
   const block=(node:RichTextNode,parent:CSSProperties,href?:string,adjustment:CSSProperties={}):ReactNode=>{
     if(node.media)return media(node);

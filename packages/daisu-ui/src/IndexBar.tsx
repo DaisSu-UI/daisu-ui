@@ -1,3 +1,5 @@
+import { useDragEvents } from './useDragEvents.js';
+import { useLocale } from './useLocale.js';
 import { useEffect, useRef, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import { List } from '@lynx-js/lynx-ui';
@@ -39,6 +41,8 @@ type RailRect = { top: number; height: number };
 type Drag = { sequence: number; pressed: boolean; ended: boolean; moved: boolean; point: number; rect?: RailRect };
 
 function IndexBarContent<T>({ listId, sections, renderItem, renderAnchor, getItemKey, sticky = false, itemHeight = 44, anchorHeight = 36, onChange, className = '', style }: IndexBarProps<T>) {
+  const { t: localeText } = useLocale();
+
   const list = useRef<ListRef>(null);
   const rail = useRef<NodesRef>(null);
   const [selected, setSelected] = useState(sections.length ? 0 : -1);
@@ -122,8 +126,9 @@ function IndexBarContent<T>({ listId, sections, renderItem, renderAnchor, getIte
     setTouching(false);
   };
 
+  const gestures = useDragEvents({ onStart: event => { 'background only'; start(event); return drag.current.pressed; }, onMove: move, onEnd: end, onCancel: cancel });
   return <view className={`ui-index-bar ${className}`} style={style}>
-    <List ref={list} listId={listId} listType="single" spanCount={1} scrollOrientation="vertical" scrollEventThrottle={16} className="ui-index-bar-list" onScroll={event => {
+    <List style={{ zIndex: 0 }} ref={list} listId={listId} listType="single" spanCount={1} scrollOrientation="vertical" scrollEventThrottle={16} className="ui-index-bar-list" onScroll={event => {
       'background only';
       const section = indexBarSectionAtOffset(layout, event.detail.scrollTop);
       if (!drag.current.pressed) activate(section, false);
@@ -140,8 +145,8 @@ function IndexBarContent<T>({ listId, sections, renderItem, renderAnchor, getIte
     </List>
     {sticky && sections[selected] ? <view className="ui-index-bar-sticky" user-interaction-enabled={false} style={{ transform: `translateY(${stickyOffset}px)` }}><IndexAnchor index={sections[selected]!.index} style={{ height: `${anchorSize}px` }}>{renderAnchor?.({ section: sections[selected]!, sectionIndex: selected })}</IndexAnchor></view> : null}
     {touching && sections[selected] ? <view className="ui-index-bar-current" user-interaction-enabled={false}><text>{sections[selected]!.index}</text></view> : null}
-    {sections.length ? <view ref={rail} className="ui-index-bar-rail" consume-slide-event={[[-180, 180]]} catchtouchstart={event => { 'background only'; start(event); }} catchtouchmove={move} catchtouchend={end} catchtouchcancel={cancel} catchmousedown={event => { 'background only'; start(event, true); }} global-bindmousemove={move} global-bindmouseup={end} global-bindtouchmove={move} global-bindtouchend={end} global-bindtouchcancel={cancel}>
-      {sections.map((section, index) => <view key={anchorKey(section.index)} className={`ui-index-bar-index ${selected === index ? 'ui-index-bar-index-active' : ''}`} accessibility-element accessibility-traits="button" accessibility-label={`索引 ${section.index}${selected === index ? '，已选中' : ''}`} bindtap={() => { 'background only'; if (Date.now() - lastEnd.current >= 400) activate(index, true); }}><text>{section.index}</text></view>)}
+    {sections.length ? <view ref={rail} className="ui-index-bar-rail" consume-slide-event={[[-180, 180]]} {...gestures}>
+      {sections.map((section, index) => <view key={anchorKey(section.index)} className={`ui-index-bar-index ${selected === index ? 'ui-index-bar-index-active' : ''}`} accessibility-element accessibility-traits="button" accessibility-label={`索引 ${section.index}${selected === index ? localeText('common.selected') : ''}`} bindtap={() => { 'background only'; if (Date.now() - lastEnd.current >= 400) activate(index, true); }}><text>{section.index}</text></view>)}
     </view> : null}
   </view>;
 }

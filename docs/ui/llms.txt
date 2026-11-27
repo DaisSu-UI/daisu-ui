@@ -1,6 +1,6 @@
 # Daisu UI
 
-> 面向 ReactLynx 的组件库。当前文档对应 @daisu-ui/ui@0.1.0-beta.8；API、示例与平台范围以同版本公开类型和文档为准。
+> 面向 ReactLynx 的组件库。当前文档对应 @daisu-ui/ui@0.1.0-beta.9；API、示例与平台范围以同版本公开类型和文档为准。
 
 ## 阅读顺序
 
@@ -13,6 +13,7 @@
 - [常见问题](./faq.md)
 - [设计](./design.md)
 - [定制主题](./theme-customization.md)
+- [国际化](./internationalization.md)
 - [深色模式](./dark-mode.md)
 - [样式覆盖](./style-overrides.md)
 - [AI 总览](./ai-guide.md)
@@ -43,7 +44,7 @@
 - [Fab 悬浮按钮](./fab.md): Fab
 - [Transition 动画](./transition.md): Transition
 - [Resize 监听元素尺寸变化](./resize.md): Resize
-- [ConfigProvider 全局配置](./config-provider.md): ConfigProvider
+- [ConfigProvider 全局配置](./config-provider.md): ConfigProvider、useLocale
 - [Root Portal 根节点传送门](./root-portal.md): RootPortal、RootPortalHost
 - [Router 路由](./router.md): RouterView、RouterProvider、RouteScreen、useRouter、useRoute、useRouterSnapshot、useRouteMatch、createRouter、connectRouterHistory、parseRoutePath、routePath、parseRouterHistoryState、shouldFinishBack
 - [Navbar 导航栏](./navbar.md): Navbar、NavbarCapsule

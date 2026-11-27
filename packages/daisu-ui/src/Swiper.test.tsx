@@ -1,11 +1,11 @@
 import { afterEach, beforeEach, expect, rstest, test } from '@rstest/core';
 import { cleanup, fireEvent, render, waitFor } from '@lynx-js/react/testing-library';
 import type { ReactNode } from '@lynx-js/react';
-import { createRef, forwardRef, useImperativeHandle, useState } from '@lynx-js/react' with { rstest: 'importActual' };
+import { createRef, forwardRef, runOnMainThread, useImperativeHandle, useState } from '@lynx-js/react' with { rstest: 'importActual' };
 import type { SwiperProps as NativeProps } from '@lynx-js/lynx-ui';
 const { native }=rstest.hoisted(()=>({native:{swipeTo:rstest.fn(),swipeNext:rstest.fn(),swipePrev:rstest.fn(),props:null as NativeProps<string|Record<string,unknown>>|null}}));
-// Native gesture/animation execution is checked in H5. Unit tests exercise our
-// controlled state, event provenance and timer lifetime across the public API.
+// Tests cover controlled state and main-thread style writes. Native compositor
+// timing and device gestures still require an actual host.
 rstest.mock('@lynx-js/lynx-ui',()=>({Swiper:forwardRef((props:NativeProps<string|Record<string,unknown>>,ref)=>{native.props=props;useImperativeHandle(ref,()=>native);return <view>{props.data?.map((item,index)=><view key={index}>{props.children?.({item,index,realIndex:index})}</view>)}</view>; }),SwiperItem:({children}:{children?:ReactNode})=><view>{children}</view>}));
 import { Swiper } from './Swiper.js';
 import type { SwiperRef } from './Swiper.js';
@@ -50,8 +50,39 @@ test('Swiper stops non-loop autoplay at the final item and recovers when a list 
 });
 
 test('Swiper card height follows physical progress, including loop duplicates and the initial frame',()=>{
- expect(swiperCardFrame(0,192,168)).toEqual({height:'192px',transform:'translateY(0px)'});expect(swiperCardFrame(1,192,168).height).toBe('168px');expect(swiperCardFrame(-1,192,168).height).toBe('168px');expect(swiperCardFrame(.5,192,168).height).toBe('180px');expect(swiperCardFrame(2,192,168).height).toBe('192px');
- const screen=render(<Swiper list={list} neighborHeight={168} previousMargin={24} nextMargin={24} displayMultipleItems={2} autoplay={false}/>);resize(screen.container.querySelector('.ui-swiper')!);expect(native.props!.customAnimationFirstScreen!(.5,1).height).toBe('180px');expect(native.props!.containerWidth).toBe(342);
+ expect(swiperCardFrame(0,192,168).height).toBe('192px');expect(swiperCardFrame(1,192,168).height).toBe('168px');expect(swiperCardFrame(-1,192,168).height).toBe('168px');expect(swiperCardFrame(.5,192,168).height).toBe('180px');expect(swiperCardFrame(2,192,168).height).toBe('192px');
+ const screen=render(<Swiper list={list} neighborHeight={168} previousMargin={24} nextMargin={24} displayMultipleItems={2} autoplay={false}/>);resize(screen.container.querySelector('.ui-swiper')!);expect(native.props!.customAnimationFirstScreen!(.5,1)).toEqual({});expect(native.props!.containerWidth).toBe(342);
+ expect(Array.from(screen.container.querySelectorAll('.ui-swiper-card-viewport')).map(node=>(node as HTMLElement).style.height)).toEqual(['192px','168px','192px']);
+ expect(Array.from(screen.container.querySelectorAll('.ui-swiper-card-image')).every(node=>(node as HTMLElement).style.height==='192px')).toBe(true);
  // Descendant layout events must never resize the native viewport or reset paging.
  fireEvent(screen.container.querySelector('.ui-swiper')!,Object.assign(new Event('bindEvent:layoutchange'),{eventType:'bindEvent',eventName:'layoutchange',detail:{width:780,height:192}}));expect(native.props!.containerWidth).toBe(342);expect(native.props!.itemWidth).toBe(171);
+});
+
+test('Swiper preserves the old visible-height curve without scaling image content', () => {
+  for (const progress of [-2, -1, -.5, 0, .5, 1, 2, 5]) {
+    const frame = swiperCardFrame(progress, 192, 168);
+    expect(frame.transform).toBeUndefined();
+    const oldVisibleHeight = 192 - 24 * Math.max(0, 1 - Math.abs(Math.abs(progress) - 1));
+    expect(frame.height).toBe(`${oldVisibleHeight}px`);
+  }
+});
+
+ test('Swiper does not rebuild its native slides when a gesture starts', () => {
+ const renderItem=rstest.fn(({index}: {index:number})=><text>{index}</text>);
+ const screen=render(<Swiper list={list} autoplay={false} neighborHeight={168} displayMultipleItems={2} renderItem={renderItem}/>);resize(screen.container.querySelector('.ui-swiper')!);
+ const before=renderItem.mock.calls.length;start();expect(renderItem.mock.calls.length).toBe(before);
+ expect(screen.container.querySelector('.ui-swiper-item')?.getAttribute('style')).toContain('height: 192px');
+ });
+
+test('main-thread card frames animate the crop while leaving images and slide geometry unchanged', async () => {
+ const screen=render(<Swiper list={list} autoplay={false} neighborHeight={168}/>,{enableMainThread:true,enableBackgroundThread:true});
+ resize(screen.container.querySelector('.ui-swiper')!);
+ await waitFor(()=>expect(screen.container.querySelectorAll('.ui-swiper-card-viewport')).toHaveLength(3));
+ const animate=native.props!['main-thread:customAnimation']!;
+ for(const progress of [0,.5,1,1.5,2,-1]){
+  await runOnMainThread(animate)(progress,0);
+  expect((screen.container.querySelector('.ui-swiper-card-viewport') as HTMLElement).style.height).toBe(swiperCardFrame(progress,192,168).height);
+  expect((screen.container.querySelector('.ui-swiper-card-image') as HTMLElement).style.height).toBe('192px');
+  expect((screen.container.querySelector('.ui-swiper-item') as HTMLElement).style.height).toBe('192px');
+ }
 });

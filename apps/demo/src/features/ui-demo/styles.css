@@ -129,6 +129,17 @@
 .ui-demo-category-components .ui-cell-title { font-size: 16px; line-height: 24px; }
 .ui-demo-category-components .ui-cell:active { background-color: var(--cso-ui-canvas); }
 .ui-demo-home-bottom-space { height: 0; }
+.demo-about-content { padding: 16px 12px 24px; }
+.demo-about-content .ui-cell-description, .demo-about-content .ui-cell-value { white-space: normal; }
+.demo-about-hero { padding: 20px 12px 28px; display: flex; flex-direction: column; align-items: center; }
+.demo-about-logo { width: 72px; height: 72px; border-radius: 20px; background-color: var(--cso-ui-primary-soft); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+.demo-about-logo .ui-demo-line-icon { width: 40px; height: 40px; }
+.demo-about-name { font-size: 24px; line-height: 32px; font-weight: 600; color: var(--cso-ui-text); }
+.demo-about-version { margin-top: 6px; font-size: 13px; line-height: 20px; color: var(--cso-ui-text-auxiliary); }
+.demo-about-description { margin-top: 12px; font-size: 14px; line-height: 22px; white-space: normal; color: var(--cso-ui-text-muted); text-align: center; }
+.demo-about-languages { margin-top: 12px; }
+.demo-about-url { margin-top: 12px; font-size: 14px; line-height: 22px; white-space: normal; color: var(--cso-ui-primary); }
+.demo-about-footer { padding: 28px 12px 8px; font-size: 12px; line-height: 20px; white-space: normal; color: var(--cso-ui-text-auxiliary); text-align: center; }
 .ui-demo-line-icon { width: 20px; height: 20px; display: flex; flex-shrink: 0; }
 .ui-demo-line-icon svg { width: 20px; height: 20px; flex-shrink: 0; }
 .ui-demo-icon-dark, .ui-demo-icon-selected { display: none; }
@@ -278,7 +289,6 @@
 .demo-backtop-spacer { height: 2000px; }
 .demo-backtop-custom-icon { font-size: 14px; color: var(--cso-ui-text); }
 
-.demo-divider-page { --cso-ui-divider-line-width: 3px; }
 .demo-divider-page .demo-example-content { padding-top: 16px; padding-bottom: 16px; }
 .demo-divider-page .ui-divider { margin: 0; }
 .demo-divider-page .ui-divider + .ui-divider { margin-top: 16px; }
@@ -319,7 +329,7 @@
 .demo-loading-page .ui-loading-label { font-family: Arial, sans-serif; }
 .demo-loading-page .demo-group:last-child { padding-bottom: 12px; }
 
-.demo-loadmore-page { --cso-ui-divider-line-width: 3px; flex: 1; height: 0; min-height: 0; }
+.demo-loadmore-page { flex: 1; height: 0; min-height: 0; }
 .demo-loadmore-list { width: 100%; height: 100%; }
 .demo-loadmore-item { position: relative; display: flex; flex-direction: row; padding: 10px 16px; height: 98px; background-color: var(--cso-ui-surface); }
 .demo-loadmore-image { width: 120px; height: 78px; margin-right: 16px; flex-shrink: 0; }
@@ -532,7 +542,7 @@
 .demo-form-complex .ui-switch:not(.ui-switch-active),.demo-form-config .ui-switch:not(.ui-switch-active),.demo-form-page .ui-switch:not(.ui-switch-active){background-color:var(--cso-ui-line);}
 
 .demo-choice-group:not(.ui-choice-group-horizontal):not(.ui-choice-group-buttons)>.ui-choice:not(:last-child){margin-bottom:16px;}
-.demo-choice-divider{--cso-ui-divider-line-width:3px;margin:12px 0;height:3px;}
+.demo-choice-divider{margin:12px 0;}
 .demo-choice-group.ui-choice-group-buttons{padding-bottom:4px;}
 .demo-checkbox-page .ui-cell-wrapper{min-height:22.375px;}
 .demo-checkbox-page .ui-cell-right{align-self:flex-end;}
@@ -713,15 +723,15 @@
 
 .demo-steps-action{display:flex;flex-direction:row;justify-content:center;margin-top:15px;}
 
-.demo-sticky-page{width:100vw;min-height:250vh;}
-.demo-sticky-container{padding:16px 0;display:flex;flex-direction:column;align-items:flex-start;}
-.demo-sticky-box{height:120px;width:100vw;background:var(--cso-ui-surface);}
+.demo-sticky-page{width:100%;min-height:250vh;}
+.demo-sticky-container{width:100%;padding:16px 0;display:flex;flex-direction:column;align-items:flex-start;}
+.demo-sticky-box{height:120px;width:100%;background:var(--cso-ui-surface);}
 
-.demo-sticky-dynamic{flex-direction:row;}
+.demo-sticky-dynamic{flex-direction:row;align-items:flex-start;gap:12px;}
 
 .demo-sticky-page .demo-group:nth-child(1) .demo-example:first-child .demo-example-content,.demo-sticky-page .demo-group:nth-child(2) .demo-example:first-child .demo-example-content{padding-bottom:4px;}
 
-.demo-sticky-page{overflow-x:hidden;}
+
 
 .demo-curtain-buttons{display:flex;flex-direction:row;flex-wrap:wrap;}
 .demo-curtain-buttons .ui-button{margin:0 10px 10px 0;}

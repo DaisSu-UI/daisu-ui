@@ -1,3 +1,4 @@
+import { useLocale } from '../useLocale.js';
 import { createContext, useContext, useEffect, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import { RouterContextProvider as TanStackProvider } from '@tanstack/react-router';
@@ -48,6 +49,7 @@ export function useRouteMatch(): AnyRouteMatch {
 
 /** Render the leaf component registered on the TanStack route tree. */
 export function RouteScreen() {
+  const { t: localeText } = useLocale();
   const router = useRouter();
   const leaf = useRouteMatch();
   const matches = useContext(MatchContext);
@@ -57,12 +59,12 @@ export function RouteScreen() {
   const ErrorComponent = route.options.errorComponent;
   if (match.status === 'pending') {
     const Pending = route.options.pendingComponent;
-    return Pending ? <Pending /> : <view className="page"><text>正在加载页面…</text></view>;
+    return Pending ? <Pending /> : <view className="page"><text>{localeText('router.loading')}</text></view>;
   }
-  if (match.status === 'notFound') return <view className="page"><text>页面不存在</text></view>;
+  if (match.status === 'notFound') return <view className="page"><text>{localeText('router.notFound')}</text></view>;
   if (match.status === 'error') {
     if (ErrorComponent) return <ErrorComponent error={match.error} reset={() => { 'background only'; void router.load(); }} info={{ componentStack: '' }} />;
-    return <view className="page"><text bindtap={() => { 'background only'; void router.load(); }}>页面加载失败，点击重试</text></view>;
+    return <view className="page"><text bindtap={() => { 'background only'; void router.load(); }}>{localeText('router.failed')}</text></view>;
   }
   return Component ? <Component /> : null;
 }

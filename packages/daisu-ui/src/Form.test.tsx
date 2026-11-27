@@ -9,7 +9,7 @@ import type { NodesRef } from '@lynx-js/types';
 import { Input } from './Input.js';
 import { Switch } from './Switch.js';
 beforeEach(() => { const original = lynx.createSelectorQuery.bind(lynx); rstest.spyOn(lynx,'createSelectorQuery').mockImplementation(() => { const q = original(), select = q.select.bind(q); q.select = selector => selector.startsWith('[react-ref-') ? { invoke: () => ({ exec() {} }) } as unknown as NodesRef : select(selector); return q; }); });
-afterEach(() => { rstest.restoreAllMocks(); });
+afterEach(() => { rstest.restoreAllMocks(); rstest.useRealTimers(); });
 const schema: FormSchema = { isRequired: () => true, validate: m => [{ path: ['user','name'], message: '姓名必填' }, { path: 'hidden', message: '隐藏项' }].filter(x => x.path === 'hidden' || !(m.user as { name: string }).name) };
 test('Form validates mounted fields, maps nested issues to a parent path, and resets messages without resetting data', async () => {
   const ref = createRef<FormRef>();
@@ -85,4 +85,61 @@ test('FormItem displays a numeric zero and automatic validator failures are obse
     screen.rerender(draw(1));
     await waitFor(() => expect(failure).toBe(expected));
   } finally { cleanup(); }
+});
+
+test('Form combines every inline message with one toast for the first failing field, and clears it after valid results', async () => {
+  const ref=createRef<FormRef>();
+  const engine:FormSchema={validate:model=>['a','b'].filter(key=>!model[key]).map(key=>({path:key,message:`${key}必填`}))};
+  const draw=(a:string,b:string)=><Form ref={ref} model={{a,b}} schema={engine} errorType={['message','toast']}><FormItem prop="a" title="必填项"/><FormItem prop="b" title="另一项"/></Form>;
+  try {
+    const screen=render(draw('',''));
+    expect((await ref.current!.validate()).errors).toEqual([{prop:'a',message:'a必填'},{prop:'b',message:'b必填'}]);
+    await waitFor(()=>expect(screen.container.querySelectorAll('.ui-form-item-error')).toHaveLength(2));
+    expect(screen.container.querySelectorAll('.ui-toast')).toHaveLength(1);
+    expect(screen.container.querySelector('.ui-toast-msg')?.textContent).toBe('a必填');
+    await ref.current!.validate('b');
+    await waitFor(()=>expect(screen.container.querySelector('.ui-toast-msg')?.textContent).toBe('b必填'));
+    expect(screen.container.querySelectorAll('.ui-toast')).toHaveLength(1);
+    expect(screen.container.querySelectorAll('.ui-form-item-error')).toHaveLength(2);
+    ref.current!.reset('a');
+    await waitFor(()=>expect(screen.container.querySelector('.ui-toast')).toBeNull());
+    expect(screen.container.querySelectorAll('.ui-form-item-error')).toHaveLength(1);
+    screen.rerender(draw('ok','ok'));
+    expect((await ref.current!.validate()).valid).toBe(true);
+    await waitFor(()=>expect(screen.container.querySelectorAll('.ui-form-item-error')).toHaveLength(0));
+    expect(screen.container.querySelector('.ui-toast')).toBeNull();
+  }finally{cleanup();}
+});
+
+test('Form validation toasts replace the current error without queuing others and respect display-mode changes', async()=>{
+  rstest.useFakeTimers();
+  const ref=createRef<FormRef>(),engine:FormSchema={validate:()=>[{path:'a',message:'第一条错误'},{path:'b',message:'第二条错误'}]};
+  const draw=(errorType:import('./Form.js').FormProps['errorType'])=><Form ref={ref} model={{a:'',b:''}} schema={engine} errorType={errorType}><FormItem prop="a"/><FormItem prop="b"/></Form>;
+  try{
+    const screen=render(draw(['message','toast','toast']));
+    await ref.current!.validate();
+    await rstest.advanceTimersByTimeAsync(250);
+    expect(screen.container.querySelectorAll('.ui-toast')).toHaveLength(1);
+    expect(screen.container.querySelector('.ui-toast-msg')?.textContent).toBe('第一条错误');
+    await ref.current!.validate('b');
+    await rstest.advanceTimersByTimeAsync(1999);
+    expect(screen.container.querySelectorAll('.ui-toast')).toHaveLength(1);
+    expect(screen.container.querySelector('.ui-toast-msg')?.textContent).toBe('第二条错误');
+    await rstest.advanceTimersByTimeAsync(1);
+    expect(screen.container.querySelector('.ui-toast')).toBeNull();
+    await rstest.advanceTimersByTimeAsync(5000);
+    expect(screen.container.querySelector('.ui-toast')).toBeNull();
+    await ref.current!.validate();
+    screen.rerender(draw('message'));
+    expect(screen.container.querySelector('.ui-toast')).toBeNull();
+    expect(screen.container.querySelectorAll('.ui-form-item-error')).toHaveLength(2);
+    screen.rerender(draw('toast'));
+    await ref.current!.validate();
+    expect(screen.container.querySelectorAll('.ui-toast')).toHaveLength(1);
+    expect(screen.container.querySelectorAll('.ui-form-item-error')).toHaveLength(0);
+    screen.rerender(draw('none'));
+    expect(screen.container.querySelector('.ui-toast')).toBeNull();
+    expect((await ref.current!.validate()).errors).toHaveLength(2);
+    screen.unmount();await rstest.runOnlyPendingTimersAsync();expect(rstest.getTimerCount()).toBe(0);
+  }finally{cleanup();}
 });

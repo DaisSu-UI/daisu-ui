@@ -29,8 +29,8 @@
 .form-field-divider{position:absolute;left:0;right:0;bottom:0;height:.5px;background-color:rgba(126,134,142,.16);}
 .form-field-row-last .form-field-divider{display:none;}
 .form-field-disabled .form-field-label,.form-field-disabled .form-field-body{opacity:.45;}
-.form-field-label{width:132px;flex-shrink:0;display:flex;flex-direction:row;align-items:center;font-size:13px;line-height:19px;color:var(--cso-ui-text-regular);}
-.form-field-required{margin-right:3px;color:#e5484d;}
+.form-field-label{position:relative;width:132px;padding-left:12px;box-sizing:border-box;flex-shrink:0;display:flex;flex-direction:row;align-items:center;font-size:13px;line-height:19px;color:var(--cso-ui-text-regular);}
+.form-field-required{position:absolute;left:0;top:0;margin:0;font-size:13px;line-height:19px;color:#e5484d;}
 .form-field-row-error .form-field-label{color:#e5484d;}
 .form-field-body{flex:1;min-width:0;padding:2px 0;display:flex;flex-direction:column;}
 .form-field-control{width:100%;min-width:0;height:42px;display:flex;flex-direction:row;align-items:center;}

@@ -250,3 +250,7 @@ export { useVideoPreview } from './useVideoPreview.js';
 export type { VideoPreviewOptions,VideoPreviewProps,VideoPreviewRef,PreviewVideo } from './VideoPreview.js';
 export { ImgCropper } from './ImgCropper.js';
 export type { ImgCropperProps,ImgCropperRef,ImgCropperResult } from './ImgCropper.js';
+
+export { zhCN, enUS, zhTW } from './locale.js';
+export { useLocale } from './useLocale.js';
+export type { UiLocale, UiLocaleName, UiLocaleInput, UiLocaleOverride, UiLocaleMessages, UiMessageKey, UiLocaleParams, UiTranslate } from './locale.js';

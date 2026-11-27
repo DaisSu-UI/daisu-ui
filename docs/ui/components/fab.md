@@ -25,7 +25,7 @@ import { Fab } from '@daisu-ui/ui';
 
 ### 展开操作
 
-设置 `expandable` 支持展开操作项，子节点作为展开后的内容。
+设置 `expandable` 支持展开操作项，子节点作为展开后的内容。菜单在触发器和操作内容均完成测量后显示，按明确的宽高和坐标定位；内容尺寸变化时重新定位，自定义触发器与四种展开方向均保持对齐。
 
 ```tsx
 import { Button } from '@daisu-ui/ui';

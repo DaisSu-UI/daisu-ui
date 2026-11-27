@@ -1,3 +1,4 @@
+import { useDemoLocale } from '../demoLocale.js';
 import { useEffect, useRef, useState } from '@lynx-js/react';
 import { Button, Popup, Icon, Loading, RootPortal, Tabbar } from '@daisu-ui/ui';
 import type { TabbarItem, TabbarValue } from '@daisu-ui/ui';
@@ -14,6 +15,7 @@ const fixed: readonly TabbarItem[] = five.map((item, index) => ({ ...item, isDot
 const colors: readonly TabbarItem[] = [...badges.slice(0, 3), { title: '最大值', icon: 'image', value: 200 }, { title: '客服', icon: 'message', value: 10 }];
 
 export function TabbarExample({ theme }: { theme: 'light' | 'dark' }) {
+  const { text: demoText, copy: demoCopy } = useDemoLocale();
   const [values, setValues] = useState<TabbarValue[]>([1, 'home', 2, 2, 1, 1, 1, 1, 1, 1]);
   const [notice, setNotice] = useState('');
   const [loading, setLoading] = useState(false);
@@ -27,7 +29,7 @@ export function TabbarExample({ theme }: { theme: 'light' | 'dark' }) {
   const danger = theme === 'dark' ? '#ff7875' : '#fa4350';
   const placeholder = theme === 'dark' ? '#696b70' : '#bfbfbf';
   const raised: readonly TabbarItem[] = [fixed[0]!, fixed[1]!, { children: <view className="demo-tabbar-raised"><Icon name="plus" size={32} color={activeColor} /></view> }, fixed[3]!, fixed[4]!];
-  const render = (index: number, items: readonly TabbarItem[], props: Partial<Parameters<typeof Tabbar>[0]> = {}) => <Tabbar items={items} value={values[index]} onChange={event => { 'background only'; change(index, event.value); }} activeColor={activeColor} {...props} />;
+  const render = (index: number, items: readonly TabbarItem[], props: Partial<Parameters<typeof Tabbar>[0]> = {}) => <Tabbar items={demoCopy(items)} value={values[index]} onChange={event => { 'background only'; change(index, event.value); }} activeColor={activeColor} {...demoCopy(props)} />;
   return <view className="demo-tabbar-page">
     <DemoGroup title="组件类型">
       <ExampleBlock title="基础用法" noPadding>{render(0, basic, { bordered: true })}</ExampleBlock>
@@ -46,9 +48,9 @@ export function TabbarExample({ theme }: { theme: 'light' | 'dark' }) {
       <ExampleBlock title="固定底部" noPadding>{render(9, fixed, { fixed: true, bordered: true, placeholder: true, safeAreaInsetBottom: true })}</ExampleBlock>
     </DemoGroup>
     <RootPortal>
-      {notice ? <view className="ui-demo-page demo-cell-toast" user-interaction-enabled={false}><text>{notice}</text></view> : null}
+      {notice ? <view className="ui-demo-page demo-cell-toast" user-interaction-enabled={false}><text>{demoText(notice)}</text></view> : null}
       {loading ? <view className="ui-demo-page demo-tabbar-loading" user-interaction-enabled={false}><Loading /><text>Loading...</text></view> : null}
-      <Popup show={dialog} onChange={setDialog} title="发布动态" closable round className="ui-demo-page demo-tabbar-dialog"><image className="demo-tabbar-dialog-image" src={panda} mode="aspectFill" /><view className="demo-tabbar-dialog-body"><text className="demo-root-portal-modal-text">选择你要发布的内容类型</text><Button label="确定" round block onTap={() => { 'background only'; setDialog(false); }} /></view></Popup>
+      <Popup show={dialog} onChange={setDialog} title={demoText("发布动态")} closable round className="ui-demo-page demo-tabbar-dialog"><image className="demo-tabbar-dialog-image" src={panda} mode="aspectFill" /><view className="demo-tabbar-dialog-body"><text className="demo-root-portal-modal-text">{demoText("选择你要发布的内容类型")}</text><Button label={demoText("确定")} round block onTap={() => { 'background only'; setDialog(false); }} /></view></Popup>
     </RootPortal>
   </view>;
 }

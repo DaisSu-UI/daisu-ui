@@ -10,20 +10,23 @@ import { copyFormValue, equalFormValue, formPath, formValue, includesFormPath } 
 import type { FormError, FormModel, FormSchema, FormValidateResult, FormValidateTrigger } from './formModel.js';
 export type FormRef = { validate: (prop?: string | readonly string[]) => Promise<FormValidateResult>; reset: (prop?: string | readonly string[]) => void };
 type FormLayout = { disabled?: boolean; border?: boolean; center?: boolean; size?: 'medium' | 'large'; titleWidth?: number | string; layout?: 'horizontal' | 'vertical'; valueAlign?: 'left' | 'center' | 'right'; asteriskPosition?: 'start' | 'end'; hideAsterisk?: boolean; ellipsis?: boolean };
-export type FormProps = FormLayout & { model: FormModel; schema?: FormSchema; validateTrigger?: FormValidateTrigger | readonly FormValidateTrigger[]; resetOnChange?: boolean; errorType?: 'message' | 'toast' | 'none'; onValidate?: (result: FormValidateResult) => void; onValidateError?: (error: unknown) => void; className?: string; style?: CSSProperties; children?: ReactNode };
+export type FormProps = FormLayout & { model: FormModel; schema?: FormSchema; validateTrigger?: FormValidateTrigger | readonly FormValidateTrigger[]; resetOnChange?: boolean; errorType?: 'message' | 'toast' | 'none' | readonly ('message' | 'toast')[]; onValidate?: (result: FormValidateResult) => void; onValidateError?: (error: unknown) => void; className?: string; style?: CSSProperties; children?: ReactNode };
 type Field = { trigger?: FormProps['validateTrigger']; token: object };
 type Context = { props: FormProps; errors: FormError[]; register: (path: string, field: Field) => () => void; blur: (path: string) => void };
 const FormContext = createContext<Context | undefined>(undefined);
 const triggers = (value: FormProps['validateTrigger'], target: FormValidateTrigger) => Array.isArray(value) ? value.includes(target) : value === target;
+const displays = (value: FormProps['errorType'], target: 'message' | 'toast') => Array.isArray(value) ? value.includes(target) : (value ?? 'message') === target;
 export const Form = forwardRef<FormRef, FormProps>(function Form(props, ref) {
   const { model, schema, resetOnChange = true, errorType = 'message', className = '', style, children } = props;
   const [errors, setErrors] = useState<FormError[]>([]);
   const fields = useRef(new Map<string, Field>()), tickets = useRef(new Map<string, number>()), mounted = useRef(true), previous = useRef(copyFormValue(model)), latest = useRef(props);
   latest.current = props;
   const toast = useToast();
+  const showMessages = displays(errorType, 'message'), showToast = displays(errorType, 'toast');
+  useEffect(() => { if (!showToast) toast.close(); }, [showToast, toast.close]);
   const invalidate = (path: string) => { 'background only'; tickets.current.set(path, (tickets.current.get(path) ?? 0) + 1); };
   const selected = (prop?: string | readonly string[]) => { 'background only'; const paths = prop === undefined ? undefined : (typeof prop === 'string' ? [prop] : prop).map(formPath); return [...fields.current.keys()].filter(key => !paths || paths.some(path => includesFormPath(path, key) || includesFormPath(key, path))); };
-  const reset: FormRef['reset'] = prop => { 'background only'; const keys = selected(prop); keys.forEach(invalidate); setErrors(old => old.filter(error => !keys.includes(error.prop))); };
+  const reset: FormRef['reset'] = prop => { 'background only'; const keys = selected(prop); keys.forEach(invalidate); setErrors(old => old.filter(error => !keys.includes(error.prop))); toast.close(); };
   const validate: FormRef['validate'] = async prop => {
     'background only';
     const keys = selected(prop), snapshot = copyFormValue(latest.current.model), currentSchema = latest.current.schema;
@@ -34,7 +37,9 @@ export const Form = forwardRef<FormRef, FormProps>(function Form(props, ref) {
     if (stale) return { valid: false, errors: [], outOfDate: true };
     const next = keys.flatMap(key => { const issue = issues.find(issue => { const path = formPath(issue.path); return !path || includesFormPath(key, path); }); return issue ? [{ prop: key, message: issue.message }] : []; });
     setErrors(old => [...old.filter(error => !keys.includes(error.prop)), ...next]);
-    if (latest.current.errorType === 'toast' && next.length) toast.show(next[0]!.message);
+    // One validation result owns one toast; all inline field messages remain available.
+    if (displays(latest.current.errorType, 'toast') && next.length) toast.show(next[0]!.message);
+    else toast.close();
     const result = { valid: next.length === 0, errors: next }; latest.current.onValidate?.(result); return result;
   };
   const validateRef = useRef(validate); validateRef.current = validate;
@@ -51,7 +56,7 @@ export const Form = forwardRef<FormRef, FormProps>(function Form(props, ref) {
   });
   const register = (path: string, field: Field) => { 'background only'; if (fields.current.has(path)) throw new Error(`Duplicate FormItem prop: ${path}`); fields.current.set(path, field); return () => { 'background only'; if (fields.current.get(path)?.token !== field.token) return; fields.current.delete(path); invalidate(path); setErrors(old => fields.current.has(path) ? old : old.filter(error => error.prop !== path)); }; };
   const blur = (path: string) => { 'background only'; if (triggers(fields.current.get(path)?.trigger ?? latest.current.validateTrigger ?? 'submit', 'blur')) void validateRef.current(path).catch(error => latest.current.onValidateError?.(error)); };
-  return <FormContext.Provider value={{ props, errors: errorType === 'message' ? errors : [], register, blur }}><view className={`ui-form ${className}`} style={style}>{children}<Toast {...toast.props} /></view></FormContext.Provider>;
+  return <FormContext.Provider value={{ props, errors: showMessages ? errors : [], register, blur }}><view className={`ui-form ${className}`} style={style}>{children}{showToast && toast.props.show ? <Toast {...toast.props} /> : null}</view></FormContext.Provider>;
 });
 export type FormItemProps = FormLayout & { prop?: string; title?: ReactNode; value?: string | number; placeholder?: string; prefixIcon?: string; iconSize?: number; icon?: ReactNode; label?: string; required?: boolean; validateTrigger?: FormProps['validateTrigger']; clickable?: boolean; isLink?: boolean; onTap?: () => void; className?: string; style?: CSSProperties; children?: ReactNode };
 export function FormItem({ prop, title, value, placeholder, prefixIcon, iconSize = 16, icon, label, required, validateTrigger, clickable, isLink, onTap, className = '', style, children, ...layout }: FormItemProps) {

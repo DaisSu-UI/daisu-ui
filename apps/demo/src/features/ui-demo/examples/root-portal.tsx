@@ -1,3 +1,4 @@
+import { useDemoLocale } from '../demoLocale.js';
 import { useState } from '@lynx-js/react';
 import { Button, Cell, Popup, SelectPicker, RootPortal } from '@daisu-ui/ui';
 import { DemoGroup, ExampleBlock } from './shared.js';
@@ -7,14 +8,15 @@ const categories = ['男装', '奢侈品', '女装', '鞋靴', '内衣配饰', '
 const categoryOptions = categories.map(label => ({ value: label, label }));
 
 export function RootPortalExample() {
+  const { text: demoText, copy: demoCopy } = useDemoLocale();
   const [basic, setBasic] = useState(false);
   const [picker, setPicker] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
   return <view className="demo-root-portal-page">
-    <DemoGroup title="组件类型"><ExampleBlock title="基本用法"><view className="demo-root-portal-trigger"><Button label="显示基本弹窗" onTap={() => { 'background only'; setBasic(true); }} /></view></ExampleBlock></DemoGroup>
-    <DemoGroup title="特殊样式"><ExampleBlock title="与弹层组件配合使用" noPadding><Cell title="选择商品分类" value={selected.join('、')} arrow onTap={() => { 'background only'; setPicker(true); }} /></ExampleBlock></DemoGroup>
-    <DemoGroup title="使用注意"><ExampleBlock title="适用场景"><view className="demo-root-portal-tips"><text>适用于弹窗、弹出层等 fixed 定位容易失效的场景。</text><text>建议只在需要脱离父层级或避免被 transform、overflow 影响时开启。</text></view></ExampleBlock></DemoGroup>
-    <RootPortal><Popup show={basic} onChange={setBasic} title="基本弹窗" closable round className="ui-demo-page" style={{ width: '280px' }}><view className="demo-popup-content"><text className="demo-root-portal-modal-text">这是一个使用 root-portal 的基本弹窗示例。</text><Button label="关闭" onTap={() => { 'background only'; setBasic(false); }} /></view></Popup></RootPortal>
-    <SelectPicker rootPortal visible={picker} onVisibleChange={setPicker} value={selected} title="选择商品分类" columns={categoryOptions} className="ui-demo-page" onConfirm={({ value }) => { 'background only'; setSelected(Array.isArray(value) ? value.map(String) : [String(value)]); }} />
+    <DemoGroup title="组件类型"><ExampleBlock title="基本用法"><view className="demo-root-portal-trigger"><Button label={demoText("显示基本弹窗")} onTap={() => { 'background only'; setBasic(true); }} /></view></ExampleBlock></DemoGroup>
+    <DemoGroup title="特殊样式"><ExampleBlock title="与弹层组件配合使用" noPadding><Cell title={demoText("选择商品分类")} value={selected.join('、')} arrow onTap={() => { 'background only'; setPicker(true); }} /></ExampleBlock></DemoGroup>
+    <DemoGroup title="使用注意"><ExampleBlock title="适用场景"><view className="demo-root-portal-tips"><text>{demoText("适用于弹窗、弹出层等 fixed 定位容易失效的场景。")}</text><text>{demoText("建议只在需要脱离父层级或避免被 transform、overflow 影响时开启。")}</text></view></ExampleBlock></DemoGroup>
+    <RootPortal><Popup show={basic} onChange={setBasic} title={demoText("基本弹窗")} closable round className="ui-demo-page" style={{ width: '280px' }}><view className="demo-popup-content"><text className="demo-root-portal-modal-text">{demoText("这是一个使用 root-portal 的基本弹窗示例。")}</text><Button label={demoText("关闭")} onTap={() => { 'background only'; setBasic(false); }} /></view></Popup></RootPortal>
+    <SelectPicker rootPortal visible={picker} onVisibleChange={setPicker} value={selected} title={demoText("选择商品分类")} columns={demoCopy(categoryOptions)} className="ui-demo-page" onConfirm={({ value }) => { 'background only'; setSelected(Array.isArray(value) ? value.map(String) : [String(value)]); }} />
   </view>;
 }

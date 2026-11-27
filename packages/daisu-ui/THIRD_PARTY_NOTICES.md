@@ -17,3 +17,7 @@ TanStack Router、abort-controller、fflate、htmlparser2、JsBarcode、qrcode-g
 ## Demo assets
 
 The local illustration, video and melody assets are generated from the original SVG scenes and synthesis commands in this repository. They are maintained with the Demo and are not included in the published component package.
+
+## ReactLynx Use
+
+本库直接依赖 `@lynx-js/react-use` 0.2.2，使用 `useTouchEmulation` 统一触摸与鼠标事件。项目：https://github.com/lynx-community/reactlynx-use ，许可证为 Apache-2.0，其声明由对应依赖包提供。

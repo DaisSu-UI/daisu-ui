@@ -65,10 +65,10 @@ const [visible, setVisible] = useState(false);
 | value | 当前值；传入后由调用方更新 | `CascaderValue` | — |
 | options | 选项配置 | `readonly CascaderInput[]` | — |
 | visible | 是否显示选择面板 | `boolean` | — |
-| title | 标题内容 | `string` | `'请选择'` |
-| placeholder | 占位内容或输入提示 | `string` | `'请选择'` |
+| title | 标题内容 | `string` | — |
+| placeholder | 占位内容或输入提示 | `string` | — |
 | checkStrictly | 是否允许选择中间层级 | `boolean` | `false` |
-| confirmText | 确认文案 | `string` | `'确认'` |
+| confirmText | 确认文案 | `string` | — |
 | lazyLoad | 异步加载下一级数据 | `CascaderLazyLoad` | — |
 | beforeConfirm | 确认前校验 | `(value: CascaderScalar, options: CascaderOption[]) => boolean \| Promise<boolean>` | — |
 | disabled | 是否禁用 | `boolean` | — |

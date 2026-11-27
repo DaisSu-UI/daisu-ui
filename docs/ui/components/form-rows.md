@@ -127,7 +127,7 @@ const [city, setCity] = useState('');
 | error | 调用方提供的错误文案，非空时显示 | `string` | — |
 | value | 受控字符串值 | `string` | 必填 |
 | maxlength | 最大输入长度，-1 表示不限制 | `number` | — |
-| placeholder | 占位内容或输入提示 | `string` | `'请输入'` |
+| placeholder | 占位内容或输入提示 | `string` | — |
 | clearable | 是否显示清空入口 | `boolean` | `true` |
 
 ### FormNumberRow
@@ -181,7 +181,7 @@ const [city, setCity] = useState('');
 | value | 受控字符串值 | `string` | 必填 |
 | maxlength | 最大输入长度，-1 表示不限制 | `number` | `2000` |
 | maxlines | 原生多行输入的最大行数 | `number` | `6` |
-| placeholder | 占位内容或输入提示 | `string` | `'请输入'` |
+| placeholder | 占位内容或输入提示 | `string` | — |
 | showWordLimit | 是否显示字数统计 | `boolean` | `true` |
 
 ## Events 事件

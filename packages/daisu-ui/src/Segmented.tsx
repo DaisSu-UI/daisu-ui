@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import { segmentedIndex, segmentedOptions } from './segmentedModel.js';
@@ -16,6 +17,8 @@ export type SegmentedProps<T = unknown> = {
 };
 
 export function Segmented<T = unknown>({ options = [], value, defaultValue, onChange, onClick, disabled = false, theme = 'card', renderLabel, className = '' }: SegmentedProps<T>) {
+  const { t: localeText } = useLocale();
+
   const [inner, setInner] = useState(defaultValue);
   const items = segmentedOptions(options);
   const selected = segmentedIndex(items, value ?? inner);
@@ -35,7 +38,7 @@ export function Segmented<T = unknown>({ options = [], value, defaultValue, onCh
       {items.map((option, index) => {
         const active = selected === index;
         const blocked = disabled || !!option.disabled;
-        return <view key={`${typeof option.value}:${option.value}`} className={`ui-segmented-item ${active ? 'ui-segmented-item-active' : ''} ${blocked ? 'ui-segmented-item-disabled' : ''} ${index === 0 ? 'ui-segmented-item-first' : ''} ${index === items.length - 1 ? 'ui-segmented-item-last' : ''}`} style={{ width: `${100 / items.length}%` }} accessibility-element accessibility-traits="button" accessibility-label={`${option.value}${active ? '，已选中' : ''}${blocked ? '，禁用' : ''}`} bindtap={() => { 'background only'; choose(index); }}>
+        return <view key={`${typeof option.value}:${option.value}`} className={`ui-segmented-item ${active ? 'ui-segmented-item-active' : ''} ${blocked ? 'ui-segmented-item-disabled' : ''} ${index === 0 ? 'ui-segmented-item-first' : ''} ${index === items.length - 1 ? 'ui-segmented-item-last' : ''}`} style={{ width: `${100 / items.length}%` }} accessibility-element accessibility-traits="button" accessibility-label={`${option.value}${active ? localeText('common.selected') : ''}${blocked ? localeText('common.disabled') : ''}`} bindtap={() => { 'background only'; choose(index); }}>
           {renderLabel ? renderLabel({ option, active, disabled: blocked }) : <text className="ui-segmented-label">{option.value}</text>}
           {theme === 'outline' ? <view className="ui-segmented-outline-border" user-interaction-enabled={false} /> : null}
         </view>;

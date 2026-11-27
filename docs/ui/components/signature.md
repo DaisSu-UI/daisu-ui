@@ -49,10 +49,10 @@ import { Signature } from '@daisu-ui/ui';
 | minWidth | 笔锋宽度范围及速度阈值(px/ms)，非法值使用有效默认值 | `number` | `2` |
 | maxWidth | 笔锋宽度范围及速度阈值(px/ms)，非法值使用有效默认值 | `number` | `6` |
 | minSpeed | 笔锋宽度范围及速度阈值(px/ms)，非法值使用有效默认值 | `number` | `1.5` |
-| clearText | 默认按钮文案 | `string` | `'清空'` |
-| confirmText | 默认按钮文案 | `string` | `'确认'` |
-| revokeText | 历史按钮文案 | `string` | `'撤销'` |
-| restoreText | 历史按钮文案 | `string` | `'恢复'` |
+| clearText | 默认按钮文案 | `string` | — |
+| confirmText | 默认按钮文案 | `string` | — |
+| revokeText | 历史按钮文案 | `string` | — |
+| restoreText | 历史按钮文案 | `string` | — |
 | className | 根节点类名、样式 | `string` | `''` |
 | style | 根节点类名、样式 | `CSSProperties` | — |
 

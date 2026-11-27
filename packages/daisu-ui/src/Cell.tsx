@@ -33,7 +33,7 @@ export function Cell({ title, description, value, placeholder, icon, clickable =
     'background only';
     if (interactive) onTap?.();
   };
-  return <view className={`ui-cell ui-cell-${size} ${interactive ? 'ui-cell-clickable' : ''} ${press.pressed ? 'ui-cell-pressed' : ''} ${last ? 'ui-cell-last' : ''} ${center ? 'ui-cell-center' : ''} ${vertical ? 'ui-cell-vertical' : ''} ${className}`} bindtap={handleTap} bindtouchstart={press.start} bindtouchend={press.end} bindtouchcancel={press.end} bindtouchmove={press.end} bindmousedown={press.start} global-bindmouseup={press.pressed ? press.end : undefined}>
+  return <view className={`ui-cell ui-cell-${size} ${interactive ? 'ui-cell-clickable' : ''} ${press.pressed ? 'ui-cell-pressed' : ''} ${last ? 'ui-cell-last' : ''} ${center ? 'ui-cell-center' : ''} ${vertical ? 'ui-cell-vertical' : ''} ${className}`} bindtap={handleTap} {...press.events} bindtouchmove={press.end}>
     <view className={`ui-cell-border ${border === true ? 'ui-cell-border-enabled' : border === undefined ? 'ui-cell-border-inherit' : ''}`} />
     <view className="ui-cell-wrapper">
       <view className="ui-cell-main" style={titleWidth ? { width: titleWidth, flex: 'none' } : undefined}>

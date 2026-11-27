@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { useEffect, useRef, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import type { CSSProperties, NodesRef } from '@lynx-js/types';
@@ -5,6 +6,7 @@ import { Popup } from './Popup.js';
 import { Button } from './Button.js';
 import type { ButtonProps } from './Button.js';
 import { Icon } from './Icon.js';
+import { nativeTextMaxLength } from './nativeTextInput.js';
 
 export type DialogResult = { action: 'confirm' | 'cancel' | 'modal' | 'close' | 'action'; value: string; index?: number };
 export type DialogAction = Omit<ButtonProps, 'onTap' | 'label'> & { text: string; action?: 'confirm' | 'cancel' | 'action' };
@@ -51,13 +53,19 @@ export type DialogProps = DialogOptions & {
 
 function PromptInput({ value, onInput, ...props }: DialogInputProps & { value: string; onInput: (value: string) => void }) {
   const node = useRef<NodesRef | null>(null);
+  const initial = useRef(value);
   const native = useRef(value);
   useEffect(() => { if (native.current !== value) node.current?.invoke({ method: 'setValue', params: { value }, success: () => { native.current = value; } }).exec(); }, [value]);
-  const common = { ref: node, className: 'ui-dialog-input', 'default-value': value, placeholder: props.placeholder, maxlength: props.maxlength ?? -1, 'set-soft-input-mode': 'nothing' as const, 'avoid-keyboard': false, bindinput: (event: { detail: { value: string } }) => { 'background only'; native.current = event.detail.value; onInput(event.detail.value); } };
+  const common = { ref: node, className: 'ui-dialog-input', 'default-value': initial.current, placeholder: props.placeholder, maxlength: nativeTextMaxLength(props.maxlength), 'set-soft-input-mode': 'nothing' as const, 'avoid-keyboard': true, bindinput: (event: { detail: { value: string } }) => { 'background only'; native.current = event.detail.value; onInput(event.detail.value); } };
   return props.multiline ? <textarea {...common} maxlines={props.maxlines ?? 4} /> : <input {...common} type={props.type ?? 'text'} confirm-type="done" />;
 }
 
-export function Dialog({ requestKey = 0, show = false, onChange, onResult, title, msg, type = 'alert', theme = 'button', actionLayout = 'horizontal', actions, showCancelButton = type !== 'alert', confirmButtonText = '确定', cancelButtonText = '取消', confirmButtonProps, cancelButtonProps, inputValue = '', inputProps, inputPattern, inputValidate, inputError = '输入内容不正确', showErr = false, beforeConfirm, icon, iconColor, headerImage, closeOnClickModal = false, showClose = false, zIndex = 99, lazyRender = true, rootPortal = false, className = '', style, children, header, renderActions }: DialogProps) {
+export function Dialog({ requestKey = 0, show = false, onChange, onResult, title, msg, type = 'alert', theme = 'button', actionLayout = 'horizontal', actions, showCancelButton = type !== 'alert', confirmButtonText, cancelButtonText, confirmButtonProps, cancelButtonProps, inputValue = '', inputProps, inputPattern, inputValidate, inputError, showErr = false, beforeConfirm, icon, iconColor, headerImage, closeOnClickModal = false, showClose = false, zIndex = 99, lazyRender = true, rootPortal = false, className = '', style, children, header, renderActions }: DialogProps) {
+  const { t: localeText } = useLocale();
+  confirmButtonText ??= localeText('common.confirm');
+  cancelButtonText ??= localeText('common.cancel');
+  inputError ??= localeText('dialog.invalid');
+
   const [value, setValue] = useState(String(inputValue));
   const [error, setError] = useState(showErr ? inputError : '');
   const [pending, setPending] = useState(false);
@@ -93,7 +101,7 @@ export function Dialog({ requestKey = 0, show = false, onChange, onResult, title
       busy.current = false; setPending(false);
       if (accepted) finish(action, index);
     } catch {
-      if (request.current === token) { busy.current = false; setPending(false); setError('操作失败，请重试'); }
+      if (request.current === token) { busy.current = false; setPending(false); setError(localeText('dialog.failed')); }
     }
   };
   const normalize = (props: Partial<DialogAction> | string | null | undefined, fallback: DialogAction): DialogAction | null => props === null ? null : typeof props === 'string' ? { ...fallback, text: props } : { ...fallback, ...props };

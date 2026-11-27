@@ -62,14 +62,14 @@ const [visible, setVisible] = useState(false);
 | visible | 是否显示选择面板 | `boolean` | — |
 | columns | 列或选项配置 | `readonly (SelectPickerOption \| Readonly<Record<string, unknown>>)[]` | 必填 |
 | type | 类型 | `'checkbox' \| 'radio'` | `'checkbox'` |
-| title | 标题内容 | `string` | `'选择器'` |
+| title | 标题内容 | `string` | — |
 | min | 最小值 | `number` | `0` |
 | max | 最大值或数量上限 | `number` | `0` |
 | disabled | 是否禁用 | `boolean` | — |
 | loading | 加载状态或自定义加载内容 | `boolean` | `false` |
 | filterable | 是否允许筛选选项 | `boolean` | `false` |
-| filterPlaceholder | 筛选输入框占位文案 | `string` | `'搜索'` |
-| confirmButtonText | 确认按钮文案 | `string` | `'确认'` |
+| filterPlaceholder | 筛选输入框占位文案 | `string` | — |
+| confirmButtonText | 确认按钮文案 | `string` | — |
 | showConfirm | 是否显示确认按钮 | `boolean` | `true` |
 | valueKey | 选项值字段名 | `string` | `'value'` |
 | labelKey | 显示文案字段名 | `string` | `'label'` |

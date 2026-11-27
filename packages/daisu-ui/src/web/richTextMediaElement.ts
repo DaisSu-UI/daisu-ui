@@ -1,3 +1,5 @@
+import { resolveLocale, translate, zhCN } from '../locale.js';
+import type { UiMessageKey } from '../locale.js';
 import type { RichTextMediaConfig, RichTextMediaSignal } from '../richTextMedia.js';
 
 const tagName = 'daisu-rich-media';
@@ -11,6 +13,8 @@ export function registerRichTextMedia() {
   class RichTextMediaElement extends HTMLElement {
     static observedAttributes = ['media-config'];
     private config?: RichTextMediaConfig;
+    private locale = zhCN as import('../locale.js').UiLocale;
+    private text(key: UiMessageKey) { return translate(this.locale, key); }
     private media?: HTMLMediaElement;
     private button?: HTMLButtonElement;
     private cleanup?: AbortController;
@@ -40,14 +44,19 @@ export function registerRichTextMedia() {
     private configure() {
       const raw = this.getAttribute('media-config') || '';
       if (raw === this.rendered && this.media) return;
-      this.dispose();
-      this.rendered = raw;
       let input: RichTextMediaConfig;
-      try { input = JSON.parse(raw) as RichTextMediaConfig; } catch { return; }
-      if (!input || !['audio', 'video'].includes(input.type) || !Array.isArray(input.sources)) return;
+      try { input = JSON.parse(raw) as RichTextMediaConfig; } catch { this.dispose(); return; }
+      if (!input || !['audio', 'video'].includes(input.type) || !Array.isArray(input.sources)) { this.dispose(); return; }
       const sources = input.sources.slice(0, 16).filter(src => !!this.url(src));
-      this.config = { id: typeof input.id === 'string' ? input.id : '', type: input.type, sources,
+      const next: RichTextMediaConfig = { locale: input.locale && typeof input.locale === 'object' ? input.locale : undefined, id: typeof input.id === 'string' ? input.id : '', type: input.type, sources,
         title: typeof input.title === 'string' ? input.title : '', poster: this.url(input.poster), loop: input.loop === true, muted: input.muted === true, preview: input.preview === true };
+      this.locale = resolveLocale(next.locale);
+      if (this.media && JSON.stringify({ ...this.config, locale: undefined }) === JSON.stringify({ ...next, locale: undefined })) {
+        this.config = next; this.rendered = raw; this.updateButton();
+        const error = this.shadowRoot?.querySelector('.error'); if (error) error.textContent = `${next.title || this.text('media.label')} ×`;
+        return;
+      }
+      this.dispose(); this.config = next; this.rendered = raw;
       const style = this.ownerDocument.createElement('style'); style.textContent = css;
       const media = this.ownerDocument.createElement(input.type);
       this.shadowRoot!.replaceChildren(style, media);
@@ -55,7 +64,7 @@ export function registerRichTextMedia() {
       this.failed = false; this.source = 0; this.pendingSeek = undefined;
       this.cleanup = new AbortController();
       const options = { signal: this.cleanup.signal };
-      if(this.config.preview){previews.push(this);this.ownerDocument.addEventListener('keydown',event=>{if(event.key==='Escape'&&!this.ownerDocument.fullscreenElement&&previews.at(-1)===this){event.stopImmediatePropagation();this.emit('close');}},options);}
+      if(this.config.preview){previews.push(this);this.ownerDocument.addEventListener('keydown',event=>{if(event.key==='Escape'&&!this.ownerDocument.fullscreenElement&&previews[previews.length - 1]===this){event.stopImmediatePropagation();this.emit('close');}},options);}
       media.preload = 'metadata'; media.loop = this.config.loop; media.muted = this.config.muted;
       if (media instanceof HTMLVideoElement) {
         media.controls = true; media.playsInline = true; media.poster = this.config.poster || '';
@@ -89,17 +98,17 @@ export function registerRichTextMedia() {
           const resume = this.wantsPlay; this.source++;
           this.setSource();
           if (resume) this.playMedia();
-        } else this.fail(media.error?.message || '音视频资源加载失败', true);
+        } else this.fail(media.error?.message || this.text('media.failed'), true);
       }, options);
       const pause = () => { this.pauseMedia(); };
       this.ownerDocument.addEventListener('visibilitychange', () => { if (this.ownerDocument.hidden) pause(); }, options);
       this.ownerDocument.defaultView?.addEventListener('pagehide', pause, options);
-      if (!sources.length) this.fail('没有可播放的音视频地址', true);
+      if (!sources.length) this.fail(this.text('media.noSource'), true);
       else this.setSource();
     }
     private updateButton() {
       if (!this.button || !this.media || !this.config) return;
-      this.button.textContent = `${this.media.paused ? '▶' : 'Ⅱ'} ${this.config.title || '播放音频'}`;
+      this.button.textContent = `${this.media.paused ? '▶' : 'Ⅱ'} ${this.config.title || this.text('media.playAudio')}`;
       this.button.setAttribute('aria-pressed', String(!this.media.paused));
     }
     private emit(kind: RichTextMediaSignal['kind'], extra: Partial<RichTextMediaSignal> = {}) {
@@ -114,7 +123,7 @@ export function registerRichTextMedia() {
         this.finishSeek();
         this.failed = true; this.wantsPlay = false; this.media?.pause();
         const error = this.ownerDocument.createElement('span');
-        error.className = 'error'; error.textContent = `${this.config?.title || '音视频'} ×`;
+        error.className = 'error'; error.textContent = `${this.config?.title || this.text('media.label')} ×`;
         error.setAttribute('role', 'status');
         const style = this.shadowRoot!.querySelector('style')!;
         this.shadowRoot!.replaceChildren(style, error);
@@ -140,7 +149,7 @@ export function registerRichTextMedia() {
           if (error.name === 'AbortError') return;
           this.wantsPlay = false;
           // Autoplay restrictions can be retried by tapping the native player.
-          this.fail(error.message || '无法播放音视频', false, 'PLAY_REJECTED');
+          this.fail(error.message || this.text('media.playFailed'), false, 'PLAY_REJECTED');
         });
       } catch (error) { this.wantsPlay = false; this.fail(String(error), false); }
       return true;
@@ -156,7 +165,7 @@ export function registerRichTextMedia() {
       // request until seeked confirms it, and retry as metadata/buffers arrive.
       this.seekTimer = setTimeout(() => {
         this.finishSeek();
-        if (this.isConnected) this.fail('当前资源暂时无法跳转至目标位置，请稍后重试。', false, 'SEEK_FAILED');
+        if (this.isConnected) this.fail(this.text('media.seekFailed'), false, 'SEEK_FAILED');
       }, 10000);
       this.applySeek();
       if(this.pendingSeek === undefined) this.emit('timeupdate');

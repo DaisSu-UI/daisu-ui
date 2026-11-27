@@ -1,6 +1,6 @@
 const presets = { small: 14, medium: 20, large: 28 } as const;
 export function loadingDimension(size: number | string = 28): string {
-  if (typeof size === 'string' && Object.hasOwn(presets, size)) return `${presets[size as keyof typeof presets]}px`;
+  if (typeof size === 'string' && Object.prototype.hasOwnProperty.call(presets, size)) return `${presets[size as keyof typeof presets]}px`;
   const match = /^(\d+(?:\.\d+)?)(px|rpx|rem|vw|vh)?$/.exec(String(size).trim());
   if (!match || !Number.isFinite(Number(match[1]))) return '28px';
   const value = Number(match[1]);

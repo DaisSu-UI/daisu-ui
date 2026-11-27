@@ -1,7 +1,6 @@
 import type { CSSProperties } from '@lynx-js/types';
-/** Same pure calculation is used for the first frame and native offset updates. */
-export function swiperCardFrame(value:number,height:number,neighborHeight:number):CSSProperties {
-  const weight=Math.max(0,1-Math.abs(Math.abs(value)-1));
-  const size=height-(height-neighborHeight)*weight;
-  return {height:`${size}px`,transform:`translateY(${(height-size)/2}px)`};
+/** Visual viewport height; the slide and image keep their full layout height. */
+export function swiperCardFrame(value: number, height: number, neighborHeight: number): CSSProperties {
+  const neighbor = Math.max(0, 1 - Math.abs(Math.abs(value) - 1));
+  return { height: `${height - Math.max(0, height - neighborHeight) * neighbor}px` };
 }

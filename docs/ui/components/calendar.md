@@ -10,7 +10,7 @@ import { Calendar } from '@daisu-ui/ui';
 
 ### 弹层日历
 
-通过 `visible` 控制日历弹层，`type="date"` 使用单日模式，`onConfirm` 返回选择的日期。
+通过 `visible` 控制日历弹层，`type="date"` 使用单日模式，`onConfirm` 返回选择的日期。自定义“选择今天”按钮可调用 `CalendarRef.setValue(value)` 更新草稿并定位，点击确定后再提交。
 
 ```tsx
 import { useState } from '@lynx-js/react';
@@ -73,8 +73,8 @@ const [visible, setVisible] = useState(false);
 | timeVisibleItemCount | 时间滚轮可见行数 | `number` | — |
 | hideSecond | 是否隐藏秒选项 | `boolean` | — |
 | visible | 是否显示选择面板 | `boolean` | — |
-| title | 标题内容 | `string` | `'选择日期'` |
-| confirmText | 确认文案 | `string` | `'确定'` |
+| title | 标题内容 | `string` | — |
+| confirmText | 确认文案 | `string` | — |
 | showConfirm | 是否显示确认按钮 | `boolean` | `true` |
 | beforeConfirm | 确认前校验 | `(value: CalendarValue) => boolean \| Promise<boolean>` | — |
 | innerDisplayFormat | 选择器内部显示格式 | `(value: number \| null, endpoint: 'start' \| 'end', type: CalendarType) => string` | — |
@@ -122,6 +122,7 @@ const [visible, setVisible] = useState(false);
 | --- | --- | --- |
 | open | 打开面板 | () => void |
 | close | 关闭面板 | () => void |
+| setValue | 调用实例方法 | (value: CalendarValue) => void |
 
 ## 数据类型
 

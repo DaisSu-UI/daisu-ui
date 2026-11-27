@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { useMainThreadRef, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import type { CSSProperties, MainThread } from '@lynx-js/types';
@@ -25,6 +26,8 @@ export type TableProps<T> = {
 const length = (value: number | string) => typeof value === 'number' ? `${Math.max(0, value)}px` : value;
 /** Bounded tables use native scroll-views; virtual mode mounts only a buffered row window. */
 export function Table<T>({ data, columns, border = true, stripe = true, height, rowHeight = 44, showHeader = true, ellipsis = false, index = false, fixedHeader = true, cellPadding, spanMethod, virtual = false, buffer = 5, rowKey, onSortMethod, onRowClick, className = '', style }: TableProps<T>) {
+  const { t: localeText } = useLocale();
+
   const padding = typeof cellPadding === 'number' ? [cellPadding, cellPadding] : cellPadding;
   const paddingY = Number.isFinite(padding?.[0]) ? Math.max(0, padding![0]!) : 12;
   const paddingX = Number.isFinite(padding?.[1]) ? Math.max(0, padding![1]!) : 16;
@@ -34,7 +37,7 @@ export function Table<T>({ data, columns, border = true, stripe = true, height, 
   const [sort, setSort] = useState<{ prop: string; value: SortButtonValue }>({ prop: '', value: 0 });
   const fixedHead = useMainThreadRef<MainThread.Element | null>(null), fixedBody = useMainThreadRef<MainThread.Element | null>(null);
   const scrollOffset = useMainThreadRef(0);
-  const cols: TableColumn<T>[] = index ? [{ prop: '__index' as keyof T & string, label: '序号', width: '13.333333vw', ...typeof index === 'object' ? index : {}, render: ({ index: i }) => i + 1 }, ...columns] : [...columns];
+  const cols: TableColumn<T>[] = index ? [{ prop: '__index' as keyof T & string, label: localeText('table.index'), width: '13.333333vw', ...typeof index === 'object' ? index : {}, render: ({ index: i }) => i + 1 }, ...columns] : [...columns];
   const sizes = cols.map((col, i) => widths[`${i}:${col.width ?? 100}`] ?? (typeof col.width === 'number' ? col.width : 100));
   const x = tableOffsets(sizes), totalWidth = x[x.length - 1]!;
   const minimum = Number.isFinite(rowHeight) && rowHeight > 0 ? rowHeight : 44;
@@ -111,10 +114,10 @@ export function Table<T>({ data, columns, border = true, stripe = true, height, 
   return <view className={`ui-table ${border ? 'ui-table-border' : ''} ${className}`} style={style}>
     <view className="ui-table-measures" style={{ height: '0px' }}>{cols.map((col, j) => <view key={`${j}:${col.width ?? 100}`} className="ui-table-measure" style={{ width: length(col.width ?? 100), height: '0px' }} bindlayoutchange={event => { 'background only'; const width = event.detail.width, key = `${j}:${col.width ?? 100}`; if (width > 0) setWidths(previous => previous[key] === width ? previous : { ...previous, [key]: width }); }} />)}</view>
     {height !== undefined ? <view className="ui-table-measure" style={{ width: '0px', height: length(height) }} bindlayoutchange={event => { 'background only'; setViewportHeight(Math.max(0, event.detail.height)); }} /> : null}
-    <scroll-view className="ui-table-horizontal" scroll-orientation="horizontal" bounces={false} main-thread:bindscroll={onHorizontal} style={{ height: `${visibleHeight}px`, width: '100%' }}>
+    <scroll-view className="ui-table-horizontal" scroll-orientation="horizontal" bounces={false} main-thread:bindscroll={onHorizontal} style={{ zIndex: 0, height: `${visibleHeight}px`, width: '100%' }}>
       <view style={{ width: `${totalWidth}px`, height: `${visibleHeight}px` }}>
         {fixed ? header : null}
-        <scroll-view className="ui-table-vertical" scroll-orientation="vertical" enable-scroll={height !== undefined} enable-nested-scroll bounces={false} style={{ width: `${totalWidth}px`, height: `${bodyViewport}px` }} bindscroll={virtualized ? event => { 'background only'; const next = Math.max(0, event.detail.scrollTop); setTop(previous => Math.floor(previous / minimum) === Math.floor(next / minimum) ? previous : next); } : undefined}>
+        <scroll-view className="ui-table-vertical" scroll-orientation="vertical" enable-scroll={height !== undefined} enable-nested-scroll bounces={false} style={{ zIndex: 0, width: `${totalWidth}px`, height: `${bodyViewport}px` }} bindscroll={virtualized ? event => { 'background only'; const next = Math.max(0, event.detail.scrollTop); setTop(previous => Math.floor(previous / minimum) === Math.floor(next / minimum) ? previous : next); } : undefined}>
           <view className="ui-table-body" style={{ height: `${contentHeight}px`, width: `${totalWidth}px` }}>
             {!fixed && showHeader ? header : null}{cells(false)}
             <view className="ui-table-fixed" style={fixedStyle} main-thread:ref={fixedBody} main-thread:bindlayoutchange={restore}>{cells(true)}</view>

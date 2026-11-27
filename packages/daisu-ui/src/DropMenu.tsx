@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { createContext, forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import type { CSSProperties, NodesRef } from '@lynx-js/types';
@@ -118,6 +119,8 @@ function SelectedIcon({ name, size, color }: { name: string; size: number; color
 }
 
 export const DropMenuItem = forwardRef<DropMenuItemRef, DropMenuItemProps>(function DropMenuItem({ value, defaultValue, onChange, options = [], disabled = false, title, icon = 'caret-down', iconSize = 16, iconName = 'check', activeColor, beforeToggle, valueKey = 'value', labelKey = 'label', tipKey = 'tip', popupClassName = '', popupStyle, popupHeight, rootPortal = false, className = '', style, children, onOpen, onOpened, onClose, onClosed }, ref) {
+  const { t: localeText } = useLocale();
+
   const menu = useContext(MenuContext);
   if (!menu) throw new Error('DropMenuItem requires a DropMenu parent.');
   const id = useRef<MenuId>({}).current;
@@ -178,12 +181,12 @@ export const DropMenuItem = forwardRef<DropMenuItemRef, DropMenuItemProps>(funct
   };
   const layer = present ? <view className={`ui-drop-menu-layer ui-drop-menu-layer-${menu.direction}`} style={{ ...anchorStyle(menu.rect, menu.direction, menu.topOffset), zIndex: menu.zIndex + 1, display: hidden ? 'none' : 'flex' }} event-through>
     <Transition show={show} name={menu.direction === 'down' ? 'slide-down' : 'slide-up'} duration={menu.duration} lazyRender destroy={false} interactiveDuringLeave className={`ui-drop-menu-popup ${popupClassName}`} style={popupStyle} onBeforeEnter={onOpen} onAfterEnter={onOpened} onBeforeLeave={onClose} onAfterLeave={() => { 'background only'; setHidden(true); onClosed?.(); }}>
-      <scroll-view className="ui-drop-menu-scroll" scroll-orientation="vertical" scroll-y scroll-bar-enable={false} style={{ height: popupHeight === undefined ? `${height}px` : typeof popupHeight === 'number' ? `${Math.max(0, popupHeight)}px` : popupHeight }}>
+      <scroll-view className="ui-drop-menu-scroll" scroll-orientation="vertical" scroll-y scroll-bar-enable={false} style={{ zIndex: 0, height: popupHeight === undefined ? `${height}px` : typeof popupHeight === 'number' ? `${Math.max(0, popupHeight)}px` : popupHeight }}>
         <view className="ui-drop-menu-content" flatten={false} bindlayoutchange={event => { 'background only'; const next = event.detail.height; if (Number.isFinite(next) && next !== height) setHeight(next); }} catchtap={() => {}}>
           {children ?? <view className="ui-drop-menu-options">
             {options.map((option, index) => {
               const active = option[valueKey] === current;
-              return <view key={`${typeof option[valueKey]}:${String(option[valueKey])}:${index}`} className={`ui-drop-menu-option ${active ? 'ui-drop-menu-option-selected' : ''}`} bindtap={() => select(option)} accessibility-element accessibility-traits="button" accessibility-label={`${String(option[labelKey] ?? '')}${active ? '，已选中' : ''}`}>
+              return <view key={`${typeof option[valueKey]}:${String(option[valueKey])}:${index}`} className={`ui-drop-menu-option ${active ? 'ui-drop-menu-option-selected' : ''}`} bindtap={() => select(option)} accessibility-element accessibility-traits="button" accessibility-label={`${String(option[labelKey] ?? '')}${active ? localeText('common.selected') : ''}`}>
                 <view className="ui-drop-menu-option-copy"><text className="ui-drop-menu-option-label" style={active ? { color: activeColor } : undefined} text-maxline="1" text-overflow="ellipsis">{String(option[labelKey] ?? '')}</text>{option[tipKey] ? <text className="ui-drop-menu-option-tip" style={active ? { color: activeColor } : undefined} text-maxline="1" text-overflow="ellipsis">{String(option[tipKey])}</text> : null}</view>
                 {active && iconName ? <SelectedIcon name={iconName} size={20} color={activeColor} /> : null}
               </view>;
@@ -194,7 +197,7 @@ export const DropMenuItem = forwardRef<DropMenuItemRef, DropMenuItemProps>(funct
     </Transition>
   </view> : null;
   return <>
-    <view className={`ui-drop-menu-item ${show ? 'ui-drop-menu-item-open' : ''} ${disabled ? 'ui-drop-menu-item-disabled' : ''} ${className}`} style={style} catchtap={() => request(!(pending.current ?? show))} accessibility-element accessibility-traits="button" accessibility-label={`${label}${disabled ? '，已禁用' : show ? '，已展开' : '，已折叠'}`}>
+    <view className={`ui-drop-menu-item ${show ? 'ui-drop-menu-item-open' : ''} ${disabled ? 'ui-drop-menu-item-disabled' : ''} ${className}`} style={style} catchtap={() => request(!(pending.current ?? show))} accessibility-element accessibility-traits="button" accessibility-label={`${label}${disabled ? localeText('common.isDisabled') : show ? localeText('common.expanded') : localeText('common.collapsed')}`}>
       <view className="ui-drop-menu-title"><text className="ui-drop-menu-title-text" style={show ? { color: activeColor } : undefined} text-maxline="1" text-overflow="ellipsis">{label}</text>{icon ? <view className="ui-drop-menu-arrow" style={{ transform: `rotate(${show ? 180 : 0}deg)`, transitionDuration: `${menu.duration}ms` }}>{show ? <SelectedIcon name={icon} size={iconSize} color={activeColor} /> : <><Icon name={icon} size={iconSize} color="var(--cso-ui-disclosure)" className="ui-drop-menu-primary-light" /><Icon name={icon} size={iconSize} color="var(--cso-ui-disclosure)" className="ui-drop-menu-primary-dark" /></>}</view> : null}</view>
     </view>
     {rootPortal ? <RootPortal>{layer}</RootPortal> : layer}

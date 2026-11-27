@@ -10,7 +10,7 @@ import { Popup } from '@daisu-ui/ui';
 
 ### 基础弹层
 
-通过 `show` 和 `onChange` 控制显示状态；`title` 显示左对齐标题，`closable` 显示右上角 40px 圆形关闭按钮，标题会为按钮预留空间。
+通过 `show` 和 `onChange` 控制显示状态；`title` 显示左对齐标题，`closable` 显示右上角 40px 圆形关闭按钮，标题会为按钮预留空间。同一 RootPortalHost 内按打开顺序分配弹层层级，zIndex 是最低层级；嵌套层自动高于父层，遮罩位于父面板与子面板之间。
 
 ```tsx
 import { useState } from '@lynx-js/react';
@@ -54,23 +54,23 @@ const [show, setShow] = useState(false);
 
 | 参数 | 说明 | 类型 / 可选值 | 默认值 |
 | --- | --- | --- | --- |
-| show | 受控值 / 请求更新；关闭时回调 false | `boolean` | `false` |
-| position | center/top/right/bottom/left | `PopupPosition` | `'center'` |
+| show | 受控值 / 请求更新；关闭时回调 false | `boolean` | — |
+| position | center/top/right/bottom/left | `PopupPosition` | — |
 | transition | 居中 fade+zoom-in，其余对应方向 slide；可传名称数组 | `TransitionName \| readonly TransitionName[]` | — |
-| duration | 毫秒或boolean | `number \| boolean` | `300` |
-| closable | 关闭按钮 | `boolean` | `false` |
+| duration | 毫秒或boolean | `number \| boolean` | — |
+| closable | 关闭按钮 | `boolean` | — |
 | title | 左侧标题，支持文字或自定义节点；为关闭按钮预留空间 | `ReactNode` | — |
-| closeOnClickModal | 遮罩点击关闭 / 展示遮罩 | `boolean` | `true` |
-| modal | 遮罩点击关闭 / 展示遮罩 | `boolean` | `true` |
+| closeOnClickModal | 遮罩点击关闭 / 展示遮罩 | `boolean` | — |
+| modal | 遮罩点击关闭 / 展示遮罩 | `boolean` | — |
 | modalStyle | 遮罩 CSSProperties | `CSSProperties` | — |
-| zIndex | 遮罩层级，面板使用 zIndex+1 | `number` | `10` |
-| lazyRender | 第一次显示时挂载；后续保留并隐藏，保存表单状态 | `boolean` | `true` |
-| lockScroll | 对触摸链拦截滑动，边界同 Overlay | `boolean` | `true` |
-| rootPortal | 原生 RootPortal，需要根 Host | `boolean` | `false` |
-| round | 按弹出方向设置圆角 | `boolean` | `false` |
-| safeAreaInsetBottom | 底部插入宿主提供的安全区高度，单位px | `boolean` | `false` |
-| safeAreaBottom | 底部插入宿主提供的安全区高度，单位px | `number` | `0` |
-| className | 面板样式、内容；根 Host 外层局部主题需自行传入类名 | `string` | `''` |
+| zIndex | 遮罩层级，面板使用 zIndex+1 | `number` | — |
+| lazyRender | 第一次显示时挂载；后续保留并隐藏，保存表单状态 | `boolean` | — |
+| lockScroll | 对触摸链拦截滑动，边界同 Overlay | `boolean` | — |
+| rootPortal | 原生 RootPortal，需要根 Host | `boolean` | — |
+| round | 按弹出方向设置圆角 | `boolean` | — |
+| safeAreaInsetBottom | 底部插入宿主提供的安全区高度，单位px | `boolean` | — |
+| safeAreaBottom | 底部插入宿主提供的安全区高度，单位px | `number` | — |
+| className | 面板样式、内容；根 Host 外层局部主题需自行传入类名 | `string` | — |
 | style | 面板样式、内容；根 Host 外层局部主题需自行传入类名 | `CSSProperties` | — |
 | children | 面板样式、内容；根 Host 外层局部主题需自行传入类名 | `ReactNode` | — |
 

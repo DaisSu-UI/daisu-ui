@@ -1,5 +1,6 @@
 import { useEffect, useRef } from '@lynx-js/react';
 import type { NodesRef } from '@lynx-js/types';
+import { nativeTextMaxLength } from './nativeTextInput.js';
 
 type InputEvent = { detail: { value: string } };
 
@@ -16,7 +17,8 @@ type SyncedInputProps = {
 
 export function SyncedInput({ className, value, placeholder, maxlength, softInputMode = 'nothing', avoidKeyboard = false, onInput, onBlur }: SyncedInputProps) {
   const inputRef = useRef<NodesRef | null>(null);
-  const nativeValue = useRef<string | null>(null);
+  const initial = useRef(value);
+  const nativeValue = useRef(value);
 
   useEffect(() => {
     if (nativeValue.current === value) return;
@@ -30,9 +32,9 @@ export function SyncedInput({ className, value, placeholder, maxlength, softInpu
   return <input
     ref={inputRef}
     className={className}
-    default-value={value}
+    default-value={initial.current}
     placeholder={placeholder}
-    maxlength={maxlength}
+    maxlength={nativeTextMaxLength(maxlength)}
     set-soft-input-mode={softInputMode}
     avoid-keyboard={avoidKeyboard}
     bindinput={(event: InputEvent) => {

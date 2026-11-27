@@ -1,5 +1,24 @@
 import { AbortController, AbortSignal } from 'abort-controller';
 
+// TanStack schedules navigation cleanup with the browser's global function.
+// Native Lynx exposes it on lynx instead; older hosts can use Promise jobs.
+if (typeof globalThis.queueMicrotask !== 'function') {
+  Object.defineProperty(globalThis, 'queueMicrotask', {
+    value(callback: VoidFunction) {
+      if (typeof callback !== 'function') throw new TypeError('queueMicrotask requires a function');
+      if (typeof lynx !== 'undefined' && typeof lynx.queueMicrotask === 'function') {
+        lynx.queueMicrotask(callback);
+      } else {
+        Promise.resolve().then(callback).catch(error => {
+          setTimeout(() => { throw error; }, 0);
+        });
+      }
+    },
+    writable: true,
+    configurable: true,
+  });
+}
+
 if (typeof globalThis.AbortController !== 'function') {
   Object.defineProperty(globalThis, 'AbortController', {
     value: AbortController,

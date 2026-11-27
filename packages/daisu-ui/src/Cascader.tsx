@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { forwardRef, useContext, useEffect, useImperativeHandle, useMemo, useRef, useState } from '@lynx-js/react';
 import type { CSSProperties } from '@lynx-js/types';
 import { ActionSheet } from './ActionSheet.js';
@@ -22,7 +23,12 @@ export type CascaderProps = CascaderFields & {
   closeOnClickModal?: boolean; rootPortal?: boolean; safeAreaInsetBottom?: boolean; safeAreaBottom?: number; zIndex?: number; className?: string; style?: CSSProperties;
 };
 const empty: readonly CascaderInput[] = [];
-export const Cascader = forwardRef<CascaderRef, CascaderProps>(function Cascader({ value, options = empty, visible, onVisibleChange, title = '请选择', placeholder = '请选择', checkStrictly = false, confirmText = '确认', lazyLoad, valueKey, textKey, childrenKey, tipKey, isLeafKey, beforeConfirm, onChange, onConfirm, onClose, onCancel, onOpen, onLoadError, disabled: disabledProp, loading = false, loadingColor = '#4D80F0', lineTheme, lineWidth, lineHeight, closeOnClickModal = true, rootPortal = false, safeAreaInsetBottom = true, safeAreaBottom = 0, zIndex = 100, className = '', style }, ref) {
+export const Cascader = forwardRef<CascaderRef, CascaderProps>(function Cascader({ value, options = empty, visible, onVisibleChange, title, placeholder, checkStrictly = false, confirmText, lazyLoad, valueKey, textKey, childrenKey, tipKey, isLeafKey, beforeConfirm, onChange, onConfirm, onClose, onCancel, onOpen, onLoadError, disabled: disabledProp, loading = false, loadingColor = '#4D80F0', lineTheme, lineWidth, lineHeight, closeOnClickModal = true, rootPortal = false, safeAreaInsetBottom = true, safeAreaBottom = 0, zIndex = 100, className = '', style }, ref) {
+  const { t: localeText } = useLocale();
+  title ??= localeText('common.select');
+  placeholder ??= localeText('common.select');
+  confirmText ??= localeText('common.confirmAction');
+
   const field = useContext(FormFieldContext), disabled = disabledProp ?? field?.disabled ?? false;
   const [innerVisible, setInnerVisible] = useState(false), show = visible ?? innerVisible;
   const fields = useMemo(() => ({ valueKey, textKey, childrenKey, tipKey, isLeafKey }), [valueKey, textKey, childrenKey, tipKey, isLeafKey]);
@@ -98,10 +104,10 @@ export const Cascader = forwardRef<CascaderRef, CascaderProps>(function Cascader
     if (children.length) { setLevels([...levels.slice(0, index + 1), children]); setTab(index + 1); }
     else { setLevels(levels.slice(0, index + 1)); void confirm(next); }
   };
-  return <ActionSheet show={show} onClose={cancel} title={title || '请选择'} titleClassName={`ui-cascader-header ${checkStrictly ? 'ui-cascader-header-confirm' : ''}`} className={`ui-cascader ${className}`} style={style} closeOnClickModal={closeOnClickModal} rootPortal={rootPortal} safeAreaInsetBottom={safeAreaInsetBottom} safeAreaBottom={safeAreaBottom} zIndex={zIndex}
+  return <ActionSheet show={show} onClose={cancel} title={title || localeText('common.select')} titleClassName={`ui-cascader-header ${checkStrictly ? 'ui-cascader-header-confirm' : ''}`} className={`ui-cascader ${className}`} style={style} closeOnClickModal={closeOnClickModal} rootPortal={rootPortal} safeAreaInsetBottom={safeAreaInsetBottom} safeAreaBottom={safeAreaBottom} zIndex={zIndex}
     renderClose={checkStrictly ? () => <view className={`ui-cascader-confirm ${!path.length || disabled ? 'ui-cascader-confirm-disabled' : ''}`} catchtap={() => { 'background only'; void confirm(); }} accessibility-element accessibility-traits="button" accessibility-label={confirmText}>{busy ? <Loading size={20} /> : <text>{confirmText}</text>}</view> : undefined}>
-    <view className="ui-cascader-content"><Tabs value={tab} onChange={value => { 'background only'; if (!busy && !fetching) setTab(Number(value)); }} slidable="always" animated lineTheme={lineTheme} lineWidth={lineWidth} lineHeight={lineHeight} items={levels.map((items, index) => ({ title: path[index]?.text ?? placeholder, name: index, children: <scroll-view className={`ui-cascader-scroll ${loading || fetching ? 'ui-cascader-is-loading' : ''}`} scroll-orientation="vertical" scroll-bar-enable={false} enable-scroll={!loading && !fetching}>
-      {items.map(option => <view key={`${typeof option.value}:${option.value}`} className={`ui-cascader-option ${path[index]?.value === option.value ? 'ui-cascader-option-active' : ''} ${option.disabled ? 'ui-cascader-option-disabled' : ''}`} bindtap={() => { 'background only'; void choose(option, index); }} accessibility-element accessibility-traits="button" accessibility-label={`${option.text}${option.disabled ? '，禁用' : ''}`}><view className="ui-cascader-option-content"><text className="ui-cascader-option-label">{option.text}</text>{option.tip ? <text className="ui-cascader-tip">{option.tip}</text> : null}</view>{path[index]?.value === option.value ? <Icon name="check" size={20} color="#4D80F0" /> : null}</view>)}
+    <view className="ui-cascader-content"><Tabs value={tab} onChange={value => { 'background only'; if (!busy && !fetching) setTab(Number(value)); }} slidable="always" animated lineTheme={lineTheme} lineWidth={lineWidth} lineHeight={lineHeight} items={levels.map((items, index) => ({ title: path[index]?.text ?? placeholder, name: index, children: <scroll-view style={{ zIndex: 0 }} className={`ui-cascader-scroll ${loading || fetching ? 'ui-cascader-is-loading' : ''}`} scroll-orientation="vertical" scroll-bar-enable={false} enable-scroll={!loading && !fetching}>
+      {items.map(option => <view key={`${typeof option.value}:${option.value}`} className={`ui-cascader-option ${path[index]?.value === option.value ? 'ui-cascader-option-active' : ''} ${option.disabled ? 'ui-cascader-option-disabled' : ''}`} bindtap={() => { 'background only'; void choose(option, index); }} accessibility-element accessibility-traits="button" accessibility-label={`${option.text}${option.disabled ? localeText('common.disabled') : ''}`}><view className="ui-cascader-option-content"><text className="ui-cascader-option-label">{option.text}</text>{option.tip ? <text className="ui-cascader-tip">{option.tip}</text> : null}</view>{path[index]?.value === option.value ? <Icon name="check" size={20} color="#4D80F0" /> : null}</view>)}
     </scroll-view> }))} />{loading || fetching ? <view className="ui-cascader-loading"><Loading size={48} color={loadingColor} /></view> : null}</view>
   </ActionSheet>;
 });

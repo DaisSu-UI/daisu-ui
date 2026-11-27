@@ -23,7 +23,9 @@ function nativeEditor() {
     fireEvent(lynx.createSelectorQuery().select('.ui-textfield-native') as unknown as Element,
       Object.assign(new Event('bindEvent:input'), { eventName: 'input', eventType: 'bindEvent', detail: { value: next, isComposing } }));
   };
-  return { mock, input, writes, value: () => value };
+  // Native default-value is applied before mount effects without a setValue call.
+  const mount = (container: ParentNode) => { value = container.querySelector('.ui-textfield-native')?.getAttribute('default-value') ?? ''; };
+  return { mock, input, writes, mount, value: () => value };
 }
 
 for (const [name, Editor] of [['Input', Input], ['Textarea', Textarea]] as const) {
@@ -31,6 +33,7 @@ for (const [name, Editor] of [['Input', Input], ['Textarea', Textarea]] as const
     const native = nativeEditor(), changes: string[] = [];
     try {
       const screen = render(<Editor value="保留" clearable maxlength={20} showWordLimit onChange={value => changes.push(value)} />);
+      native.mount(screen.container);
       await waitFor(() => expect(native.value()).toBe('保留'));
       for (let i = 0; i < 2; i++) {
         fireEvent.tap(screen.container.querySelector('.ui-textfield-clear')!, { eventType: 'catchEvent' });
@@ -50,6 +53,7 @@ for (const [name, Editor] of [['Input', Input], ['Textarea', Textarea]] as const
     }
     try {
       const screen = render(<Controlled reset={false} />);
+      native.mount(screen.container);
       await waitFor(() => expect(native.value()).toBe('0'));
       native.input('中', true); expect(changes).toEqual([]);
       native.input('中文'); await waitFor(() => expect(changes).toEqual(['中文']));

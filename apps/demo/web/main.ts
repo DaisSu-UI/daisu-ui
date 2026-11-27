@@ -6,6 +6,8 @@ import type { LynxViewElement } from '@lynx-js/web-core/client';
 import { parseRouterHistoryState } from '@daisu-ui/ui/router/location';
 import type { NavigationAction } from '@daisu-ui/ui/router/location';
 import { createBrowserRouterHistory } from './routerHistory';
+import { applyDemoPresentation, readDemoLocale } from './presentation';
+import { demoProjectLinks } from '../src/features/ui-demo/demoProject';
 import './style.css';
 
 registerDaisuWebComponents();
@@ -19,7 +21,7 @@ async function mount() {
   const scheme = matchMedia('(prefers-color-scheme: dark)');
   view.injectStyleRules = ['x-input.ui-textfield-native::part(input), x-textarea.ui-textfield-native::part(textarea) { --placeholder-color: var(--ui-textfield-placeholder, var(--cso-ui-text-placeholder, #a9acb8)); }'];
   view.initData = {
-    browserMedia: true, page: navigation.initialPage, navigation: navigation.initialState,
+    locale: readDemoLocale(window), browserMedia: true, page: navigation.initialPage, navigation: navigation.initialState,
     theme: query.get('theme') || (scheme.matches ? 'dark' : 'light'), viewportWidth: innerWidth,
   };
   const entry = [...document.scripts].find(script => /\/static\/js\/index(?:\.[^/]+)?\.js$/.test(new URL(script.src, location.href).pathname));
@@ -28,7 +30,14 @@ async function mount() {
   view.nativeModulesMap = { DemoBridge: new URL('native-modules/demo-bridge.js', base).href };
   view.onNativeModulesCall = (name, data, moduleName) => {
     if (moduleName !== 'DemoBridge' || name !== 'postMessage' || typeof data !== 'string') throw new Error('Invalid Demo navigation request');
-    const message = JSON.parse(data),state = parseRouterHistoryState(message.state);
+    const message = JSON.parse(data);
+    if (applyDemoPresentation(document, window, message)) return true;
+    if (message.type === 'open-link') {
+      if (!demoProjectLinks.some(link => link.url === message.url)) throw new Error('Invalid Demo project link');
+      location.assign(message.url);
+      return true;
+    }
+    const state = parseRouterHistoryState(message.state);
     if (!state || !['push','replace','back','reset','restore','sync'].includes(message.action)) throw new Error('Invalid Demo history state');
     navigation.sync(state, message.action as NavigationAction | 'sync');
     return true;

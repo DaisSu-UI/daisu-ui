@@ -1,3 +1,4 @@
+import { useDemoLocale } from '../demoLocale.js';
 import { useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import { Button, Cell, Dialog, Rate, useDialog } from '@daisu-ui/ui';
@@ -34,6 +35,7 @@ const groups: { title: string; blocks: { title: string; samples: Sample[] }[] }[
 ];
 
 export function DialogExample() {
+  const { text: demoText, copy: demoCopy } = useDemoLocale();
   const dialog = useDialog();
   const [current, setCurrent] = useState<Sample | null>(null);
   const [rating, setRating] = useState(3);
@@ -42,11 +44,11 @@ export function DialogExample() {
     'background only'; setCurrent(entry); setResult('');
     void dialog.show(entry.options).then(value => setResult(value.value ? `输入内容：${value.value}` : '点击了确认')).catch(() => {});
   };
-  const title: ReactNode = current?.customTitle ? <view className="demo-dialog-title"><text>自定义标题</text><text>温馨提示</text></view> : dialog.props.title;
-  return <view>{groups.map(group => <DemoGroup key={group.title} title={group.title}>{group.blocks.map(block => <ExampleBlock key={block.title} title={block.title}><view className="demo-dialog-buttons">{block.samples.map(entry => <Button key={entry.label} block label={entry.label} tone={entry.tone} onTap={() => open(entry)} />)}</view></ExampleBlock>)}</DemoGroup>)}
-    <Dialog {...dialog.props} title={title} rootPortal className="ui-demo-page" header={current?.header ? <image className="ui-dialog-header-image" src={banner} mode="aspectFill" /> : undefined} renderActions={current?.customActions ? ({ confirm, cancel }) => <view className="demo-dialog-custom-actions"><Button label="微信支付" tone="success" block onTap={confirm} /><Button label="支付宝" block onTap={confirm} /><Button label="取消" tone="neutral" variant="plain" block onTap={cancel} /></view> : undefined}>
-      {current?.content === 'rating' ? <view className="demo-dialog-rating"><Rate value={rating} onChange={({ value }) => setRating(value)} /><text>{rating} 分</text></view> : undefined}
+  const title: ReactNode = current?.customTitle ? <view className="demo-dialog-title"><text>{demoText("自定义标题")}</text><text>{demoText("温馨提示")}</text></view> : dialog.props.title;
+  return <view>{groups.map(group => <DemoGroup key={group.title} title={group.title}>{group.blocks.map(block => <ExampleBlock key={block.title} title={block.title}><view className="demo-dialog-buttons">{block.samples.map(entry => <Button key={entry.label} block label={demoText(entry.label)} tone={entry.tone} onTap={() => open(entry)} />)}</view></ExampleBlock>)}</DemoGroup>)}
+    <Dialog {...demoCopy(dialog.props)} title={demoText(title)} rootPortal className="ui-demo-page" header={current?.header ? <image className="ui-dialog-header-image" src={banner} mode="aspectFill" /> : undefined} renderActions={current?.customActions ? ({ confirm, cancel }) => <view className="demo-dialog-custom-actions"><Button label={demoText("微信支付")} tone="success" block onTap={confirm} /><Button label={demoText("支付宝")} block onTap={confirm} /><Button label={demoText("取消")} tone="neutral" variant="plain" block onTap={cancel} /></view> : undefined}>
+      {current?.content === 'rating' ? <view className="demo-dialog-rating"><Rate value={rating} onChange={({ value }) => setRating(value)} /><text>{demoText(rating)} {demoText("分")}</text></view> : undefined}
     </Dialog>
-    {result ? <view className="demo-action-sheet-notice" bindtap={() => setResult('')}><text>{result}</text></view> : null}
+    {result ? <view className="demo-action-sheet-notice" bindtap={() => setResult('')}><text>{demoText(result)}</text></view> : null}
   </view>;
 }

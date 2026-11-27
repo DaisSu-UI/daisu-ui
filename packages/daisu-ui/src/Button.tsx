@@ -35,12 +35,12 @@ export function Button({ label, onTap, tone: toneProp, variant: variantProp, siz
   return <view
     className={`ui-button ui-button-${tone} ui-button-${variant} ui-button-${size} ${block ? 'ui-button-block' : ''} ${disabled ? 'ui-button-disabled' : ''} ${inactive ? '' : 'ui-button-interactive'} ${press.pressed ? 'ui-button-pressed' : ''} ${round ? 'ui-button-round' : ''} ${hairline ? 'ui-button-hairline' : ''} ${!label && icon ? 'ui-button-icon-only' : ''} ${className}`}
     bindtap={handleTap}
-    bindtouchstart={press.start}
-    bindtouchend={press.end}
-    bindtouchcancel={press.end}
+    {...press.events}
+
+
     bindtouchmove={press.end}
-    bindmousedown={press.start}
-    global-bindmouseup={press.pressed ? press.end : undefined}
+
+
     accessibility-element
     accessibility-traits="button"
     accessibility-label={accessibilityLabel ?? label}

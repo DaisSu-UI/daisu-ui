@@ -1,4 +1,6 @@
 import { createContext, useContext } from '@lynx-js/react';
+import { zhCN } from './locale.js';
+import type { UiLocale } from './locale.js';
 import type { ButtonProps } from './Button.js';
 import type { TagProps } from './Tag.js';
 
@@ -10,6 +12,7 @@ export type ConfigProviderThemeVars = Partial<Record<
   'colorTheme' | 'buttonPrimaryBg' | 'buttonPrimaryBgColor' | 'buttonPrimaryColor' | 'buttonHeight' | 'buttonRadius' | 'buttonFontSize' | 'cellTitleColor', string | number>> &
   { [key: `--cso-ui-${string}`]: string | number | undefined };
 export type ConfigProviderValue = {
+  locale: UiLocale;
   theme: ConfigProviderTheme;
   themeVars: Record<string, string>;
   button: ConfigButtonDefaults;
@@ -18,7 +21,7 @@ export type ConfigProviderValue = {
   tokens: Record<string, string>;
 };
 export const ConfigContext = createContext<ConfigProviderValue | undefined>(undefined);
-const defaults: ConfigProviderValue = { theme: 'light', themeVars: {}, button: {}, tag: {}, tokens: {} };
+const defaults: ConfigProviderValue = { locale: zhCN, theme: 'light', themeVars: {}, button: {}, tag: {}, tokens: {} };
 /** Reads the nearest scoped configuration; updates are driven by Provider props. */
 export function useConfigProvider(): ConfigProviderValue {
   return useContext(ConfigContext) ?? defaults;

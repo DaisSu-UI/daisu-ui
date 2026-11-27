@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { useContext, useEffect, useRef, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import type { CSSProperties, TouchEvent } from '@lynx-js/types';
@@ -43,18 +44,21 @@ export type KeyboardProps = {
 };
 
 function Key({ item, car = false, large = false, loading = false, disabled, onPress }: { item: KeyboardKey; car?: boolean; large?: boolean; loading?: boolean; disabled: boolean; onPress: (item: KeyboardKey) => void }) {
+  const { t: localeText } = useLocale();
+
+  const label = item.type === 'extra' && item.text === '省份' ? localeText('keyboard.provinces') : item.text;
   const [pressed, setPressed] = useState(false);
   const touch = useRef<{ x: number; y: number }>(), cancelled = useRef(false);
   useEffect(() => { if (disabled) { setPressed(false); touch.current = undefined; } }, [disabled]);
   const release = () => { 'background only'; setPressed(false); touch.current = undefined; };
   return <view className={`ui-keyboard-key-wrap ${item.wider ? 'ui-keyboard-key-wider' : ''} ${car ? 'ui-keyboard-key-car-wrap' : ''} ${large ? 'ui-keyboard-key-large-wrap' : ''}`}>
-    <view className={`ui-keyboard-key ui-keyboard-key-${item.type ?? 'input'} ${car ? 'ui-keyboard-key-car' : ''} ${large ? 'ui-keyboard-key-large' : ''} ${pressed ? 'ui-keyboard-key-pressed' : ''}`} accessibility-element={item.type !== 'blank'} accessibility-traits="button" accessibility-label={item.type === 'delete' ? item.text || '删除' : item.type === 'extra' && !item.text ? '收起键盘' : item.text}
+    <view className={`ui-keyboard-key ui-keyboard-key-${item.type ?? 'input'} ${car ? 'ui-keyboard-key-car' : ''} ${large ? 'ui-keyboard-key-large' : ''} ${pressed ? 'ui-keyboard-key-pressed' : ''}`} accessibility-element={item.type !== 'blank'} accessibility-traits="button" accessibility-label={item.type === 'delete' ? item.text || localeText('keyboard.delete') : item.type === 'extra' && !item.text ? localeText('keyboard.collapse') : label}
       bindtouchstart={(event: TouchEvent) => { 'background only'; cancelled.current = false; const point = event.touches[0]; if (!disabled && point) { touch.current = { x: point.clientX, y: point.clientY }; setPressed(true); } }}
       bindtouchmove={(event: TouchEvent) => { 'background only'; const start = touch.current, point = event.touches[0]; if (start && point && Math.max(Math.abs(point.clientX - start.x), Math.abs(point.clientY - start.y)) > 6) { cancelled.current = true; release(); } }}
       bindtouchend={release} bindtouchcancel={() => { 'background only'; cancelled.current = true; release(); }}
       bindmousedown={() => { 'background only'; cancelled.current = false; if (!disabled) setPressed(true); }} bindmouseleave={release} global-bindmouseup={pressed ? release : undefined}
       catchtap={() => { 'background only'; release(); if (!disabled && !cancelled.current && item.type !== 'blank') onPress(item); }}>
-      {loading ? <Loading size={20} color="#fff" /> : item.type === 'delete' && !item.text ? <Icon name="del" size={22} /> : item.type === 'extra' && !item.text ? <Icon name="keyboard" size={22} /> : <text>{item.text}</text>}
+      {loading ? <Loading size={20} color="#fff" /> : item.type === 'delete' && !item.text ? <Icon name="del" size={22} /> : item.type === 'extra' && !item.text ? <Icon name="keyboard" size={22} /> : <text>{label}</text>}
     </view>
   </view>;
 }

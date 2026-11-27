@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import { Button } from './Button.js';
@@ -24,7 +25,11 @@ export type PaginationProps = {
   className?: string;
 };
 
-export function Pagination({ value, defaultValue = 1, onChange, total, totalPage, pageSize = 10, prevText = '上一页', nextText = '下一页', showIcon = false, showMessage = false, hideIfOnePage = true, buttonVariant = 'text', renderPrev, renderNext, renderSize, renderMessage, className = '' }: PaginationProps) {
+export function Pagination({ value, defaultValue = 1, onChange, total, totalPage, pageSize = 10, prevText, nextText, showIcon = false, showMessage = false, hideIfOnePage = true, buttonVariant = 'text', renderPrev, renderNext, renderSize, renderMessage, className = '' }: PaginationProps) {
+  const { t: localeText } = useLocale();
+  prevText ??= localeText('pagination.prev');
+  nextText ??= localeText('pagination.next');
+
   const [inner, setInner] = useState(defaultValue);
   const state = paginationState(value ?? inner, total, totalPage, pageSize);
   const change = (next: number) => { 'background only'; if (next < 1 || next > state.pages || next === state.page) return; if (value === undefined) setInner(next); onChange?.(next); };
@@ -37,6 +42,6 @@ export function Pagination({ value, defaultValue = 1, onChange, total, totalPage
       <view className="ui-pagination-size">{renderSize ? renderSize(renderState) : <><text className="ui-pagination-current">{state.page}</text><text className="ui-pagination-separator">/</text><text className="ui-pagination-total">{state.pages}</text></>}</view>
       {renderNext ? renderNext(renderState) : <Button size="small" tone="primary" variant={variant} className={`ui-pagination-nav ${showIcon ? 'ui-pagination-icon-nav' : ''}`} label={showIcon ? undefined : nextText} icon={showIcon ? <view className="ui-pagination-arrow ui-pagination-arrow-right"><view /></view> : undefined} accessibilityLabel={nextText} disabled={state.page >= state.pages} onTap={renderState.next} />}
     </view>
-    {showMessage ? renderMessage ? renderMessage(renderState) : <text className="ui-pagination-message">{`当前页：${state.page}，${state.total !== undefined ? `当前数据：${state.total}条，` : ''}分页大小：${state.pageSize}`}</text> : null}
+    {showMessage ? renderMessage ? renderMessage(renderState) : <text className="ui-pagination-message">{localeText('pagination.message', { page: state.page, total: state.total !== undefined ? localeText('pagination.total', { total: state.total }) : '', size: state.pageSize })}</text> : null}
   </view>;
 }

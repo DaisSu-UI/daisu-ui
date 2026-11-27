@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import type { ReactNode } from '@lynx-js/react';
 import type { CSSProperties } from '@lynx-js/types';
 import { imgDimension } from './imgModel.js';
@@ -28,8 +29,10 @@ function cellStyle(cell: SkeletonCell): CSSProperties {
   return style;
 }
 export function Skeleton({ theme='text',rowCol,loading=true,animation='',children,className='',style }: SkeletonProps) {
+  const { t: localeText } = useLocale();
+
   const rows=skeletonRows(rowCol,theme);
-  return <view className={`ui-skeleton ${className}`} style={style} accessibility-element={loading} accessibility-label={loading ? '加载中' : undefined}>
+  return <view className={`ui-skeleton ${className}`} style={style} accessibility-element={loading} accessibility-label={loading ? localeText('common.loading') : undefined}>
     {loading ? <view className="ui-skeleton-content">{rows.map((row,index)=><view className={`ui-skeleton-row ${index===rows.length-1 ? 'ui-skeleton-row-last' : ''}`} key={index}>{row.map((cell,col)=><view className={`ui-skeleton-col ui-skeleton-${cell.type || 'text'} ${animation ? `ui-skeleton-animation-${animation}` : ''}`} key={col} style={{...(row.length>1&&typeof (rowCol?.length?rowCol:themes[theme])[index] ==='number' ? {flex:1,width:undefined,marginRight:col<row.length-1?'12px':0} : {}),...cellStyle(cell)}}>{animation==='gradient' ? <view className="ui-skeleton-shimmer"/> : null}</view>)}</view>)}</view> : typeof children === 'string' || typeof children === 'number' ? <text>{children}</text> : children}
   </view>;
 }

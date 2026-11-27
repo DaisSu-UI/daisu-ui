@@ -1,3 +1,5 @@
+import { useDragEvents } from './useDragEvents.js';
+import { useLocale } from './useLocale.js';
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import { Button } from './Button.js';
@@ -35,10 +37,13 @@ const pointOf = (event: PointerEvent, end = false): FabPoint | null => {
 };
 
 export const Fab = forwardRef<FabRef, FabProps>(function Fab({ active, defaultActive = false, onActiveChange, type = 'primary', position = 'right-bottom', direction = 'top', disabled = false, draggable = false, expandable = true, inactiveIcon = 'add', activeIcon = 'close', zIndex = 99, gap = {}, className = '', children, trigger, onTap }, ref) {
+  const { t: localeText } = useLocale();
+
   const [inner, setInner] = useState(defaultActive);
   const expanded = active ?? inner;
   const [viewport, setViewport] = useState({ width: 0, height: 0 });
-  const [size, setSize] = useState({ width: 60, height: 60 });
+  const [size, setSize] = useState({ width: 60, height: 60, measured: false });
+  const [menuSize, setMenuSize] = useState({ width: 0, height: 0 });
   const [location, setLocation] = useState<FabPoint>({ x: 0, y: 0 });
   const [dragDirection, setDragDirection] = useState<FabDirection | null>(null);
   const [attract, setAttract] = useState(false);
@@ -76,24 +81,35 @@ export const Fab = forwardRef<FabRef, FabProps>(function Fab({ active, defaultAc
   };
   const toggle = () => { 'background only'; if (disabled || suppressTap.current) return; if (expandable) update(!expanded); else onTap?.(); };
   const menuDirection = draggable && dragDirection ? dragDirection : direction;
+  // Use measured top/left coordinates: native auto-height + bottom positioning
+  // can anchor the menu before its children have their final height.
+  const vertical = menuDirection === 'top' || menuDirection === 'bottom';
+  const menuWidth = vertical ? size.width : menuSize.width + 40;
+  const menuHeight = vertical ? menuSize.height + 40 : size.height;
+  const menuStyle = {
+    left: `${menuDirection === 'left' ? -menuWidth : menuDirection === 'right' ? size.width : 0}px`,
+    top: `${menuDirection === 'top' ? -menuHeight : menuDirection === 'bottom' ? size.height : 0}px`,
+    right: 'auto', bottom: 'auto', width: `${menuWidth}px`, height: `${menuHeight}px`,
+    visibility: menuSize.width > 0 && menuSize.height > 0 ? 'visible' as const : 'hidden' as const,
+  };
   const tone = type === 'error' ? 'danger' : type === 'default' ? 'neutral' : type;
+  const gestures = useDragEvents({ disabled, mode: 'catch', startMode: 'bind', endMode: 'bind', onStart: event => { 'background only'; start(event); return !!drag.current; }, onMove: move, onEnd: event => { 'background only'; finish(event); }, onCancel: event => { 'background only'; finish(event, true); } });
   return <>
     <view className="ui-fab-viewport" flatten={false} user-interaction-enabled={false} bindlayoutchange={event => { 'background only'; const { width } = event.detail; setViewport(old => old.width === width ? old : { ...old, width }); }} />
     <view className="ui-fab-viewport ui-fab-viewport-vertical" flatten={false} user-interaction-enabled={false} bindlayoutchange={event => { 'background only'; const { height } = event.detail; setViewport(old => old.height === height ? old : { ...old, height }); }} />
-    <view className={`ui-fab ${draggable ? 'ui-fab-draggable' : ''} ${disabled ? 'ui-fab-disabled' : ''} ${className}`} style={{ left: `${location.x}px`, top: `${location.y}px`, zIndex, visibility: viewport.width && viewport.height ? 'visible' : 'hidden', transitionDuration: attract ? '300ms' : '0ms' }} catchtap={() => { 'background only'; }}>
+    <view className={`ui-fab ${draggable ? 'ui-fab-draggable' : ''} ${disabled ? 'ui-fab-disabled' : ''} ${className}`} flatten={false} style={{ left: `${location.x}px`, top: `${location.y}px`, width: size.measured ? `${size.width}px` : undefined, height: size.measured ? `${size.height}px` : undefined, zIndex, visibility: viewport.width && viewport.height && size.measured ? 'visible' : 'hidden', transitionDuration: attract ? '300ms' : '0ms' }} catchtap={() => { 'background only'; }}>
       <view className="ui-fab-trigger" flatten={false}
-        bindlayoutchange={event => { 'background only'; const { width, height } = event.detail; setSize(old => old.width === width && old.height === height ? old : { width, height }); }}
-        bindtap={toggle} bindtouchstart={start}
-        catchtouchmove={event => { 'background only'; move(event); }}
-        bindtouchend={event => { 'background only'; finish(event); }}
-        bindtouchcancel={event => { 'background only'; finish(event, true); }}
-        bindmousedown={start}
-        global-bindmousemove={draggable ? event => { 'background only'; move(event); } : undefined}
-        global-bindmouseup={draggable ? event => { 'background only'; finish(event); } : undefined}
+        bindtap={toggle} {...gestures}
         consume-slide-event={draggable ? [[0, 360]] : undefined}>
-        {trigger ? typeof trigger === 'function' ? trigger({ active: expanded, disabled }) : trigger : <Button className="ui-fab-default-trigger" tone={tone} round disabled={disabled} icon={<Icon name={expanded ? activeIcon : inactiveIcon === 'add' ? 'plus' : inactiveIcon} size={32} color={tone === 'neutral' ? 'var(--cso-ui-text-regular)' : '#fff'} />} accessibilityLabel={expanded ? '收起动作菜单' : '展开动作菜单'} />}
+        <view className="ui-fab-trigger-measure" flatten={false} user-interaction-enabled={false} event-through
+          bindlayoutchange={event => { 'background only'; const { width, height } = event.detail; if (Number.isFinite(width) && Number.isFinite(height) && width > 0 && height > 0) setSize(old => old.measured && old.width === width && old.height === height ? old : { width, height, measured: true }); }} />
+        {trigger ? typeof trigger === 'function' ? trigger({ active: expanded, disabled }) : trigger : <Button className="ui-fab-default-trigger" tone={tone} round disabled={disabled} icon={<Icon name={expanded ? activeIcon : inactiveIcon === 'add' ? 'plus' : inactiveIcon} size={32} color={tone === 'neutral' ? 'var(--cso-ui-text-regular)' : '#fff'} />} accessibilityLabel={expanded ? localeText('fab.collapse') : localeText('fab.expand')} />}
       </view>
-      {expandable ? <Transition show={expanded} name={[]} className={`ui-fab-actions ui-fab-actions-${menuDirection}`} enterClassName={`ui-fab-offset-${menuDirection}`} leaveToClassName={`ui-fab-offset-${menuDirection}`} enterActiveClassName="ui-fab-actions-animating" leaveActiveClassName="ui-fab-actions-animating"><view className="ui-fab-action-content" user-interaction-enabled={!disabled}>{children}</view></Transition> : null}
+      {expandable ? <Transition show={expanded} name={[]} className={`ui-fab-actions ui-fab-actions-${menuDirection}`} style={menuStyle} enterClassName={`ui-fab-offset-${menuDirection}`} leaveToClassName={`ui-fab-offset-${menuDirection}`} enterActiveClassName="ui-fab-actions-animating" leaveActiveClassName="ui-fab-actions-animating"><view className="ui-fab-action-content" flatten={false} user-interaction-enabled={!disabled}>
+        <view className="ui-fab-action-measure" flatten={false} user-interaction-enabled={false} event-through
+          bindlayoutchange={event => { 'background only'; const { width, height } = event.detail; if (Number.isFinite(width) && Number.isFinite(height) && width >= 0 && height >= 0) setMenuSize(old => old.width === width && old.height === height ? old : { width, height }); }} />
+        {children}
+      </view></Transition> : null}
     </view>
   </>;
 });

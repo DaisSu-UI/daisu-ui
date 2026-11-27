@@ -73,15 +73,15 @@ const dialog = useDialog();
 | actionLayout | button/text；horizontal/vertical | `'horizontal' \| 'vertical'` | `'horizontal'` |
 | actions | {text,action?:confirm/cancel/action,...公共ButtonProps}[]，优先于默认按钮 | `readonly DialogAction[]` | — |
 | showCancelButton | 取消按钮 | `boolean` | — |
-| confirmButtonText | 默认文案 | `string` | `'确定'` |
-| cancelButtonText | 默认文案 | `string` | `'取消'` |
+| confirmButtonText | 默认文案 | `string` | — |
+| cancelButtonText | 默认文案 | `string` | — |
 | confirmButtonProps | 部分DialogAction或string；null隐藏按钮 | `Partial<DialogAction> \| string \| null` | — |
 | cancelButtonProps | 部分DialogAction或string；null隐藏按钮 | `Partial<DialogAction> \| string \| null` | — |
 | inputValue | 初始值；{placeholder,maxlength,type,multiline,maxlines} | `string \| number` | `''` |
 | inputProps | 初始值；{placeholder,maxlength,type,multiline,maxlines} | `DialogInputProps` | — |
 | inputPattern | 正则 / (string)=>boolean或错误字符串 | `RegExp` | — |
 | inputValidate | 正则 / (string)=>boolean或错误字符串 | `(value: string) => boolean \| string` | — |
-| inputError | 校验提示 | `string` | `'输入内容不正确'` |
+| inputError | 校验提示 | `string` | — |
 | showErr | 校验提示 | `boolean` | `false` |
 | beforeConfirm | (string)=>boolean或Promise<boolean>；false拦截，异常显示可重试错误 | `(value: string) => boolean \| Promise<boolean>` | — |
 | icon | 公共Icon名称/语义success、danger、warning、info / 颜色 / 头图地址 | `string` | — |

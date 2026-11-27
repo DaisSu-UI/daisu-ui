@@ -1,3 +1,4 @@
+import { useLocale } from './useLocale.js';
 import { FormFieldContext } from './formContext.js';
 import { useContext, useEffect, useRef, useState } from '@lynx-js/react';
 import type { CSSProperties } from '@lynx-js/types';
@@ -18,6 +19,8 @@ export type InputNumberProps = NumberRules & {
 };
 
 export function InputNumber({ value, defaultValue = 1, onChange, min = 1, max = Number.MAX_SAFE_INTEGER, step = 1, precision = 0, stepStrictly = false, allowNull = false, disabled: disabledProp, disableInput = false, disableMinus = false, disablePlus = false, withoutInput = false, inputWidth = 36, placeholder = '', avoidKeyboard = true, beforeChange, longPress = false, immediateChange = true, updateOnInit = true, inputType = 'digit', theme = 'default', round = false, className = '', style, onFocus, onBlur }: InputNumberProps) {
+  const { t: localeText } = useLocale();
+
   const field = useContext(FormFieldContext), disabled = disabledProp ?? field?.disabled ?? false;
   const rules = numberRules({ min, max, step, precision, stepStrictly, allowNull });
   const [inner, setInner] = useState<InputNumberValue>(updateOnInit ? normalizeNumber(defaultValue, rules) : defaultValue);
@@ -29,7 +32,8 @@ export function InputNumber({ value, defaultValue = 1, onChange, min = 1, max = 
   const latest = useRef({ rules, source, disabled, disableMinus, disablePlus, beforeChange, onChange, controlled: value !== undefined });
   latest.current = { rules, source, disabled, disableMinus, disablePlus, beforeChange, onChange, controlled: value !== undefined };
   const timer = useRef<ReturnType<typeof setTimeout>>(), repeat = useRef(false);
-  const stop = () => { 'background only'; clearTimeout(timer.current); timer.current = undefined; };
+  const [pressDirection, setPressDirection] = useState<-1 | 1 | null>(null);
+  const stop = () => { 'background only'; clearTimeout(timer.current); timer.current = undefined; if (mounted.current) setPressDirection(null); };
   const display = (next: string) => { 'background only'; currentDraft.current = next; setDraft(next); };
   useEffect(() => {
     generation.current++; pending.current = null;
@@ -87,6 +91,7 @@ export function InputNumber({ value, defaultValue = 1, onChange, min = 1, max = 
   const start = (direction: -1 | 1) => {
     'background only'; stop(); repeat.current = false;
     if (!longPress || buttonDisabled(direction)) return;
+    setPressDirection(direction);
     const tick = () => { 'background only'; repeat.current = true; changeBy(direction); timer.current = setTimeout(tick, 250); };
     timer.current = setTimeout(tick, 600);
   };
@@ -99,7 +104,7 @@ export function InputNumber({ value, defaultValue = 1, onChange, min = 1, max = 
     if (!immediateChange || clean === '-' || clean.endsWith('.') || (clean === '' && !allowNull)) return;
     void commit(clean, true);
   };
-  const action = (direction: -1 | 1) => <view className={`ui-input-number-action ui-input-number-${direction < 0 ? 'minus' : 'plus'} ${buttonDisabled(direction) ? 'ui-input-number-action-disabled' : ''}`} accessibility-element accessibility-traits="button" accessibility-label={direction < 0 ? '减少' : '增加'} catchtap={() => { 'background only'; tap(direction); }} bindtouchstart={() => { 'background only'; start(direction); }} bindtouchend={stop} bindtouchcancel={stop} bindtouchmove={stop} bindmousedown={() => { 'background only'; start(direction); }} global-bindmouseup={stop}>
+  const action = (direction: -1 | 1) => <view className={`ui-input-number-action ui-input-number-${direction < 0 ? 'minus' : 'plus'} ${buttonDisabled(direction) ? 'ui-input-number-action-disabled' : ''}`} accessibility-element accessibility-traits="button" accessibility-label={direction < 0 ? localeText('inputNumber.decrease') : localeText('inputNumber.increase')} catchtap={() => { 'background only'; tap(direction); }} bindtouchstart={() => { 'background only'; start(direction); }} bindtouchend={stop} bindtouchcancel={stop} bindtouchmove={stop} bindmousedown={() => { 'background only'; start(direction); }} bindmouseup={stop} global-bindmouseup={pressDirection === direction ? stop : undefined}>
     <view className="ui-input-number-horizontal" />{direction > 0 ? <view className="ui-input-number-vertical" /> : null}<view className="ui-input-number-divider" />
   </view>;
   return <view className={`ui-input-number ui-input-number-${theme} ${disabled ? 'ui-input-number-disabled' : ''} ${round ? 'ui-input-number-round' : ''} ${withoutInput ? 'ui-input-number-without-input' : ''} ${className}`} style={style}>

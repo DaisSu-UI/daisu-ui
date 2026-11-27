@@ -1,3 +1,5 @@
+import { useDragEvents } from './useDragEvents.js';
+import { useLocale } from './useLocale.js';
 import { forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from '@lynx-js/react';
 import type { ReactNode } from '@lynx-js/react';
 import type { NodesRef, CSSProperties } from '@lynx-js/types';
@@ -13,7 +15,11 @@ type Pointer = { x?: number; clientX?: number; touches?: { x?: number; clientX?:
 type Dimensions = { width: number; height: number };
 type Drag = { start: number; last: number; offset: number; max: number; ready: boolean };
 const dimension = (value: number | string) => typeof value === 'number' ? `${Number.isFinite(value) ? Math.max(0, value) : 0}px` : /^\d+(\.\d+)?$/.test(value) ? `${value}px` : value;
-export const SlideVerify = forwardRef<SlideVerifyRef, SlideVerifyProps>(function SlideVerify({ width = '100%', height = 40, tolerance = 10, text = '向右滑动验证', successText = '验证通过', disabled: disabledProp, backgroundColor, activeBackgroundColor, icon = 'double-right', successIcon = 'check-circle-fill', iconSize = 20, successIconSize = 20, renderIcon, renderSuccessIcon, onSuccess, onFail, className = '', style }, ref) {
+export const SlideVerify = forwardRef<SlideVerifyRef, SlideVerifyProps>(function SlideVerify({ width = '100%', height = 40, tolerance = 10, text, successText, disabled: disabledProp, backgroundColor, activeBackgroundColor, icon = 'double-right', successIcon = 'check-circle-fill', iconSize = 20, successIconSize = 20, renderIcon, renderSuccessIcon, onSuccess, onFail, className = '', style }, ref) {
+  const { t: localeText } = useLocale();
+  text ??= localeText('slideVerify.prompt');
+  successText ??= localeText('slideVerify.success');
+
   const field = useContext(FormFieldContext), disabled = disabledProp ?? field?.disabled ?? false, node = useRef<NodesRef>(null);
   const [dimensions, setDimensions] = useState<Dimensions>({ width: 0, height: 0 }), measured = useRef(dimensions), [offset, setOffset] = useState(0), [success, setSuccess] = useState(false), [dragging, setDragging] = useState(false);
   const drag = useRef<Drag>(), sequence = useRef(0), mounted = useRef(true);
@@ -56,10 +62,11 @@ export const SlideVerify = forwardRef<SlideVerifyRef, SlideVerifyProps>(function
   };
   const content = (value: ReactNode) => typeof value === 'string' || typeof value === 'number' ? <text>{value}</text> : value;
   const buttonSize = dimensions.height || (typeof height === 'number' ? Math.max(0, height) : 40);
+  const gestures = useDragEvents({ disabled, onStart: event => { 'background only'; void begin(event); return !!drag.current; }, onMove: move, onEnd: event => { 'background only'; end(event); }, onCancel: event => { 'background only'; end(event, true); } });
   return <view ref={node} flatten={false} className={`ui-slide-verify ${disabled ? 'ui-slide-verify-disabled' : ''} ${success ? 'ui-slide-verify-success' : ''} ${className}`} style={{ width: dimension(width), height: dimension(height), ...style, backgroundColor: backgroundColor ?? style?.backgroundColor }} bindlayoutchange={event => record({ width: event.detail.width, height: event.detail.height })}>
     <view className="ui-slide-verify-copy">{content(text)}</view>
     <view className="ui-slide-verify-track" style={{ width: `${offset + buttonSize}px`, backgroundColor: offset ? activeBackgroundColor : 'transparent', transitionDuration: dragging ? '0ms' : '300ms' }}><view className="ui-slide-verify-success-copy" style={{ width: `${dimensions.width}px` }}>{content(successText)}</view></view>
-    <view className="ui-slide-verify-button" style={{ width: `${buttonSize}px`, height: `${buttonSize}px`, transform: `translateX(${offset}px)`, transitionDuration: dragging ? '0ms' : '300ms' }} consume-slide-event={disabled ? undefined : [[-180, 180]]} catchtouchstart={event => { 'background only'; void begin(event); }} catchtouchmove={move} catchtouchend={event => end(event)} catchtouchcancel={event => end(event, true)} catchmousedown={event => { 'background only'; void begin(event); }} global-bindmousemove={dragging ? move : undefined} global-bindmouseup={dragging ? event => end(event) : undefined} global-bindtouchmove={dragging ? move : undefined} global-bindtouchend={dragging ? event => end(event) : undefined} global-bindtouchcancel={dragging ? event => end(event, true) : undefined} accessibility-element accessibility-traits="adjustable" accessibility-label={success ? typeof successText === 'string' ? successText : '验证通过' : typeof text === 'string' ? text : '向右滑动验证'}>
+    <view className="ui-slide-verify-button" style={{ width: `${buttonSize}px`, height: `${buttonSize}px`, transform: `translateX(${offset}px)`, transitionDuration: dragging ? '0ms' : '300ms' }} consume-slide-event={disabled ? undefined : [[-180, 180]]} {...gestures} accessibility-element accessibility-traits="adjustable" accessibility-label={success ? typeof successText === 'string' ? successText : localeText('slideVerify.success') : typeof text === 'string' ? text : localeText('slideVerify.prompt')}>
       {success ? renderSuccessIcon ?? <Icon name={successIcon} size={successIconSize} color="#12b886" /> : renderIcon ?? <Icon name={icon} size={iconSize} />}
     </view>
   </view>;

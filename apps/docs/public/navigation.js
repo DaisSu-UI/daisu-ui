@@ -25,6 +25,7 @@ export const documentationGroups = [
   { id: 'design', label: '设计系统', section: 'design', pages: [
     { id: 'design', label: '设计', source: 'apps/docs/pages/design.md' },
     { id: 'theme-customization', label: '定制主题', source: 'apps/docs/pages/theme.md' },
+    { id: 'internationalization', label: '国际化', source: 'apps/docs/pages/internationalization.md' },
     { id: 'dark-mode', label: '深色模式', source: 'apps/docs/pages/dark-mode.md' },
     { id: 'style-overrides', label: '样式覆盖', source: 'apps/docs/pages/styles.md' },
   ] },

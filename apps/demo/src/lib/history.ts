@@ -13,3 +13,9 @@ export function createDemoHistory(): RouterHistoryAdapter {
     },
   };
 }
+
+/** Browser presentation stays in the Web host; native bundles never access the DOM. */
+export function publishDemoPresentation(title: string, locale: string) {
+  'background only';
+  NativeModules.DemoBridge.postMessage(JSON.stringify({ type: 'presentation', title, locale }));
+}

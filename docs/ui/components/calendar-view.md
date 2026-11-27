@@ -10,7 +10,7 @@ import { CalendarView } from '@daisu-ui/ui';
 
 ### 单日选择
 
-设置 `type="date"` 使用单日模式，`value` 指定日期，`onChange` 获取选择结果。
+设置 `type="date"` 使用单日模式，`value` 指定日期，`onChange` 获取选择结果。日期只挂载附近行，细小滚动不重复生成日期；Demo 面板接近视口后分批加载；原生观察回调缺失时在延迟后逐个补齐，避免只有首个面板显示。
 
 ```tsx
 <CalendarView

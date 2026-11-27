@@ -7,6 +7,7 @@
     "jsxImportSource": "@lynx-js/react",
     "module": "ESNext",
     "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
     "types": ["@lynx-js/rspeedy/client"],
     "noEmit": true
   },

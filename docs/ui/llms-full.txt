@@ -2,6 +2,9 @@
 
 `@daisu-ui/ui` 是独立 ReactLynx 组件库，基于 `@lynx-js/react` 与 `@lynx-js/lynx-ui`。组件、Demo 与 API 文档由 UI 仓库维护；CLI、MCP、客户端接入与消费端 Skill 由独立 CLI 仓库维护。组件包名为 @daisu-ui/ui，安装和发布以当前 README 与版本发布说明为准；CLI 为独立的 @daisu-ui/cli，可通过 npm install -g @daisu-ui/cli@latest 安装。
 
+原生滚动层级：库内与 Demo 的 `scroll-view` / 官方 List、FeedList 在容器上显式设置 `style.zIndex=0`，不依赖当前编译配置未生效的标签选择器；这是 Lynx 的层叠上下文边界。业务自行创建的滚动容器也应显式设置零层级。否则带 z-index 的后代可能挂到滚动容器之外，出现步骤数字、轮播指示器、头像组不跟随滚动，或日历日期落在弹窗后面。Swiper、Steps/header、AvatarGroup、Calendar 内部滚动、Slider rail、Tabs、Table、Search block、IndexBar 同时建立局部零层级边界。业务覆盖滚动容器样式时须保留有效层叠上下文，不能用移除所有 z-index 或改成 fixed 来修复；不向 list 的直接 list-item 子节点批量添加 z-index，以保留原生复用行为。弹窗、Fab、Toast 等实际视口浮层保留 fixed。依据：https://lynxjs.org/next/api/css/properties/z-index 。
+
+
 UI 源码：git@github.com:DaisSu-UI/daisu-ui.git
 CLI 源码：git@github.com:DaisSu-UI/cli.git
 
@@ -16,7 +19,7 @@ CLI 源码：git@github.com:DaisSu-UI/cli.git
 
 - `Gap`：height:number|string=14，数字为px，rpx按750设计宽转vw；bgColor默认透明、safeAreaBottom=false、bottomSafeAreaHeight=0（真实宿主px）、className/style。content-box使高度与安全区padding相加，支持0。无uni-app/浏览器env依赖。示例gap，见 `docs/ui/components/gap.md`。
 
-- `Divider`：children、contentPosition(left/center/right)、color、hairline=true、dashed=false、vertical=false、className/style；保留label/align别名，children/contentPosition优先，支持数值0。垂直模式忽略内容；原生view/border替代伪元素，默认1px经缩放成0.5px，Token可定制。示例局部复刻官网计算3px线宽，详见 `docs/ui/components/divider.md`。
+- `Divider`：children、contentPosition(left/center/right)、color、hairline=true、dashed=false、vertical=false、className/style；保留label/align别名，children/contentPosition优先，支持数值0。垂直模式忽略内容；原生view/border替代伪元素，默认1px经缩放成0.5px，hairline=false时为1px，Token可定制。文字或图标的内容容器左右各留16px间距，Demo使用组件默认线宽。详见 `docs/ui/components/divider.md`。
 
 - `Backtop`：scrollTop与onBacktop({duration})必填，top=300严格大于才显示，duration=100、bottom=100、right=20、zIndex=10、shape=circle/square、text、iconStyle、children、className/style；48px按钮、300ms淡入淡出。Lynx无全局pageScrollTo，所属容器控制器负责滚动；原生smooth不承诺精确时长。详情 `docs/ui/components/backtop.md`，示例backtop。
 
@@ -33,7 +36,7 @@ CLI 源码：git@github.com:DaisSu-UI/cli.git
 
 - `Navbar` / `NavbarCapsule`：统一导航组件，默认variant=business保留原56px样式、onBack/rightLabel/onRight/rightContent及statusBarHeight行为；variant=standard显式启用44px样式。title支持ReactNode；leftText/rightText/leftArrow、bordered、fixed/placeholder、zIndex、safeAreaInsetTop/statusBarHeight、两侧disabled、left/right/capsule、onLeftTap/onRightTap。backButtonEffect默认default；glass仅作用于内置业务圆形返回按钮，使用原生blur-view；iOS26+且宿主支持时呈现Liquid Glass，Android为背景模糊，H5为普通圆形按钮，不能替代真机验收。主题由ConfigProvider传入原生材质，leftDisabled同时关闭玻璃交互。胶囊支持onBack/onBackHome。不内置路由；详情额外展示不传variant的“原有默认样式”，详见 `docs/ui/components/navbar.md`。
 
-- `Fab`：受控 active/onActiveChange 或 defaultActive；type、八种 position、四种 direction、disabled、draggable、expandable、inactiveIcon/activeIcon、zIndex、gap、className、children、trigger（节点或状态渲染函数）、onTap。FabRef 提供 open/close。60px默认触发器，300ms菜单过渡；触摸/鼠标拖动后吸边、菜单朝内，拖动不触发展开。外部关闭由页面接入，H5宿主已适配拖动滚动拦截。详见 `docs/ui/components/fab.md`，示例 `?demo=ui&component=fab`。
+- `Fab`：受控 active/onActiveChange 或 defaultActive；type、八种 position、四种 direction、disabled、draggable、expandable、inactiveIcon/activeIcon、zIndex、gap、className、children、trigger（节点或状态渲染函数）、onTap。FabRef 提供 open/close。60px默认触发器，300ms菜单过渡；触发器独立测量并固定锚点宽高，菜单内容通过独立节点测量宽高，并用明确的 top/left 和宽高定位；切换方向显式清除 right/bottom，避免原生自动高度或残留坐标造成重叠。触摸/鼠标拖动后吸边、菜单朝内，拖动不触发展开。外部关闭由页面接入，H5宿主已适配拖动滚动拦截。详见 `docs/ui/components/fab.md`，示例 `?demo=ui&component=fab`。
 
 - `RootPortal` / `RootPortalHost`：均仅接收 children。App 根部已安装 Host，传送采用 ReactLynx 公开 createPortal，支持 context 与状态，事件沿真实元素树冒泡；后台挂载，不跨页面/原生容器。其他应用须先安装 Host。CSS 继承链改变，调用处局部变量需要在传送子树设置；详情见 `docs/ui/components/root-portal.md`。独立示例 `?demo=ui&component=root-portal`，其中商品分类已复用公共 SelectPicker。
 
@@ -51,7 +54,7 @@ CLI 源码：git@github.com:DaisSu-UI/cli.git
 - 基础：`Button`、`Card`、`Cell`、`CellGroup`、`Divider`。
 - `Cell`：`title` / `icon` 支持 ReactNode，`description` 为描述，`value` 为右侧文字，`children` 为自定义右侧内容。支持 `placeholder`、`valueAlign: left | center | right`、`size: medium | large`、`arrow`、`arrowDirection: right | left | up | down`、`center`、`required`、`markerSide: before | after`、`vertical`、`titleWidth`、`ellipsis`、`border`、`className`、`clickable` / `onTap`；`arrow` 自动开启点击反馈。导航通过 `onTap` 交由页面处理。
 - `CellGroup`：支持 `title`、右侧标题 `value`、`border`（组内分隔线）、`insert`（圆角卡片）、`className`、`children`。默认无外框和分隔线；单项 `border` 覆盖分组设置。Cell 详情涵盖五组展示，评分、开关、滑块可交互；滑块复用公共 `Slider`，开关基于官方 Lynx UI 原语。
-- `Slider`：`value` / `defaultValue` 为数字或 `[下限, 上限]`；受控时通过 `onChange` 回写值，`onChangeEnd` 在操作结束时触发。支持 `min`（默认 0）、`max`（默认 100）、`step`（默认 1）、`disabled`、`vertical`、`height`（纵向默认 248px）、`theme: default | capsule`、`showExtremes`、`showValue`、`marks`（数字数组或数值到文案的映射）、`className`、`accessibilityLabel`。范围手柄不交叉，步长从 min 开始计算；拖动通过 Lynx 触摸事件与原生元素测量实现，支持 H5 鼠标拖动，不使用浏览器 DOM API。示例位于“录入”分类，可用 `?demo=ui&component=slider` 直达。
+- `Slider`：`value` / `defaultValue` 为数字或 `[下限, 上限]`；受控时通过 `onChange` 回写值，`onChangeEnd` 在操作结束时触发。支持 `min`（默认 0）、`max`（默认 100）、`step`（默认 1）、`disabled`、`vertical`、`height`（纵向默认 248px）、`theme: default | capsule`、`showExtremes`、`showValue`、`marks`（数字数组或数值到文案的映射）、`className`、`accessibilityLabel`。范围手柄不交叉，步长从 min 开始计算；以视口clientX/clientY与轨道boundingClientRect比较，不混用命中节点的局部x/y。直接按住手柄时锁定其索引并保留按下偏移，两个范围手柄可分别拖动，管道样式不因手柄移动而左右跳动。拖动通过 Lynx 触摸事件与原生元素测量实现，支持 H5 鼠标拖动，不使用浏览器 DOM API。示例位于“录入”分类，可用 `?demo=ui&component=slider` 直达。
 - 数据展示：`Collapse`、`CollapseItem`、`CollapseViewMore`；示例入口为首页“数据展示”分类。
 - `CollapseItem` 保留内容节点，通过 `bindlayoutchange` 测量内容自然高度，以 300ms 高度过渡展开/收起；内容更新后重新测量，避免使用固定最大高度裁切内容。`icon` 支持文本或 ReactNode。
 - 表单：`FormInputRow`、`FormSelectRow`、`FormRadioRow`、`FormNumberRow`、`FormTextareaRow`、`RadioGroup`、`NumberStepper`、`Tabs`。
@@ -86,7 +89,7 @@ CLI 源码：git@github.com:DaisSu-UI/cli.git
 
 - `Overlay`：show=false、duration=300(ms/{enter,leave}/boolean)、lockScroll=true、zIndex=10、rootPortal=false、children/className/style、onTap及六个进入离开事件。黑色55%遮罩，退出完成前阻挡点击，受控关闭；内容catchtap隔离。原生consume-slide-event/catchtouchmove，无DOM滚动锁；内部scroll-view需显式enable-scroll同步，Flutter外部滚动不由组件控制。rootPortal需RootPortalHost，局部主题由内容类提供。详情overlay.md，示例/ui-demo/overlay。
 
-- `Popup`：title可选文字/节点（左对齐标题栏，为关闭按钮预留空间）、show/onChange(false)、onClose(reason:modal/close)、position=center/top/right/bottom/left、transition(名称或数组)、duration=300、closable=false（右上角40px圆形浅灰底关闭按钮，适配深色）、closeOnClickModal=true、modal=true、modalStyle、zIndex=10、lazyRender=true、lockScroll=true、rootPortal=false、round=false、safeAreaInsetBottom=false、safeAreaBottom=0、className/style/children、onClickModal及六阶段生命周期。复用Overlay/Transition，居中定位与动画分层，退出保留遮挡、关闭后保留内容状态；内部点击不触发背景。rootPortal需根Host；锁定触摸链而非Flutter外部滚动，安全区须宿主数值。未暴露hideWhenClose，固定隐藏并保留节点。参数见popup.md，独立示例/ui-demo/popup。
+- `Popup`：title可选文字/节点（左对齐标题栏，为关闭按钮预留空间）、show/onChange(false)、onClose(reason:modal/close)、position=center/top/right/bottom/left、transition(名称或数组)、duration=300、closable=false（右上角40px圆形浅灰底关闭按钮，适配深色）、closeOnClickModal=true、modal=true、modalStyle、zIndex=10、lazyRender=true、lockScroll=true、rootPortal=false、round=false、safeAreaInsetBottom=false、safeAreaBottom=0、className/style/children、onClickModal及六阶段生命周期。同一RootPortalHost内后打开的Popup自动高于仍在显示或退出的Popup，zIndex为最低层级；嵌套Popup按父层+2起步，有Host时自动传送至其外部。普通非rootPortal的独立Popup提供局部Host供内部嵌套使用；显式rootPortal=true仍需页面根Host。复用Overlay/Transition，居中定位与动画分层，退出保留遮挡、关闭后保留内容状态；内部点击不触发背景。rootPortal需根Host；锁定触摸链而非Flutter外部滚动，安全区须宿主数值。未暴露hideWhenClose，固定隐藏并保留节点。参数见popup.md，独立示例/ui-demo/popup。
 
 - `ActionSheet`：show/onChange、actions{name?,description?,color?,disabled?,loading?}[]、panels为Panel[]或Panel[][]（优先actions）；Panel{title,icon?,image?,color?,disabled?}。title/cancelText、closeOnClickAction=true、closeOnClickModal=true、duration=200、zIndex=10、lazyRender=true、safeAreaInsetBottom=true、safeAreaBottom=0、rootPortal=false、children、renderClose(close)、titleClassName/className/style。onSelect单行/动作返回{item,index}，二维返回{item,rowIndex,colIndex}；禁用/加载不选。onCancel先于关闭；onChange(false)/onClose、onClickModal、四个动画事件。Popup/Icon/Loading复用，8px圆角，面板横向滚动；不承诺锁定宿主外部滚动。详情action-sheet.md，示例/ui-demo/action-sheet。
 
@@ -102,7 +105,7 @@ CLI 源码：git@github.com:DaisSu-UI/cli.git
 
 - `DropMenu`/`DropMenuItem`：同组互斥，父zIndex12/direction down|up/topOffset0(向上时预留顶部)/modal/closeOnClickModal=true/duration200/className/style。Item value/defaultValue(string|number)、options、onChange({value,selectedItem原始对象})、disabled、title、icon/caret-down、iconSize数字16、iconName/check、activeColor、beforeToggle({status})=>boolean|Promise、valueKey/labelKey/tipKey、popupClassName/popupStyle/popupHeight、rootPortal、children、四阶段事件；ref getShowPop/open/close/toggle。单Overlay+原生测量，方向侧遮罩与裁剪滑动，80vh原生滚动列表；保留子内容。异步打开序号校验避免覆盖新项，回调重建不取消，禁用/卸载失效。自定义内容关联SortButton/Dialog/Slider/Cell/Button，无Vue selector/useQueue，modal=false外部点击需ref.close。详情drop-menu.md，示例/ui-demo/drop-menu。
 
-- `Tooltip`：show/defaultShow/onShowChange(bool)/onChange({show})、onOpen/onClose、content字符串/contentNode ReactNode、children触发器、placement默认bottom共12向、offset数字主轴或[x,y]/{x,y}坐标、visibleArrow/disabled/showClose、duration200/zIndex20/rootPortalfalse、className/style/arrowClassName/popClassName/popStyle；ref open/close/updatePosition。原生测量自然尺寸与视口，14px间距与16×8箭头，边界换向/夹取；绝对定位默认跟随触发器，复杂内容变化后主动updatePosition。根view bindtap+refs.close处理外部关闭与互斥，组件不强制遮罩，无Vue use-content-slot或DOM。详情tooltip.md，示例/ui-demo/tooltip。
+- `Tooltip`：show/defaultShow/onShowChange(bool)/onChange({show})、onOpen/onClose、content字符串/contentNode ReactNode、children触发器、placement默认bottom共12向、offset数字主轴或[x,y]/{x,y}坐标、visibleArrow/disabled/showClose、duration200/zIndex20/rootPortalfalse、className/style/arrowClassName/popClassName/popStyle；ref open/close/updatePosition。原生测量自然尺寸与视口，背景与定位外壳显式使用内容实测宽高；重新打开或动态更新先释放旧尺寸后重测，14px间距与16×8箭头，边界换向/夹取；绝对定位默认跟随触发器，复杂内容变化后主动updatePosition。根view bindtap+refs.close处理外部关闭与互斥，组件不强制遮罩，无Vue use-content-slot或DOM。详情tooltip.md，示例/ui-demo/tooltip。
 
 - `Toast`/`useToast`：hook返回props与show/success/error/warning/info/loading(string|ToastOptions)/close，绑定具体<Toast {...toast.props}/>，无selector；重复调用替换并取消旧计时。msg/duration2000(0持久，loading默认0)、direction horizontal|vertical、iconName五类型、iconSize24、loadingType circular|spinner|dots、loadingColor白/loadingSize24/iconColor白、position top|middle-top|middle|bottom、zIndex100/coverfalse、iconClass公共Icon名或图片/iconNode、opened/closed。组件提供同名默认参数，options优先，再加show/onChange/requestKey/rootPortal/className/style。复用Icon/Loading/Overlay/Transition，200ms淡入淡出，24px图标与16px文案，局部Loading居中；无classPrefix/cssIcon。19例、浅深与计时/多实例验证，详情toast.md，示例/ui-demo/toast。
 
@@ -116,7 +119,7 @@ CLI 源码：git@github.com:DaisSu-UI/cli.git
 
 - `Tour`：show/onShowChange、steps:TourStep[]{element,content纯文本,padding?,offset?,placement?}、current/defaultCurrent0/onCurrentChange/onChange({current})；masktrue/maskColor rgba(0,0,0,.55)、padding8/borderRadius4/offset20/duration300；prevText/nextText/skipText/finishText、clickMaskNextfalse/showTourButtonstrue/highlightStyle/zIndex999/rootPortalfalse/className/style。missingStrategy stop|skip|hide，onError；onPrev/onNext({prevCurrent,current,total,isElementInTop})/onFinish/onSkip({current,total})；scrollToTarget async在测量前接入实际滚动，getTargetRect适配原生作用域/NodesRef；renderContent/renderHighlight/renderPrev/renderNext/renderSkip/renderFinish接收TourRenderState含动作。ref handlePrev/handleNext/handleSkip/handleFinish/updatePosition。原生透明阴影洞和目标测量，无DOM，竞态取消与关闭去重；原生scroll控制必须显式接入，不仿造uni页面滚动。详见components/tour.md，示例/ui-demo/tour。
 
-- `Input`：value/defaultValue(string|number，0保留)/onChange(string)/onInput(TextFieldEvent保留原生selection与isComposing)，placeholder/placeholderColor/maxlength-1、type text|number|digit|password|tel|email/inputFilter、disabled/readonly/error、clearable/clearTrigger always|focus/focusWhenCleartrue、showPassword、prefixIcon/suffixIcon/onClickPrefixIcon/onClickSuffixIcon、prefix/suffix ReactNode、compact/alignRight/showWordLimit、focus/selectionStart/End、confirmType/confirmHold、avoidKeyboardtrue/cursorSpacing0/softInputModenothing/holdKeyboard/showSoftInputOnFocus、ignoreCompositionEventtrue缓冲IME、onFocus/onBlur/onConfirm/onClear/onTap/onKeyboardHeightChange、className/inputClassName/style。ref focus/blur/setSelectionRange。挂载和外部值用原生setValue同步，受控拒绝恢复；清空input/change/clear顺序；密码不重建节点；标题/必填/图标布局复用Cell（高按钮设置center），不把Form校验伪装成输入功能。H5原生part占位符颜色由宿主injectStyleRules适配，Lynx无DOM。详见components/input.md，示例/ui-demo/input。
+- `Input`：value/defaultValue(string|number，0保留)/onChange(string)/onInput(TextFieldEvent保留原生selection与isComposing)，placeholder/placeholderColor/maxlength-1、type text|number|digit|password|tel|email/inputFilter、disabled/readonly/error、clearable/clearTrigger always|focus/focusWhenCleartrue、showPassword、prefixIcon/suffixIcon/onClickPrefixIcon/onClickSuffixIcon、prefix/suffix ReactNode、compact/alignRight/showWordLimit、focus/selectionStart/End、confirmType/confirmHold、avoidKeyboardtrue/cursorSpacing0/softInputModenothing/holdKeyboard/showSoftInputOnFocus、ignoreCompositionEventtrue缓冲IME、onFocus/onBlur/onConfirm/onClear/onTap/onKeyboardHeightChange、className/inputClassName/style。ref focus/blur/setSelectionRange。挂载只通过default-value初始化，外部值或受控拒绝才用原生setValue同步；maxlength=-1在原生侧转换为2147483647，不能直接交给Android负数长度过滤器；清空input/change/clear顺序；密码不重建节点；标题/必填/图标布局复用Cell（高按钮设置center），不把Form校验伪装成输入功能。H5原生part占位符颜色由宿主injectStyleRules适配，Lynx无DOM。详见components/input.md，示例/ui-demo/input。
 
 - `Textarea`：复用Input的TextFieldProps（无suffixIcon/suffix）、value/defaultValue/onChange(string)/onInput(TextFieldEvent)、disabled/readonly/error、clearable/clearTrigger/focusWhenClear、maxlength/showWordLimit、compact/prefixIcon/prefix、焦点/选择区间、原生键盘/确认及合成事件；另有height150/autoHeightfalse/minHeight20/maxHeight/maxlines和onLineChange({lineCount})。ref focus/blur/setSelectionRange。autoHeight通过相同字号宽度的原生text镜像逐段测高，支持折行/空行，无DOM或字符宽度估算；H5真实输入20→80px、清空20px验证。标题/必填用公共Cell，无Form校验伪实现；不支持uni专属键盘工具栏/fixed等，无跨平台textarea密码。详情components/textarea.md，示例/ui-demo/textarea。
 
@@ -289,7 +292,7 @@ const filter = ({type, values}: DatetimeFilterParams) =>
 | closeOnClickModal / duration | true / 200ms |
 | rootPortal / safeAreaInsetBottom / safeAreaBottom / zIndex | false / true / 0 / 100；安全区高度由宿主提供 |
 
-Ref 提供 `open()`、`close()`，close 按取消处理。确认前读取 CalendarView 的实时滚轮位置；异步确认、快捷请求在关闭、卸载或外部值/约束替换后失效。日期范围未完成值含 null，不能仅检查数组长度。
+Ref 提供 `open()`、`close()`、`setValue(value)`；close 按取消处理。setValue 在打开且可编辑时规范化并更新当前草稿、触发 onPickChange，定位到该值所在月份，即使值相同也会定位；showConfirm=true 时仍需点击确定才提交，禁用、关闭或等待异步确认/快捷项时忽略。自定义“选择今天”等按钮应调用此方法，不应只重复写外部已保存值。确认前读取 CalendarView 的实时滚轮位置；异步确认、快捷请求在关闭、卸载或外部值/约束替换后失效。日期范围未完成值含 null，不能仅检查数组长度。
 
 ```tsx
 const [value, setValue] = useState<CalendarValue>([null, null]);
@@ -433,11 +436,11 @@ const verify = useRef<SlideVerifyRef>(null);
 
 `ref.validate(prop?: string | readonly string[])` 返回 `Promise<{ valid, errors: {prop,message}[], outOfDate? }>`；省略校验全部，部分校验保留其他字段错误。异步校验期间数据/schema变化、较新校验、reset或卸载会使旧结果失效，调用方必须检查 `valid`，不能将旧结果当成功。schema异常使手动校验Promise拒绝；自动校验通过 `onValidateError(error)` 报告。
 
-`ref.reset(prop?)` 仅清除校验结果，不清空数据。`validateTrigger` 默认 `submit`，可为 `change`、`blur` 或数组；FormItem同名参数覆盖表单级。Input/Textarea自动通知blur；复合自定义控件需要自行调用局部validate。`resetOnChange` 默认true，字段变化清除对应错误。`errorType` 为 `message`（默认）、`toast`、`none`；none仍返回结果。`onValidate(result)` 在有效校验完成时回调。
+`ref.reset(prop?)` 仅清除校验结果，不清空数据。`validateTrigger` 默认 `submit`，可为 `change`、`blur` 或数组；FormItem同名参数覆盖表单级。Input/Textarea自动通知blur；复合自定义控件需要自行调用局部validate。`resetOnChange` 默认true，字段变化清除对应错误。`errorType` 为 `message`（默认）、`toast`、`none`，或只含 message/toast 的只读数组；`errorType={["message", "toast"]}` 同时显示字段 message 和 toast。所有错误字段保留各自 message，每次校验只将本次第一条错误交给一个 toast 实例；后续结果替换当前 toast，不按错误字段排队。校验通过、reset或关闭toast展示方式会立即清除校验toast，避免与成功提示重叠。none仍返回结果。`onValidate(result)` 在有效校验完成时回调。
 
 ## 布局与禁用
 
-Form/FormItem共用 `disabled`、`border`、`center`、`size(medium/large)`、`titleWidth`（数值px/长度字符串，默认98）、`layout(horizontal/vertical)`、`valueAlign(left/center/right)`、`asteriskPosition(start/end)`、`hideAsterisk`、`ellipsis`。FormItem显式参数覆盖表单，必填以 `required` 或schema.isRequired为准。FormItem复用公共Cell，children为右侧控件；也支持title/value/placeholder/prefixIcon/icon/iconSize/label/isLink/clickable/onTap/className/style。value支持数值0。
+Form/FormItem共用 `disabled`、`border`、`center`、`size(medium/large)`、`titleWidth`（数值px/长度字符串，默认98）、`layout(horizontal/vertical)`、`valueAlign(left/center/right)`、`asteriskPosition(start/end)`、`hideAsterisk`、`ellipsis`。FormItem显式参数覆盖表单，必填以 `required` 或schema.isRequired为准。FormItem复用公共Cell，children为右侧控件；也支持title/value/placeholder/prefixIcon/icon/iconSize/label/isLink/clickable/onTap/className/style。value支持数值0。标题统一预留12px必填标记列，起始星号绝对定位，不挤动文字；可选、必填、隐藏星号和末尾星号的文字保持同一横向起点，标记沿用对应Cell字号与行高。旧FormFieldRow系列同样预留标记列。
 
 Input/Textarea、Switch、Rate、InputNumber、Slider及本批关联控件读取字段上下文，无Form时保留原有行为。禁用FormItem拦截入口点击，单项 `disabled={false}` 可以显式恢复；这不是业务权限控制。
 
@@ -567,7 +570,7 @@ focused 默认为 true，调用方可显式控制焦点状态。
 
 组件显式 prop 优先于 Provider 默认值，再使用组件内置默认值。button/tag 按字段合并，false 有效，undefined 继承；内层变量覆盖外层同名变量，兄弟作用域互不影响。Button 的实心变体为 solid；组件显式 tone 不受 Provider type 覆盖。Tag 原有 tone/plain 兼容参数保持有效。
 
-`useConfigProvider()` 读取最近配置，返回 theme、themeVars（规范化变量名）、button、tag、tokens。它是 React 读取 Hook，不模拟 Vue 的 setup 注入函数，也不操作模块全局单例。配置更新通过 Provider props 驱动。
+`useConfigProvider()` 读取最近配置，返回 locale、theme、themeVars（规范化变量名）、button、tag、tokens。它是 React 读取 Hook，不模拟 Vue 的 setup 注入函数，也不操作模块全局单例。配置更新通过 Provider props 驱动。
 
 ## themeVars
 
@@ -647,6 +650,8 @@ Picker 组合公共 Popup 与 PickerView，不内置触发 Cell。`value` 为严
 
 从 `@daisu-ui/ui` 导入 `CalendarView`、`CalendarViewProps`、`CalendarViewRef`、`CalendarValue`、`CalendarType`、`CalendarDayItem`、`CalendarDayType`、`CalendarSwitchMode`。
 
+默认平铺模式使用单个确定高度的滚动内容容器，月份按计算出的偏移和高度放置；日期按每周七个等宽 flex 单元格逐行渲染，月份选择为每行四列。仅挂载可见区域及附近的日期行，整月保持确定占位高度；同一日期行内滚动不重建日期，月份子树按选择值和行窗口缓存。初始偏移与渲染窗口一致，等待滚动视口和完整内容容器均完成原生布局后执行定位，避免日期区高度或单元格宽度被原生自动布局计算为零。
+
 ## API
 
 - `type='date'`：支持 `date/dates/daterange/datetime/datetimerange/week/weekrange/month/monthrange`。
@@ -663,6 +668,8 @@ Picker 组合公共 Popup 与 PickerView，不内置触发 Cell。`value` 为严
 - `onChange({value})`：即时选择；时间滚轮支持 `onPickStart/onPickEnd`。
 - Ref：`scrollIntoView()` 定位当前选择所在周，`getSelected()` 读取尚未吸附的时间滚轮和当前日期。
 
+Demo 首屏只同步挂载首个面板；其余接近视口后按64ms间隔逐个挂载，离开页面取消待加载任务。已挂载面板保留选择，各示例使用稳定回调与独立缓存，修改一个示例不重建其他面板。
+
 ```tsx
 const [value, setValue] = useState<CalendarValue>([null, null]);
 <CalendarView type="daterange" value={value} allowSameDay maxRange={7}
@@ -671,7 +678,7 @@ const [value, setValue] = useState<CalendarValue>([null, null]);
 
 ## 示例与运行边界
 
-`/ui-demo/calendar-view` 共9个面板：单日/周/月切换、多选、日期/周/月范围切换、日期时间、日期时间范围、同日范围、自定义日期、周起始日、最大范围；另有作用于全部面板的切换模式。
+`/ui-demo/calendar-view` 共9个面板：单日/周/月切换、多选、日期/周/月范围切换、日期时间、日期时间范围、同日范围、自定义日期、周起始日、最大范围；另有作用于全部面板的切换模式。详情首个面板立即挂载，其余保留高度占位，通过原生 IntersectionObserver 在进入视口前 200px 挂载；挂载后保留状态，观察能力不可用时回退完整展示，避免首次进入同时生成九套日期及时间滚轮。
 
 公共原生 scroll-view 只挂载可视区域附近的月份，以占位保持滚动尺寸；滚轮复用 DatetimePickerView。none 模式最多240个面板，超过时明确抛错，应使用 month/year-month 模式。无 DOM 依赖，支持浅深主题。自定义内容使用 ReactNode，不依赖其他运行时的插槽或内部选择器。H5 验证不能替代 Flutter iOS/Android 真机验收。
 
@@ -749,7 +756,7 @@ Vue hide-text / percent-position 映射为 hideText / percentPosition，custom-c
 
 # Notify 消息通知
 
-从 `@daisu-ui/ui` 导入 `Notify`、`useNotify` 和对应类型。独立详情：`/ui-demo/notify`。
+从 `@daisu-ui/ui` 导入 `Notify`、`useNotify` 和对应类型。独立详情：`/ui-demo/notify`。原生通知外壳保留实测内容高度与可命中的关闭区域，不使用整层 event-through；隐藏后关闭交互并归零高度，退出动画结束后移除原生锚点与 Portal 内容，关闭使用 catchtap 且不触发通知正文点击。顶部/底部切换显式清除另一侧坐标。
 
 ```tsx
 function Page() {
@@ -1141,7 +1148,7 @@ Step 参数：`title/description/icon?:ReactNode`、`status?:'finished'|'process
 
 # Sticky 粘性布局
 
-从 `packages/daisu-ui/src/index.ts` 导入 `Sticky`、`StickyBox`。使用 Lynx 原生 IntersectionObserver、NodesRef 测量与定位，无 DOM、window、全局滚动监听或轮询。
+从 `packages/daisu-ui/src/index.ts` 导入 `Sticky`、`StickyBox`。使用 Lynx 原生 IntersectionObserver、NodesRef 测量与定位，无 DOM、window、全局滚动监听或轮询。观察器保留原生默认阈值 `[0]`，不能传空 `thresholds: []`，否则 Android 不会发送后续滚动阈值通知。
 
 ```tsx
 <Sticky offsetTop={44}><Button label="吸顶内容" /></Sticky>
@@ -1152,13 +1159,13 @@ Step 参数：`title/description/icon?:ReactNode`、`status?:'finished'|'process
 </StickyBox>
 ```
 
-Sticky 参数：`offsetTop?:number=0`、`zIndex?:number=1`、`children/className/style`。offsetTop 是 Lynx 视口内的实际像素距离，不暗中添加导航高度；H5 示例显式传入 44/94/194 保留示例导航栏高度。支持负偏移，非有限数退回默认值。StickyBox 支持 `children/className/style`，最近一层 Box 约束内容不越过容器底部。
+Sticky 参数：`offsetTop?:number=0`、`zIndex?:number=1`、`scrollTop?:number`、`children/className/style`。scrollTop 接入所属 scroll-view 的 bindscroll 可在观察回调遗漏时重新测量并恢复吸顶/原位；不重建观察器，不轮询。offsetTop 是 Lynx 视口内的实际像素距离，不暗中添加导航高度；H5 示例显式传入 44/94/194 保留示例导航栏高度。支持负偏移，非有限数退回默认值。StickyBox 支持 `children/className/style`，最近一层 Box 约束内容不越过容器底部。
 
-正常状态保留布局；吸顶时使用 fixed，原位置保留实测宽高；到容器末尾使用相对原占位的 absolute。所有状态保留同一内容节点，不通过重新挂载切换位置。容器比内容矮时不吸顶。内容/容器尺寸变化会重新测量并更新观察器，卸载和参数变化会断开旧观察器并丢弃过期测量。
+正常占位节点固定为 z-index:0，内容普通状态为零层级，仅在吸顶/容器末尾时使用传入层级；正常状态使用自动宽高，不锁定首次空内容的尺寸；通过独立测量节点获取内容宽高，避免后代 layoutchange 覆盖尺寸。吸顶时使用 fixed，原位置保留实测宽高；到容器末尾使用相对原占位的 absolute。所有状态保留同一内容节点，不通过重新挂载切换位置。容器比内容矮时不吸顶。内容/容器尺寸变化会重新测量并更新观察器，卸载和参数变化会断开旧观察器并丢弃过期测量。
 
-包裹内容应有固有尺寸，避免依赖父级百分比宽高；用 px/vw/vh 或实际内容撑开。空内容至少占 1×1px，支持随后动态插入。纵向祖先应允许可见内容，避免放在裁剪纵向内容的短容器里。观察前缀覆盖锚点前 1,000,000px，用于跨视口跳转时正确复位，不适合把单个锚点放在超过此跨度的超长滚动页面中；虚拟列表应在实际挂载项内使用。
+包裹内容应有固有尺寸，避免依赖父级百分比宽高；用 px/vw/vh 或实际内容撑开。空内容至少占 1×1px，支持随后动态插入。纵向祖先应允许可见内容，避免放在裁剪纵向内容的短容器里。观察节点仅为锚点底部1×1px，不创建百万像素区域；跨视口跳转由 scrollTop 校正。容器与内容使用独立的非交互尺寸探针，后代 layoutchange 不应改写容器尺寸；原生测量同一时刻只保留一个请求，滚动/观察通知约16ms合并，亚像素误差不触发重新布局，吸顶/末尾状态的内容宽度保持实测值。示例不再设置 overflow-x:hidden（H5 会因此裁剪另一轴），并使用父级实际宽度避免横向溢出。恢复普通布局时显式清除旧坐标与尺寸。虚拟列表应在实际挂载项内使用。
 
-详情 `/ui-demo/sticky` 复刻当前在线五组示例、120px 容器、250vh 页面、点击/5秒动态插入；按参考实际显示处理未生效的水平间距变量。保留标准 Button 和深色模式。H5 验证基础/偏移吸顶、容器末尾跟随、滚回复位、跨视口跳转、动态插入与浅深截图；原生设备滚动表现仍需在 Flutter 宿主验收。
+详情 `/ui-demo/sticky` 复刻当前在线五组示例、120px 容器、250vh 页面、点击/5秒动态插入；按参考实际显示处理未生效的水平间距变量。保留标准 Button 和深色模式。详情使用独立 scroll-view 将实际 scrollTop 传给每个 Sticky，避免仅靠原生观察阈值遗漏滚回复位。H5 回归覆盖动态插入宽度、滚动吸顶及复位；浏览器检查需要可启动本地测试服务的环境，原生设备滚动表现仍需在 Flutter 宿主验收。
 
 
 
@@ -1242,7 +1249,7 @@ const [current, setCurrent] = useState(0);
 
 `onChange(current, source)` 在分页结束时触发，source 为 `'autoplay' | 'touch' | 'nav'`；程序切换不误报为 touch。受控父组件需回填索引，拒绝回填时静默恢复受控值；外部 current 变化使用动画，回退使用即时归位。受控索引和 defaultCurrent 的非有限值归零，循环时取模，非循环时限制到合法范围。外部 current 也应保持规范化，避免业务状态与可见索引不同。
 
-`onClick(index,item)` 点击轮播项时触发，滑动期间不触发。ref 暴露 `swipeTo(index)`、`swipeNext()`、`swipePrev()`，均带动画；循环上一项/下一项使用原生相邻分页，避免从首尾横跨整个列表。自动播放定时器随关闭、列表变化和卸载清理。组件使用独立空测量节点的原生 layoutchange 初始化，隔离子项布局事件，支持父容器尺寸变化。双滑块增加首尾复制项，覆盖循环时露出的相邻滑块。
+`onClick(index,item)` 点击轮播项时触发，滑动期间不触发。ref 暴露 `swipeTo(index)`、`swipeNext()`、`swipePrev()`，均带动画；循环上一项/下一项使用原生相邻分页，避免从首尾横跨整个列表。自动播放定时器随关闭、列表变化和卸载清理。组件使用独立空测量节点的原生 layoutchange 初始化，隔离子项布局事件，支持父容器尺寸变化。双滑块增加首尾复制项，覆盖循环时露出的相邻滑块。卡片与双滑块保留原先的可见高度变化曲线；原生分页项与图片保持固定高度，仅独立裁剪窗口在主线程改变高度，图片内容居中，不使用 scaleY 挤压图片。首帧与滑动帧共用同一可见高度计算，循环复制项按 realIndex 注册裁剪窗口，自动/手动/导航切换复用原生进度回调。自定义圆角继续作用于 ui-swiper-image 裁剪窗口。手势开始时复用原生滑块子树，避免重新生成图片。
 
 内置圆点色通过 `--cso-ui-swiper-dot-color`（#c9cbd4）与 `--cso-ui-swiper-dot-active-color`（#fff）定制。图片、标题和浮在图片上的指示器在深色模式保持可读；卡片背景继承页面主题。
 
@@ -1542,3 +1549,20 @@ Ref：`open(src?):boolean`、`close()`、`chooseImage():boolean`、`confirm():bo
 平台兼容性总表由 apps/docs/platforms.mjs 与真实公开 API 清单生成，原生状态默认待设备验收。浏览器可预览、TypeScript 通过、Flutter Dart 分析通过都不代表原生引擎/元素/手势已验收。独立工程见 examples/quickstart 与 examples/flutter-host，文档站提供 ZIP 下载、浏览器完整接入和 Flutter Manifest 接入指南。
 
 本次核对 lynx_view 1.13.4，其已解析的 lynx_view_android 1.12.4 与 lynx_view_ios 1.11.0 声明 Lynx 4.0.0；本库 Bundle 编译目标与开发类型均降为 4.0，开发固定 @lynx-js/types@4.0.0，组件 peerDependency 接受 ^4.0.0。旧 4.2 Bundle 必须重新构建、替换并更新 Manifest 哈希。原生元素、输入和手势仍需设备验收；类型通过与编译成功不代表真机兼容性已通过。
+
+
+# 国际化
+
+内置简体中文、英语、繁体中文；入口导出 zhCN、enUS、zhTW、useLocale 与 UiLocale / UiLocaleName / UiLocaleInput / UiLocaleOverride / UiLocaleMessages / UiMessageKey / UiLocaleParams / UiTranslate 类型。
+ConfigProvider 支持 locale="zh-CN" / "en-US" / "zh-TW"，也支持内置语言包对象或局部覆盖 {name?,messages?}，例如 locale={{messages:{'common.confirm':'继续'}}}。未指定时继承最近 Provider，根部默认为简体中文；指定内置 name 会选对应基础语言包。空字符串覆盖有效，undefined 消息继承基础包。组件直接传入的文案/插槽/formatter 优先，业务文案和车牌省份数据不自动翻译。
+useLocale() 返回 {locale,t}；t(key,params) 对资源内 {name} 模板进行文本替换，不执行代码或注入 HTML。语言切换依赖 ReactLynx Provider props 更新，不读 navigator，不使用全局 changeLanguage，不需要 react-i18next。Lynx 尚未内置 Intl；同步纯 JS 语言包保证双线程首屏一致，默认日期、时间单位、星期与无障碍标签不依赖 Intl。业务 i18next 应把当前语言映射到 locale 并更新状态；若业务自行引入 v24+，需按 Lynx 官方指南为 Intl.PluralRules 配置 polyfill。
+Popup/Dialog/Calendar/Notify 等 Portal 内容继承来源语言，切换语言保留输入和日期草稿；H5 富文本音视频仅更新标签时保留播放器。开发诊断错误、外部异常和宿主系统控件由调用方/宿主管理。
+Demo：/ui-demo/config-provider 的“国际化”区可切换三种语言，查看输入、搜索、分页、加载状态及 Dialog / Calendar 默认文案。详细指南：internationalization.md。
+
+本轮原生兼容性修复：Slider 使用 @lynx-js/react-use 的 useTouchEmulation 统一开始/取消事件，移动更新以16ms合并，只有拖动实例启用必要全局鼠标监听；值提示只在活动滑块存在，不使用永久透明节点隐藏。Signature 用下标读取最后点，不依赖 Array.prototype.at。
+
+
+# 交互状态维护
+
+ReactLynx Use 为 UI 包直接依赖，触摸/鼠标适配收口到内部 useDragEvents 和 usePressState。useDragEvents 仅在有效手势期间设置全局 mousemove/mouseup，保留触摸事件目标与原 bind/catch 模式，拦截触摸后的兼容鼠标启动，避免组件列表里大量空闲实例共同接收全局事件。Slider、Signature、Fab、SlideVerify、SwipeAction、FloatingPanel、IndexBar 已接入；演示页复用库组件。
+内部 useFrameTask 负责约16ms合并后台渲染、更新最新回调、卸载取消；Slider 保留精确结束值，Signature 不丢采样点。Button/Cell/Grid/关闭按钮/Icon Demo 共用 usePressState，稳定事件函数并管理释放。InputNumber 仅在当前方向长按时启用全局释放监听。useDragEvents/useFrameTask 是内部实现，未新增公开 Hook API；usePressState 仍从 utils 导出。维护清单见 docs/ui/INTERACTION_STATE.md。

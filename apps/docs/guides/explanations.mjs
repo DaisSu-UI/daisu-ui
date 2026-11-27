@@ -36,14 +36,14 @@ export default {
   },
   divider: {
     基础分割线:
-      "默认展示水平分割线，设置 `dashed` 使用虚线，子节点用于展示分隔文字。",
+      "默认展示 0.5px 水平细线，设置 `dashed` 使用虚线，子节点用于展示分隔文字；文字或图标与两侧线条各保留 16px 间距。设置 `hairline={false}` 使用 1px 线条。",
     颜色与位置:
       "通过 `color` 设置颜色，通过 `contentPosition` 设置内容的位置。",
     垂直分割线: "设置 `vertical` 使用垂直分割线，适合横向排列的操作项。",
   },
   fab: {
     基础用法: "通过 `onTap` 响应悬浮按钮点击。",
-    展开操作: "设置 `expandable` 支持展开操作项，子节点作为展开后的内容。",
+    展开操作: "设置 `expandable` 支持展开操作项，子节点作为展开后的内容。菜单在触发器和操作内容均完成测量后显示，按明确的宽高和坐标定位；内容尺寸变化时重新定位，自定义触发器与四种展开方向均保持对齐。",
     禁用与拖动: "设置 `disabled` 禁用按钮，设置 `draggable` 允许拖动位置。",
   },
   transition: {
@@ -61,7 +61,7 @@ export default {
     明暗切换:
       "通过 `theme` 在 `light` 与 `dark` 之间切换，内部组件跟随当前主题。",
     颜色与组件默认值:
-      "通过 `themeVars` 覆盖主题变量，通过 `button` 设置按钮的默认属性。",
+      "通过 `themeVars` 覆盖主题变量，通过 `button` 设置按钮默认属性；`locale` 支持 zh-CN、en-US、zh-TW 或自定义语言包，嵌套配置与 Portal 继承当前语言。",
   },
   "root-portal": {
     配置挂载宿主:
@@ -128,7 +128,7 @@ export default {
   },
   "form-detail": {
     受控表单:
-      "通过 `model` 绑定表单数据，`FormItem.prop` 对应字段路径，输入控件通过 `onChange` 更新数据。",
+      "通过 `model` 绑定表单数据，`FormItem.prop` 对应字段路径，输入控件通过 `onChange` 更新数据。标题统一预留必填标记列，有无星号保持文字对齐。",
     提交时校验:
       "通过 `schema` 配置校验，在提交时调用 `ref.validate()`，检查结果中的 `valid` 后再处理数据。",
     整体禁用: "设置 `Form.disabled`，表单中的关联控件统一进入禁用状态。",
@@ -231,12 +231,12 @@ export default {
   },
   "calendar-view": {
     单日选择:
-      '设置 `type="date"` 使用单日模式，`value` 指定日期，`onChange` 获取选择结果。',
+      '设置 `type="date"` 使用单日模式，`value` 指定日期，`onChange` 获取选择结果。日期只挂载附近行，细小滚动不重复生成日期；Demo 面板接近视口后分批加载；原生观察回调缺失时在延迟后逐个补齐，避免只有首个面板显示。',
     日期范围: '设置 `type="daterange"` 选择开始日期和结束日期。',
   },
   calendar: {
     弹层日历:
-      '通过 `visible` 控制日历弹层，`type="date"` 使用单日模式，`onConfirm` 返回选择的日期。',
+      '通过 `visible` 控制日历弹层，`type="date"` 使用单日模式，`onConfirm` 返回选择的日期。自定义“选择今天”按钮可调用 `CalendarRef.setValue(value)` 更新草稿并定位，点击确定后再提交。',
     日期范围:
       '设置 `type="daterange"` 选择日期范围，通过 `title` 设置面板标题。',
   },
@@ -307,7 +307,7 @@ export default {
   },
   popup: {
     基础弹层:
-      "通过 `show` 和 `onChange` 控制显示状态；`title` 显示左对齐标题，`closable` 显示右上角 40px 圆形关闭按钮，标题会为按钮预留空间。",
+      "通过 `show` 和 `onChange` 控制显示状态；`title` 显示左对齐标题，`closable` 显示右上角 40px 圆形关闭按钮，标题会为按钮预留空间。同一 RootPortalHost 内按打开顺序分配弹层层级，zIndex 是最低层级；嵌套层自动高于父层，遮罩位于父面板与子面板之间。",
     底部弹出:
       '设置 `position="bottom"` 从底部弹出，配合 `round` 和 `safeAreaInsetBottom` 使用圆角及底部安全区。',
   },
@@ -326,7 +326,7 @@ export default {
   },
   notify: {
     绑定通知实例:
-      "将 `useNotify()` 返回的 `props` 绑定到 `Notify`，通过 `showNotify()` 显示通知。",
+      "将 `useNotify()` 返回的 `props` 绑定到 `Notify`，通过 `showNotify()` 显示通知。退出动画结束后移除原生浮层；Demo 的普通文案与自定义内容复用同一实例。",
     成功通知:
       '调用 `showNotify()` 时设置 `type="success"`，通过 `message` 指定通知文案。',
   },
@@ -387,7 +387,7 @@ export default {
     全屏预览: "调用 `previewVideo()` 时设置 `fullScreen` 使用全屏预览。",
   },
   swiper: {
-    图片轮播: "通过 `list` 设置图片地址列表，通过 `height` 设置轮播区域高度。",
+    图片轮播: "通过 `list` 设置图片地址列表，通过 `height` 设置轮播区域高度。卡片与双滑块保持分页项和图片尺寸固定，只在主线程改变独立裁剪窗口的可见高度，恢复原有大小变化曲线并避免图片被纵向压缩；首帧、自动轮播和手动滑动共用计算。",
     关闭自动播放:
       "设置 `autoplay={false}` 关闭自动播放，通过 `onChange` 获取切换结果。",
     自定义轮播项: "通过 `renderItem` 自定义每一项的内容。",
@@ -403,7 +403,7 @@ export default {
       "通过 `closePosition` 设置关闭按钮位置，例如 `top-right` 表示右上方。",
   },
   sticky: {
-    吸顶内容: "使用 `StickyBox` 包裹内容区域，`Sticky` 中放置需要吸顶的内容。",
+    吸顶内容: "使用 `StickyBox` 包裹内容区域，`Sticky` 中放置需要吸顶的内容。容器默认占满父级宽度；空内容可随后动态插入，滚回后恢复自然布局。将所属滚动容器的 `scrollTop` 传入，可校正原生观察回调遗漏造成的位置残留。测量按帧合并，容器使用独立尺寸探针，吸顶时锁定内容宽度，避免后代布局和底部边界引起反复更新。",
     顶部偏移:
       "通过 `offsetTop` 设置吸顶时与顶部的距离，为导航栏等内容保留空间。",
   },
@@ -433,7 +433,7 @@ export default {
   },
   collapse: {
     多项展开:
-      "通过 `items` 配置面板，每项的 `name` 标识面板，`title` 设置标题，`content` 设置内容。",
+      "通过 `items` 配置面板，每项的 `name` 标识面板，`title` 设置标题，`content` 设置内容。面板分隔线为 0.5px，右侧使用 24px 箭头图标，展开时旋转。",
     手风琴:
       "设置 `accordion` 后每次只展开一项，`defaultValue` 指定默认展开项。",
     禁用选项: "在面板项上设置 `disabled`，该项不能展开。",
