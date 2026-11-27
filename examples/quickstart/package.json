@@ -9,7 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@daisu-ui/ui": "0.1.0-beta.8",
+    "@daisu-ui/ui": "0.1.0-beta.9",
     "@lynx-js/lynx-core": "0.1.4",
     "@lynx-js/react": "0.126.2",
     "@lynx-js/web-core": "0.26.5"
