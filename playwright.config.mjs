@@ -25,6 +25,7 @@ export default defineConfig({
   outputDir: "artifacts/docs-browser-results",
   reporter: [
     ["list"],
+    ...(process.env.CI ? [["github"]] : []),
     ["html", { outputFolder: "artifacts/docs-browser-report", open: "never" }],
   ],
   use: {
