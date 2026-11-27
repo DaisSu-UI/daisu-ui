@@ -8,7 +8,9 @@ for (const legacy of [true, false]) {
     const current = await response.text();
     const entry = current.match(/\bsrc=["'](static\/js\/index(?:\.[a-f0-9]+)?\.js)["']/)?.[1];
     expect(entry).toBeTruthy();
-    let stale = current.replace(entry, legacy ? 'static/js/index.553eaa9829.js' : 'static/js/index.missing-cache.js');
+    const replacement = legacy ? 'static/js/index.553eaa9829.js' : 'static/js/index.missing-cache.js';
+    let stale = current.replace(`src="${entry}"`, `src="${replacement}"`);
+    expect(stale).not.toBe(current);
     if (legacy) stale = stale.replace(/<script data-demo-recovery>[\s\S]*?<\/script>/, '');
     await page.route(url => url.pathname === demo.pathname && !url.searchParams.has('demoBuild'), route => route.fulfill({
       contentType: 'text/html', body: stale, headers: { 'Cache-Control': 'max-age=600' },

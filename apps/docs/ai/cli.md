@@ -23,7 +23,7 @@ npm install -g @daisu-ui/cli@latest
 daisu --version
 ```
 
-安装完成后可使用 daisu 命令。需要固定 CLI 版本时，先用 npm view @daisu-ui/cli versions --json 查询已发布列表，再将 beta 换为其中的精确版本。
+安装完成后可使用 daisu 命令。需要固定 CLI 版本时，先用 npm view @daisu-ui/cli versions --json 查询已发布列表，再将 latest 换为其中的精确版本。
 
 不全局安装也可使用：
 
@@ -234,4 +234,4 @@ daisu docs export --ui-dir /absolute/path/to/daisu-ui --check
 
 --check 严格只读。版本数据提交到 CLI，接入页面和摘要清单提交到 UI，不手工修改生成页。开发文档、CLI npm 发布、组件 npm 发布与业务 Bundle 分别执行。
 
-本文由 `@daisu-ui/cli@0.1.0-beta.8` 生成。内容在 CLI 仓库维护；更新方式见 [CLI 工具](#/ai-cli)。
+本文由 `@daisu-ui/cli@0.1.0-beta.9` 生成。内容在 CLI 仓库维护；更新方式见 [CLI 工具](#/ai-cli)。

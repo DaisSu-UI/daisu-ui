@@ -16,7 +16,7 @@ Daisu UI 提供面向 ReactLynx 的组件文档、版本化离线知识库、CLI
 
 ### 第一次使用
 
-CLI 在 npmjs 使用 beta 标签，安装后的实际版本用 daisu --version 核对。先按 [CLI 安装说明](#/ai-cli) 安装 @daisu-ui/cli@latest；也可从 Git 源码构建或安装本地 tarball。CLI 安装完成后，下面的命令均可离线查询；组件包和 CLI 是两个独立的安装项。
+CLI 在 npmjs 默认使用 latest 标签，安装后的实际版本用 daisu --version 核对。先按 [CLI 安装说明](#/ai-cli) 安装 @daisu-ui/cli@latest；也可从 Git 源码构建或安装本地 tarball。CLI 安装完成后，下面的命令均可离线查询；组件包和 CLI 是两个独立的安装项。
 
 在消费项目执行：
 
@@ -111,4 +111,4 @@ daisu agent doctor --client cursor
 - [平台适配](#/platforms) · [定制主题](#/theme-customization)
 - [UI 源码仓库](https://github.com/DaisSu-UI/daisu-ui) · [CLI 源码仓库](https://github.com/DaisSu-UI/cli)
 
-本文由 `@daisu-ui/cli@0.1.0-beta.8` 生成。内容在 CLI 仓库维护；更新方式见 [CLI 工具](#/ai-cli)。
+本文由 `@daisu-ui/cli@0.1.0-beta.9` 生成。内容在 CLI 仓库维护；更新方式见 [CLI 工具](#/ai-cli)。

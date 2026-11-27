@@ -95,4 +95,4 @@ UI 仓库维护 AGENTS.md、组件 API、示例与平台约束。Lynx API、CSS 
 
 - [MCP 配置和会话验证](#/ai-mcp) · [CLI 与版本快照](#/ai-cli) · [AI 总览](#/ai-guide)
 
-本文由 `@daisu-ui/cli@0.1.0-beta.8` 生成。内容在 CLI 仓库维护；更新方式见 [CLI 工具](#/ai-cli)。
+本文由 `@daisu-ui/cli@0.1.0-beta.9` 生成。内容在 CLI 仓库维护；更新方式见 [CLI 工具](#/ai-cli)。
