@@ -7,7 +7,15 @@ test('Sticky dynamic insertion keeps intrinsic button width and restores after s
   await page.locator('.demo-sticky-dynamic .ui-button').first().click();
   const inserted = content.locator('.ui-button');
   await expect(inserted).toBeVisible();
-  await expect.poll(async () => (await inserted.boundingBox())?.width ?? 0).toBeGreaterThan(90);
+  // Intrinsic width depends on the available CJK font. Check that the whole
+  // label and padding fit instead of assuming one runner's glyph metrics.
+  await expect.poll(() => inserted.evaluate(node => {
+    const label = node.querySelector('.ui-button-label');
+    const rect = node.getBoundingClientRect(), text = label?.getBoundingClientRect();
+    const style = getComputedStyle(node);
+    const padding = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+    return !!text && text.width > 0 && rect.width >= text.width + padding - 1;
+  })).toBe(true);
   const label = inserted.locator('.ui-button-label');
   await expect.poll(async () => (await label.boundingBox())?.height ?? 1000).toBeLessThan(50);
   const first = page.locator('.ui-sticky').first();

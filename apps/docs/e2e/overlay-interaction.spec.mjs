@@ -87,9 +87,19 @@ test('a smaller second Popup dims and blocks the first Popup without a manual la
   await page.getByText('嵌套弹窗测试', { exact: true }).click();
   const parent = page.locator('.demo-popup-parent');
   await expect(parent).toBeVisible();
+  // Establish the scenario's size precondition: the content-sized Demo parent
+  // can otherwise be smaller than its 280px child on the runner's fonts.
+  await parent.evaluate(node => {
+    node.style.width = '320px';
+    node.style.maxWidth = 'calc(100vw - 32px)';
+    node.style.minHeight = '240px';
+  });
   await parent.getByText('打开传送子弹窗', { exact: true }).click();
   const child = page.locator('.ui-popup:visible').filter({ hasText: '子弹窗' }).last();
   await expect(child).toBeVisible();
+  const parentBounds = await parent.boundingBox(), childBounds = await child.boundingBox();
+  expect(parentBounds.width).toBeGreaterThan(childBounds.width);
+  expect(parentBounds.height).toBeGreaterThan(childBounds.height);
   await expect.poll(() => page.locator('.ui-overlay:visible').evaluateAll(nodes => {
     const masks = nodes.map(node => Number(getComputedStyle(node).zIndex));
     const root = nodes[0]?.getRootNode();
