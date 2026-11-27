@@ -47,7 +47,11 @@ async function mount() {
   view.addEventListener('error', () => preview.error());
   view.addEventListener('error', event => console.error('Demo runtime error', event));
   document.body.append(view);
-  view.url = new URL('app.web.bundle', base).href;
+  const bundleUrl = new URL('app.web.bundle', base);
+  // A fresh documentation preview must load the same release as its page shell.
+  const previewToken = query.get('docsToken');
+  if (previewToken) bundleUrl.searchParams.set('docsToken', previewToken);
+  view.url = bundleUrl.href;
 }
 void mount().catch(error => {
   console.error('Demo startup failed', error);
