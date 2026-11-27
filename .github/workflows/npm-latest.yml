@@ -1,0 +1,54 @@
+name: Promote UI to npm latest
+
+on:
+  push:
+    tags: ['npm-latest-v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ui-npm-release
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    if: >-
+      github.repository == 'DaisSu-UI/daisu-ui' &&
+      ((github.event_name == 'push' && startsWith(github.ref, 'refs/tags/npm-latest-v')) ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: https://registry.npmjs.org/
+      - name: Verify main source and the already published version
+        id: target
+        run: |
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/main
+          version=$(node -p "JSON.parse(require('fs').readFileSync('packages/daisu-ui/package.json', 'utf8')).version")
+          if [ "$GITHUB_REF_TYPE" = tag ] && [ "$GITHUB_REF_NAME" != "npm-latest-v$version" ]; then
+            echo 'The promotion tag must match the UI package version.' >&2
+            exit 1
+          fi
+          published=$(npm view "@daisu-ui/ui@$version" version --userconfig=/dev/null --registry=https://registry.npmjs.org/)
+          test "$published" = "$version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+      - name: Verify npm identity and package access
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: node scripts/check-npm-auth.mjs
+      - name: Update latest and verify the registry
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          UI_VERSION: ${{ steps.target.outputs.version }}
+        run: |
+          npm dist-tag add "@daisu-ui/ui@$UI_VERSION" latest --registry=https://registry.npmjs.org/
+          latest=$(npm view @daisu-ui/ui@latest version --registry=https://registry.npmjs.org/ --prefer-online)
+          test "$latest" = "$UI_VERSION"
+          npm view @daisu-ui/ui dist-tags --json --registry=https://registry.npmjs.org/ --prefer-online

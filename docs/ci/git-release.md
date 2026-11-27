@@ -94,6 +94,12 @@ npm view @daisu-ui/ui dist-tags --json --registry=https://registry.npmjs.org/
 
 需要安装或回退时，在消费项目显式安装目标版本并提交锁文件。UI 和 CLI 是独立包；此工作流只发布 `@daisu-ui/ui`。
 
+## 将已发布版本设为 latest
+
+需要明确将预发布版本设为默认安装版本时，使用 `.github/workflows/npm-latest.yml`。此流程只修改 `@daisu-ui/ui` 的 `latest` 标签，不重新发布包，也不移动 `beta` 标签。它核对源码已进入 GitHub main、目标版本与 UI 包版本一致且已存在于 npm，并复用仓库的 `NPM_TOKEN` 身份和权限检查。
+
+在 main 上手动运行 `Promote UI to npm latest`，或将指向 main 源码的 `npm-latest-v<版本>` 标签推送 GitHub，即可触发。完成后用 `npm view @daisu-ui/ui dist-tags --json --registry=https://registry.npmjs.org/` 核对结果。普通版本发布仍按原来的 beta/latest 渠道规则执行。
+
 ## 发布预演的验证范围
 
 main 预演使用 GitHub 中实际配置的 `NPM_TOKEN`，通过 `npm whoami` 核对身份、`npm access list collaborators @daisu-ui/ui <用户名>` 核对目标包的账号读写权限，并对与当前源码及校验和匹配的 UI tarball 执行 `npm publish --dry-run`。预演不占用新版本号，也不覆盖现有版本。
